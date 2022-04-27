@@ -1,1 +1,1 @@
-# pure-c-dsa-algorithms
+# generic-c-dsa-algorithms
