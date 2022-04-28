@@ -8,81 +8,340 @@
 #include "c_sort.h"
 #include "c_list.h"
 
-int main()
+void testLinearSearch()
 {
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Linear Search Start-----------------------\n");
+	printf("-----------------------------------------------------------\n");
 	// LinearSearch with generic c method
-	int arr[8] = { 1, 12, 3, 9, 5, 6, 7, 8 };
-	int nine = 9;
-	void* find_nine = LinearSearch((void*)&nine, (void*)&arr, (int)8, (int)sizeof(int), &data_compare);
-	printf("%d \n", *((int*)(find_nine)));
+	printf("%s : ", "Declaring array or 8 integers");
+	int arr[8] = { 8, 7, 6, 5, 4, 3, 2, 1 };
+	for (int i = 0; i < 8; i++)
+		printf("%d ", arr[i]);
 
+	printf("\n");
+
+	// Linear Search
+	printf("%s : \n", "Searching for values 0 - 4 using Linear Search in array and replacing them with 0");
+	for (int i = 0; i < 5; i++)
+	{
+		void* target = LinearSearch((void*)&i, (void*)&arr, (int)8, (int)sizeof(int), &data_compare);
+		if (target){
+			printf("%s %d : %p\n", "Getting Acual Address of int ", i, target);
+			printf("%s %d with 0\n", "Replacing Value of int ", i);
+			*((int*)target) = 0;
+		}
+		else
+			printf("%s \n", "Target Address Not Found");
+	}
+
+	printf("%s : ", "After Replacing");
+	for (int i = 0; i < 8; i++)
+		printf("%d ", arr[i]);
+
+	printf("\n");
+
+	printf("%s : ", "Declaring array or 5 string(char*)");
 	char* str[5] = { "abc\0", "ABC\0", "ab\0", "aad\0", "abcd\0" };
-	char* abcd = "abcd\0";
-	// Address returned by LinearSearch will be 2 hops away
-	char* find_abcd = (char*)LinearSearch(&abcd, &str, 5, sizeof(char*), &string_compare);
-	printf("%s \n", *(char**)find_abcd);
+	for (int i = 0; i < 5; i++)
+		printf("%p %s ", &(str[i]), str[i]);
 
-	// Vector
-	Vector* a=malloc(sizeof(Vector));
+	printf("\n");
+
+	// Linear Search
+	char* abcd = "abcd\0";
+	char* find_abcd = (char*)LinearSearch(&abcd, &str, 5, sizeof(char*), &string_compare);
+	printf("%s : \n", "Searching for value abcd using Linear Search in array");
+	printf("&abcd=%p\n", find_abcd);
+
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Linear Search End-------------------------\n");
+	printf("-----------------------------------------------------------\n");
+}
+void testBubbleSort()
+{
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Bubble Search Start-----------------------\n");
+	printf("-----------------------------------------------------------\n");
+	// Sorting
+	printf("%s : ", "Sorting array of 8 integers using Bubble Sort");
+	int arr[8] = { 8, 7, 6, 5, 4, 3, 2, 1 };
+	for (int i = 0; i < 8; i++)
+		printf("%d ", arr[i]);
+	printf("\n");
+
+	BubbleSort(&arr, sizeof(int), 8, &data_compare);
+
+	printf("%s : ", "After Sorting array of 8 integers using Bubble Sort");
+	for (int i = 0; i < 8; i++)
+		printf("%d ", arr[i]);
+	printf("\n");
+
+	// Sorting
+	printf("Sorting array of 5 strings using Bubble Sort");
+	printf("%s : ", "Declaring array or 5 string(char*)");
+	char* str[5] = { "abc\0", "ABC\0", "ab\0", "aad\0", "abcd\0" };
+	for (int i = 0; i < 5; i++)
+		printf("%s ", str[i]);
+	printf("\n");
+
+	BubbleSort(&str, sizeof(char*), 5, &string_compare);
+
+	for (int i = 0; i < 5; i++)
+		printf("%p %s ", &(str[i]), str[i]);
+	printf("\n");
+
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Bubble Search End-------------------------\n");
+	printf("-----------------------------------------------------------\n");
+}
+void testBinarySearch()
+{
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Binary Search Start-----------------------\n");
+	printf("-----------------------------------------------------------\n");
+	// LinearSearch with generic c method
+	printf("%s : ", "Declaring array of 8 integers");
+	int arr[8] = { 8, 7, 6, 5, 4, 3, 2, 1 };
+	for (int i = 0; i < 8; i++)
+		printf("%d ", arr[i]);
+
+	printf("\n");
+
+	BubbleSort(&arr, sizeof(int), 8, &data_compare);
+	printf("%s : ", "After Sorting array of 8 integers using Bubble Sort");
+	for (int i = 0; i < 8; i++)
+		printf("%d ", arr[i]);
+	printf("\n");
+
+	// Linear Search
+	printf("%s : \n", "Searching for values 0 - 4 using Binary Search in array and replacing them with 0");
+	for (int i = 0; i < 5; i++)
+	{
+		void* target = BinarySearch((void*)&i, (void*)&arr, 0, (int)8, (int)sizeof(int), &data_compare);
+		if (target){
+			printf("%s %d : %p\n", "Getting Acual Address of int ", i, target);
+			printf("%s %d with 0\n", "Replacing Value of int ", i);
+			*((int*)target) = 0;
+		}
+		else
+			printf("%s \n", "Target Address Not Found");
+	}
+
+	printf("%s : ", "After Replacing");
+	for (int i = 0; i < 8; i++)
+		printf("%d ", arr[i]);
+
+	printf("\n");
+
+	printf("%s : ", "Declaring array or 5 string(char*)");
+	char* str[5] = { "abc\0", "ABC\0", "ab\0", "aad\0", "abcd\0" };
+	for (int i = 0; i < 5; i++)
+		printf("%p %s ", &(str[i]), str[i]);
+
+	printf("\n");
+
+	// Linear Search
+	char* abcd = "abcd\0";
+	char* find_abcd = (char*)BinarySearch(&abcd, &str, 0, 5, sizeof(char*), &string_compare);
+	printf("Searching for value abcd using Binary Search in array : \n");
+	printf("&abcd=%p\n", find_abcd);
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Binary Search End-------------------------\n");
+	printf("-----------------------------------------------------------\n");
+}
+void testVector(unsigned int size)
+{
+	// Vector int
+	Vector* a = malloc(sizeof(Vector));
 	VectorNew(a, sizeof(unsigned int));
-	for (unsigned int i = 400; i > 0; i--)
+	for (unsigned int i = size; i > 0; i--)
 	{
 		VectorPushBack(a, &i);
 	}
-	printf("Sorting\n");
+
+	printf("Performing Bubble sort on unsigned int Vector \n");
+
 	BubbleSort(a->elems, a->elemsize, a->logicallen, &data_compare);
+
 	unsigned int out;
-	for (unsigned int i = 0; i < 400; i++)
+	for (unsigned int i = 0; i < size; i++)
 	{
-        VectorAt(a, i, &out);
-		printf("%d ", out);
+		VectorAt(a, i, &out);
+		printf("%u ", out);
 	}
-    VectorDispose(a, &data_free);
+	VectorDispose(a, &data_free);
 
-    // Queue
-    Queue* q = malloc(sizeof(Queue));
-	QueueNew(q, sizeof(unsigned int));
-    for (unsigned int i = 0; i < 2000000; i++)
+	// Vector double
+	Vector* d = malloc(sizeof(Vector));
+	VectorNew(d, sizeof(double));
+	for (unsigned int i = size; i > 0; i--)
 	{
-		QueuePush(q, &i);
+		VectorPushBack(d, &i);
 	}
-	for (unsigned int i = 0; i < 2000000; i++)
-	{
-        QueuePop(q, &out);
-		//printf("%d ", out);
-	}
-    QueueDispose(q, &data_free);
 
-    // Stack
-    Stack* s = malloc(sizeof(Stack));
-	StackNew(s, sizeof(unsigned int));
-    for (unsigned int i = 0; i < 2000000; i++)
+	printf("Performing Bubble sort on Double Vector \n");
+	BubbleSort(d->elems, d->elemsize, d->logicallen, &data_compare);
+	
+	double o;
+	for (unsigned int i = 0; i < size; i++)
 	{
-		StackPush(s, &i);
+		VectorAt(a, i, &o);
+		printf("%lf ", o);
 	}
-	for (unsigned int i = 0; i < 2000000; i++)
+	VectorDispose(d, &data_free);
+}
+void testQueue(unsigned int size)
+{
+	// Vector int
+	Queue* a = malloc(sizeof(Queue));
+	QueueNew(a, sizeof(unsigned int));
+	for (unsigned int i = size; i > 0; i--)
 	{
-        StackPop(s, &out);
-		//printf("%d ", out);
+		QueuePush(a, &i);
 	}
-    StackDispose(s, &data_free);
 
-    LinkedList* ll = malloc(sizeof(LinkedList));
-    LinkedListNew(ll, 4);
-    for (unsigned int i = 0 ; i < 2000000; i++)
-    {
-        LinkedListInsert(ll, &i);
-    }
-	// Changing Values
-	int val = 9999;
-	for (unsigned int i = 0; i < 2000000; i+=10)
+	printf("Performing Bubble sort on unsigned int Vector \n");
+
+	BubbleSort(a->elems, a->elemsize, a->logicallen, &data_compare);
+
+	unsigned int out;
+	for (unsigned int i = 0; i < size; i++)
+	{
+		QueuePop(a, &out);
+		printf("%u ", out);
+	}
+	QueueDispose(a, &data_free);
+
+	// Vector double
+	Queue* d = malloc(sizeof(Queue));
+	QueueNew(d, sizeof(double));
+	for (unsigned int i = size; i > 0; i--)
+	{
+		QueuePush(d, &i);
+	}
+
+	printf("Performing Bubble sort on Double Vector \n");
+	BubbleSort(d->elems, d->elemsize, d->logicallen, &data_compare);
+
+	double o;
+	for (unsigned int i = 0; i < size; i++)
+	{
+		QueuePop(a, &o);
+		printf("%lf ", o);
+	}
+	QueueDispose(d, &data_free);
+}
+void testStack(unsigned int size)
+{
+	// Stack int
+	Stack* a = malloc(sizeof(Stack));
+	StackNew(a, sizeof(unsigned int));
+	for (unsigned int i = size; i > 0; i--)
+	{
+		StackPush(a, &i);
+	}
+
+	printf("Performing Bubble sort on unsigned int Vector \n");
+
+	BubbleSort(a->elems, a->elemsize, a->logicallen, &data_compare);
+
+	unsigned int out;
+	for (unsigned int i = 0; i < size; i++)
+	{
+		StackPop(a, &out);
+		printf("%u ", out);
+	}
+	StackDispose(a, &data_free);
+
+	// Stack double
+	Stack* d = malloc(sizeof(Stack));
+	StackNew(d, sizeof(double));
+	for (unsigned int i = size; i > 0; i--)
+	{
+		StackPush(d, &i);
+	}
+
+	printf("Performing Bubble sort on Double Vector \n");
+	BubbleSort(d->elems, d->elemsize, d->logicallen, &data_compare);
+
+	double o;
+	for (unsigned int i = 0; i < size; i++)
+	{
+		StackPop(a, &o);
+		printf("%lf ", o);
+	}
+	StackDispose(d, &data_free);
+}
+void testList(unsigned int size)
+{
+	LinkedList* ll = malloc(sizeof(LinkedList));
+	LinkedListNew(ll, sizeof(unsigned int));
+
+	printf("Inserting Values\n");
+	for (unsigned int i = 0; i < size; i++)
+	{
+		if (i%2)
+			LinkedListInsertAtTail(ll, &i);
+		else
+			LinkedListInsertAtHead(ll, &i);
+	}
+
+	printf("Changing Values\n");
+	unsigned int val = MAX_UNSIGNED;
+	for (unsigned int i = 0; i < size; i += 10)
 	{
 		LinkedListReplace(ll, &i, &val, &data_compare);
 	}
-	// Printing Values
-	for (unsigned int i = 0; i < 2000000; i++)
-	{
-		printf("%x",LinkedListAt(ll, i)->elem);
-	}
 
+	printf("Printing Values\n");
+	for (unsigned int i = 0; i < size; i++)
+	{
+		if (LinkedListAt(ll, LinkedListGetIndex(ll, &i, &data_compare)) != NULL)
+			printf("%u", LinkedListAt(ll, LinkedListGetIndex(ll, &i, &data_compare))->elem);
+	}
+}
+void testQuickSort(unsigned int size)
+{
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Quick Sort Start--------------------------\n");
+	printf("-----------------------------------------------------------\n");
+	printf("Declaring array of %u unsigned integers : ", size);
+	unsigned value = size;
+	unsigned int* arr = malloc(size * sizeof(unsigned int));
+	for (unsigned int i = 0; i < size; i++)
+	{
+		arr[i] = value;
+		value--;
+	}	
+	for (unsigned int i = 0; i < size; i++)
+		printf("%u ", arr[i]);
+
+	printf("\n Sorting the Array \n");
+
+	quicksort(arr, sizeof(unsigned int), 0, size - 1, &data_compare);
+
+	printf("After Sorting the Array : ");
+
+	for (unsigned int i = 0; i < size; i++)
+		printf("%u ", arr[i]);
+
+	printf("\n");
+
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Quick Sort End----------------------------\n");
+	printf("-----------------------------------------------------------\n");
+}
+
+int main()
+{
+	testBinarySearch();
+	testBubbleSort();
+	testLinearSearch();
+	testQuickSort(1000);
+	testVector(1000000);
+	testQueue(1000000);
+	testStack(1000000);
+	testList(1000000);
+    
 }

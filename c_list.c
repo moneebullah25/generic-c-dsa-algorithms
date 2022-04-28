@@ -23,7 +23,7 @@ void LinkedListNew(LinkedList* ll, unsigned int elemsize)
 	ll->tail = NULL;
 }
 
-void LinkedListInsert(LinkedList* ll, void* data)
+void LinkedListInsertAtTail(LinkedList* ll, void* data)
 {
 	ASSERT(ll != NULL);
 	ListNode* node = (ListNode*)malloc(sizeof(ListNode));
@@ -127,5 +127,19 @@ ListNode* LinkedListAt(LinkedList* ll, unsigned int index)
 		temp = temp->next;
 		retindex++;
 	}
-	return MAX_UNSIGNED;
+	return NULL;
+}
+
+static void ListDelete(ListNode* head)
+{
+	if (head == NULL)
+		return;
+	ListDelete(head->next);
+	free(head);
+}
+
+void LinkedListDispose(LinkedList* ll)
+{
+	ASSERT(ll != NULL);
+	ListDelete(ll->head);
 }
