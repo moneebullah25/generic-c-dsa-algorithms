@@ -160,36 +160,22 @@ void testVector(unsigned int size)
 		VectorPushBack(a, &i);
 	}
 
-	printf("Performing Bubble sort on unsigned int Vector \n");
-
-	BubbleSort(a->elems, a->elemsize, a->logicallen, &data_compare);
+	printf("Printing Vector Values : \n");
 
 	unsigned int out;
-	for (unsigned int i = 0; i < size; i++)
+	for (unsigned int i = 0; i < a->logicallen; i++)
 	{
 		VectorAt(a, i, &out);
 		printf("%u ", out);
 	}
 	VectorDispose(a, &data_free);
 
-	// Vector double
-	Vector* d = malloc(sizeof(Vector));
-	VectorNew(d, sizeof(double));
-	for (unsigned int i = size; i > 0; i--)
+	printf("Printing Vector Values after Disposing : \n");
+	for (unsigned int i = 0; i < a->logicallen; i++)
 	{
-		VectorPushBack(d, &i);
+		VectorAt(a, i, &out);
+		printf("%u ", out);
 	}
-
-	printf("Performing Bubble sort on Double Vector \n");
-	BubbleSort(d->elems, d->elemsize, d->logicallen, &data_compare);
-	
-	double o;
-	for (unsigned int i = 0; i < size; i++)
-	{
-		VectorAt(a, i, &o);
-		printf("%lf ", o);
-	}
-	VectorDispose(d, &data_free);
 }
 void testQueue(unsigned int size)
 {
@@ -201,36 +187,45 @@ void testQueue(unsigned int size)
 		QueuePush(a, &i);
 	}
 
-	printf("Performing Bubble sort on unsigned int Vector \n");
-
-	BubbleSort(a->elems, a->elemsize, a->logicallen, &data_compare);
+	printf("Printing all Queue Popped Values : \n");
 
 	unsigned int out;
-	for (unsigned int i = 0; i < size; i++)
+	for (unsigned int i = 0; i < a->logicallen; i++)
 	{
 		QueuePop(a, &out);
 		printf("%u ", out);
 	}
 	QueueDispose(a, &data_free);
 
-	// Vector double
-	Queue* d = malloc(sizeof(Queue));
-	QueueNew(d, sizeof(double));
+	printf("Printing all Queue Popped Values after Disposing : \n");
+	for (unsigned int i = 0; i < a->logicallen; i++)
+	{
+		QueuePop(a, &out);
+		printf("%u ", out);
+	}
+
+
+	QueueNew(a, sizeof(unsigned int));
 	for (unsigned int i = size; i > 0; i--)
 	{
-		QueuePush(d, &i);
+		QueuePush(a, &i);
 	}
 
-	printf("Performing Bubble sort on Double Vector \n");
-	BubbleSort(d->elems, d->elemsize, d->logicallen, &data_compare);
+	printf("Printing all Queue Popped Values : \n");
 
-	double o;
-	for (unsigned int i = 0; i < size; i++)
+	for (unsigned int i = 0; i < a->logicallen; i++)
 	{
-		QueuePop(a, &o);
-		printf("%lf ", o);
+		QueuePop(a, &out);
+		printf("%u ", out);
 	}
-	QueueDispose(d, &data_free);
+	QueueDispose(a, &data_free);
+
+	printf("Printing all Queue Popped Values after Disposing : \n");
+	for (unsigned int i = 0; i < a->logicallen; i++)
+	{
+		QueuePop(a, &out);
+		printf("%u ", out);
+	}
 }
 void testStack(unsigned int size)
 {
@@ -242,10 +237,7 @@ void testStack(unsigned int size)
 		StackPush(a, &i);
 	}
 
-	printf("Performing Bubble sort on unsigned int Vector \n");
-
-	BubbleSort(a->elems, a->elemsize, a->logicallen, &data_compare);
-
+	printf("Printing all Stack Popped Values : \n");
 	unsigned int out;
 	for (unsigned int i = 0; i < size; i++)
 	{
@@ -254,24 +246,13 @@ void testStack(unsigned int size)
 	}
 	StackDispose(a, &data_free);
 
-	// Stack double
-	Stack* d = malloc(sizeof(Stack));
-	StackNew(d, sizeof(double));
-	for (unsigned int i = size; i > 0; i--)
-	{
-		StackPush(d, &i);
-	}
 
-	printf("Performing Bubble sort on Double Vector \n");
-	BubbleSort(d->elems, d->elemsize, d->logicallen, &data_compare);
-
-	double o;
+	printf("Printing all Stack Popped Values after Disposing : \n");
 	for (unsigned int i = 0; i < size; i++)
 	{
-		StackPop(a, &o);
-		printf("%lf ", o);
+		StackPop(a, &out);
+		printf("%u ", out);
 	}
-	StackDispose(d, &data_free);
 }
 void testList(unsigned int size)
 {
@@ -319,7 +300,7 @@ void testQuickSort(unsigned int size)
 
 	printf("\n Sorting the Array \n");
 
-	quicksort(arr, sizeof(unsigned int), 0, size - 1, &data_compare);
+	QuickSort(arr, 4, 0, size -1, &data_compare);
 
 	printf("After Sorting the Array : ");
 
@@ -332,16 +313,48 @@ void testQuickSort(unsigned int size)
 	printf("-----------------Quick Sort End----------------------------\n");
 	printf("-----------------------------------------------------------\n");
 }
+void testMergeSort(unsigned int size)
+{
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Merge Sort Start--------------------------\n");
+	printf("-----------------------------------------------------------\n");
+	printf("Declaring array of %u unsigned integers : ", size);
+	unsigned value = size;
+	unsigned int* arr = malloc(size * sizeof(unsigned int));
+	for (unsigned int i = 0; i < size; i++)
+	{
+		arr[i] = value;
+		value--;
+	}
+	for (unsigned int i = 0; i < size; i++)
+		printf("%u ", arr[i]);
+
+	printf("\n Sorting the Array \n");
+
+	MergeSort(arr, 4, 0, size - 1, &data_compare);
+
+	printf("After Sorting the Array : ");
+
+	for (unsigned int i = 0; i < size; i++)
+		printf("%u ", arr[i]);
+
+	printf("\n");
+
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Merge Sort End----------------------------\n");
+	printf("-----------------------------------------------------------\n");
+}
 
 int main()
 {
 	testBinarySearch();
 	testBubbleSort();
 	testLinearSearch();
-	testQuickSort(1000);
-	testVector(1000000);
-	testQueue(1000000);
-	testStack(1000000);
-	testList(1000000);
+	testVector(1000);
+	testQueue(1000);
+	testStack(1000);
+	testList(1000);
+	testQuickSort(100); // don't works well for values greater than 100 
+	testMergeSort(100); // don't works well for values greater than 100 
     
 }

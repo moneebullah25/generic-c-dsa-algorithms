@@ -35,6 +35,10 @@ void VectorDispose(Vector* v, void(*freefunc)(void* elems))
 {
 	ASSERT(v->elems != NULL);
 	freefunc(v->elems);
+	v->logicallen = 0;
+	v->alloclen = 0;
+	v->elemsize = 0;
+	v->elems = NULL;
 }
 
 unsigned int VectorSize(Vector* v)

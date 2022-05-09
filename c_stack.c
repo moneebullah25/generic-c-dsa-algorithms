@@ -14,6 +14,10 @@ void StackDispose(Stack* s, void(*freefunc)(void* elems))
 {
 	ASSERT(s->elems != NULL);
 	freefunc(s->elems);
+	s->alloclen = 0;
+	s->logicallen = 0;
+	s->elemsize = 0;
+	s->elems = NULL;
 }
 
 void StackPush(Stack* s, void* elem)

@@ -142,4 +142,6 @@ void LinkedListDispose(LinkedList* ll)
 {
 	ASSERT(ll != NULL);
 	ListDelete(ll->head);
+	ll->listsize = 0;
+	ll->head = ll->tail = NULL;
 }

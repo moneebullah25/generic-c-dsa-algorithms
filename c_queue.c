@@ -16,6 +16,10 @@ void QueueDispose(Queue* q, void(*freefunc)(void* elems))
 {
 	ASSERT(q->elems != NULL);
 	freefunc(q->elems);
+	q->logicallen = 0;
+	q->alloclen = 0;
+	q->elemsize = 0;
+	q->front = q->rear = q->elems = NULL;
 }
 
 void QueuePush(Queue* q, void* elem)
