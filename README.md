@@ -1,1 +1,3 @@
 # generic-c-dsa-algorithms
+
+Implemented some useful Data Structures and Algorithms using pure C with void* business. These algoritms are tested on C data types unsigned int, double, int and char* (which need some different comparison and free function which are also implemented in helper file). User must use the corrent comparison and free function according to the data type passed to the algorithms, if user created his own then should also pass his own comparison and free function, otherwise for char* comparison and free function are declared and defined in c_helper and for other conventional data types comparison and free function are also provided c_helper files.
