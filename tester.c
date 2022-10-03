@@ -163,7 +163,7 @@ void testVector(unsigned int size)
 	printf("Printing Vector Values : \n");
 
 	unsigned int out;
-	for (unsigned int i = 0; i < a->logicallen; i++)
+	for (unsigned int i = 0; i < size; i++)
 	{
 		VectorAt(a, i, &out);
 		printf("%u ", out);
@@ -171,7 +171,7 @@ void testVector(unsigned int size)
 	VectorDispose(a, &data_free);
 
 	printf("Printing Vector Values after Disposing : \n");
-	for (unsigned int i = 0; i < a->logicallen; i++)
+	for (unsigned int i = 0; i < size; i++)
 	{
 		VectorAt(a, i, &out);
 		printf("%u ", out);
@@ -190,7 +190,7 @@ void testQueue(unsigned int size)
 	printf("Printing all Queue Popped Values : \n");
 
 	unsigned int out;
-	for (unsigned int i = 0; i < a->logicallen; i++)
+	for (unsigned int i = 0; i < size; i++)
 	{
 		QueuePop(a, &out);
 		printf("%u ", out);
@@ -198,7 +198,7 @@ void testQueue(unsigned int size)
 	QueueDispose(a, &data_free);
 
 	printf("Printing all Queue Popped Values after Disposing : \n");
-	for (unsigned int i = 0; i < a->logicallen; i++)
+	for (unsigned int i = 0; i < size; i++)
 	{
 		QueuePop(a, &out);
 		printf("%u ", out);
@@ -213,7 +213,7 @@ void testQueue(unsigned int size)
 
 	printf("Printing all Queue Popped Values : \n");
 
-	for (unsigned int i = 0; i < a->logicallen; i++)
+	for (unsigned int i = 0; i < size; i++)
 	{
 		QueuePop(a, &out);
 		printf("%u ", out);
@@ -221,7 +221,7 @@ void testQueue(unsigned int size)
 	QueueDispose(a, &data_free);
 
 	printf("Printing all Queue Popped Values after Disposing : \n");
-	for (unsigned int i = 0; i < a->logicallen; i++)
+	for (unsigned int i = 0; i < size; i++)
 	{
 		QueuePop(a, &out);
 		printf("%u ", out);

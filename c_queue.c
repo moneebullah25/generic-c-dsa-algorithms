@@ -41,6 +41,7 @@ void QueuePush(Queue* q, void* elem)
 void QueuePop(Queue* q, void* output)
 {
 	ASSERT(q->logicallen > 0); // empty Queue check
+	q->logicallen--;
 	memory_copy(output, q->front, q->elemsize);
 	q->front = (void*)((char*)(q->front) + q->elemsize);
 	if (q->front == (void*)((char*)q->elems + q->alloclen * q->elemsize))
