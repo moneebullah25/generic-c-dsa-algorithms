@@ -62,9 +62,7 @@ void LinkedListInsertAtHead(LinkedList* ll, void* data)
 void LinkedListReplace(LinkedList* ll, void* data, void* value, int(*MemCmp)(void* a, void* b, unsigned int elembytes))
 {
 	ASSERT(ll != NULL);
-	ListNode* temp = (ListNode*)malloc(sizeof(ListNode));
-	ASSERT(temp != NULL);
-	temp = ll->head;
+	ListNode* temp = ll->head;
 	while (temp->next != NULL)
 	{
 		if (MemCmp(temp->elem, data, temp->elemsize) == 0)
@@ -79,9 +77,7 @@ void LinkedListReplace(LinkedList* ll, void* data, void* value, int(*MemCmp)(voi
 void LinkedListReplaceAll(LinkedList* ll, void* data, void* value, int(*MemCmp)(void* a, void* b, unsigned int elembytes))
 {
 	ASSERT(ll != NULL);
-	ListNode* temp = (ListNode*)malloc(sizeof(ListNode));
-	ASSERT(temp != NULL);
-	temp = ll->head;
+	ListNode* temp = ll->head;
 	while (temp->next != NULL)
 	{
 		if (MemCmp(temp->elem, data, temp->elemsize) == 0)
@@ -95,9 +91,7 @@ void LinkedListReplaceAll(LinkedList* ll, void* data, void* value, int(*MemCmp)(
 unsigned int LinkedListGetIndex(LinkedList* ll, void* data, int(*MemCmp)(void* a, void* b, unsigned int elembytes))
 {
 	ASSERT(ll != NULL);
-	ListNode* temp = (ListNode*)malloc(sizeof(ListNode));
-	ASSERT(temp != NULL);
-	temp = ll->head;
+	ListNode* temp = ll->head;
 	unsigned int retindex = 0;
 	while (temp->next != NULL)
 	{
@@ -114,9 +108,7 @@ unsigned int LinkedListGetIndex(LinkedList* ll, void* data, int(*MemCmp)(void* a
 ListNode* LinkedListAt(LinkedList* ll, unsigned int index)
 {
 	ASSERT(ll != NULL);
-	ListNode* temp = (ListNode*)malloc(sizeof(ListNode));
-	ASSERT(temp != NULL);
-	temp = ll->head;
+	ListNode* temp = ll->head;
 	unsigned int retindex = 0;
 	while (temp->next != NULL)
 	{

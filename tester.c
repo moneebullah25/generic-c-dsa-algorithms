@@ -56,7 +56,7 @@ void testLinearSearch()
 
 	printf("-----------------------------------------------------------\n");
 	printf("-----------------Linear Search End-------------------------\n");
-	printf("-----------------------------------------------------------\n");
+	printf("-----------------------------------------------------------\n\n");
 }
 void testBubbleSort()
 {
@@ -93,7 +93,7 @@ void testBubbleSort()
 
 	printf("-----------------------------------------------------------\n");
 	printf("-----------------Bubble Search End-------------------------\n");
-	printf("-----------------------------------------------------------\n");
+	printf("-----------------------------------------------------------\n\n");
 }
 void testBinarySearch()
 {
@@ -148,10 +148,13 @@ void testBinarySearch()
 	printf("&abcd=%p\n", find_abcd);
 	printf("-----------------------------------------------------------\n");
 	printf("-----------------Binary Search End-------------------------\n");
-	printf("-----------------------------------------------------------\n");
+	printf("-----------------------------------------------------------\n\n");
 }
 void testVector(unsigned int size)
 {
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Vector Test Start-------------------------\n");
+	printf("-----------------------------------------------------------\n");
 	// Vector int
 	Vector* a = malloc(sizeof(Vector));
 	VectorNew(a, sizeof(unsigned int));
@@ -163,7 +166,7 @@ void testVector(unsigned int size)
 	printf("Printing Vector Values : \n");
 
 	unsigned int out;
-	for (unsigned int i = 0; i < size; i++)
+	for (unsigned int i = 0; i < VectorSize(a); i++)
 	{
 		VectorAt(a, i, &out);
 		printf("%u ", out);
@@ -171,15 +174,20 @@ void testVector(unsigned int size)
 	VectorDispose(a, &data_free);
 
 	printf("Printing Vector Values after Disposing : \n");
-	for (unsigned int i = 0; i < size; i++)
+	for (unsigned int i = 0; i < VectorSize(a); i++)
 	{
 		VectorAt(a, i, &out);
 		printf("%u ", out);
 	}
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Vector Test End---------------------------\n");
+	printf("-----------------------------------------------------------\n\n");
 }
 void testQueue(unsigned int size)
 {
-	// Vector int
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Queue Test Start--------------------------\n");
+	printf("-----------------------------------------------------------\n");
 	Queue* a = malloc(sizeof(Queue));
 	QueueNew(a, sizeof(unsigned int));
 	for (unsigned int i = size; i > 0; i--)
@@ -190,7 +198,7 @@ void testQueue(unsigned int size)
 	printf("Printing all Queue Popped Values : \n");
 
 	unsigned int out;
-	for (unsigned int i = 0; i < size; i++)
+	for ( ; QueueSize(a) > 0; )
 	{
 		QueuePop(a, &out);
 		printf("%u ", out);
@@ -198,37 +206,20 @@ void testQueue(unsigned int size)
 	QueueDispose(a, &data_free);
 
 	printf("Printing all Queue Popped Values after Disposing : \n");
-	for (unsigned int i = 0; i < size; i++)
+	for (; QueueSize(a) > 0;)
 	{
 		QueuePop(a, &out);
 		printf("%u ", out);
 	}
-
-
-	QueueNew(a, sizeof(unsigned int));
-	for (unsigned int i = size; i > 0; i--)
-	{
-		QueuePush(a, &i);
-	}
-
-	printf("Printing all Queue Popped Values : \n");
-
-	for (unsigned int i = 0; i < size; i++)
-	{
-		QueuePop(a, &out);
-		printf("%u ", out);
-	}
-	QueueDispose(a, &data_free);
-
-	printf("Printing all Queue Popped Values after Disposing : \n");
-	for (unsigned int i = 0; i < size; i++)
-	{
-		QueuePop(a, &out);
-		printf("%u ", out);
-	}
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Queue Test End----------------------------\n");
+	printf("-----------------------------------------------------------\n\n");
 }
 void testStack(unsigned int size)
 {
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Stack Test Start--------------------------\n");
+	printf("-----------------------------------------------------------\n");
 	// Stack int
 	Stack* a = malloc(sizeof(Stack));
 	StackNew(a, sizeof(unsigned int));
@@ -239,7 +230,7 @@ void testStack(unsigned int size)
 
 	printf("Printing all Stack Popped Values : \n");
 	unsigned int out;
-	for (unsigned int i = 0; i < size; i++)
+	for (; StackSize(a) > 0;)
 	{
 		StackPop(a, &out);
 		printf("%u ", out);
@@ -248,18 +239,23 @@ void testStack(unsigned int size)
 
 
 	printf("Printing all Stack Popped Values after Disposing : \n");
-	for (unsigned int i = 0; i < size; i++)
+	for (; StackSize(a) > 0;)
 	{
 		StackPop(a, &out);
 		printf("%u ", out);
 	}
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------Stack Test End----------------------------\n");
+	printf("-----------------------------------------------------------\n\n");
 }
 void testList(unsigned int size)
 {
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------List Test Start---------------------------\n");
+	printf("-----------------------------------------------------------\n");
 	LinkedList* ll = malloc(sizeof(LinkedList));
 	LinkedListNew(ll, sizeof(unsigned int));
 
-	printf("Inserting Values\n");
 	for (unsigned int i = 0; i < size; i++)
 	{
 		if (i%2)
@@ -273,14 +269,26 @@ void testList(unsigned int size)
 	for (unsigned int i = 0; i < size; i += 10)
 	{
 		LinkedListReplace(ll, &i, &val, &data_compare);
+		printf("(%u->%u) ", i, val);
 	}
 
-	printf("Printing Values\n");
+	printf("\nPrinting Selected Values\n");
 	for (unsigned int i = 0; i < size; i++)
 	{
 		if (LinkedListAt(ll, LinkedListGetIndex(ll, &i, &data_compare)) != NULL)
-			printf("%u", LinkedListAt(ll, LinkedListGetIndex(ll, &i, &data_compare))->elem);
+			printf("%u ", *((unsigned int *)LinkedListAt(ll, LinkedListGetIndex(ll, &i, &data_compare))->elem));
 	}
+
+	printf("\nPrinting All values Start fron Head to Tail\n");
+	for (unsigned int i = 0; i < size; i++)
+	{
+		if (LinkedListAt(ll, i) != NULL)
+			printf("%u ", *((unsigned int *)LinkedListAt(ll, i)->elem));
+	}
+	printf("\n");
+	printf("-----------------------------------------------------------\n");
+	printf("-----------------List Test End-----------------------------\n");
+	printf("-----------------------------------------------------------\n\n");
 }
 void testQuickSort(unsigned int size)
 {
@@ -350,10 +358,10 @@ int main()
 	testBinarySearch();
 	testBubbleSort();
 	testLinearSearch();
-	testVector(1000);
-	testQueue(1000);
-	testStack(1000);
-	testList(1000);
+	testVector(100);
+	testQueue(100);
+	testStack(100);
+	testList(25);
 	testQuickSort(100); // don't works well for values greater than 100 
 	testMergeSort(100); // don't works well for values greater than 100 
     

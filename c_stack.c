@@ -37,6 +37,13 @@ void StackPush(Stack* s, void* elem)
 void StackPop(Stack* s, void* output)
 {
 	ASSERT(s->logicallen > 0); // empty Stack check
+	if (s->logicallen == (s->alloclen / 2))
+	{
+		// Shrink the size to halp
+		s->alloclen = s->alloclen / 2;
+		s->elems = realloc(s->elems, s->alloclen * s->elemsize);
+		ASSERT(s->elems != NULL);
+	}
 	s->logicallen--;
 	void* target = (char*)s->elems + s->logicallen * s->elemsize;
 	memory_copy(output, target, s->elemsize);

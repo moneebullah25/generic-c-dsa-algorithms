@@ -24,14 +24,17 @@ void QueueDispose(Queue* q, void(*freefunc)(void* elems))
 
 void QueuePush(Queue* q, void* elem)
 {
-	if (q->logicallen == q->alloclen){
+	if (q->logicallen == q->alloclen || 
+		q->rear == (void *)((char *)q->elems + q->alloclen * q->elemsize)){
 		// resize
 		q->alloclen *= 2;
+		unsigned int frontOffset = (unsigned int)((char *)q->front - (char *)q->elems);
+		unsigned int rearOffset = (unsigned int)((char *)q->rear - (char *)q->elems);
 		q->elems = realloc(q->elems, q->alloclen * q->elemsize);
 		ASSERT(q->elems != NULL);
 		// modifying pointer in case new address
-		q->front = q->elems;
-		q->rear = (char*)q->elems + (q->alloclen / 2) * q->elemsize;
+		q->front = (void *)((char *)q->elems + frontOffset);
+		q->rear = (void *)((char *)q->elems + rearOffset);
 	}
 	memory_copy(q->rear, elem, q->elemsize);
 	q->logicallen++;
@@ -41,6 +44,23 @@ void QueuePush(Queue* q, void* elem)
 void QueuePop(Queue* q, void* output)
 {
 	ASSERT(q->logicallen > 0); // empty Queue check
+	if (q->logicallen == (q->alloclen / 2))
+	{
+		// shrink size by half
+		q->alloclen = q->alloclen / 2;
+		unsigned int frontOffset = (unsigned int)((char *)q->front - (char *)q->elems);
+		unsigned int rearOffset = (unsigned int)((char *)q->rear - (char *)q->elems);
+		for (unsigned int i = 0; i < q->logicallen; i++)
+		{
+			memory_copy((char *)q->elems + i * q->elemsize,
+				(char *)q->front + i * q->elemsize, q->elemsize);
+		}
+		q->elems = realloc(q->elems, q->alloclen * q->elemsize);
+		ASSERT(q->elems != NULL);
+		// modifying pointer same address always shrinking only
+		q->front = q->elems;
+		q->rear = (void *)((char *)q->elems + q->alloclen * q->elemsize);
+	}
 	q->logicallen--;
 	memory_copy(output, q->front, q->elemsize);
 	q->front = (void*)((char*)(q->front) + q->elemsize);
