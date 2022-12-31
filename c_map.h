@@ -6,10 +6,17 @@
 #define EMPTY 0xff
 #define DELETED 0xfe
 
+
+
 typedef struct {
 	void* key;
 	void* value;
 } MapNode;
+
+typedef struct {
+	MapNode* node;
+	unsigned int keyindex;
+} MapIter;
 
 typedef struct {
 	MapNode* elems;
@@ -24,5 +31,7 @@ void* MapSet(Map* m, void* key, void* value, char* hash);
 unsigned int MapSize(Map* m);
 void* MapGet(Map* m, void* key, char* hash);
 unsigned int MapRemove(Map* m, void* key, char* hash);
+MapIter* MapIterator(Map* m);
+MapIter* MapNext(Map* m, const MapIter* mapiter);
 
 #endif
