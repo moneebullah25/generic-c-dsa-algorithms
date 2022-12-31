@@ -11,8 +11,8 @@ void MapNew(Map* m, unsigned int keysize, unsigned int valuesize)
 	m->valuesize = valuesize;
 	// set *key to all 1's with respect to keysize
 	for (unsigned int i = 0; i < m->alloclen; i++){
-		SetEmpty(m->elems[i]->key, m->keysize);
-		SetEmpty(m->elems[i]->value, m->valuesize);
+		SetEmpty(m->elems[i].key, m->keysize);
+		SetEmpty(m->elems[i].value, m->valuesize);
 	}
 }
 
@@ -44,19 +44,19 @@ unsigned int HashFunctionStr(void* key, unsigned int keysize)
 
 void SetEmpty(void* key, unsigned int keysize)
 {
-	for (unsigned int j = 0; j < m->keysize; j++)	
+	for (unsigned int j = 0; j < keysize; j++)	
 		((char*)key)[j] = EMPTY;
 }
 
 void SetDeleted(void* key, unsigned int keysize)
 {
-	for (unsigned int j = 0; j < m->keysize; j++)	
+	for (unsigned int j = 0; j < keysize; j++)	
 		((char*)key)[j] = DELETED;
 }
 
 bool IsEmpty(void* key, unsigned int keysize)
 {
-	for (unsigned int j = 0; j < m->keysize; j++)	
+	for (unsigned int j = 0; j < keysize; j++)	
 		if (((char*)key)[j] != EMPTY) return false;
 	return true;
 }
@@ -70,15 +70,15 @@ void* MapSet(Map* m, void* key, void* value, char* hash)
 		m->elems = realloc(m->alloclen * sizeof(MapNode));
 	}
 	ASSERT(key && value);
-	unsigned int hash_value
+	unsigned int hash_value;
 	if (hash == "string") hash_value = HashFunctionStr(key, m->keysize);
 	else hash_value = HashFunctionInt(key, m->keysize);
 	hash_value = hash_value % m->alloclen;
-	while !(IsEmpty(m->elems[hash_value]->key, m->keysize))
+	while (IsEmpty(m->elems[hash_value].key, m->keysize))
 		hash_value++; // Linear Probing
 	
-	memory_copy(m->elems[hash_value]->key, key, m->keysize); // Insertion
-	memory_copy(m->elems[hash_value]->value, value, m->valuesize);
+	memory_copy(m->elems[hash_value].key, key, m->keysize); // Insertion
+	memory_copy(m->elems[hash_value].value, value, m->valuesize);
 	m->logiclen++;
 }
 
@@ -90,32 +90,34 @@ unsigned int MapSize(Map* m)
 void* MapGet(Map* m, void* key, char* hash)
 {
 	ASSERT(key);
+	unsigned int hash_value;
 	if (hash == "string") hash_value = HashFunctionStr(key, m->keysize);
 	else hash_value = HashFunctionInt(key, m->keysize);
 	hash_value = hash_value % m->alloclen;
-	while (M_ABS(data_compare(m->elems[hash_value]->key, key, m->keysize)))
+	while (M_ABS(data_compare(m->elems[hash_value].key, key, m->keysize)))
 	{
 		hash_value++;
 		if (hash_value == m->logiclen)
 			return NULL;
 	}
-	return m->elems[hash_value]->value;
+	return m->elems[hash_value].value;
 }
 
-unsigned int MapRemove(Map* m, void* key)
+unsigned int MapRemove(Map* m, void* key, char* hash)
 {
 	ASSERT(key);
+	unsigned int hash_value;
 	if (hash == "string") hash_value = HashFunctionStr(key, m->keysize);
 	else hash_value = HashFunctionInt(key, m->keysize);
 	hash_value = hash_value % m->alloclen;
-	while (M_ABS(data_compare(m->elems[hash_value]->key, key, m->keysize)))
+	while (M_ABS(data_compare(m->elems[hash_value].key, key, m->keysize)))
 	{
 		hash_value++;
 		if (hash_value == m->logiclen)
 			return 0; // Value Doesn't Exist
 	}
-	SetEmpty(m->elems[hash_value]->key, m->keysize);
-	SetEmpty(m->elems[hash_value]->value, m->valuesize);
+	SetEmpty(m->elems[hash_value].key, m->keysize);
+	SetEmpty(m->elems[hash_value].value, m->valuesize);
 	m->logiclen--;
 	return 1;
 }
@@ -123,11 +125,11 @@ unsigned int MapRemove(Map* m, void* key)
 
 int main(void)
 {
-	std::map<std::string, int> map;
-	// Insert some values into the map
-	map["one"] = 1;
-	map["two"] = 2;
-	map["three"] = 3;
+	//std::map<std::string, int> map;
+	//// Insert some values into the map
+	//map["one"] = 1;
+	//map["two"] = 2;
+	//map["three"] = 3;
 
 	Map* m = malloc(sizeof(Map));
 	MapNew(m, sizeof(char*), sizeof(int));
