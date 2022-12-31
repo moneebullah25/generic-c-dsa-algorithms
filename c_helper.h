@@ -15,6 +15,7 @@
 
 #define M_MAX(X, Y) ((X) >= (Y) ? (X) : (Y))
 #define M_MIN(X, Y) ((X) <= (Y) ? (X) : (Y))
+#define M_ABS(X) ((X < 0) ? (-X) : (X))
 
 typedef enum { false = 0, true = 1 } bool;
 

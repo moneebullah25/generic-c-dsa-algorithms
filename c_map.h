@@ -21,8 +21,9 @@ typedef struct {
 } Map;
 
 void MapNew(Map* m, unsigned int keysize, unsigned int valuesize);
-unsigned int HashFunctionInt(void* key, unsigned int keysize);
-unsigned int HashFunctionStr(void* key, unsigned int keysize);
-void* HashAt(void* key, unsigned 
+void* MapSet(Map* m, void* key, void* value, char* hash);
+unsigned int MapSize(Map* m);
+void* MapGet(Map* m, void* key, char* hash);
+unsigned int MapRemove(Map* m, void* key);
 
 #endif
