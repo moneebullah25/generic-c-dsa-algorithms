@@ -23,7 +23,7 @@ typedef struct {
 
 
 typedef struct {
-	MapNode* node;
+	MapNode node;
 	size_t keyindex;
 } MapIter;
 
@@ -74,7 +74,7 @@ typedef struct {
 
 
 void MapNew_(MapBase* m, size_t keysize, size_t valuesize);
-void* MapSet_(MapBase* m, void* key, void* value, char* hash);
+void MapSet_(MapBase* m, void* key, void* value, char* hash);
 size_t MapSize_(MapBase* m);
 void* MapGet_(MapBase* m, void* key, char* hash);
 size_t MapRemove_(MapBase* m, void* key, char* hash);
