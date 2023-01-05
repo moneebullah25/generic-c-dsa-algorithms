@@ -59,6 +59,7 @@ void MapNew_(MapBase* m, size_t keysize, size_t valuesize)
 
 void MapSet_(MapBase* m, void* key, void* value, char* hash)
 {
+	ASSERT(key && value);
 	if (m->logiclen == m->alloclen)
 	{
 		m->alloclen *= 2;
@@ -71,7 +72,6 @@ void MapSet_(MapBase* m, void* key, void* value, char* hash)
 			iter = MapNext_(m, iter);
 		}
 	}
-	ASSERT(key && value);
 	size_t hash_value;
 	if (hash == "string") hash_value = HashFunctionStr(key, m->keysize);
 	else hash_value = HashFunctionInt(key, m->keysize);
@@ -102,7 +102,7 @@ void* MapGet_(MapBase* m, void* key, char* hash)
 		if (hash_value == m->logiclen)
 			return NULL;
 	}
-	return m->elems[hash_value].value;
+	return &m->elems[hash_value].value;
 }
 
 size_t MapRemove_(MapBase* m, void* key, char* hash)
@@ -128,16 +128,16 @@ MapIter* MapIterator_(MapBase* m)
 {
 	ASSERT(m);
 	if (m->logiclen == 0) return NULL;
-	MapIter* n = malloc(sizeof(MapIter));
+	void* n = malloc(sizeof(MapIter));
 	// Find very first element and return that
 	for (size_t i = 0; i < m->logiclen; i++)
 	{
 		if (!IsEmpty(&m->elems[i].key, m->keysize))
 		{
-			n->keyindex = i;
-			n->node.key = m->elems[i].key;
-			n->node.value = m->elems[i].value;
-			return n;
+			((MapIter*)n)->keyindex = i;
+			((MapIter*)n)->node.key = m->elems[i].key;
+			((MapIter*)n)->node.value = m->elems[i].value;
+			return ((MapIter*)n);
 		}
 	}
 	return NULL;
@@ -147,14 +147,14 @@ MapIter* MapNext_(MapBase* m, const MapIter* mapiter)
 {
 	ASSERT(m && mapiter);
 	if (m->logiclen == 0) return NULL;
-	MapIter* n = malloc(sizeof(MapIter));
+	void* n = malloc(sizeof(MapIter));
 	for (size_t i = mapiter->keyindex + 1; i < m->logiclen; i++)
 	{
 		if (!IsEmpty(&m->elems[i].key, m->keysize))
 		{
-			n->keyindex = i;
-			n->node.key = m->elems[i].key;
-			n->node.value = m->elems[i].value;
+			((MapIter*)n)->keyindex = i;
+			((MapIter*)n)->node.key = m->elems[i].key;
+			((MapIter*)n)->node.value = m->elems[i].value;
 			return ((MapIter*)n);
 		}
 	}
