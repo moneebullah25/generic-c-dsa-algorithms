@@ -36,24 +36,24 @@ typedef struct {
 	MapNew_(&(m)->base, keysize, valuesize)
 
 
-#define MapSet(m, key, value, hash) \
+#define MapSet(m, key, value, pstruct) \
 	((m)->key_ = (key), \
 	(m)->value_ = (value), \
-	MapSet_(&(m)->base, &(m)->key_, &(m)->value_, hash))
+	MapSet_(&(m)->base, &(m)->key_, &(m)->value_, pstruct))
 
 
 #define MapSize(m) \
 	MapSize_(&(m)->base)
 
 
-#define MapGet(m, key, hash) \
+#define MapGet(m, key, pstruct) \
 	((m)->key_ = (key), \
-	(m)->ref = MapGet_(&(m)->base, &(m)->key_, hash))
+	(m)->ref = MapGet_(&(m)->base, &(m)->key_, pstruct))
 
 
-#define MapRemove(m, key, hash) \
+#define MapRemove(m, key, pstruct) \
 	((m)->key_ = (key), \
-	MapRemove_(&(m)->base, &(m)->key_, hash))
+	MapRemove_(&(m)->base, &(m)->key_, pstruct))
 
 
 #define MapIterator(m) \
@@ -74,10 +74,10 @@ typedef struct {
 
 
 void MapNew_(MapBase* m, size_t keysize, size_t valuesize);
-void MapSet_(MapBase* m, void* key, void* value, char* hash);
+void MapSet_(MapBase* m, void* key, void* value, char* pstruct);
 size_t MapSize_(MapBase* m);
-void* MapGet_(MapBase* m, void* key, char* hash);
-size_t MapRemove_(MapBase* m, void* key, char* hash);
+void* MapGet_(MapBase* m, void* key, char* pstruct);
+size_t MapRemove_(MapBase* m, void* key, char* pstruct);
 MapIter* MapIterator_(MapBase* m);
 MapIter* MapNext_(MapBase* m, const MapIter* mapiter);
 void MapClear_(MapBase* m);

@@ -19,8 +19,11 @@ static size_t HashFunctionStr(void* key, size_t keysize)
 	size_t hash = 5381;
 	int c;
 
-	while (c = *(*(char**)key)++)
-		hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+	void* str = malloc(sizeof(keysize));
+	memory_copy(str, key, keysize);
+
+	while (c = *(*(char**)str)++)
+		hash = ((hash << 5) + hash) + c; /* pstruct * 33 + c */
 
 	return hash;
 }
@@ -57,23 +60,28 @@ void MapNew_(MapBase* m, size_t keysize, size_t valuesize)
 		SetEmpty(&m->elems[i], m->keysize + m->valuesize);
 }
 
-void MapSet_(MapBase* m, void* key, void* value, char* hash)
+void MapSet_(MapBase* m, void* key, void* value, char* pstruct)
 {
 	ASSERT(key && value);
 	if (m->logiclen == m->alloclen)
 	{
+		MapNode* oldelemscpy = malloc(m->alloclen * sizeof(MapNode));
+		ASSERT(oldelemscpy);
+		memory_copy(oldelemscpy, m->elems, m->alloclen * sizeof(MapNode));
 		m->alloclen *= 2;
-		m->elems = realloc(m->elems, m->alloclen * sizeof(MapNode));
+		free(m->elems);
+		m->elems = malloc(m->alloclen * sizeof(MapNode));
 		ASSERT(m->elems);
-		MapIter* iter = MapIterator_(m);
-		while (iter != NULL){
-			MapSet_(m, &iter->node.key, &iter->node.value, hash);
-			SetEmpty(&m->elems[iter->keyindex], m->keysize + m->valuesize);
-			iter = MapNext_(m, iter);
-		}
+		// Set empty newly allocated space
+		SetEmpty(m->elems, m->alloclen * sizeof(MapNode));
+		m->logiclen = 0;
+		// Paste old elements to new space
+		for (size_t i = 0; i < m->alloclen / 2; i++)
+			MapSet_(m, &oldelemscpy[i].key, &oldelemscpy[i].value, pstruct);
+		free(oldelemscpy);
 	}
 	size_t hash_value;
-	if (hash == "string") hash_value = HashFunctionStr(key, m->keysize);
+	if (pstruct == "dh") hash_value = HashFunctionStr(key, m->keysize);
 	else hash_value = HashFunctionInt(key, m->keysize);
 	hash_value = hash_value % m->alloclen;
 	while (!IsEmpty(&m->elems[hash_value].key, m->keysize))
@@ -89,27 +97,32 @@ size_t MapSize_(MapBase* m)
 	return m->logiclen;
 }
 
-void* MapGet_(MapBase* m, void* key, char* hash)
+void* MapGet_(MapBase* m, void* key, char* pstruct)
 {
 	ASSERT(key);
 	size_t hash_value;
-	if (hash == "string") hash_value = HashFunctionStr(key, m->keysize);
+	if (pstruct == "dh") hash_value = HashFunctionStr(key, m->keysize);
 	else hash_value = HashFunctionInt(key, m->keysize);
 	hash_value = hash_value % m->alloclen;
-	while (M_ABS(data_compare(&m->elems[hash_value].key, key, m->keysize)))
-	{
-		hash_value++;
-		if (hash_value == m->logiclen)
-			return NULL;
+	if (pstruct != "dh") {
+		while (M_ABS(data_compare(&m->elems[hash_value].key, key, m->keysize)))
+		{
+			hash_value++;
+			if (hash_value == m->logiclen)
+				return NULL;
+		}
+	}
+	else {
+
 	}
 	return &m->elems[hash_value].value;
 }
 
-size_t MapRemove_(MapBase* m, void* key, char* hash)
+size_t MapRemove_(MapBase* m, void* key, char* pstruct)
 {
 	ASSERT(key);
 	size_t hash_value;
-	if (hash == "string") hash_value = HashFunctionStr(key, m->keysize);
+	if (pstruct == "dh") hash_value = HashFunctionStr(key, m->keysize);
 	else hash_value = HashFunctionInt(key, m->keysize);
 	hash_value = hash_value % m->alloclen;
 	while (M_ABS(data_compare(&m->elems[hash_value].key, key, m->keysize)))
@@ -130,7 +143,7 @@ MapIter* MapIterator_(MapBase* m)
 	if (m->logiclen == 0) return NULL;
 	void* n = malloc(sizeof(MapIter));
 	// Find very first element and return that
-	for (size_t i = 0; i < m->logiclen; i++)
+	for (size_t i = 0; i < m->alloclen; i++)
 	{
 		if (!IsEmpty(&m->elems[i].key, m->keysize))
 		{
@@ -148,7 +161,7 @@ MapIter* MapNext_(MapBase* m, const MapIter* mapiter)
 	ASSERT(m && mapiter);
 	if (m->logiclen == 0) return NULL;
 	void* n = malloc(sizeof(MapIter));
-	for (size_t i = mapiter->keyindex + 1; i < m->logiclen; i++)
+	for (size_t i = mapiter->keyindex + 1; i < m->alloclen; i++)
 	{
 		if (!IsEmpty(&m->elems[i].key, m->keysize))
 		{
