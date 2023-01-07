@@ -3,9 +3,12 @@
 
 #include "c_helper.h"
 
+typedef unsigned char uint8_t;
+
 #define EMPTY 0xff
 #define DELETED 0xfe
-
+#define SHOPPTR "sh"
+#define DHOPPTR "dh"
 
 typedef struct {
 	void* key;
@@ -15,10 +18,8 @@ typedef struct {
 
 typedef struct {
 	MapNode* elems;
-	size_t logiclen;
-	size_t alloclen;
-	size_t keysize;
-	size_t valuesize;
+	size_t logiclen, alloclen, keysize, valuesize;
+	char* hash;
 } MapBase;
 
 
@@ -28,32 +29,32 @@ typedef struct {
 } MapIter;
 
 
-#define MapT(T) \
-	struct { MapBase base; T* ref; T key_; T value_; }
+#define MapT(T,  U) \
+	struct { MapBase base; T* ref; T key_; U value_; }
 
 
-#define MapNew(m, keysize, valuesize) \
-	MapNew_(&(m)->base, keysize, valuesize)
+#define MapNew(m, keysize, valuesize, pstruct) \
+	MapNew_(&(m)->base, keysize, valuesize, pstruct)
 
 
-#define MapSet(m, key, value, pstruct) \
+#define MapSet(m, key, value) \
 	((m)->key_ = (key), \
 	(m)->value_ = (value), \
-	MapSet_(&(m)->base, &(m)->key_, &(m)->value_, pstruct))
+	MapSet_(&(m)->base, &(m)->key_, &(m)->value_))
 
 
 #define MapSize(m) \
 	MapSize_(&(m)->base)
 
 
-#define MapGet(m, key, pstruct) \
+#define MapGet(m, key) \
 	((m)->key_ = (key), \
-	(m)->ref = MapGet_(&(m)->base, &(m)->key_, pstruct))
+	(m)->ref = MapGet_(&(m)->base, &(m)->key_))
 
 
-#define MapRemove(m, key, pstruct) \
+#define MapRemove(m, key) \
 	((m)->key_ = (key), \
-	MapRemove_(&(m)->base, &(m)->key_, pstruct))
+	MapRemove_(&(m)->base, &(m)->key_))
 
 
 #define MapIterator(m) \
@@ -72,18 +73,41 @@ typedef struct {
 	MapDelete_(&(m)->base)
 
 
-
-void MapNew_(MapBase* m, size_t keysize, size_t valuesize);
-void MapSet_(MapBase* m, void* key, void* value, char* pstruct);
+void MapNew_(MapBase* m, size_t keysize, size_t valuesize, char* pstruct);
+void MapSet_(MapBase* m, void* key, void* value);
 size_t MapSize_(MapBase* m);
-void* MapGet_(MapBase* m, void* key, char* pstruct);
-size_t MapRemove_(MapBase* m, void* key, char* pstruct);
+void* MapGet_(MapBase* m, void* key);
+size_t MapRemove_(MapBase* m, void* key);
 MapIter* MapIterator_(MapBase* m);
 MapIter* MapNext_(MapBase* m, const MapIter* mapiter);
 void MapClear_(MapBase* m);
 void MapDelete_(MapBase* m);
 
 
-typedef MapT(void*) Map;
+typedef MapT(void*, void*) Map;
+typedef MapT(double, double) MapDouble;
+typedef MapT(float, float) MapFloat;
+typedef MapT(int, int) MapInt;
+typedef MapT(char*, char*) MapString;
+
+typedef MapT(char*, double) MapStringDouble;
+typedef MapT(char*, float) MapStringFloat;
+typedef MapT(char*, int) MapStringInt;
+typedef MapT(char*, bool) MapStringBool;
+
+typedef MapT(int, double) MapIntDouble;
+typedef MapT(int, float) MapIntFloat;
+typedef MapT(int, char*) MapIntString;
+typedef MapT(int, bool) MapIntBool;
+
+typedef MapT(float, double) MapFloatDouble;
+typedef MapT(float, char*) MapFloatString;
+typedef MapT(float, int) MapFloatInt;
+typedef MapT(float, bool) MapFloatBool;
+
+typedef MapT(double, char*) MapDoubleString;
+typedef MapT(double, int) MapDoubleInt;
+typedef MapT(double, float) MapDoubleFloat;
+typedef MapT(double, bool) MapDoubleBool;
 
 #endif
