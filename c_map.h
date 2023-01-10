@@ -73,6 +73,12 @@ typedef struct {
 	MapDelete_(&(m)->base)
 
 
+size_t HashFunctionStr(void* key, size_t keysize);
+size_t HashFunctionInt(void* key, size_t keysize);
+size_t LinearProbing(size_t hash);
+size_t QuadraticProbing(size_t hash);
+size_t DoubleHashing(size_t hash);
+
 void MapNew_(MapBase* m, size_t keysize, size_t valuesize, char* pstruct);
 void MapSet_(MapBase* m, void* key, void* value);
 size_t MapSize_(MapBase* m);
