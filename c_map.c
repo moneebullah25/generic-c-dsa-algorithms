@@ -31,16 +31,25 @@ size_t HashFunctionStr(void* key, size_t keysize)
 	return hash;
 }
 
+size_t LinearProbing(size_t hash, size_t i);
+{
+	return hash+1;
+}
+
+size_t QuadraticProbing(size_t hash, size_t i);
+{
+	return hash + (i * i)
+}
+
+size_t DoubleHashing(size_t hash, size_t i)
+{
+	return hash + (i * hash);
+}
+
 static void SetEmpty(void* key, size_t keysize)
 {
 	for (size_t j = 0; j < keysize; j++)
 		((char*)key)[j] = EMPTY;
-}
-
-static void SetDeleted(void* key, size_t keysize)
-{
-	for (size_t j = 0; j < keysize; j++)
-		((char*)key)[j] = DELETED;
 }
 
 static bool IsEmpty(void* key, size_t keysize)
@@ -70,9 +79,24 @@ void MapNew_(MapBase* m, size_t keysize, size_t valuesize, char* pstruct)
 void MapSet_(MapBase* m, void* key, void* value)
 {
 	ASSERT(key && value);
-	if (m->logiclen == m->alloclen)
+	if (m->logiclen == m->alloclen) MapResize_(m);
+	
+	size_t hash_value = m->HashFunc(key, m->keysize) % m->alloclen;
+	size_t i = 1;
+	while ((IsEmpty(m->elems[hash_value].key, m->keysize)
+		&& m->DataCmp(m->elems[hash_value].key, key)))
 	{
-		/* Done Shallow copy and only stores the address of key/value pairs only */
+		hash_value = CollRes(hash_value, i) % m->alloclen;
+	}
+	
+	memory_copy(m->elems[hash_value].key, key, m->keysize); // Insertion
+	memory_copy(m->elems[hash_value].value, value, m->valuesize);
+	m->logiclen++;
+}
+
+void MapResize_(MapBase* m)
+{
+	/* Done Shallow copy and only stores the address of key/value pairs only */
 		MapNode* oldelemscpy = malloc(m->alloclen * sizeof(MapNode));
 		ASSERT(oldelemscpy);
 		memory_copy(oldelemscpy, m->elems, m->alloclen * sizeof(MapNode));
@@ -111,21 +135,6 @@ void MapSet_(MapBase* m, void* key, void* value)
 		
 		MapSet_(m, key, value);
 		return;
-	}
-	size_t hash_value;
-	if (m->hash == "dh") hash_value = HashFunctionStr(key, m->keysize);
-	else hash_value = HashFunctionInt(key, m->keysize);
-	hash_value = hash_value % m->alloclen;
-	while (!IsEmpty(m->elems[hash_value].key, m->keysize))
-	{
-		hash_value++;
-		if (hash_value == m->alloclen)
-			hash_value = 0;
-	}
-	
-	memory_copy(m->elems[hash_value].key, key, m->keysize); // Insertion
-	memory_copy(m->elems[hash_value].value, value, m->valuesize);
-	m->logiclen++;
 }
 
 size_t MapSize_(MapBase* m)

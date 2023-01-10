@@ -20,6 +20,10 @@ typedef struct {
 	MapNode* elems;
 	size_t logiclen, alloclen, keysize, valuesize;
 	char* hash;
+	
+	size_t(*HashFunc)(void* key, size_t keysize);
+	size_t(*CollRes)(size_t hash, size_t i);
+	int(*DataCmp)(void *key1, void *key2);
 } MapBase;
 
 
@@ -72,15 +76,16 @@ typedef struct {
 #define MapDelete(m) \
 	MapDelete_(&(m)->base)
 
-
+// Helpers Predefined with library
 size_t HashFunctionStr(void* key, size_t keysize);
 size_t HashFunctionInt(void* key, size_t keysize);
-size_t LinearProbing(size_t hash);
-size_t QuadraticProbing(size_t hash);
-size_t DoubleHashing(size_t hash);
+size_t LinearProbing(size_t hash, size_t i);
+size_t QuadraticProbing(size_t hash, size_t i);
+size_t DoubleHashing(size_t hash, size_t i);
 
 void MapNew_(MapBase* m, size_t keysize, size_t valuesize, char* pstruct);
 void MapSet_(MapBase* m, void* key, void* value);
+void MapResize_(MapBase* m);
 size_t MapSize_(MapBase* m);
 void* MapGet_(MapBase* m, void* key);
 size_t MapRemove_(MapBase* m, void* key);

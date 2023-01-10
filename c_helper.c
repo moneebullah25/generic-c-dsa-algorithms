@@ -5,13 +5,13 @@
 
 void string_free(void* elems)
 {
-    ASSERT(elems != 0);
+    ASSERT(elems);
 	free(*(char**)&elems);
 }
 
 void data_free(void* elems)
 {
-    ASSERT(elems != 0);
+    ASSERT(elems);
 	free(elems);
 }
 
@@ -37,20 +37,17 @@ int data_compare(void* vp1, void* vp2, unsigned int n)
 
 int string_compare(void* vp1, void* vp2, unsigned int n)
 {
-    ASSERT(n > 0);
-	for (unsigned int i = 0; i < n; i++)
-	{
-		if ((*(char**)vp1)[i] == '\0' && (*(char**)vp2)[i] == '\0')
-			break;
-		if ((*(char**)vp1)[i] != (*(char**)vp2)[i])
-		{
-			if ((*(char**)vp1)[i] != '\0' && (*(char**)vp2)[i] == '\0')
-				return 1;
-			else if ((*(char**)vp1)[i] == '\0' && (*(char**)vp2)[i] != '\0')
-				return -1;
-			return (int)((*(char**)vp1)[i])-(int)((*(char**)vp2)[i]);
-		}
-	}
+	if (!vp1)
+    {
+        if (!vp2) return 0;
+        else return -1;
+    }
+    else if (!vp2)
+        return 1;
+
+    while (*(char*)vp1 && *(char*)vp1 == *(char*)vp2) { ++a; ++b; }
+    return (int)(unsigned char)(*(char*)vp1) - (int)(unsigned char)(*(char*)vp2);
+	
 	return 0;
 }
 
