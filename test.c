@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "c_vector.h"
-#include "c_queue.h"
-#include "c_stack.h"
-#include "c_sort.h"
-#include "c_list.h"
-#include "c_map.h"
+#include "./includes/c_vector.h"
+#include "./includes/c_queue.h"
+#include "./includes/c_stack.h"
+#include "./includes/c_sort.h"
+#include "./includes/c_list.h"
+#include "./includes/c_map.h"
 
 void testLinearSearch()
 {
