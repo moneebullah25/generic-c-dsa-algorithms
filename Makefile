@@ -14,7 +14,7 @@ SRCS := $(wildcard $(SRC_DIR)/*.c)
 OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
 # Name of the executable
-EXE := test
+EXE := test.out
 
 # Compile all the object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
