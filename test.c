@@ -356,6 +356,9 @@ void testMergeSort(unsigned int size)
 
 void testMap()
 {
+	printf("-----------------------------------------------------------\n");
+	printf("---------------------Maps Start----------------------------\n");
+	printf("-----------------------------------------------------------\n");
 	{
 		MapStringInt* m = malloc(sizeof(Map));
 		MapNew(m, HashFunctionStr, LinearProbing, StringCompare);
@@ -464,6 +467,10 @@ void testMap()
 		}
 		MapDelete(m);
 	}
+	
+	printf("-----------------------------------------------------------\n");
+	printf("---------------------Maps End------------------------------\n");
+	printf("-----------------------------------------------------------\n");
 }
 
 int main()
