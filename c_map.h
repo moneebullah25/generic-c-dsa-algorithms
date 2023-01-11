@@ -3,10 +3,9 @@
 
 #include "c_helper.h"
 
-typedef unsigned char uint8_t;
-
 #define EMPTY 0xff
 #define DELETED 0xfe
+#define TRAVERSE_COUNT 5
 #define SHOPPTR "sh"
 #define DHOPPTR "dh"
 
@@ -18,18 +17,18 @@ typedef struct {
 
 typedef struct {
 	MapNode* elems;
-	size_t logiclen, alloclen, keysize, valuesize;
+	unsigned int logiclen, alloclen, keysize, valuesize;
 	char* hash;
 	
-	size_t(*HashFunc)(void* key, size_t keysize);
-	size_t(*CollRes)(size_t hash, size_t i);
-	int(*DataCmp)(void *key1, void *key2);
+	unsigned int(*HashFunc)(void* key, unsigned int keysize);
+	unsigned int(*CollRes)(unsigned int hash, unsigned int i);
+	int(*DataCmp)(void *key1, void *key2, unsigned int keysize);
 } MapBase;
 
 
 typedef struct {
 	MapNode node;
-	size_t keyindex;
+	unsigned int keyindex;
 } MapIter;
 
 
@@ -37,8 +36,8 @@ typedef struct {
 	struct { MapBase base; T* ref; T key_; U value_; }
 
 
-#define MapNew(m, keysize, valuesize, pstruct) \
-	MapNew_(&(m)->base, keysize, valuesize, pstruct)
+#define MapNew(m, HashFunc, CollRes, DataCmp) \
+	MapNew_(&(m)->base, sizeof((m)->key_), sizeof((m)->value_), HashFunc, CollRes, DataCmp)
 
 
 #define MapSet(m, key, value) \
@@ -77,18 +76,19 @@ typedef struct {
 	MapDelete_(&(m)->base)
 
 // Helpers Predefined with library
-size_t HashFunctionStr(void* key, size_t keysize);
-size_t HashFunctionInt(void* key, size_t keysize);
-size_t LinearProbing(size_t hash, size_t i);
-size_t QuadraticProbing(size_t hash, size_t i);
-size_t DoubleHashing(size_t hash, size_t i);
+unsigned int HashFunctionStr(void* key, unsigned int keysize);
+unsigned int HashFunctionInt(void* key, unsigned int keysize);
+unsigned int LinearProbing(unsigned int hash, unsigned int i);
+unsigned int QuadraticProbing(unsigned int hash, unsigned int i);
+unsigned int DoubleHashing(unsigned int hash, unsigned int i);
 
-void MapNew_(MapBase* m, size_t keysize, size_t valuesize, char* pstruct);
+void MapNew_(MapBase* m, unsigned int keysize, unsigned int valuesize, unsigned int(*HashFunc)(void* key, unsigned int keysize),
+	unsigned int(*CollRes)(unsigned int hash, unsigned int i), int(*DataCmp)(void *key1, void *key2, unsigned int keysize));
 void MapSet_(MapBase* m, void* key, void* value);
 void MapResize_(MapBase* m);
-size_t MapSize_(MapBase* m);
+unsigned int MapSize_(MapBase* m);
 void* MapGet_(MapBase* m, void* key);
-size_t MapRemove_(MapBase* m, void* key);
+unsigned int MapRemove_(MapBase* m, void* key);
 MapIter* MapIterator_(MapBase* m);
 MapIter* MapNext_(MapBase* m, const MapIter* mapiter);
 void MapClear_(MapBase* m);

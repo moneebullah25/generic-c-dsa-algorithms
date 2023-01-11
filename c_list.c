@@ -8,7 +8,7 @@ void ListNodeNew(ListNode* ln, unsigned int elemsize, void* data)
 	ln->elem = malloc(ln->elemsize);
 	ln->next = NULL;
 	ASSERT(ln->elem != NULL);
-	memory_copy(ln->elem, data, elemsize);
+	MemoryCopy(ln->elem, data, elemsize);
 }
 
 void LinkedListNew(LinkedList* ll, unsigned int elemsize)
@@ -67,7 +67,7 @@ void LinkedListReplace(LinkedList* ll, void* data, void* value, int(*MemCmp)(voi
 	{
 		if (MemCmp(temp->elem, data, temp->elemsize) == 0)
 		{
-			memory_copy(temp->elem, value, temp->elemsize);
+			MemoryCopy(temp->elem, value, temp->elemsize);
 			break;
 		}
 		temp = temp->next;
@@ -82,7 +82,7 @@ void LinkedListReplaceAll(LinkedList* ll, void* data, void* value, int(*MemCmp)(
 	{
 		if (MemCmp(temp->elem, data, temp->elemsize) == 0)
 		{
-			memory_copy(temp->elem, value, temp->elemsize);
+			MemoryCopy(temp->elem, value, temp->elemsize);
 		}
 		temp = temp->next;
 	}

@@ -1,11 +1,11 @@
 #include "c_map.h"
 #include <string.h>
 
-size_t HashFunctionInt(void* key, size_t keysize)
+unsigned int HashFunctionInt(void* key, unsigned int keysize)
 {
 	ASSERT(keysize > 0);
-	size_t x = 0;
-	for (size_t i = 0; i < keysize; i++)
+	unsigned int x = 0;
+	for (unsigned int i = 0; i < keysize; i++)
 		x += (int)(((char *)(key))[i]);
 
 	x = ((x >> 16) ^ x) * 0x45d9f3b;
@@ -13,15 +13,14 @@ size_t HashFunctionInt(void* key, size_t keysize)
 	x = (x >> 16) ^ x;
 	return x;
 }
-
-size_t HashFunctionStr(void* key, size_t keysize)
+unsigned int HashFunctionStr(void* key, unsigned int keysize)
 {
 	ASSERT(keysize > 0);
-	size_t hash = 5381;
+	unsigned int hash = 5381;
 	int c;
 
 	void* str = malloc(sizeof(keysize));
-	memory_copy(str, key, keysize);
+	MemoryCopy(str, key, keysize);
 
 	while (c = *(*(char**)str)++)
 		hash = ((hash << 5) + hash) + c; /* pstruct * 33 + c */
@@ -30,36 +29,39 @@ size_t HashFunctionStr(void* key, size_t keysize)
 
 	return hash;
 }
-
-size_t LinearProbing(size_t hash, size_t i);
+unsigned int LinearProbing(unsigned int hash, unsigned int i)
 {
 	return hash+1;
 }
-
-size_t QuadraticProbing(size_t hash, size_t i);
+unsigned int QuadraticProbing(unsigned int hash, unsigned int i)
 {
-	return hash + (i * i)
+	return hash + (i * i);
 }
-
-size_t DoubleHashing(size_t hash, size_t i)
+unsigned int DoubleHashing(unsigned int hash, unsigned int i)
 {
 	return hash + (i * hash);
 }
-
-static void SetEmpty(void* key, size_t keysize)
+static void SetEmpty(void* key, unsigned int keysize)
 {
-	for (size_t j = 0; j < keysize; j++)
+	for (unsigned int j = 0; j < keysize; j++)
 		((char*)key)[j] = EMPTY;
 }
-
-static bool IsEmpty(void* key, size_t keysize)
+static bool IsEmpty(void* key, unsigned int keysize)
 {
-	for (size_t j = 0; j < keysize; j++)
+	for (unsigned int j = 0; j < keysize; j++)
 		if (((char*)key)[j] != (char)EMPTY) return false;
 	return true;
 }
+static void InitMapNpde(MapNode* mn, unsigned int keyize, unsigned int valuesize)
+{
+	mn->key = malloc(keyize);
+	mn->value = malloc(valuesize);
+	SetEmpty(mn->key, keyize);
+	SetEmpty(mn->value, valuesize);
+}
 
-void MapNew_(MapBase* m, size_t keysize, size_t valuesize, char* pstruct)
+void MapNew_(MapBase* m, unsigned int keysize, unsigned int valuesize, unsigned int(*HashFunc)(void* key, unsigned int keysize),
+	unsigned int(*CollRes)(unsigned int hash, unsigned int i), int(*DataCmp)(void *key1, void *key2, unsigned int keysize))
 {
 	ASSERT(keysize > 0 && valuesize > 0);
 	m->alloclen = 4; m->logiclen = 0;
@@ -67,13 +69,11 @@ void MapNew_(MapBase* m, size_t keysize, size_t valuesize, char* pstruct)
 	ASSERT(m->elems != 0);
 	m->keysize = keysize;
 	m->valuesize = valuesize;
-	m->hash = pstruct;
-	for (size_t i = 0; i < m->alloclen; i++){
-		m->elems[i].key = malloc(m->keysize);
-		m->elems[i].value = malloc(m->valuesize);
-		SetEmpty(m->elems[i].key, m->keysize);
-		SetEmpty(m->elems[i].value, m->valuesize);
-	}
+	m->HashFunc = HashFunc;
+	m->CollRes = CollRes;
+	m->DataCmp = DataCmp;
+	for (unsigned int i = 0; i < m->alloclen; i++)
+		InitMapNpde(&m->elems[i], m->keysize, m->valuesize);
 }
 
 void MapSet_(MapBase* m, void* key, void* value)
@@ -81,16 +81,17 @@ void MapSet_(MapBase* m, void* key, void* value)
 	ASSERT(key && value);
 	if (m->logiclen == m->alloclen) MapResize_(m);
 	
-	size_t hash_value = m->HashFunc(key, m->keysize) % m->alloclen;
-	size_t i = 1;
-	while ((IsEmpty(m->elems[hash_value].key, m->keysize)
-		&& m->DataCmp(m->elems[hash_value].key, key)))
+	unsigned int hash_value;
+	hash_value = m->HashFunc(key, m->keysize) % m->alloclen;
+	unsigned int i = 1;
+	while (!(IsEmpty(m->elems[hash_value].key, m->keysize)
+		&& M_ABS(m->DataCmp(m->elems[hash_value].key, key, m->keysize))))
 	{
-		hash_value = CollRes(hash_value, i) % m->alloclen;
+		hash_value = m->CollRes(hash_value, i) % m->alloclen;
 	}
 	
-	memory_copy(m->elems[hash_value].key, key, m->keysize); // Insertion
-	memory_copy(m->elems[hash_value].value, value, m->valuesize);
+	MemoryCopy(m->elems[hash_value].key, key, m->keysize); // Insertion
+	MemoryCopy(m->elems[hash_value].value, value, m->valuesize);
 	m->logiclen++;
 }
 
@@ -99,45 +100,31 @@ void MapResize_(MapBase* m)
 	/* Done Shallow copy and only stores the address of key/value pairs only */
 		MapNode* oldelemscpy = malloc(m->alloclen * sizeof(MapNode));
 		ASSERT(oldelemscpy);
-		memory_copy(oldelemscpy, m->elems, m->alloclen * sizeof(MapNode));
+		MemoryCopy(oldelemscpy, m->elems, m->alloclen * sizeof(MapNode));
 		
 		// Just free the shallow copy
 		free(m->elems);
 		m->alloclen *= 2;
 		m->elems = malloc(m->alloclen * sizeof(MapNode));
 		ASSERT(m->elems);
-		for (size_t i = 0; i < m->alloclen; i++) {
-			m->elems[i].key = malloc(m->keysize);
-			m->elems[i].value = malloc(m->valuesize);
-			SetEmpty(m->elems[i].key, m->keysize);
-			SetEmpty(m->elems[i].value, m->valuesize);
-		}
+		for (unsigned int i = 0; i < m->alloclen; i++)
+			InitMapNpde(&m->elems[i], m->keysize, m->valuesize);
 
 		// Paste old elements to new space
-		for (size_t i = 0; i < m->alloclen / 2; i++)
+		for (unsigned int i = 0; i < m->alloclen / 2; i++)
 		{
-			size_t hash_value;
-			if (m->hash == "dh") hash_value = HashFunctionStr(key, m->keysize);
-			else hash_value = HashFunctionInt(key, m->keysize);
-			hash_value = hash_value % m->alloclen;
+			unsigned int hash_value = m->HashFunc(oldelemscpy[i].key, m->keysize) % m->alloclen;
 			while (!IsEmpty(m->elems[hash_value].key, m->keysize))
-			{
-				hash_value++;
-				if (hash_value == m->alloclen)
-					hash_value = 0;
-			}
+				hash_value = m->CollRes(hash_value, i) % m->alloclen;
 			
-			memory_copy(m->elems[hash_value].key, oldelemscpy[i].key, m->keysize); // Insertion
-			memory_copy(m->elems[hash_value].value, oldelemscpy[i].value, m->valuesize);
+			MemoryCopy(m->elems[hash_value].key, oldelemscpy[i].key, m->keysize); // Insertion
+			MemoryCopy(m->elems[hash_value].value, oldelemscpy[i].value, m->valuesize);
 		}
 		// Just free the shallow copy
 		free(oldelemscpy);
-		
-		MapSet_(m, key, value);
-		return;
 }
 
-size_t MapSize_(MapBase* m)
+unsigned int MapSize_(MapBase* m)
 {
 	return m->logiclen;
 }
@@ -145,44 +132,32 @@ size_t MapSize_(MapBase* m)
 void* MapGet_(MapBase* m, void* key)
 {
 	ASSERT(key);
-	size_t hash_value;
-	if (m->hash == "dh") hash_value = HashFunctionStr(key, m->keysize);
-	else hash_value = HashFunctionInt(key, m->keysize);
-	hash_value = hash_value % m->alloclen;
-	if (m->hash != "dh") {
-		while (M_ABS(data_compare(m->elems[hash_value].key, key, m->keysize)))
-		{
-			hash_value++;
-			if (hash_value == m->alloclen)
-				hash_value = 0;
-		}
-	}
-	else {
-		while (M_ABS(strcmp(m->elems[hash_value].key, key)))
-		{
-			hash_value++;
-			if (hash_value == m->alloclen)
-				hash_value = 0;
-		}
+	unsigned int hash_value = m->HashFunc(key, m->keysize) % m->alloclen;
+	unsigned int i = 0;
+	while (M_ABS(m->DataCmp(m->elems[hash_value].key, key, m->keysize)))
+	{
+		hash_value = m->CollRes(hash_value, i) % m->alloclen;
+		i++;
+		if (i == TRAVERSE_COUNT) return NULL;
 	}
 	return m->elems[hash_value].value;
 }
 
-size_t MapRemove_(MapBase* m, void* key)
+unsigned int MapRemove_(MapBase* m, void* key)
 {
 	ASSERT(key);
-	size_t hash_value;
-	if (m->hash == "dh") hash_value = HashFunctionStr(key, m->keysize);
-	else hash_value = HashFunctionInt(key, m->keysize);
-	hash_value = hash_value % m->alloclen;
-	while (M_ABS(data_compare(m->elems[hash_value].key, key, m->keysize)))
+	unsigned int hash_value = m->HashFunc(key, m->keysize) % m->alloclen;
+	unsigned int i = 0;
+	while (M_ABS(m->DataCmp(m->elems[hash_value].key, key, m->keysize)))
 	{
-		hash_value++;
-		if (hash_value == m->logiclen)
-			return 0; // Value Doesn't Exist
+		hash_value = m->CollRes(hash_value, i) % m->alloclen;
+		i++;
+		if (i == TRAVERSE_COUNT) return 0;
 	}
+
 	SetEmpty(m->elems[hash_value].key, m->keysize);
 	SetEmpty(m->elems[hash_value].value, m->valuesize);
+
 	m->logiclen--;
 	return 1;
 }
@@ -191,19 +166,19 @@ MapIter* MapIterator_(MapBase* m)
 {
 	ASSERT(m);
 	if (m->logiclen == 0) return NULL;
-	MapIter* n = malloc(sizeof(MapIter));
-	n->node.key = malloc(m->keysize);
-	n->node.value = malloc(m->valuesize);
+	void* n = malloc(sizeof(MapIter));
+	((MapIter*)n)->node.key = malloc(m->keysize);
+	((MapIter*)n)->node.value = malloc(m->valuesize);
 
 	// Find very first element and return that
-	for (size_t i = 0; i < m->alloclen; i++)
+	for (unsigned int i = 0; i < m->alloclen; i++)
 	{
 		if (!IsEmpty(m->elems[i].key, m->keysize))
 		{
-			n->keyindex = i;
-			memory_copy(n->node.key, m->elems[i].key, m->keysize);
-			memory_copy(n->node.value, m->elems[i].value, m->valuesize);
-			return n;
+			((MapIter*)n)->keyindex = i;
+			MemoryCopy(((MapIter*)n)->node.key, m->elems[i].key, m->keysize);
+			MemoryCopy(((MapIter*)n)->node.value, m->elems[i].value, m->valuesize);
+			return ((MapIter*)n);
 		}
 	}
 	return NULL;
@@ -213,17 +188,17 @@ MapIter* MapNext_(MapBase* m, const MapIter* mapiter)
 {
 	ASSERT(m && mapiter);
 	if (m->logiclen == 0) return NULL;
-	MapIter* n = malloc(sizeof(MapIter));
-	n->node.key = malloc(m->keysize);
-	n->node.value = malloc(m->valuesize);
-	for (size_t i = mapiter->keyindex + 1; i < m->alloclen; i++)
+	void* n = malloc(sizeof(MapIter));
+	((MapIter*)n)->node.key = malloc(m->keysize);
+	((MapIter*)n)->node.value = malloc(m->valuesize);
+	for (unsigned int i = mapiter->keyindex + 1; i < m->alloclen; i++)
 	{
 		if (!IsEmpty(m->elems[i].key, m->keysize))
 		{
-			n->keyindex = i;
-			memory_copy(n->node.key, m->elems[i].key, m->keysize);
-			memory_copy(n->node.value, m->elems[i].value, m->valuesize);
-			return n;
+			((MapIter*)n)->keyindex = i;
+			MemoryCopy(((MapIter*)n)->node.key, m->elems[i].key, m->keysize);
+			MemoryCopy(((MapIter*)n)->node.value, m->elems[i].value, m->valuesize);
+			return ((MapIter*)n);
 		}
 	}
 	return NULL;
@@ -231,7 +206,7 @@ MapIter* MapNext_(MapBase* m, const MapIter* mapiter)
 
 void MapClear_(MapBase* m)
 {
-	for (size_t i = 0; i < m->alloclen; i++){
+	for (unsigned int i = 0; i < m->alloclen; i++){
 		SetEmpty(m->elems[i].key, m->keysize);
 		SetEmpty(m->elems[i].value, m->valuesize);
 	}
@@ -241,7 +216,7 @@ void MapClear_(MapBase* m)
 void MapDelete_(MapBase* m)
 {
 	if (m->hash != "dh") {
-		for (size_t i = 0; i < m->alloclen; i++) {
+		for (unsigned int i = 0; i < m->alloclen; i++) {
 			free(m->elems[i].key);
 			free(m->elems[i].value);
 		}

@@ -30,7 +30,7 @@ void StackPush(Stack* s, void* elem)
 	}
 
 	void* target = (char*)s->elems + s->logicallen * s->elemsize;
-	memory_copy(target, elem, s->elemsize);
+	MemoryCopy(target, elem, s->elemsize);
 	s->logicallen++;
 }
 
@@ -46,14 +46,14 @@ void StackPop(Stack* s, void* output)
 	}
 	s->logicallen--;
 	void* target = (char*)s->elems + s->logicallen * s->elemsize;
-	memory_copy(output, target, s->elemsize);
+	MemoryCopy(output, target, s->elemsize);
 }
 
 void StackTop(Stack* s, void* output)
 {
 	ASSERT(s->logicallen > 0);
 	void* target = (char*)s->elems + s->logicallen * s->elemsize;
-	memory_copy(output, target, s->elemsize);
+	MemoryCopy(output, target, s->elemsize);
 }
 
 unsigned int StackSize(Stack* s)

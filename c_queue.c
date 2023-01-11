@@ -36,7 +36,7 @@ void QueuePush(Queue* q, void* elem)
 		q->front = (void *)((char *)q->elems + frontOffset);
 		q->rear = (void *)((char *)q->elems + rearOffset);
 	}
-	memory_copy(q->rear, elem, q->elemsize);
+	MemoryCopy(q->rear, elem, q->elemsize);
 	q->logicallen++;
 	q->rear = (void*)((char*)(q->rear) + q->elemsize);
 }
@@ -52,7 +52,7 @@ void QueuePop(Queue* q, void* output)
 		unsigned int rearOffset = (unsigned int)((char *)q->rear - (char *)q->elems);
 		for (unsigned int i = 0; i < q->logicallen; i++)
 		{
-			memory_copy((char *)q->elems + i * q->elemsize,
+			MemoryCopy((char *)q->elems + i * q->elemsize,
 				(char *)q->front + i * q->elemsize, q->elemsize);
 		}
 		q->elems = realloc(q->elems, q->alloclen * q->elemsize);
@@ -62,7 +62,7 @@ void QueuePop(Queue* q, void* output)
 		q->rear = (void *)((char *)q->elems + q->alloclen * q->elemsize);
 	}
 	q->logicallen--;
-	memory_copy(output, q->front, q->elemsize);
+	MemoryCopy(output, q->front, q->elemsize);
 	q->front = (void*)((char*)(q->front) + q->elemsize);
 	if (q->front == (void*)((char*)q->elems + q->alloclen * q->elemsize))
 	{
@@ -74,7 +74,7 @@ void QueuePop(Queue* q, void* output)
 void QueueTop(Queue* q, void* output)
 {
 	ASSERT(q->logicallen > 0); // empty Queue check
-	memory_copy(output, q->front, q->elemsize);
+	MemoryCopy(output, q->front, q->elemsize);
 }
 
 unsigned int QueueSize(Queue* q)

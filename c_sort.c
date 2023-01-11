@@ -33,7 +33,7 @@ void BubbleSort(void * base, unsigned int elemsize, unsigned int n, int(*MemCmp)
 			void * elemaddr1 = (char *)(base)+((j + 1) * elemsize);
 			if (MemCmp(elemaddr, elemaddr1, elemsize) > 0) {
 				is_sort = false;
-				memory_swap(elemaddr, elemaddr1, elemsize);
+				MemorySwap(elemaddr, elemaddr1, elemsize);
 			}
 		}
 	} while (!is_sort);
@@ -48,11 +48,11 @@ int partition(void * elems, int elemsize, int low, int high, int(*MemCmp)(void *
 	for (long int j = low; j < high; j++) {
 		if (MemCmp((void *)((char *)elems + elemsize * j), pivot, elemsize) <= 0) {
 			i++;
-			memory_swap((void *)((char *)elems + elemsize * i), (void *)((char *)elems + elemsize * j), elemsize);
+			MemorySwap((void *)((char *)elems + elemsize * i), (void *)((char *)elems + elemsize * j), elemsize);
 		}
 	}
 
-	memory_swap((void *)((char *)elems + elemsize * (i + 1)), (void *)((char *)elems + elemsize * (high)), elemsize);
+	MemorySwap((void *)((char *)elems + elemsize * (i + 1)), (void *)((char *)elems + elemsize * (high)), elemsize);
 
 	return (i + 1);
 }
@@ -83,9 +83,9 @@ void merge(void* base, unsigned int elemsize, unsigned int p, unsigned int q, un
 	void* M = malloc(elemsize * n2);
 
 	for (unsigned int i = 0; i < n1; i++)
-		memory_copy((char *)L + i * elemsize, (char *)base + (p + i) * elemsize, elemsize);
+		MemoryCopy((char *)L + i * elemsize, (char *)base + (p + i) * elemsize, elemsize);
 	for (unsigned int j = 0; j < n2; j++)
-		memory_copy((char *)M + j * elemsize, (char *)base + (q + 1 + j) * elemsize, elemsize);
+		MemoryCopy((char *)M + j * elemsize, (char *)base + (q + 1 + j) * elemsize, elemsize);
 
 	// Maintain current index of sub-baseays and main baseay
 	unsigned int i, j, k;
@@ -97,11 +97,11 @@ void merge(void* base, unsigned int elemsize, unsigned int p, unsigned int q, un
 	// elements L and M and place them in the correct position at A[p..r]
 	while (i < n1 && j < n2) {
 		if (MemCmp((char *)L + i * elemsize, (char *)M + j * elemsize, elemsize) <= 0){
-			memory_copy((char *)base + k * elemsize, (char *)L + i * elemsize, elemsize);
+			MemoryCopy((char *)base + k * elemsize, (char *)L + i * elemsize, elemsize);
 			i++;
 		}
 		else {
-			memory_copy((char *)base + k * elemsize, (char *)M + j * elemsize, elemsize);
+			MemoryCopy((char *)base + k * elemsize, (char *)M + j * elemsize, elemsize);
 			j++;
 		}
 		k++;
@@ -110,13 +110,13 @@ void merge(void* base, unsigned int elemsize, unsigned int p, unsigned int q, un
 	// When we run out of elements in either L or M,
 	// pick up the remaining elements and put in A[p..r]
 	while (i < n1) {
-		memory_copy((char *)base + k * elemsize, (char *)L + i * elemsize, elemsize);
+		MemoryCopy((char *)base + k * elemsize, (char *)L + i * elemsize, elemsize);
 		i++;
 		k++;
 	}
 
 	while (j < n2) {
-		memory_copy((char *)base + k * elemsize, (char *)M + j * elemsize, elemsize);
+		MemoryCopy((char *)base + k * elemsize, (char *)M + j * elemsize, elemsize);
 		j++;
 		k++;
 	}

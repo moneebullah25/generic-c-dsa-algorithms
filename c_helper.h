@@ -19,12 +19,12 @@
 
 typedef enum { false = 0, true = 1 } bool;
 
-void string_free(void* elems);
-void data_free(void* elems);
-void memory_swap(void * vp1, void * vp2, unsigned int size);
-int data_compare(void* vp1, void* vp2, unsigned int n);
-int string_compare(void* vp1, void* vp2, unsigned int n);
-void* memory_copy(void* dest, void* src, unsigned int n);
-void* memory_move(void* dest, void* src, unsigned int n);
+void FreeString(void* elems);
+void FreeData(void* elems);
+void MemorySwap(void * vp1, void * vp2, unsigned int size);
+int DataCompare(void* vp1, void* vp2, unsigned int n);
+int StringCompare(void* vp1, void* vp2, unsigned int n);
+void* MemoryCopy(void* dest, void* src, unsigned int n);
+void* MemoryMove(void* dest, void* src, unsigned int n);
 
 #endif 

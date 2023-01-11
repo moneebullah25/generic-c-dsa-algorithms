@@ -20,7 +20,7 @@ void VectorPushBack(Vector* v, void* elem)
 		ASSERT(v->elems != NULL);
 	}
 	void* target = (void*)((char*)v->elems + v->logicallen * v->elemsize);
-	memory_copy(target, elem, v->elemsize);
+	MemoryCopy(target, elem, v->elemsize);
 	v->logicallen++;
 }
 
@@ -28,7 +28,7 @@ void VectorAt(Vector* v, unsigned int index, void* output)
 {
 	ASSERT(index >= 0 && index < v->logicallen);
 	void* target = (void*)((char*)v->elems + index * v->elemsize);
-	memory_copy(output, target, v->elemsize);
+	MemoryCopy(output, target, v->elemsize);
 }
 
 void VectorDispose(Vector* v, void(*freefunc)(void* elems))

@@ -7,6 +7,7 @@
 #include "c_stack.h"
 #include "c_sort.h"
 #include "c_list.h"
+#include "c_map.h"
 
 void testLinearSearch()
 {
@@ -25,7 +26,7 @@ void testLinearSearch()
 	printf("%s : \n", "Searching for values 0 - 4 using Linear Search in array and replacing them with 0");
 	for (int i = 0; i < 5; i++)
 	{
-		void* target = LinearSearch((void*)&i, (void*)&arr, (int)8, (int)sizeof(int), &data_compare);
+		void* target = LinearSearch((void*)&i, (void*)&arr, (int)8, (int)sizeof(int), &DataCompare);
 		if (target){
 			printf("%s %d : %p\n", "Getting Acual Address of int ", i, target);
 			printf("%s %d with 0\n", "Replacing Value of int ", i);
@@ -50,7 +51,7 @@ void testLinearSearch()
 
 	// Linear Search
 	char* abcd = "abcd\0";
-	char* find_abcd = (char*)LinearSearch(&abcd, &str, 5, sizeof(char*), &string_compare);
+	char* find_abcd = (char*)LinearSearch(&abcd, &str, 5, sizeof(char*), &StringCompare);
 	printf("%s : \n", "Searching for value abcd using Linear Search in array");
 	printf("&abcd=%p\n", find_abcd);
 
@@ -70,7 +71,7 @@ void testBubbleSort()
 		printf("%d ", arr[i]);
 	printf("\n");
 
-	BubbleSort(&arr, sizeof(int), 8, &data_compare);
+	BubbleSort(&arr, sizeof(int), 8, &DataCompare);
 
 	printf("%s : ", "After Sorting array of 8 integers using Bubble Sort");
 	for (int i = 0; i < 8; i++)
@@ -85,7 +86,7 @@ void testBubbleSort()
 		printf("%s ", str[i]);
 	printf("\n");
 
-	BubbleSort(&str, sizeof(char*), 5, &string_compare);
+	BubbleSort(&str, sizeof(char*), 5, &StringCompare);
 
 	for (int i = 0; i < 5; i++)
 		printf("%p %s ", &(str[i]), str[i]);
@@ -108,7 +109,7 @@ void testBinarySearch()
 
 	printf("\n");
 
-	BubbleSort(&arr, sizeof(int), 8, &data_compare);
+	BubbleSort(&arr, sizeof(int), 8, &DataCompare);
 	printf("%s : ", "After Sorting array of 8 integers using Bubble Sort");
 	for (int i = 0; i < 8; i++)
 		printf("%d ", arr[i]);
@@ -118,7 +119,7 @@ void testBinarySearch()
 	printf("%s : \n", "Searching for values 0 - 4 using Binary Search in array and replacing them with 0");
 	for (int i = 0; i < 5; i++)
 	{
-		void* target = BinarySearch((void*)&i, (void*)&arr, 0, (int)8, (int)sizeof(int), &data_compare);
+		void* target = BinarySearch((void*)&i, (void*)&arr, 0, (int)8, (int)sizeof(int), &DataCompare);
 		if (target){
 			printf("%s %d : %p\n", "Getting Acual Address of int ", i, target);
 			printf("%s %d with 0\n", "Replacing Value of int ", i);
@@ -143,7 +144,7 @@ void testBinarySearch()
 
 	// Linear Search
 	char* abcd = "abcd\0";
-	char* find_abcd = (char*)BinarySearch(&abcd, &str, 0, 5, sizeof(char*), &string_compare);
+	char* find_abcd = (char*)BinarySearch(&abcd, &str, 0, 5, sizeof(char*), &StringCompare);
 	printf("Searching for value abcd using Binary Search in array : \n");
 	printf("&abcd=%p\n", find_abcd);
 	printf("-----------------------------------------------------------\n");
@@ -171,7 +172,7 @@ void testVector(unsigned int size)
 		VectorAt(a, i, &out);
 		printf("%u ", out);
 	}
-	VectorDispose(a, &data_free);
+	VectorDispose(a, &FreeData);
 
 	printf("Printing Vector Values after Disposing : \n");
 	for (unsigned int i = 0; i < VectorSize(a); i++)
@@ -203,7 +204,7 @@ void testQueue(unsigned int size)
 		QueuePop(a, &out);
 		printf("%u ", out);
 	}
-	QueueDispose(a, &data_free);
+	QueueDispose(a, &FreeData);
 
 	printf("Printing all Queue Popped Values after Disposing : \n");
 	for (; QueueSize(a) > 0;)
@@ -235,7 +236,7 @@ void testStack(unsigned int size)
 		StackPop(a, &out);
 		printf("%u ", out);
 	}
-	StackDispose(a, &data_free);
+	StackDispose(a, &FreeData);
 
 
 	printf("Printing all Stack Popped Values after Disposing : \n");
@@ -268,15 +269,15 @@ void testList(unsigned int size)
 	unsigned int val = MAX_UNSIGNED;
 	for (unsigned int i = 0; i < size; i += 10)
 	{
-		LinkedListReplace(ll, &i, &val, &data_compare);
+		LinkedListReplace(ll, &i, &val, &DataCompare);
 		printf("(%u->%u) ", i, val);
 	}
 
 	printf("\nPrinting Selected Values\n");
 	for (unsigned int i = 0; i < size; i++)
 	{
-		if (LinkedListAt(ll, LinkedListGetIndex(ll, &i, &data_compare)) != NULL)
-			printf("%u ", *((unsigned int *)LinkedListAt(ll, LinkedListGetIndex(ll, &i, &data_compare))->elem));
+		if (LinkedListAt(ll, LinkedListGetIndex(ll, &i, &DataCompare)) != NULL)
+			printf("%u ", *((unsigned int *)LinkedListAt(ll, LinkedListGetIndex(ll, &i, &DataCompare))->elem));
 	}
 
 	printf("\nPrinting All values Start fron Head to Tail\n");
@@ -308,7 +309,7 @@ void testQuickSort(unsigned int size)
 
 	printf("\n Sorting the Array \n");
 
-	QuickSort(arr, 4, 0, size -1, &data_compare);
+	QuickSort(arr, 4, 0, size -1, &DataCompare);
 
 	printf("After Sorting the Array : ");
 
@@ -339,7 +340,7 @@ void testMergeSort(unsigned int size)
 
 	printf("\n Sorting the Array \n");
 
-	MergeSort(arr, 4, 0, size - 1, &data_compare);
+	MergeSort(arr, 4, 0, size - 1, &DataCompare);
 
 	printf("After Sorting the Array : ");
 
@@ -353,6 +354,118 @@ void testMergeSort(unsigned int size)
 	printf("-----------------------------------------------------------\n");
 }
 
+void testMap()
+{
+	{
+		MapStringInt* m = malloc(sizeof(Map));
+		MapNew(m, HashFunctionStr, LinearProbing, StringCompare);
+
+		MapSet(m, "Muneeb\0", 21);
+		MapSet(m, "Moiz\0", 15);
+		MapSet(m, "Moaaz\0", 45);
+		MapSet(m, "Arif\0", 75);
+
+		MapIter* iter = MapIterator(m);
+		while (iter != NULL){
+			printf("%s -> %d, HASH: %d \n", *(char**)iter->node.key,
+				*(int*)iter->node.value, iter->keyindex);
+			iter = MapNext(m, iter);
+		}
+
+		MapSet(m, "Kashif\0", 43);
+
+		iter = MapIterator(m);
+		while (iter != NULL){
+			printf("%s -> %d, HASH: %d \n", *(char**)iter->node.key,
+				*(int*)iter->node.value, iter->keyindex);
+			iter = MapNext(m, iter);
+		}
+
+		void* age = MapGet(m, "Moiz\0");
+		*(int*)age = 16;
+
+		iter = MapIterator(m);
+		while (iter != NULL){
+			printf("%s -> %d, HASH: %d \n", *(char**)iter->node.key,
+				*(int*)iter->node.value, iter->keyindex);
+			iter = MapNext(m, iter);
+		}
+		MapDelete(m);
+	}
+	{
+	MapInt* m = malloc(sizeof(Map));
+	MapNew(m, HashFunctionInt, LinearProbing, DataCompare);
+
+	MapSet(m, 1, 21);
+	MapSet(m, 2, 15);
+	MapSet(m, 3, 15);
+	MapSet(m, 4, 15);
+
+	MapIter* iter = MapIterator(m);
+	while (iter != NULL){
+		printf("%d -> %d, HASH: %d \n", *(int*)iter->node.key,
+			*(int*)iter->node.value, iter->keyindex);
+		iter = MapNext(m, iter);
+	}
+
+	MapSet(m, 5, 43);
+
+	iter = MapIterator(m);
+	while (iter != NULL){
+		printf("%d -> %d, HASH: %d \n", *(int*)iter->node.key,
+			*(int*)iter->node.value, iter->keyindex);
+		iter = MapNext(m, iter);
+	}
+
+	void* age = MapGet(m, 2);
+	*(int*)age = 16;
+
+	iter = MapIterator(m);
+	while (iter != NULL){
+		printf("%d -> %d, HASH: %d \n", *(int*)iter->node.key,
+			*(int*)iter->node.value, iter->keyindex);
+		iter = MapNext(m, iter);
+	}
+	MapDelete(m);
+}
+	{
+		MapDouble* m = malloc(sizeof(Map));
+		MapNew(m, HashFunctionInt, LinearProbing, DataCompare);
+
+		MapSet(m, 1.0, 21.25);
+		MapSet(m, 2.0, 15.25);
+		MapSet(m, 3.0, 15.25);
+		MapSet(m, 4.0, 15.25);
+
+		MapIter* iter = MapIterator(m);
+		while (iter != NULL){
+			printf("%lf -> %lf, HASH: %d \n", *(double*)iter->node.key,
+				*(double*)iter->node.value, iter->keyindex);
+			iter = MapNext(m, iter);
+		}
+
+		MapSet(m, 5.0, 43.0);
+
+		iter = MapIterator(m);
+		while (iter != NULL){
+			printf("%lf -> %lf, HASH: %d \n", *(double*)iter->node.key,
+				*(double*)iter->node.value, iter->keyindex);
+			iter = MapNext(m, iter);
+		}
+
+		void* age = MapGet(m, 2.0);
+		*(double*)age = 16.00;
+
+		iter = MapIterator(m);
+		while (iter != NULL){
+			printf("%lf -> %lf, HASH: %d \n", *(double*)iter->node.key,
+				*(double*)iter->node.value, iter->keyindex);
+			iter = MapNext(m, iter);
+		}
+		MapDelete(m);
+	}
+}
+
 int main()
 {
 	testBinarySearch();
@@ -362,6 +475,7 @@ int main()
 	testQueue(100);
 	testStack(100);
 	testList(25);
+	testMap();
 	testQuickSort(100); // don't works well for values greater than 100 
 	testMergeSort(100); // don't works well for values greater than 100 
     
