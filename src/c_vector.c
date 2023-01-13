@@ -1,47 +1,89 @@
 #include "../includes/c_vector.h"
 
-
-void VectorNew(Vector*v, unsigned int elem_size)
+static void* getPointer(void* elems, unsigned int index, 
+	unsigned nbytes)
 {
-	ASSERT(elem_size > 0);
-	v->elemsize = elem_size;
-	v->logicallen = 0;
+	return (void*)((char*)elems + index * nbytes);
+}
+
+void VectorNew_(VectorBase*v, unsigned int elemsize,
+	int(*DataCmp)(void *key1, void *key2, unsigned int keysize),
+	void(*FreeFunc)(void* elems))
+{
+	ASSERT(elemsize > 0);
+	v->elemsize = elemsize;
+	v->logiclen = 0;
 	v->alloclen = 4;
+	v->DataCmp = DataCmp;
+	v->FreeFunc = FreeFunc;
 	v->elems = malloc(v->alloclen * v->elemsize);
 	ASSERT(v->elems != NULL);
 }
 
-void VectorPushBack(Vector* v, void* elem)
+void VectorPush_(VectorBase* v, void* data)
 {
-	if (v->logicallen == v->alloclen)
+	if (v->logiclen == v->alloclen)
 	{// resize
 		v->alloclen = v->alloclen * 2;
 		v->elems = realloc(v->elems, v->alloclen * v->elemsize);
 		ASSERT(v->elems != NULL);
 	}
-	void* target = (void*)((char*)v->elems + v->logicallen * v->elemsize);
-	MemoryCopy(target, elem, v->elemsize);
-	v->logicallen++;
+	void* target = getPointer(v->elems, v->logiclen, v->elemsize);
+	MemoryCopy(target, data, v->elemsize);
+	v->logiclen++;
 }
 
-void VectorAt(Vector* v, unsigned int index, void* output)
+void* VectorAt_(VectorBase* v, unsigned int index)
 {
-	ASSERT(index >= 0 && index < v->logicallen);
-	void* target = (void*)((char*)v->elems + index * v->elemsize);
-	MemoryCopy(output, target, v->elemsize);
+	ASSERT(index >= 0 && index < v->logiclen);
+	void* target = getPointer(v->elems, index, v->elemsize);
+	return target;
 }
 
-void VectorDispose(Vector* v, void(*freefunc)(void* elems))
+void* VectorGet_(VectorBase* v, void* data)
 {
-	ASSERT(v->elems != NULL);
-	freefunc(v->elems);
-	v->logicallen = 0;
-	v->alloclen = 0;
-	v->elemsize = 0;
-	v->elems = NULL;
+	ASSERT(v && data);
+	for (unsigned int i = 0; i < v->logiclen; i++){
+		if (v->DataCmp(getPointer(v->elems, i, v->elemsize),
+			data, v->elemsize) == 0)
+			return getPointer(v->elems, i, v->elemsize);
+	}
+	return NULL;
 }
 
-unsigned int VectorSize(Vector* v)
+void VectorClear_(VectorBase* v)
 {
-	return v->logicallen;
+	v->logiclen = 0;
+}
+
+void VectorDelete_(VectorBase* v)
+{
+	v->FreeFunc(v->elems);
+	v->FreeFunc(v);
+}
+
+VectorIter* VectorIterator_(VectorBase* v)
+{
+	ASSERT(v);
+	if (v->logiclen == 0) return NULL;
+	void* n = malloc(sizeof(VectorIter));
+	((VectorIter*)n)->data = malloc(v->elemsize);
+	((VectorIter*)n)->index = -1;
+	return ((VectorIter*)n);
+}
+
+VectorIter* VectorNext_(VectorBase* v, const VectorIter* mapiter)
+{
+	ASSERT(v && mapiter);
+	if (v->logiclen == 0 || mapiter->index == v->logiclen) return NULL;
+	void* n = malloc(sizeof(VectorIter));
+	((VectorIter*)n)->data = getPointer(v->elems, mapiter->index+1, 
+		v->elemsize);
+	((VectorIter*)n)->index = mapiter->index + 1;
+	return ((VectorIter*)n);
+}
+
+unsigned int VectorSize_(VectorBase* v)
+{
+	return v->logiclen;
 }

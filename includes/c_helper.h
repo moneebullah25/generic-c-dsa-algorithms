@@ -22,8 +22,8 @@ typedef enum { false = 0, true = 1 } bool;
 void FreeString(void* elems);
 void FreeData(void* elems);
 void MemorySwap(void * vp1, void * vp2, unsigned int size);
-int DataCompare(void* vp1, void* vp2, unsigned int n);
-int StringCompare(void* vp1, void* vp2, unsigned int n);
+int DataCompare(const void* vp1, const void* vp2, unsigned int n);
+int StringCompare(const void* vp1, const void* vp2, unsigned int n);
 void* MemoryCopy(void* dest, void* src, unsigned int n);
 void* MemoryMove(void* dest, void* src, unsigned int n);
 

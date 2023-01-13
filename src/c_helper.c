@@ -24,7 +24,7 @@ void MemorySwap(void * vp1, void * vp2, unsigned int size)
 	free(buffer);
 }
 
-int DataCompare(void* vp1, void* vp2, unsigned int n)
+int DataCompare(const void* vp1, const void* vp2, unsigned int n)
 {
     ASSERT(n > 0);
 	for (unsigned int i = 0; i < n; i++)
@@ -35,7 +35,7 @@ int DataCompare(void* vp1, void* vp2, unsigned int n)
 	return 0;
 }
 
-int StringCompare(void* vp1, void* vp2, unsigned int n)
+int StringCompare(const void* vp1, const void* vp2, unsigned int n)
 {
 	ASSERT(n > 0);
 	if (n == 0) return 0;
