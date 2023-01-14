@@ -37,21 +37,18 @@ int DataCompare(const void* vp1, const void* vp2, unsigned int n)
 
 int StringCompare(const void* vp1, const void* vp2, unsigned int n)
 {
-	ASSERT(n > 0);
-	if (n == 0) return 0;
-	if (!vp1)
-    {
-        if (!vp2) return 0;
-        else return -1;
-    }
-    else if (!vp2){
-        return 1;
-    }
-
-	while (*(char*)vp1 && *(char*)vp1 == *(char*)vp2) { vp1 = (char*)vp1 + 1; vp2 = (char*)vp2 + 1; }
-	return (int)(unsigned char)(*(char*)vp1) - (int)(unsigned char)(*(char*)vp2);
-
-	return 0;
+	int flag = 0;
+	char* a = malloc(n), *b = malloc(n);
+	a = MemoryCopy(a, vp1, n), b = MemoryCopy(b, vp2, n);
+	while (*a != '\0' && *b != '\0')  // while loop  
+	{
+		if (*a != *b)
+			flag = 1;
+		a++;
+		b++;
+	}
+	if (flag == 0) return 0;
+	else return 1;
 }
 
 void* MemoryCopy(void* dest, void* src, unsigned int n)

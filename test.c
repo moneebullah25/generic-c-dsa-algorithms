@@ -119,11 +119,8 @@ void testVector(unsigned int size)
 		VectorPush(v, 4);
 
 		VectorIter* iter = VectorIterator(v);
-		while (iter != NULL)
-		{
+		while (VectorNext(v, iter))
 			printf("%d ", *(int*)iter->data);
-			iter = VectorNext(v, iter);
-		}
 
 		VectorClear(v);
 
@@ -134,11 +131,8 @@ void testVector(unsigned int size)
 		VectorPush(v, 5);
 
 		iter = VectorIterator(v);
-		while (iter != NULL)
-		{
+		while (VectorNext(v, iter))
 			printf("%d ", *(int*)iter->data);
-			iter = VectorNext(v, iter);
-		}
 
 		int* out;
 		for (unsigned int i = 0; i < VectorSize(v); i++)
@@ -151,11 +145,8 @@ void testVector(unsigned int size)
 		*five = 6;
 
 		iter = VectorIterator(v);
-		while (iter != NULL)
-		{
+		while (VectorNext(v, iter))
 			printf("%d ", *(int*)iter->data);
-			VectorNext(v, iter);
-		}
 
 		VectorDelete(v);
 	}
@@ -169,11 +160,8 @@ void testVector(unsigned int size)
 		VectorPush(v, 4.0);
 
 		VectorIter* iter = VectorIterator(v);
-		while (iter != NULL)
-		{
-			printf("%d ", *(double*)iter->data);
-			VectorNext(v, iter);
-		}
+		while (VectorNext(v, iter))
+			printf("%lf ", *(double*)iter->data);
 
 		VectorClear(v);
 
@@ -184,33 +172,29 @@ void testVector(unsigned int size)
 		VectorPush(v, 5.25);
 
 		iter = VectorIterator(v);
-		while (iter != NULL)
-		{
-			printf("%d \n", *(int*)iter->data);
-			VectorNext(v, iter);
-		}
+		while (VectorNext(v, iter))
+			printf("%lf ", *(double*)iter->data);
+
 
 		double* out;
 		for (unsigned int i = 0; i < VectorSize(v); i++)
 		{
 			out = VectorAt(v, i);
-			printf("%lf \n", *out);
+			printf("%lf ", *out);
 		}
 
 		double* five = VectorGet(v, 5.25);
 		*five = 6.25;
 
 		iter = VectorIterator(v);
-		while (iter != NULL)
-		{
-			printf("%d \n", *(double*)iter->data);
-			VectorNext(v, iter);
-		}
+		while (VectorNext(v, iter))
+			printf("%lf ", *(double*)iter->data);
+
 
 		VectorDelete(v);
 	}
 	{
-		VectorString* v = malloc(sizeof(VectorDouble));
+		VectorString* v = malloc(sizeof(VectorString));
 		VectorNew(v, StringCompare, FreeString);
 
 		VectorPush(v, "111");
@@ -219,11 +203,8 @@ void testVector(unsigned int size)
 		VectorPush(v, "411");
 
 		VectorIter* iter = VectorIterator(v);
-		while (iter != NULL)
-		{
-			printf("%s ", *(char*)iter->data);
-			VectorNext(v, iter);
-		}
+		while (VectorNext(v, iter))
+			printf("%s ", *(char**)iter->data);
 
 		VectorClear(v);
 
@@ -234,28 +215,22 @@ void testVector(unsigned int size)
 		VectorPush(v, "511");
 
 		iter = VectorIterator(v);
-		while (iter != NULL)
-		{
-			printf("%s \n", *(int*)iter->data);
-			VectorNext(v, iter);
-		}
+		while (VectorNext(v, iter))
+			printf("%s ", *(char**)iter->data);
 
 		char* out;
 		for (unsigned int i = 0; i < VectorSize(v); i++)
 		{
 			out = VectorAt(v, i);
-			printf("%s \n", out);
+			printf("%s ", *(char**)out);
 		}
 
 		char* five = VectorGet(v, "511");
 		five = "611";
 
 		iter = VectorIterator(v);
-		while (iter != NULL)
-		{
-			printf("%d \n", *(double*)iter->data);
-			VectorNext(v, iter);
-		}
+		while (VectorNext(v, iter))
+			printf("%s ", *(char**)iter->data);
 
 		VectorDelete(v);
 	}

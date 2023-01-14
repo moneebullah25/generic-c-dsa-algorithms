@@ -31,7 +31,7 @@ typedef struct VectorIter{
 
 #define VectorGet(v, data) \
 	((v)->data_ = (data), \
-	VectorGet_(&(v)->base, &(v)->data_))
+	(v)->ref = VectorGet_(&(v)->base, &(v)->data_))
 
 #define VectorClear(v) \
 	VectorClear_(&(v)->base)
@@ -58,7 +58,7 @@ void* VectorGet_(VectorBase* v, void* data);
 void VectorClear_(VectorBase* v);
 void VectorDelete_(VectorBase* v);
 VectorIter* VectorIterator_(VectorBase* v);
-VectorIter* VectorNext_(VectorBase* v, const VectorIter* mapiter);
+void* VectorNext_(VectorBase* v, VectorIter* veciter);
 unsigned int VectorSize_(VectorBase* v);
 
 typedef VectorT(void*) Vector;

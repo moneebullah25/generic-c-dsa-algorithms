@@ -1,10 +1,12 @@
 #include "../includes/c_queue.h"
 
-void QueueNew(Queue* q, unsigned int elem_size)
+void QueueNew_(QueueBase* q, unsigned int elem_size,
+	int(*DataCmp)(void *key1, void *key2, unsigned int keysize),
+	void(*FreeFunc)(void* elems))
 {
 	ASSERT(elem_size > 0);
 	q->elemsize = elem_size;
-	q->logicallen = 0;
+	q->logiclen = 0;
 	q->alloclen = 4;
 	q->elems = malloc(q->alloclen * q->elemsize);
 	q->front = q->elems;
@@ -12,19 +14,9 @@ void QueueNew(Queue* q, unsigned int elem_size)
 	ASSERT(q->elems != NULL);
 }
 
-void QueueDispose(Queue* q, void(*freefunc)(void* elems))
+void QueuePush_(QueueBase* q, void* elem)
 {
-	ASSERT(q->elems != NULL);
-	freefunc(q->elems);
-	q->logicallen = 0;
-	q->alloclen = 0;
-	q->elemsize = 0;
-	q->front = q->rear = q->elems = NULL;
-}
-
-void QueuePush(Queue* q, void* elem)
-{
-	if (q->logicallen == q->alloclen || 
+	if (q->logiclen == q->alloclen || 
 		q->rear == (void *)((char *)q->elems + q->alloclen * q->elemsize)){
 		// resize
 		q->alloclen *= 2;
@@ -37,18 +29,18 @@ void QueuePush(Queue* q, void* elem)
 		q->rear = (void *)((char *)q->elems + rearOffset);
 	}
 	MemoryCopy(q->rear, elem, q->elemsize);
-	q->logicallen++;
+	q->logiclen++;
 	q->rear = (void*)((char*)(q->rear) + q->elemsize);
 }
 
-void QueuePop(Queue* q, void* output)
+void* QueuePop_(QueueBase* q)
 {
-	ASSERT(q->logicallen > 0); // empty Queue check
-	if (q->logicallen == (q->alloclen / 2))
+	ASSERT(q->logiclen > 0); // empty QueueBase check
+	if (q->logiclen == (q->alloclen / 2))
 	{
 		// shrink size by half
 		q->alloclen = q->alloclen / 2;
-		for (unsigned int i = 0; i < q->logicallen; i++)
+		for (unsigned int i = 0; i < q->logiclen; i++)
 		{
 			MemoryCopy((char *)q->elems + i * q->elemsize,
 				(char *)q->front + i * q->elemsize, q->elemsize);
@@ -59,7 +51,8 @@ void QueuePop(Queue* q, void* output)
 		q->front = q->elems;
 		q->rear = (void *)((char *)q->elems + q->alloclen * q->elemsize);
 	}
-	q->logicallen--;
+	q->logiclen--;
+	void* output = malloc(q->elemsize);
 	MemoryCopy(output, q->front, q->elemsize);
 	q->front = (void*)((char*)(q->front) + q->elemsize);
 	if (q->front == (void*)((char*)q->elems + q->alloclen * q->elemsize))
@@ -67,15 +60,56 @@ void QueuePop(Queue* q, void* output)
 		// set the q->front to start of array
 		q->front = q->elems;
 	}
+	return output;
 }
 
-void QueueTop(Queue* q, void* output)
+void* QueueTop_(QueueBase* q)
 {
-	ASSERT(q->logicallen > 0); // empty Queue check
-	MemoryCopy(output, q->front, q->elemsize);
+	ASSERT(q->logiclen > 0); // empty QueueBase check
+	return q->front;
 }
 
-unsigned int QueueSize(Queue* q)
+void QueueClear_(QueueBase* q)
 {
-	return q->logicallen;
+	q->front = q->elems;
+	q->rear = q->elems;
+	q->logiclen = 0;
+}
+
+void QueueDelete_(QueueBase* q)
+{
+	ASSERT(q->elems != NULL);
+	freefunc(q->elems);
+	q->logiclen = 0;
+	q->alloclen = 0;
+	q->elemsize = 0;
+	q->front = q->rear = q->elems = NULL;
+}
+
+QueueIter* QueueIterator_(QueueBase* q)
+{
+	ASSERT(q);
+	if (q->logiclen == 0) return NULL;
+	void* n = malloc(sizeof(QueueIter));
+	((QueueIter*)n)->data = malloc(q->elemsize);
+	((QueueIter*)n)->prevfront = q->front;
+	((QueueIter*)n)->index = 0;
+	return ((QueueIter*)n);
+}
+
+void* QueueNext_(QueueBase* q, QueueIter* queueiter)
+{
+	ASSERT(q);
+	if (q->logiclen == 0 || queueiter->index == q->logiclen) { q->FreeFunc(queueiter->data); return NULL; };
+	MemoryCopy(queueiter->data, queueiter->prevfront, q->elemsize);
+	queueiter->index++;
+	queueiter->prevfront = (void*)((char*)queueiter->prevfront + q->elemsize);
+	if (queueiter->prevfront == (void*)((char*)q->elems + q->alloclen * q->elemsize))
+		queueiter->prevfront = q->elems;
+	return queueiter;
+}
+
+unsigned int QueueSize_(QueueBase* q)
+{
+	return q->logiclen;
 }

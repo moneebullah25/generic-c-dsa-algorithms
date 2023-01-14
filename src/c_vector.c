@@ -72,15 +72,14 @@ VectorIter* VectorIterator_(VectorBase* v)
 	return ((VectorIter*)n);
 }
 
-VectorIter* VectorNext_(VectorBase* v, const VectorIter* mapiter)
+void* VectorNext_(VectorBase* v, VectorIter* veciter)
 {
-	ASSERT(v && mapiter);
-	if (v->logiclen == 0 || mapiter->index == v->logiclen) return NULL;
-	void* n = malloc(sizeof(VectorIter));
-	((VectorIter*)n)->data = getPointer(v->elems, mapiter->index+1, 
-		v->elemsize);
-	((VectorIter*)n)->index = mapiter->index + 1;
-	return ((VectorIter*)n);
+	ASSERT(v && veciter);
+	if (v->logiclen == 0 || veciter->index + 1 == v->logiclen){ v->FreeFunc(veciter->data); return NULL; };
+	MemoryCopy(veciter->data, getPointer(v->elems, veciter->index + 1,
+		v->elemsize), v->elemsize);
+	veciter->index = veciter->index + 1;
+	return veciter;
 }
 
 unsigned int VectorSize_(VectorBase* v)
