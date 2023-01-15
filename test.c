@@ -64,7 +64,7 @@ void testBubbleSort()
 		printf("%d ", arr[i]);
 	printf("\n");
 
-	BubbleSort(&arr, sizeof(int), 8, &DataCompare);
+	BubbleSort(&arr, sizeof(int), 8, &DataCompare, &MemorySwap);
 
 	printf("%s : ", "After Sorting array of 8 integers using Bubble Sort");
 	for (int i = 0; i < 8; i++)
@@ -79,7 +79,7 @@ void testBubbleSort()
 		printf("%s ", str[i]);
 	printf("\n");
 
-	BubbleSort(&str, sizeof(char*), 5, &StringCompare);
+	BubbleSort(&str, sizeof(char*), 5, &StringCompare, &StringSwap);
 
 	for (int i = 0; i < 5; i++)
 		printf("%p %s ", &(str[i]), str[i]);
@@ -96,7 +96,7 @@ void testBinarySearch()
 	for (int i = 0; i < 8; i++)
 		printf("%d ", arr[i]);
 
-	BubbleSort(&arr, sizeof(int), 8, &DataCompare);
+	BubbleSort(&arr, sizeof(int), 8, &DataCompare, &MemorySwap);
 	printf("%s : ", "After Sorting array of 8 integers using Bubble Sort");
 	for (int i = 0; i < 8; i++)
 		printf("%d ", arr[i]);
@@ -534,7 +534,7 @@ void testQuickSort(unsigned int size)
 
 	printf("\n Sorting the Array \n");
 
-	QuickSort(arr, sizeof(unsigned int), 0, size - 1, &DataCompare);
+	QuickSort(arr, sizeof(unsigned int), 0, size - 1, &DataCompare, &MemorySwap);
 
 	printf("After Sorting the Array : ");
 
@@ -561,7 +561,7 @@ void testMergeSort(unsigned int size)
 
 	printf("\n Sorting the Array \n");
 
-	MergeSort(arr, 4, 0, size - 1, &DataCompare);
+	MergeSort(arr, 4, 0, size - 1, &DataCompare, &MemorySwap);
 
 	printf("After Sorting the Array : ");
 

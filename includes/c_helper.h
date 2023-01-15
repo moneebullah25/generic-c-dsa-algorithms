@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#ifndef NULL 
+#ifndef NULL
 #define NULL 0
 #endif
 
@@ -17,15 +17,20 @@
 #define M_MIN(X, Y) ((X) <= (Y) ? (X) : (Y))
 #define M_ABS(X) ((X < 0) ? (-X) : (X))
 
-typedef enum { false = 0, true = 1 } bool;
+typedef enum
+{
+    false = 0,
+    true = 1
+} bool;
 
-void FreeString(void* elems);
-void FreeData(void* elems);
-void MemorySwap(void * vp1, void * vp2, unsigned int size);
-void StringSwap(void* vp1, void* vp2, unsigned int size);
-int DataCompare(const void* vp1, const void* vp2, unsigned int n);
-int StringCompare(const void* vp1, const void* vp2, unsigned int n);
-void* MemoryCopy(void* dest, const void* src, unsigned int n);
-void* MemoryMove(void* dest, void* src, unsigned int n);
+void FreeString(void *elems);
+void FreeData(void *elems);
+void MemorySwap(void *vp1, void *vp2, unsigned int nbytes);
+void StringSwap(void *vp1, void *vp2, unsigned int nbytes);
+int DataCompare(const void *vp1, const void *vp2, unsigned int nbytes);
+int StringCompare(const void *vp1, const void *vp2, unsigned int nbytes);
+void *MemoryCopy(void *dest, const void *src, unsigned int nbytes);
+void StringCopy(void *dest, const void *src, unsigned int nbytes);
+void *MemoryMove(void *dest, void *src, unsigned int nbytes);
 
-#endif 
+#endif

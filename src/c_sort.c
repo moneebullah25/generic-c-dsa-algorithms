@@ -28,7 +28,9 @@ void *BinarySearch(void *key, void *base, unsigned int s, unsigned int n, unsign
 	return NULL;
 }
 
-void BubbleSort(void *base, unsigned int elemsize, unsigned int n, int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes))
+void BubbleSort(void *base, unsigned int elemsize, unsigned int n, 
+	int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes),
+	void(*MemSwap)(void *vp1, void *vp2, unsigned int nbytes))
 {
 	bool is_sort;
 	do
@@ -41,13 +43,15 @@ void BubbleSort(void *base, unsigned int elemsize, unsigned int n, int(*MemCmp)(
 			if (MemCmp(elemaddr, elemaddr1, elemsize) > 0)
 			{
 				is_sort = false;
-				MemorySwap(elemaddr, elemaddr1, elemsize);
+				MemSwap(elemaddr, elemaddr1, elemsize);
 			}
 		}
 	} while (!is_sort);
 }
 
-int partition(void *base, int elemsize, int low, int high, int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes))
+int partition(void *base, int elemsize, int low, int high, 
+	int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes),
+	void(*MemSwap)(void *vp1, void *vp2, unsigned int nbytes))
 {
 
 	void *pivot = (void *)((char *)base + elemsize * high);
@@ -58,16 +62,18 @@ int partition(void *base, int elemsize, int low, int high, int(*MemCmp)(const vo
 		if (MemCmp((void *)((char *)base + elemsize * j), pivot, elemsize) <= 0)
 		{
 			i++;
-			MemorySwap((void *)((char *)base + elemsize * i), (void *)((char *)base + elemsize * j), elemsize);
+			MemSwap((void *)((char *)base + elemsize * i), (void *)((char *)base + elemsize * j), elemsize);
 		}
 	}
 
-	MemorySwap((void *)((char *)base + elemsize * (i + 1)), (void *)((char *)base + elemsize * (high)), elemsize);
+	MemCmp((void *)((char *)base + elemsize * (i + 1)), (void *)((char *)base + elemsize * (high)), elemsize);
 
 	return (i + 1);
 }
 
-void QuickSort(void *base, int elemsize, int low, int high, int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes))
+void QuickSort(void *base, int elemsize, int low, int high, 
+	int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes),
+	void(*MemSwap)(void *vp1, void *vp2, unsigned int nbytes))
 {
 	if (low < high)
 	{
@@ -75,13 +81,13 @@ void QuickSort(void *base, int elemsize, int low, int high, int(*MemCmp)(const v
 		// find the pivot element such that
 		// elements smaller than pivot are on left of pivot
 		// elements greater than pivot are on right of pivot
-		int pi = partition(base, elemsize, low, high, MemCmp);
+		int pi = partition(base, elemsize, low, high, MemCmp, MemSwap);
 
 		// recursive call on the left of pivot
-		QuickSort(base, elemsize, low, pi - 1, MemCmp);
+		QuickSort(base, elemsize, low, pi - 1, MemCmp, MemSwap);
 
 		// recursive call on the right of pivot
-		QuickSort(base, elemsize, pi + 1, high, MemCmp);
+		QuickSort(base, elemsize, pi + 1, high, MemCmp, MemSwap);
 	}
 }
 
@@ -141,7 +147,9 @@ void merge(void *base, unsigned int elemsize, unsigned int p, unsigned int q, un
 }
 
 // Divide the baseay into two subbaseays, sort them and merge them
-void MergeSort(void *base, unsigned int elemsize, unsigned int l, unsigned int r, int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes))
+void MergeSort(void* base, unsigned int elemsize, unsigned int l, unsigned int r, 
+    int(*MemCmp)(const void*, const void*, unsigned int),
+    void(*MemSwap)(void *vp1, void *vp2, unsigned int nbytes))
 {
 	ASSERT(base != NULL && elemsize > 0);
 	if (l < r)
@@ -150,8 +158,8 @@ void MergeSort(void *base, unsigned int elemsize, unsigned int l, unsigned int r
 		// m is the point where the baseay is divided into two subbaseays
 		unsigned int m = l + (r - l) / 2;
 
-		MergeSort(base, elemsize, l, m, MemCmp);
-		MergeSort(base, elemsize, m + 1, r, MemCmp);
+		MergeSort(base, elemsize, l, m, MemCmp, MemSwap);
+		MergeSort(base, elemsize, m + 1, r, MemCmp, MemSwap);
 
 		// Merge the sorted subbaseays
 		merge(base, elemsize, l, m, r, MemCmp);

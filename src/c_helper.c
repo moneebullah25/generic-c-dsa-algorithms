@@ -3,82 +3,113 @@
 
 #include "../includes/c_helper.h"
 
-void FreeString(void* elems)
+void FreeString(void *elems)
 {
-    ASSERT(elems);
-	free(*(char**)&elems);
+	ASSERT(elems);
+	free(*(char **)&elems);
 }
 
-void FreeData(void* elems)
+void FreeData(void *elems)
 {
-    ASSERT(elems);
+	ASSERT(elems);
 	free(elems);
 }
 
-void MemorySwap(void * vp1, void * vp2, unsigned int nbytes)
+void MemorySwap(void *vp1, void *vp2, unsigned int nbytes)
 {
-	char* buffer = (char*)malloc(nbytes);
+	char *buffer = (char *)malloc(nbytes);
 	MemoryCopy(buffer, vp1, nbytes);
 	MemoryCopy(vp1, vp2, nbytes);
 	MemoryCopy(vp2, buffer, nbytes);
 	free(buffer);
 }
 
-int DataCompare(const void* vp1, const void* vp2, unsigned int nbytes)
+void StringSwap(void *str1, void *str2, unsigned int nbytes)
 {
-    ASSERT(nbytes > 0);
+	char *s1 = *(char **)str1;
+	char *s2 = *(char **)str2;
+	int len1 = strlen(s1);
+	int len2 = strlen(s2);
+	int max_len = (len1 > len2) ? len1 : len2;
+	char *temp = malloc(max_len + 1);
+	StringCopy(&temp, &s1, nbytes);
+	StringCopy(&s1, &s2, nbytes);
+	StringCopy(&s2, &temp, nbytes);
+	free(temp);
+}
+
+int DataCompare(const void *vp1, const void *vp2, unsigned int nbytes)
+{
+	ASSERT(nbytes > 0);
 	for (unsigned int i = 0; i < nbytes; i++)
 	{
-		if (*((char*)(vp1)+i) != *((char*)(vp2)+i))
-			return (*((char*)(vp1)+i)) - (*((char*)(vp2)+i));
+		if (*((char *)(vp1) + i) != *((char *)(vp2) + i))
+			return (*((char *)(vp1) + i)) - (*((char *)(vp2) + i));
 	}
 	return 0;
 }
 
-void StringSwap(void* vp1, void* vp2, unsigned int nbytes)
+int StringCompare(const void *vp1, const void *vp2, unsigned int nbytes)
 {
-
-}
-
-int StringCompare(const void* vp1, const void* vp2, unsigned int nbytes)
-{
-	int flag = 0;
-	char* a = malloc(nbytes), *b = malloc(nbytes);
-	a = MemoryCopy(a, vp1, nbytes), b = MemoryCopy(b, vp2, nbytes);
-	while (*a != '\0' && *b != '\0')  // while loop  
+	const char *s1 = *(const char **)vp1;
+	const char *s2 = *(const char **)vp2;
+	int i = 0;
+	while (s1[i] != '\0' && s2[i] != '\0')
 	{
-		if (*a != *b)
-			flag = 1;
-		a++;
-		b++;
+		if (s1[i] != s2[i])
+		{
+			return 0;
+		}
+		i++;
 	}
-	if (flag == 0) return 0;
-	else return 1;
+	if (s1[i] == '\0' && s2[i] == '\0')
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
-void* MemoryCopy(void* dest, const void* src, unsigned int nbytes)
+void *MemoryCopy(void *dest, const void *src, unsigned int nbytes)
 {
-    ASSERT(nbytes > 0);
-    char *csrc = (char *)src;
-    char *cdest = (char *)dest;
+	ASSERT(nbytes > 0);
+	char *csrc = (char *)src;
+	char *cdest = (char *)dest;
 
-    for (unsigned int i=0; i<nbytes; i++)
-        cdest[i] = csrc[i];
-    return dest;
+	for (unsigned int i = 0; i < nbytes; i++)
+		cdest[i] = csrc[i];
+	return dest;
 }
 
-void* MemoryMove(void *dest, void *src, unsigned int nbytes)
+void StringCopy(void *dest, const void *src, unsigned int nbytes)
 {
-    ASSERT(dest != NULL && src != NULL && nbytes > 0);
-    char *csrc =(char *)src;
-    char *cdest =(char *)dest;
-    // overlap buffer
-    if((csrc < cdest) && (cdest < csrc + nbytes)){
-        for (cdest += nbytes, csrc += nbytes; nbytes--;)
-            *--cdest = *--csrc;
-    } else {
-        MemoryCopy(dest, src, nbytes);
-    }
-    return dest;
+	const char *s = *(const char **)src;
+	char *d = *(char **)dest;
+	int i = 0;
+	while (s[i] != '\0')
+	{
+		d[i] = s[i];
+		i++;
+	}
+	d[i] = '\0';
 }
 
+void *MemoryMove(void *dest, void *src, unsigned int nbytes)
+{
+	ASSERT(dest != NULL && src != NULL && nbytes > 0);
+	char *csrc = (char *)src;
+	char *cdest = (char *)dest;
+	// overlap buffer
+	if ((csrc < cdest) && (cdest < csrc + nbytes))
+	{
+		for (cdest += nbytes, csrc += nbytes; nbytes--;)
+			*--cdest = *--csrc;
+	}
+	else
+	{
+		MemoryCopy(dest, src, nbytes);
+	}
+	return dest;
+}
