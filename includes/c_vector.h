@@ -17,7 +17,7 @@ typedef struct VectorIter{
 }VectorIter;
 
 #define VectorT(T) \
-	struct { VectorBase base; T* ref; T data_; }
+	struct { VectorBase base; T data_; }
 
 #define VectorNew(v, DataCmp, FreeFunc) \
 	VectorNew_(&(v)->base, sizeof((v)->data_), DataCmp, FreeFunc)
@@ -27,11 +27,11 @@ typedef struct VectorIter{
 	VectorPush_(&(v)->base, &(v)->data_))
 
 #define VectorAt(v, index) \
-	(v)->ref = VectorAt_(&(v)->base, index)
+	VectorAt_(&(v)->base, index)
 
 #define VectorGet(v, data) \
 	((v)->data_ = (data), \
-	(v)->ref = VectorGet_(&(v)->base, &(v)->data_))
+	VectorGet_(&(v)->base, &(v)->data_))
 
 #define VectorClear(v) \
 	VectorClear_(&(v)->base)

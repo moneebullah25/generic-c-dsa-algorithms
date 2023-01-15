@@ -3,8 +3,7 @@
 
 #include "c_helper.h"
 
-#define EMPTY 0xff
-#define DELETED 0xfe
+#define EMPTY 0xfe
 #define TRAVERSE_COUNT 5
 #define SHOPPTR "sh"
 #define DHOPPTR "dh"

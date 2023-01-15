@@ -87,9 +87,9 @@ void MapSet_(MapBase* m, void* key, void* value)
 	unsigned int hash_value;
 	hash_value = m->HashFunc(key, m->keysize) % m->alloclen;
 	unsigned int i = 1;
-	while (!(IsEmpty(m->elems[hash_value].key, m->keysize)
-		&& M_ABS(m->DataCmp(m->elems[hash_value].key, key, m->keysize))))
+	while (!IsEmpty(m->elems[hash_value].key, m->keysize))
 	{
+		if (M_ABS(m->DataCmp(m->elems[hash_value].key, key, m->keysize))) break;
 		hash_value = m->CollRes(hash_value, i) % m->alloclen;
 	}
 	

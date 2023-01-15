@@ -250,7 +250,7 @@ void testVector(unsigned int size)
 		for (unsigned int i = 0; i < VectorSize(v); i++)
 		{
 			out = *(char**)VectorAt(v, i);
-			printf("%s ", *(char **)out);
+			printf("%s ", out);
 		}
 
 		char **five = VectorGet(v, "511");
@@ -575,41 +575,10 @@ void testMap()
 {
 	printf("---------------------Maps Start----------------------------\n");
 	{
-		MapStringInt *m = malloc(sizeof(Map));
-		MapNew(m, HashFunctionStr, LinearProbing, StringCompare, FreeData);
-
-		MapSet(m, "Muneeb\0", 21);
-		MapSet(m, "Moiz\0", 15);
-		MapSet(m, "Moaaz\0", 45);
-		MapSet(m, "Arif\0", 75);
-
-		MapIter *iter = MapIterator(m);
-		while (MapNext(m, iter))
-			printf("%s -> %d, HASH: %d \n", *(char **)iter->node.key,
-				   *(int *)iter->node.value, iter->keyindex);
-
-		MapSet(m, "Kashif\0", 43);
-
-		iter = MapIterator(m);
-		while (MapNext(m, iter))
-			printf("%s -> %d, HASH: %d \n", *(char **)iter->node.key,
-				   *(int *)iter->node.value, iter->keyindex);
-
-		void *age = MapGet(m, "Moiz\0");
-		*(int *)age = 16;
-
-		iter = MapIterator(m);
-		while (MapNext(m, iter))
-			printf("%s -> %d, HASH: %d \n", *(char **)iter->node.key,
-				   *(int *)iter->node.value, iter->keyindex);
-
-		MapDelete(m);
-	}
-	{
 		MapInt *m = malloc(sizeof(Map));
 		MapNew(m, HashFunctionInt, LinearProbing, DataCompare, FreeData);
 
-		MapSet(m, 1, 21);
+		MapSet(m, 0, 21);
 		MapSet(m, 2, 15);
 		MapSet(m, 3, 15);
 		MapSet(m, 4, 15);
@@ -664,6 +633,37 @@ void testMap()
 		while (MapNext(m, iter))
 			printf("%lf -> %lf, HASH: %d \n", *(double *)iter->node.key,
 				   *(double *)iter->node.value, iter->keyindex);
+
+		MapDelete(m);
+	}
+	{
+		MapStringInt *m = malloc(sizeof(Map));
+		MapNew(m, HashFunctionStr, LinearProbing, StringCompare, FreeData);
+
+		MapSet(m, "Muneeb\0", 21);
+		MapSet(m, "Moiz\0", 15);
+		MapSet(m, "Moaaz\0", 45);
+		MapSet(m, "Arif\0", 75);
+
+		MapIter *iter = MapIterator(m);
+		while (MapNext(m, iter))
+			printf("%s -> %d, HASH: %d \n", *(char **)iter->node.key,
+				   *(int *)iter->node.value, iter->keyindex);
+
+		MapSet(m, "Kashif\0", 43);
+
+		iter = MapIterator(m);
+		while (MapNext(m, iter))
+			printf("%s -> %d, HASH: %d \n", *(char **)iter->node.key,
+				   *(int *)iter->node.value, iter->keyindex);
+
+		void *age = MapGet(m, "Moiz\0");
+		*(int *)age = 16;
+
+		iter = MapIterator(m);
+		while (MapNext(m, iter))
+			printf("%s -> %d, HASH: %d \n", *(char **)iter->node.key,
+				   *(int *)iter->node.value, iter->keyindex);
 
 		MapDelete(m);
 	}

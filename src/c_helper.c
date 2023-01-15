@@ -26,6 +26,9 @@ void MemorySwap(void *vp1, void *vp2, unsigned int nbytes)
 
 void StringSwap(void *str1, void *str2, unsigned int nbytes)
 {
+	if (str1 == NULL || str2 == NULL) {
+		return;
+	}
 	char *s1 = *(char **)str1;
 	char *s2 = *(char **)str2;
 	int len1 = strlen(s1);
@@ -51,6 +54,9 @@ int DataCompare(const void *vp1, const void *vp2, unsigned int nbytes)
 
 int StringCompare(const void *vp1, const void *vp2, unsigned int nbytes)
 {
+	if (vp1 == NULL || vp2 == NULL) {
+		return;
+	}
 	const char *s1 = *(const char **)vp1;
 	const char *s2 = *(const char **)vp2;
 	int i = 0;
