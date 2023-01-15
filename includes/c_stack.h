@@ -6,7 +6,7 @@
 typedef struct StackBase{
 	void* elems; unsigned int elemsize; unsigned int logiclen; unsigned int alloclen;
 
-	int(*DataCmp)(void *key1, void *key2, unsigned int keysize);
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize);
 	void(*FreeFunc)(void* elems);
 } StackBase;
 
@@ -16,7 +16,7 @@ typedef struct StackIter{
 }StackIter;
 
 #define StackT(T) \
-struct { StackBase base; T* ref; T data_; }
+struct { StackBase base; T data_; }
 
 #define StackNew(s, DataCmp, FreeFunc) \
 	StackNew_(&(s)->base, sizeof((s)->data_), DataCmp, FreeFunc)
@@ -26,10 +26,10 @@ struct { StackBase base; T* ref; T data_; }
 	StackPush_(&(s)->base, &(s)->data_))
 
 #define StackPop(s) \
-	(s)->ref = StackGet_(&(s)->base, &(s)->data_)
+	StackPop_(&(s)->base)
 
 #define StackTop(s) \
-	(s)->ref = StackGet_(&(s)->base, &(s)->data_)
+	StackTop_(&(s)->base)
 
 #define StackClear(s) \
 	StackClear_(&(s)->base)
@@ -47,7 +47,7 @@ struct { StackBase base; T* ref; T data_; }
 	StackSize_(&(s)->base)
 
 void StackNew_(StackBase* s, unsigned int elem_size,
-	int(*DataCmp)(void *key1, void *key2, unsigned int keysize),
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems));
 void StackPush_(StackBase* s, void* elem);
 void* StackPop_(StackBase* s);

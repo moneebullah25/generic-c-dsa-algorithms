@@ -20,7 +20,7 @@ static void ListDelete(ListNode* head)
 }
 
 void LinkedListNew_(LinkedListBase* ll, unsigned int elemsize,
-	int(*DataCmp)(void *key1, void *key2, unsigned int keysize),
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems))
 {
 	ASSERT(elemsize > 0);
@@ -77,7 +77,7 @@ void LinkedListReplace_(LinkedListBase* ll, void* data, void* value)
 	ListNode* temp = ll->head;
 	while (temp->next != NULL)
 	{
-		if (MemCmp(temp->elem, data, temp->elemsize) == 0)
+		if (ll->DataCmp(temp->elem, data, temp->elemsize) == 0)
 		{
 			MemoryCopy(temp->elem, value, temp->elemsize);
 			break;
@@ -92,7 +92,7 @@ void LinkedListReplaceAll_(LinkedListBase* ll, void* data, void* value)
 	ListNode* temp = ll->head;
 	while (temp->next != NULL)
 	{
-		if (MemCmp(temp->elem, data, temp->elemsize) == 0)
+		if (ll->DataCmp(temp->elem, data, temp->elemsize) == 0)
 		{
 			MemoryCopy(temp->elem, value, temp->elemsize);
 		}
@@ -100,24 +100,24 @@ void LinkedListReplaceAll_(LinkedListBase* ll, void* data, void* value)
 	}
 }
 
-unsigned int LinkedListGetIndex_(LinkedListBase* ll, void* data)
+int LinkedListGetIndex_(LinkedListBase* ll, void* data)
 {
 	ASSERT(ll != NULL);
 	ListNode* temp = ll->head;
 	unsigned int retindex = 0;
 	while (temp->next != NULL)
 	{
-		if (MemCmp(temp->elem, data, temp->elemsize) == 0)
+		if (ll->DataCmp(temp->elem, data, temp->elemsize) == 0)
 		{
 			return retindex;
 		}
 		temp = temp->next;
 		retindex++;
 	}
-	return MAX_UNSIGNED;
+	return -1;
 }
 
-ListNode* LinkedListAt_(LinkedListBase* ll, unsigned int index)
+void* LinkedListAt_(LinkedListBase* ll, unsigned int index)
 {
 	ASSERT(ll != NULL);
 	ListNode* temp = ll->head;
@@ -126,7 +126,7 @@ ListNode* LinkedListAt_(LinkedListBase* ll, unsigned int index)
 	{
 		if (index == retindex)
 		{
-			return temp;
+			return temp->elem;
 		}
 		temp = temp->next;
 		retindex++;

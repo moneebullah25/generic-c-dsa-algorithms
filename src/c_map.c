@@ -1,5 +1,4 @@
 #include "../includes/c_map.h"
-#include <string.h>
 
 unsigned int HashFunctionInt(void* key, unsigned int keysize)
 {
@@ -63,7 +62,7 @@ static void InitMapNpde(MapNode* mn, unsigned int keyize, unsigned int valuesize
 void MapNew_(MapBase* m, unsigned int keysize, unsigned int valuesize,
 	unsigned int(*HashFunc)(void* key, unsigned int keysize),
 	unsigned int(*CollRes)(unsigned int hash, unsigned int i),
-	int(*DataCmp)(void *key1, void *key2, unsigned int keysize),
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems))
 {
 	ASSERT(keysize > 0 && valuesize > 0);

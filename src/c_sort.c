@@ -1,22 +1,26 @@
 ﻿#include "../includes/c_sort.h"
 
-void * LinearSearch_(void * key, void * base, unsigned int nelems, unsigned int elemsize, int(*MemCmp)(void * a, void * b, unsigned int elembytes)) {
-	for (unsigned int i = 0; i < nelems; i++) {
-		void * elemaddr = (char *)(base)+(i * elemsize);
-		if (MemCmp(elemaddr, key, elemsize) == 0)
+void *LinearSearch(void *key, void *base, unsigned int nelems, unsigned int elemsize, int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes))
+{
+	for (unsigned int i = 0; i < nelems; i++)
+	{
+		void *elemaddr = (char *)(base) + (i * elemsize);
+		if (MemCmp(elemaddr, &key, elemsize) == 0)
 			return elemaddr;
 	}
 	return NULL;
 }
 
-void * BinarySearch_(void * key, void * base, unsigned int s, unsigned int n, unsigned int elemsize,
-	int(*MemCmp)(void * a, void * b, unsigned int elembytes)) {
-	if (s < n) {
+void *BinarySearch(void *key, void *base, unsigned int s, unsigned int n, unsigned int elemsize,
+				   int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes))
+{
+	if (s < n)
+	{
 		unsigned int middle = (s + n) / 2;
-		void * elemaddr = (void *)((char *)(base)+(middle * elemsize));
-		if (MemCmp(elemaddr, key, elemsize) == 0)
+		void *elemaddr = (void *)((char *)(base) + (middle * elemsize));
+		if (MemCmp(elemaddr, &key, elemsize) == 0)
 			return elemaddr;
-		else if (MemCmp(elemaddr, key, elemsize) < 0)
+		else if (MemCmp(elemaddr, &key, elemsize) < 0)
 			return BinarySearch(key, base, middle + 1, n, elemsize, MemCmp);
 		else
 			return BinarySearch(key, base, s, middle, elemsize, MemCmp);
@@ -24,29 +28,35 @@ void * BinarySearch_(void * key, void * base, unsigned int s, unsigned int n, un
 	return NULL;
 }
 
-void BubbleSort(void * base, unsigned int elemsize, unsigned int n, int(*MemCmp)(void * a, void * b, unsigned int elembytes)) {
+void BubbleSort(void *base, unsigned int elemsize, unsigned int n, int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes))
+{
 	bool is_sort;
-	do {
+	do
+	{
 		is_sort = true;
-		for (unsigned int j = 0; j < n - 1; j++) {
-			void * elemaddr = (char *)(base)+(j * elemsize);
-			void * elemaddr1 = (char *)(base)+((j + 1) * elemsize);
-			if (MemCmp(elemaddr, elemaddr1, elemsize) > 0) {
+		for (unsigned int j = 0; j < n - 1; j++)
+		{
+			void *elemaddr = (char *)(base) + (j * elemsize);
+			void *elemaddr1 = (char *)(base) + ((j + 1) * elemsize);
+			if (MemCmp(elemaddr, elemaddr1, elemsize) > 0)
+			{
 				is_sort = false;
 				MemorySwap(elemaddr, elemaddr1, elemsize);
 			}
 		}
 	} while (!is_sort);
-
 }
 
-int partition(void * base, int elemsize, int low, int high, int(*MemCmp)(void * a, void * b, unsigned int elembytes)) {
+int partition(void *base, int elemsize, int low, int high, int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes))
+{
 
-	void * pivot = (void *)((char *)base + elemsize * high);
+	void *pivot = (void *)((char *)base + elemsize * high);
 	int i = (low - 1);
 
-	for (long int j = low; j < high; j++) {
-		if (MemCmp((void *)((char *)base + elemsize * j), pivot, elemsize) <= 0) {
+	for (long int j = low; j < high; j++)
+	{
+		if (MemCmp((void *)((char *)base + elemsize * j), pivot, elemsize) <= 0)
+		{
 			i++;
 			MemorySwap((void *)((char *)base + elemsize * i), (void *)((char *)base + elemsize * j), elemsize);
 		}
@@ -57,8 +67,10 @@ int partition(void * base, int elemsize, int low, int high, int(*MemCmp)(void * 
 	return (i + 1);
 }
 
-void QuickSort_(void * base, int elemsize, int low, int high, int(*MemCmp)(void * a, void * b, unsigned int elembytes)) {
-	if (low < high) {
+void QuickSort(void *base, int elemsize, int low, int high, int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes))
+{
+	if (low < high)
+	{
 
 		// find the pivot element such that
 		// elements smaller than pivot are on left of pivot
@@ -73,14 +85,15 @@ void QuickSort_(void * base, int elemsize, int low, int high, int(*MemCmp)(void 
 	}
 }
 
-void merge(void* base, unsigned int elemsize, unsigned int p, unsigned int q, unsigned int r, int(*MemCmp)(void * a, void * b, unsigned int elembytes)) {
+void merge(void *base, unsigned int elemsize, unsigned int p, unsigned int q, unsigned int r, int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes))
+{
 
 	// Create L ← A[p..q] and M ← A[q+1..r]
 	unsigned int n1 = q - p + 1;
 	unsigned int n2 = r - q;
 
-	void* L = malloc(elemsize * n1);
-	void* M = malloc(elemsize * n2);
+	void *L = malloc(elemsize * n1);
+	void *M = malloc(elemsize * n2);
 
 	for (unsigned int i = 0; i < n1; i++)
 		MemoryCopy((char *)L + i * elemsize, (char *)base + (p + i) * elemsize, elemsize);
@@ -95,12 +108,15 @@ void merge(void* base, unsigned int elemsize, unsigned int p, unsigned int q, un
 
 	// Until we reach either end of either L or M, pick larger among
 	// elements L and M and place them in the correct position at A[p..r]
-	while (i < n1 && j < n2) {
-		if (MemCmp((char *)L + i * elemsize, (char *)M + j * elemsize, elemsize) <= 0){
+	while (i < n1 && j < n2)
+	{
+		if (MemCmp((char *)L + i * elemsize, (char *)M + j * elemsize, elemsize) <= 0)
+		{
 			MemoryCopy((char *)base + k * elemsize, (char *)L + i * elemsize, elemsize);
 			i++;
 		}
-		else {
+		else
+		{
 			MemoryCopy((char *)base + k * elemsize, (char *)M + j * elemsize, elemsize);
 			j++;
 		}
@@ -109,13 +125,15 @@ void merge(void* base, unsigned int elemsize, unsigned int p, unsigned int q, un
 
 	// When we run out of elements in either L or M,
 	// pick up the remaining elements and put in A[p..r]
-	while (i < n1) {
+	while (i < n1)
+	{
 		MemoryCopy((char *)base + k * elemsize, (char *)L + i * elemsize, elemsize);
 		i++;
 		k++;
 	}
 
-	while (j < n2) {
+	while (j < n2)
+	{
 		MemoryCopy((char *)base + k * elemsize, (char *)M + j * elemsize, elemsize);
 		j++;
 		k++;
@@ -123,9 +141,11 @@ void merge(void* base, unsigned int elemsize, unsigned int p, unsigned int q, un
 }
 
 // Divide the baseay into two subbaseays, sort them and merge them
-void MergeSort_(void* base, unsigned int elemsize, unsigned int l, unsigned int r, int(*MemCmp)(void * a, void * b, unsigned int elembytes)) {
+void MergeSort(void *base, unsigned int elemsize, unsigned int l, unsigned int r, int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes))
+{
 	ASSERT(base != NULL && elemsize > 0);
-	if (l < r) {
+	if (l < r)
+	{
 
 		// m is the point where the baseay is divided into two subbaseays
 		unsigned int m = l + (r - l) / 2;

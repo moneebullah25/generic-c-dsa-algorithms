@@ -22,7 +22,7 @@ typedef struct {
 	
 	unsigned int(*HashFunc)(void* key, unsigned int keysize);
 	unsigned int(*CollRes)(unsigned int hash, unsigned int i);
-	int(*DataCmp)(void *key1, void *key2, unsigned int keysize);
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize);
 	void(*FreeFunc)(void* elems);
 } MapBase;
 
@@ -34,7 +34,7 @@ typedef struct {
 
 
 #define MapT(T,  U) \
-	struct { MapBase base; T* ref; T key_; U value_; }
+	struct { MapBase base; T key_; U value_; }
 
 #define MapNew(m, HashFunc, CollRes, DataCmp, FreeFunc) \
 	MapNew_(&(m)->base, sizeof((m)->key_), sizeof((m)->value_), HashFunc, CollRes, DataCmp, FreeFunc)
@@ -49,7 +49,7 @@ typedef struct {
 
 #define MapGet(m, key) \
 	((m)->key_ = (key), \
-	(m)->ref = MapGet_(&(m)->base, &(m)->key_))
+	MapGet_(&(m)->base, &(m)->key_))
 
 #define MapRemove(m, key) \
 	((m)->key_ = (key), \
@@ -77,7 +77,7 @@ unsigned int DoubleHashing(unsigned int hash, unsigned int i);
 void MapNew_(MapBase* m, unsigned int keysize, unsigned int valuesize,
 	unsigned int(*HashFunc)(void* key, unsigned int keysize),
 	unsigned int(*CollRes)(unsigned int hash, unsigned int i), 
-	int(*DataCmp)(void *key1, void *key2, unsigned int keysize),
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems));
 void MapSet_(MapBase* m, void* key, void* value);
 void MapResize_(MapBase* m);

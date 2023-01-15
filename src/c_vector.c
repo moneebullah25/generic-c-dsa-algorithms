@@ -7,7 +7,7 @@ static void* getPointer(void* elems, unsigned int index,
 }
 
 void VectorNew_(VectorBase*v, unsigned int elemsize,
-	int(*DataCmp)(void *key1, void *key2, unsigned int keysize),
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems))
 {
 	ASSERT(elemsize > 0);

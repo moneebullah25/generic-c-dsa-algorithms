@@ -7,7 +7,7 @@ static void* getPointer(void* elems, unsigned int index,
 }
 
 void StackNew_(StackBase* s, unsigned int elem_size,
-	int(*DataCmp)(void *key1, void *key2, unsigned int keysize),
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems))
 {
 	ASSERT(elem_size > 0);
@@ -81,7 +81,7 @@ StackIter* StackIterator_(StackBase* s)
 void* StackNext_(StackBase* s, StackIter* stackiter)
 {
 	ASSERT(s);
-	if (s->logiclen == 0 || stackiter->index -1) { s->FreeFunc(stackiter->data); return NULL; };
+	if (s->logiclen == 0 || stackiter->index == 0) { s->FreeFunc(stackiter); return NULL; };
 	MemoryCopy(stackiter->data, getPointer(s->elems, stackiter->index - 1,
 		s->elemsize), s->elemsize);
 	stackiter->index = stackiter->index - 1;

@@ -1,7 +1,7 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "../includes/c_helper.h"
-
 
 void FreeString(void* elems)
 {
@@ -15,19 +15,19 @@ void FreeData(void* elems)
 	free(elems);
 }
 
-void MemorySwap(void * vp1, void * vp2, unsigned int size)
+void MemorySwap(void * vp1, void * vp2, unsigned int nbytes)
 {
-	char* buffer = (char*)malloc(size);
-	MemoryCopy(buffer, vp1, size);
-	MemoryCopy(vp1, vp2, size);
-	MemoryCopy(vp2, buffer, size);
+	char* buffer = (char*)malloc(nbytes);
+	MemoryCopy(buffer, vp1, nbytes);
+	MemoryCopy(vp1, vp2, nbytes);
+	MemoryCopy(vp2, buffer, nbytes);
 	free(buffer);
 }
 
-int DataCompare(const void* vp1, const void* vp2, unsigned int n)
+int DataCompare(const void* vp1, const void* vp2, unsigned int nbytes)
 {
-    ASSERT(n > 0);
-	for (unsigned int i = 0; i < n; i++)
+    ASSERT(nbytes > 0);
+	for (unsigned int i = 0; i < nbytes; i++)
 	{
 		if (*((char*)(vp1)+i) != *((char*)(vp2)+i))
 			return (*((char*)(vp1)+i)) - (*((char*)(vp2)+i));
@@ -35,11 +35,16 @@ int DataCompare(const void* vp1, const void* vp2, unsigned int n)
 	return 0;
 }
 
-int StringCompare(const void* vp1, const void* vp2, unsigned int n)
+void StringSwap(void* vp1, void* vp2, unsigned int nbytes)
+{
+
+}
+
+int StringCompare(const void* vp1, const void* vp2, unsigned int nbytes)
 {
 	int flag = 0;
-	char* a = malloc(n), *b = malloc(n);
-	a = MemoryCopy(a, vp1, n), b = MemoryCopy(b, vp2, n);
+	char* a = malloc(nbytes), *b = malloc(nbytes);
+	a = MemoryCopy(a, vp1, nbytes), b = MemoryCopy(b, vp2, nbytes);
 	while (*a != '\0' && *b != '\0')  // while loop  
 	{
 		if (*a != *b)
@@ -51,28 +56,28 @@ int StringCompare(const void* vp1, const void* vp2, unsigned int n)
 	else return 1;
 }
 
-void* MemoryCopy(void* dest, void* src, unsigned int n)
+void* MemoryCopy(void* dest, const void* src, unsigned int nbytes)
 {
-    ASSERT(n > 0);
+    ASSERT(nbytes > 0);
     char *csrc = (char *)src;
     char *cdest = (char *)dest;
 
-    for (unsigned int i=0; i<n; i++)
+    for (unsigned int i=0; i<nbytes; i++)
         cdest[i] = csrc[i];
     return dest;
 }
 
-void* MemoryMove(void *dest, void *src, unsigned int n)
+void* MemoryMove(void *dest, void *src, unsigned int nbytes)
 {
-    ASSERT(dest != NULL && src != NULL && n > 0);
+    ASSERT(dest != NULL && src != NULL && nbytes > 0);
     char *csrc =(char *)src;
     char *cdest =(char *)dest;
     // overlap buffer
-    if((csrc < cdest) && (cdest < csrc + n)){
-        for (cdest += n, csrc += n; n--;)
+    if((csrc < cdest) && (cdest < csrc + nbytes)){
+        for (cdest += nbytes, csrc += nbytes; nbytes--;)
             *--cdest = *--csrc;
     } else {
-        MemoryCopy(dest, src, n);
+        MemoryCopy(dest, src, nbytes);
     }
     return dest;
 }

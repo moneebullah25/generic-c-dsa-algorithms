@@ -7,7 +7,7 @@ typedef struct QueueBase {
 	void* elems; unsigned int elemsize; unsigned int logiclen; unsigned int alloclen;
 	void* front; void* rear;
 
-	int(*DataCmp)(void *key1, void *key2, unsigned int keysize);
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize);
 	void(*FreeFunc)(void* elems);
 }QueueBase;
 
@@ -18,7 +18,7 @@ typedef struct QueueIter {
 }QueueIter;
 
 #define QueueT(T) \
-struct { QueueBase base; T* ref; T data_; }
+struct { QueueBase base; T data_; }
 
 #define QueueNew(s, DataCmp, FreeFunc) \
 	QueueNew_(&(s)->base, sizeof((s)->data_), DataCmp, FreeFunc)
@@ -28,10 +28,10 @@ struct { QueueBase base; T* ref; T data_; }
 	QueuePush_(&(s)->base, &(s)->data_))
 
 #define QueuePop(s) \
-	(s)->ref = QueueGet_(&(s)->base, &(s)->data_)
+	QueuePop_(&(s)->base)
 
 #define QueueTop(s) \
-	(s)->ref = QueueGet_(&(s)->base, &(s)->data_)
+	QueueTop_(&(s)->base)
 
 #define QueueClear(s) \
 	QueueClear_(&(s)->base)
@@ -49,7 +49,7 @@ struct { QueueBase base; T* ref; T data_; }
 	QueueSize_(&(s)->base)
 
 void QueueNew_(QueueBase* q, unsigned int elem_size,
-	int(*DataCmp)(void *key1, void *key2, unsigned int keysize),
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems));
 void QueuePush_(QueueBase* q, void* elem);
 void* QueuePop_(QueueBase* q);

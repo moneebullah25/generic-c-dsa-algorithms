@@ -1,7 +1,7 @@
 #include "../includes/c_queue.h"
 
 void QueueNew_(QueueBase* q, unsigned int elem_size,
-	int(*DataCmp)(void *key1, void *key2, unsigned int keysize),
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems))
 {
 	ASSERT(elem_size > 0);
@@ -11,6 +11,8 @@ void QueueNew_(QueueBase* q, unsigned int elem_size,
 	q->elems = malloc(q->alloclen * q->elemsize);
 	q->front = q->elems;
 	q->rear = q->elems;
+	q->DataCmp = DataCmp;
+	q->FreeFunc = FreeFunc;
 	ASSERT(q->elems != NULL);
 }
 
@@ -79,7 +81,7 @@ void QueueClear_(QueueBase* q)
 void QueueDelete_(QueueBase* q)
 {
 	ASSERT(q->elems != NULL);
-	freefunc(q->elems);
+	q->FreeFunc(q->elems);
 	q->logiclen = 0;
 	q->alloclen = 0;
 	q->elemsize = 0;
@@ -100,7 +102,7 @@ QueueIter* QueueIterator_(QueueBase* q)
 void* QueueNext_(QueueBase* q, QueueIter* queueiter)
 {
 	ASSERT(q);
-	if (q->logiclen == 0 || queueiter->index == q->logiclen) { q->FreeFunc(queueiter->data); return NULL; };
+	if (q->logiclen == 0 || queueiter->index == q->logiclen) { q->FreeFunc(queueiter); return NULL; };
 	MemoryCopy(queueiter->data, queueiter->prevfront, q->elemsize);
 	queueiter->index++;
 	queueiter->prevfront = (void*)((char*)queueiter->prevfront + q->elemsize);
