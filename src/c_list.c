@@ -11,13 +11,13 @@ static void ListNodeNew(ListNode* ln, unsigned int elemsize, void* data)
 	MemoryCopy(ln->elem, data, elemsize);
 }
 
-static void ListDelete(ListNode* node) {
+static void ListDelete(ListNode* node, void(*FreeFunc)(void* elems)) {
 	if (node == NULL) {
 		return;
 	}
-	ListDelete(node->next);
-	free(node->elem);
-	free(node);
+	ListDelete(node->next, FreeFunc);
+	FreeFunc(node->elem);
+	FreeFunc(node);
 }
 
 void LinkedListNew_(LinkedListBase* ll, unsigned int elemsize,
@@ -76,15 +76,15 @@ void LinkedListReplace_(LinkedListBase* ll, void* data, void* value)
 {
 	ASSERT(ll);
 	if (!ll->head) return;
-	ListNode* temp = ll->head;
-	while (temp->next != NULL)
+	void* temp = (ListNode*)ll->head;
+	while (temp != NULL)
 	{
-		if (ll->DataCmp(temp->elem, data, temp->elemsize) == 0)
+		if (ll->DataCmp(((ListNode*)temp)->elem, data, ((ListNode*)temp)->elemsize) == 0)
 		{
-			MemoryCopy(temp->elem, value, temp->elemsize);
+			MemoryCopy(((ListNode*)temp)->elem, value, ((ListNode*)temp)->elemsize);
 			break;
 		}
-		temp = temp->next;
+		temp = ((ListNode*)temp)->next;
 	}
 }
 
@@ -92,14 +92,14 @@ void LinkedListReplaceAll_(LinkedListBase* ll, void* data, void* value)
 {
 	ASSERT(ll);
 	if (!ll->head) return;
-	ListNode* temp = ll->head;
-	while (temp->next != NULL)
+	void* temp = (ListNode*)ll->head;
+	while (temp != NULL)
 	{
-		if (ll->DataCmp(temp->elem, data, temp->elemsize) == 0)
+		if (ll->DataCmp(((ListNode*)temp)->elem, data, ((ListNode*)temp)->elemsize) == 0)
 		{
-			MemoryCopy(temp->elem, value, temp->elemsize);
+			MemoryCopy(((ListNode*)temp)->elem, value, ((ListNode*)temp)->elemsize);
 		}
-		temp = temp->next;
+		temp = ((ListNode*)temp)->next;
 	}
 }
 
@@ -107,15 +107,15 @@ int LinkedListGetIndex_(LinkedListBase* ll, void* data)
 {
 	ASSERT(ll);
 	if (!ll->head) return -1;
-	ListNode* temp = ll->head;
+	void* temp = (ListNode*)ll->head;
 	unsigned int retindex = 0;
-	while (temp->next != NULL)
+	while (temp != NULL)
 	{
-		if (ll->DataCmp(temp->elem, data, temp->elemsize) == 0)
+		if (ll->DataCmp(((ListNode*)temp)->elem, data, ((ListNode*)temp)->elemsize) == 0)
 		{
 			return retindex;
 		}
-		temp = temp->next;
+		temp = ((ListNode*)temp)->next;
 		retindex++;
 	}
 	return -1;
@@ -125,15 +125,15 @@ void* LinkedListAt_(LinkedListBase* ll, unsigned int index)
 {
 	ASSERT(ll);
 	if (!ll->head) return NULL;
-	ListNode* temp = ll->head;
+	void* temp = (ListNode*)ll->head;
 	unsigned int retindex = 0;
 	while (temp != NULL)
 	{
 		if (index == retindex)
 		{
-			return temp->elem;
+			return ((ListNode*)temp)->elem;
 		}
-		temp = temp->next;
+		temp = ((ListNode*)temp)->next;
 		retindex++;
 	}
 	return NULL;
@@ -141,15 +141,15 @@ void* LinkedListAt_(LinkedListBase* ll, unsigned int index)
 void LinkedListClear_(LinkedListBase* ll)
 {
 	ASSERT(ll != NULL);
-	ListDelete(ll->head);
+	ListDelete(ll->head, ll->FreeFunc);
 	ll->head = ll->tail = NULL;
-	ll->listsize = 0; 
+	ll->listsize = 0;
 }
 
 void LinkedListDelete_(LinkedListBase* ll)
 {
 	ASSERT(ll != NULL);
-	ListDelete(ll->head);
+	ListDelete(ll->head, ll->FreeFunc);
 	ll->FreeFunc(ll);
 }
 

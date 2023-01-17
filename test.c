@@ -481,42 +481,149 @@ void testStack(unsigned int size)
 void testList(unsigned int size)
 {
 	printf("-----------------List Test Start---------------------------\n");
-	LinkedListInt *ll = malloc(sizeof(LinkedListInt));
-	LinkedListNew(ll, DataCompare, FreeData);
+	{
+		LinkedListInt *ll = malloc(sizeof(LinkedListInt));
+		LinkedListNew(ll, DataCompare, FreeData);
 
-	LinkedListInsertAtHead(ll, 0);
-	LinkedListInsertAtHead(ll, -1);
-	LinkedListInsertAtTail(ll, 9);
-	LinkedListInsertAtTail(ll, 2);
-	LinkedListInsertAtTail(ll, 3);
-	LinkedListInsertAtTail(ll, 4);
-	LinkedListInsertAtTail(ll, 5);
-	LinkedListInsertAtTail(ll, 9);
-	LinkedListInsertAtTail(ll, 9);
+		LinkedListInsertAtHead(ll, 0);
+		LinkedListInsertAtHead(ll, 1);
+		LinkedListInsertAtTail(ll, 9);
+		LinkedListInsertAtTail(ll, 2);
+		LinkedListInsertAtTail(ll, 3);
+		LinkedListInsertAtTail(ll, 4);
+		LinkedListInsertAtTail(ll, 5);
+		LinkedListInsertAtTail(ll, 9);
+		LinkedListInsertAtTail(ll, 9);
 
-	for (unsigned int i = 0; i < LinkedListSize(ll); i++)
-		printf("%d ", *(int*)LinkedListAt(ll, i));
+		for (unsigned int i = 0; i < LinkedListSize(ll); i++)
+			printf("%d ", *(int*)LinkedListAt(ll, i));
+		printf("\n");
 
-	LinkedListClear(ll);
+		LinkedListClear(ll);
 
-	LinkedListReplace(ll, 9, 1);
-	LinkedListReplaceAll(ll, 9, 1);
+		LinkedListInsertAtTail(ll, 9);
+		LinkedListInsertAtTail(ll, 2);
+		LinkedListInsertAtTail(ll, 3);
+		LinkedListInsertAtTail(ll, 4);
+		LinkedListInsertAtTail(ll, 5);
+		LinkedListInsertAtTail(ll, 9);
+		LinkedListInsertAtTail(ll, 9);
+		LinkedListReplace(ll, 9, 1);
+		LinkedListReplaceAll(ll, 9, 1);
 
-	for (unsigned int i = 0; i < 6; i++)
-		printf("%d ", *(int*)LinkedListAt(ll, i));
+		for (unsigned int i = 0; i < LinkedListSize(ll); i++)
+			printf("%d ", *(int*)LinkedListAt(ll, i));
+		printf("\n");
 
-	int index = LinkedListGetIndex(ll, 9);
-	printf("%d", index);
+		int index = LinkedListGetIndex(ll, 9);
+		printf("%d\n", index);
 
-	LinkedListClear(ll);
-	
-	LinkedListInsertAtTail(ll, 9);
-	LinkedListInsertAtTail(ll, 9);
+		LinkedListClear(ll);
 
-	for (unsigned int i = 0; i < LinkedListSize(ll); i++)
-		printf("%d ", *(int*)LinkedListAt(ll, i));
+		LinkedListInsertAtTail(ll, 9);
+		LinkedListInsertAtTail(ll, 9);
 
-	printf("-----------------List Test End-----------------------------\n");
+		for (unsigned int i = 0; i < LinkedListSize(ll); i++)
+			printf("%d ", *(int*)LinkedListAt(ll, i));
+		printf("\n");
+		LinkedListDelete(ll);
+	}
+	{
+		LinkedListDouble *ll = malloc(sizeof(LinkedListDouble));
+		LinkedListNew(ll, DataCompare, FreeData);
+
+		LinkedListInsertAtHead(ll, 0.25);
+		LinkedListInsertAtHead(ll, 1.25);
+		LinkedListInsertAtTail(ll, 9.25);
+		LinkedListInsertAtTail(ll, 2.25);
+		LinkedListInsertAtTail(ll, 3.25);
+		LinkedListInsertAtTail(ll, 4.25);
+		LinkedListInsertAtTail(ll, 5.25);
+		LinkedListInsertAtTail(ll, 9.25);
+		LinkedListInsertAtTail(ll, 9.25);
+
+		for (unsigned int i = 0; i < LinkedListSize(ll); i++)
+			printf("%lf ", *(double*)LinkedListAt(ll, i));
+		printf("\n");
+
+		LinkedListClear(ll);
+
+		LinkedListInsertAtTail(ll, 9.25);
+		LinkedListInsertAtTail(ll, 2.25);
+		LinkedListInsertAtTail(ll, 3.25);
+		LinkedListInsertAtTail(ll, 4.25);
+		LinkedListInsertAtTail(ll, 5.25);
+		LinkedListInsertAtTail(ll, 9.25);
+		LinkedListInsertAtTail(ll, 9.25);
+		LinkedListReplace(ll, 9.25, 1.15);
+		LinkedListReplaceAll(ll, 9.25, 1.15);
+
+		for (unsigned int i = 0; i < LinkedListSize(ll); i++)
+			printf("%lf ", *(double*)LinkedListAt(ll, i));
+		printf("\n");
+
+		int index = LinkedListGetIndex(ll, 9.25);
+		printf("%d\n", index);
+
+		LinkedListClear(ll);
+
+		LinkedListInsertAtTail(ll, 9);
+		LinkedListInsertAtTail(ll, 9);
+
+		for (unsigned int i = 0; i < LinkedListSize(ll); i++)
+			printf("%lf ", *(double*)LinkedListAt(ll, i));
+		printf("\n");
+		LinkedListDelete(ll);
+	}
+	{
+		LinkedListString *ll = malloc(sizeof(LinkedListString));
+		LinkedListNew(ll, StringCompare, FreeString);
+
+		LinkedListInsertAtHead(ll, "0.25");
+		LinkedListInsertAtHead(ll, "1.25");
+		LinkedListInsertAtTail(ll, "9.25");
+		LinkedListInsertAtTail(ll, "2.25");
+		LinkedListInsertAtTail(ll, "3.25");
+		LinkedListInsertAtTail(ll, "4.25");
+		LinkedListInsertAtTail(ll, "5.25");
+		LinkedListInsertAtTail(ll, "9.25");
+		LinkedListInsertAtTail(ll, "9.25");
+
+		for (unsigned int i = 0; i < LinkedListSize(ll); i++)
+			printf("%s ", *(char**)LinkedListAt(ll, i));
+		printf("\n");
+
+		LinkedListClear(ll);
+
+		LinkedListInsertAtTail(ll, "9.25");
+		LinkedListInsertAtTail(ll, "2.25");
+		LinkedListInsertAtTail(ll, "3.25");
+		LinkedListInsertAtTail(ll, "4.25");
+		LinkedListInsertAtTail(ll, "5.25");
+		LinkedListInsertAtTail(ll, "9.25");
+		LinkedListInsertAtTail(ll, "9.25");
+		LinkedListReplace(ll, "9.25", "1.25");
+		LinkedListReplaceAll(ll, "9.25", "1.25");
+
+		for (unsigned int i = 0; i < LinkedListSize(ll); i++)
+			printf("%s ", *(char**)LinkedListAt(ll, i));
+		printf("\n");
+
+		int index = LinkedListGetIndex(ll, "9.25");
+		printf("%d\n", index);
+
+		LinkedListClear(ll);
+
+		LinkedListInsertAtTail(ll, "9.25");
+		LinkedListInsertAtTail(ll, "9.25");
+
+		for (unsigned int i = 0; i < LinkedListSize(ll); i++)
+			printf("%s ", *(char**)LinkedListAt(ll, i));
+		printf("\n");
+
+		LinkedListDelete(ll);
+	}
+	printf("\n-----------------List Test End-----------------------------\n");
 }
 void testQuickSort(unsigned int size)
 {
@@ -675,12 +782,12 @@ int main()
 {
 	testStack(100);
 	testQueue(100);
-	testMap();
+ 	testMap();
 	testVector(100);
 	testBinarySearch();
 	testBubbleSort();
 	testLinearSearch();
 	testList(25);
-	testQuickSort(100); // don't works well for values greater than 100
-	testMergeSort(100); // don't works well for values greater than 100
+	testQuickSort(200); // don't works well for values greater than 100
+	testMergeSort(200); // don't works well for values greater than 100
 }
