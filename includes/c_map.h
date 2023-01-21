@@ -22,7 +22,8 @@ typedef struct {
 	unsigned int(*HashFunc)(void* key, unsigned int keysize);
 	unsigned int(*CollRes)(unsigned int hash, unsigned int i);
 	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize);
-	void(*FreeFunc)(void* elems);
+	void(*FreeFuncKey)(void* elems);
+	void(*FreeFuncVal)(void* elems);
 } MapBase;
 
 
@@ -35,8 +36,8 @@ typedef struct {
 #define MapT(T,  U) \
 	struct { MapBase base; T key_; U value_; }
 
-#define MapNew(m, HashFunc, CollRes, DataCmp, FreeFunc) \
-	MapNew_(&(m)->base, sizeof((m)->key_), sizeof((m)->value_), HashFunc, CollRes, DataCmp, FreeFunc)
+#define MapNew(m, HashFunc, CollRes, DataCmp, FreeFuncKey, FreeFuncVal) \
+	MapNew_(&(m)->base, sizeof((m)->key_), sizeof((m)->value_), HashFunc, CollRes, DataCmp, FreeFuncKey, FreeFuncVal)
 
 #define MapSet(m, key, value) \
 	((m)->key_ = (key), \
@@ -74,10 +75,10 @@ unsigned int QuadraticProbing(unsigned int hash, unsigned int i);
 unsigned int DoubleHashing(unsigned int hash, unsigned int i);
 
 void MapNew_(MapBase* m, unsigned int keysize, unsigned int valuesize,
-	unsigned int(*HashFunc)(void* key, unsigned int keysize),
+	unsigned int(*HashFunc)(const void* key, unsigned int keysize),
 	unsigned int(*CollRes)(unsigned int hash, unsigned int i), 
 	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
-	void(*FreeFunc)(void* elems));
+	void(*FreeFuncKey)(void* elems), void(*FreeFuncVal)(void* elems));
 void MapSet_(MapBase* m, void* key, void* value);
 void MapResize_(MapBase* m);
 unsigned int MapSize_(MapBase* m);

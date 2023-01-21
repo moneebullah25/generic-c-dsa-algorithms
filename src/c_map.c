@@ -1,6 +1,7 @@
 #include "../includes/c_map.h"
+#include <string.h>
 
-unsigned int HashFunctionInt(void* key, unsigned int keysize)
+unsigned int HashFunctionInt(const void* key, unsigned int keysize)
 {
 	ASSERT(keysize > 0);
 	unsigned int x = 0;
@@ -12,14 +13,13 @@ unsigned int HashFunctionInt(void* key, unsigned int keysize)
 	x = (x >> 16) ^ x;
 	return x;
 }
-unsigned int HashFunctionStr(void* key, unsigned int keysize)
+unsigned int HashFunctionStr(const void* key, unsigned int keysize)
 {
-	ASSERT(keysize > 0);
 	unsigned int hash = 5381;
 	int c;
 
-	void* str = malloc(sizeof(keysize));
-	MemoryCopy(str, key, keysize);
+	char* str = malloc(strlen((char*)key));
+	str = strdup((char*)key);
 
 	while ((c = *(*(char**)str)++))
 		hash = ((hash << 5) + hash) + c; /* pstruct * 33 + c */
@@ -59,11 +59,12 @@ static void InitMapNpde(MapNode* mn, unsigned int keyize, unsigned int valuesize
 	SetEmpty(mn->value, valuesize);
 }
 
+
 void MapNew_(MapBase* m, unsigned int keysize, unsigned int valuesize,
-	unsigned int(*HashFunc)(void* key, unsigned int keysize),
+	unsigned int(*HashFunc)(const void* key, unsigned int keysize),
 	unsigned int(*CollRes)(unsigned int hash, unsigned int i),
-	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
-	void(*FreeFunc)(void* elems))
+	int(*DataCmp)(const void* key1, const void* key2, unsigned int keysize),
+	void(*FreeFuncKey)(void* elems), void(*FreeFuncVal)(void* elems))
 {
 	ASSERT(keysize > 0 && valuesize > 0);
 	m->alloclen = 4; m->logiclen = 0;
@@ -74,7 +75,8 @@ void MapNew_(MapBase* m, unsigned int keysize, unsigned int valuesize,
 	m->HashFunc = HashFunc;
 	m->CollRes = CollRes;
 	m->DataCmp = DataCmp;
-	m->FreeFunc = FreeFunc;
+	m->FreeFuncKey = FreeFuncKey;
+	m->FreeFuncVal = FreeFuncVal;
 	for (unsigned int i = 0; i < m->alloclen; i++)
 		InitMapNpde(&m->elems[i], m->keysize, m->valuesize);
 }
@@ -89,12 +91,12 @@ void MapSet_(MapBase* m, void* key, void* value)
 	unsigned int i = 1;
 	while (!IsEmpty(m->elems[hash_value].key, m->keysize))
 	{
-		if (M_ABS(m->DataCmp(m->elems[hash_value].key, key, m->keysize))) break;
+		if (m->DataCmp(m->elems[hash_value].key, key, m->keysize) == 0) break;
 		hash_value = m->CollRes(hash_value, i) % m->alloclen;
 	}
 	
-	MemoryCopy(m->elems[hash_value].key, key, m->keysize); // Insertion
-	MemoryCopy(m->elems[hash_value].value, value, m->valuesize);
+	memcpy(m->elems[hash_value].key, key, m->keysize); // Insertion
+	memcpy(m->elems[hash_value].value, value, m->valuesize);
 	m->logiclen++;
 }
 
@@ -103,7 +105,7 @@ void MapResize_(MapBase* m)
 	/* Done Shallow copy and only stores the address of key/value pairs only */
 		MapNode* oldelemscpy = malloc(m->alloclen * sizeof(MapNode));
 		ASSERT(oldelemscpy);
-		MemoryCopy(oldelemscpy, m->elems, m->alloclen * sizeof(MapNode));
+		memcpy(oldelemscpy, m->elems, m->alloclen * sizeof(MapNode));
 		
 		// Just free the shallow copy
 		free(m->elems);
@@ -120,8 +122,8 @@ void MapResize_(MapBase* m)
 			while (!IsEmpty(m->elems[hash_value].key, m->keysize))
 				hash_value = m->CollRes(hash_value, i) % m->alloclen;
 			
-			MemoryCopy(m->elems[hash_value].key, oldelemscpy[i].key, m->keysize); // Insertion
-			MemoryCopy(m->elems[hash_value].value, oldelemscpy[i].value, m->valuesize);
+			memcpy(m->elems[hash_value].key, oldelemscpy[i].key, m->keysize); // Insertion
+			memcpy(m->elems[hash_value].value, oldelemscpy[i].value, m->valuesize);
 		}
 		// Just free the shallow copy
 		free(oldelemscpy);
@@ -189,8 +191,8 @@ void* MapNext_(MapBase* m, MapIter* mapiter)
 		if (!IsEmpty(m->elems[i].key, m->keysize))
 		{
 			mapiter->keyindex = i;
-			MemoryCopy(mapiter->node.key, m->elems[i].key, m->keysize);
-			MemoryCopy(mapiter->node.value, m->elems[i].value, m->valuesize);
+			memcpy(mapiter->node.key, m->elems[i].key, m->keysize);
+			memcpy(mapiter->node.value, m->elems[i].value, m->valuesize);
 			return mapiter;
 		}
 	}
@@ -210,10 +212,10 @@ void MapClear_(MapBase* m)
 void MapDelete_(MapBase* m)
 {
 	for (unsigned int i = 0; i < m->alloclen; i++) {
-		m->FreeFunc(m->elems[i].key);
-		m->FreeFunc(m->elems[i].value);
+		m->FreeFuncKey(m->elems[i].key);
+		m->FreeFuncVal(m->elems[i].value);
 	}
 	
-	m->FreeFunc(m->elems);
+	free(m->elems);
 }
 

@@ -683,7 +683,7 @@ void testMap()
 	printf("---------------------Maps Start----------------------------\n");
 	{
 		MapInt *m = malloc(sizeof(Map));
-		MapNew(m, HashFunctionInt, LinearProbing, DataCompare, FreeData);
+		MapNew(m, HashFunctionInt, LinearProbing, DataCompare, FreeData, FreeData);
 
 		MapSet(m, 0, 21);
 		MapSet(m, 2, 15);
@@ -714,7 +714,7 @@ void testMap()
 	}
 	{
 		MapDouble *m = malloc(sizeof(Map));
-		MapNew(m, HashFunctionInt, LinearProbing, DataCompare, FreeData);
+		MapNew(m, HashFunctionInt, LinearProbing, DataCompare, FreeData, FreeData);
 
 		MapSet(m, 1.0, 21.25);
 		MapSet(m, 2.0, 15.25);
@@ -745,7 +745,7 @@ void testMap()
 	}
 	{
 		MapStringInt *m = malloc(sizeof(Map));
-		MapNew(m, HashFunctionStr, LinearProbing, StringCompare, FreeData);
+		MapNew(m, HashFunctionStr, LinearProbing, StringCompare, FreeString, FreeData);
 
 		MapSet(m, "Muneeb\0", 21);
 		MapSet(m, "Moiz\0", 15);
