@@ -18,6 +18,7 @@ EXE := test.out
 
 # Compile all the object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
 
 # Link the object files to create the executable
