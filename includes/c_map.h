@@ -68,8 +68,8 @@ typedef struct {
 	MapDelete_(&(m)->base)
 
 // Helpers Predefined with library
-unsigned int HashFunctionStr(void* key, unsigned int keysize);
-unsigned int HashFunctionInt(void* key, unsigned int keysize);
+unsigned int HashFunctionStr(const void* key, unsigned int keysize);
+unsigned int HashFunctionInt(const void* key, unsigned int keysize);
 unsigned int LinearProbing(unsigned int hash, unsigned int i);
 unsigned int QuadraticProbing(unsigned int hash, unsigned int i);
 unsigned int DoubleHashing(unsigned int hash, unsigned int i);
