@@ -5,6 +5,16 @@
 #define NULL 0
 #endif
 
+#define __bool_true_false_are_defined 1
+
+#ifndef __cplusplus
+
+#define bool  _Bool
+#define false 0
+#define true  1
+
+#endif /* __cplusplus */
+
 #ifdef DEBUG
 #define ASSERT(x) ((void)(!(x) && assert_handler(#x, __FILE__, __LINE__) && (HALT(), 1)))
 #else
