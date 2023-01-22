@@ -25,8 +25,6 @@
 #define M_MIN(X, Y) ((X) <= (Y) ? (X) : (Y))
 #define M_ABS(X) ((X < 0) ? (-X) : (X))
 
-typedef unsigned long long size_t;
-
 void FreeString(void *elems);
 void FreeData(void *elems);
 void MemorySwap(void *vp1, void *vp2, size_t nbytes);
