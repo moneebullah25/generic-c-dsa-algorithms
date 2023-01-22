@@ -7,15 +7,15 @@
 
 typedef struct ListNode {
 	void* elem;
-	unsigned int elemsize;
+	size_t elemsize;
 	struct ListNode* next;
 } ListNode;
 
 typedef struct LinkedListBase {
 	ListNode* head; ListNode* tail;
-	unsigned int listsize; unsigned int elemsize;
+	size_t listsize; size_t elemsize;
 
-	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize);
+	int(*DataCmp)(const void *key1, const void *key2, size_t keysize);
 	void(*FreeFunc)(void* elems);
 } LinkedListBase;
 
@@ -59,8 +59,8 @@ struct { LinkedListBase base; T data_; T value_; }
 #define LinkedListSize(ll) \
 	LinkedListSize_(&(ll)->base)
 
-void LinkedListNew_(LinkedListBase* ll, unsigned int elemsize,
-	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
+void LinkedListNew_(LinkedListBase* ll, size_t elemsize,
+	int(*DataCmp)(const void *key1, const void *key2, size_t keysize),
 	void(*FreeFunc)(void* elems));
 void LinkedListInsertAtTail_(LinkedListBase* ll, void* data);
 void LinkedListInsertAtHead_(LinkedListBase* ll, void* data);
@@ -69,10 +69,10 @@ void LinkedListReplace_(LinkedListBase* ll, void* data, void* value);
 /*Replace Data with Value unless doesn't find any*/
 void LinkedListReplaceAll_(LinkedListBase* ll, void* data, void* value);
 int LinkedListGetIndex_(LinkedListBase* ll, void* data);
-void* LinkedListAt_(LinkedListBase* ll, unsigned int index);
+void* LinkedListAt_(LinkedListBase* ll, size_t index);
 void LinkedListClear_(LinkedListBase* ll);
 void LinkedListDelete_(LinkedListBase* ll);
-unsigned int LinkedListSize_(LinkedListBase* ll);
+size_t LinkedListSize_(LinkedListBase* ll);
 
 typedef LinkedListT(void*) LinkedList;
 typedef LinkedListT(double) LinkedListDouble;

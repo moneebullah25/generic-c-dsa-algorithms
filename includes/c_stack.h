@@ -4,15 +4,15 @@
 #include "c_helper.h"
 
 typedef struct StackBase{
-	void* elems; unsigned int elemsize; unsigned int logiclen; unsigned int alloclen;
+	void* elems; size_t elemsize; size_t logiclen; size_t alloclen;
 
-	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize);
+	int(*DataCmp)(const void *key1, const void *key2, size_t keysize);
 	void(*FreeFunc)(void* elems);
 } StackBase;
 
 typedef struct StackIter{
 	void* data;
-	unsigned int index;
+	size_t index;
 }StackIter;
 
 #define StackT(T) \
@@ -46,8 +46,8 @@ struct { StackBase base; T data_; }
 #define StackSize(s) \
 	StackSize_(&(s)->base)
 
-void StackNew_(StackBase* s, unsigned int elem_size,
-	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
+void StackNew_(StackBase* s, size_t elem_size,
+	int(*DataCmp)(const void *key1, const void *key2, size_t keysize),
 	void(*FreeFunc)(void* elems));
 void StackPush_(StackBase* s, void* elem);
 void* StackPop_(StackBase* s);
@@ -56,7 +56,7 @@ void StackClear_(StackBase* s);
 void StackDelete_(StackBase* s);
 StackIter* StackIterator_(StackBase* s);
 void* StackNext_(StackBase* s, StackIter* stackiter);
-unsigned int StackSize_(StackBase* s);
+size_t StackSize_(StackBase* s);
 
 typedef StackT(void*) Stack;
 typedef StackT(double) StackDouble;

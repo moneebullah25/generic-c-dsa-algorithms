@@ -1,13 +1,13 @@
 #include "../includes/c_stack.h"
 
-static void* getPointer(void* elems, unsigned int index,
+static void* getPointer(void* elems, size_t index,
 	unsigned nbytes)
 {
 	return (void*)((char*)elems + index * nbytes);
 }
 
-void StackNew_(StackBase* s, unsigned int elem_size,
-	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
+void StackNew_(StackBase* s, size_t elem_size,
+	int(*DataCmp)(const void *key1, const void *key2, size_t keysize),
 	void(*FreeFunc)(void* elems))
 {
 	ASSERT(elem_size > 0);
@@ -88,7 +88,7 @@ void* StackNext_(StackBase* s, StackIter* stackiter)
 	return stackiter;
 }
 
-unsigned int StackSize_(StackBase* s)
+size_t StackSize_(StackBase* s)
 {
 	return s->logiclen;
 }

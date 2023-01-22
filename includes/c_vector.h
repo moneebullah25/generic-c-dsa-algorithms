@@ -5,15 +5,15 @@
 
 typedef struct VectorBase{
 	void* elems;
-	unsigned int elemsize, logiclen, alloclen;
+	size_t elemsize, logiclen, alloclen;
 
-	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize);
+	int(*DataCmp)(const void *key1, const void *key2, size_t keysize);
 	void(*FreeFunc)(void* elems);
 } VectorBase;
 
 typedef struct VectorIter{
 	void* data;
-	unsigned int index;
+	size_t index;
 }VectorIter;
 
 #define VectorT(T) \
@@ -49,17 +49,17 @@ typedef struct VectorIter{
 	VectorSize_(&(v)->base)
 
 
-void VectorNew_(VectorBase*v, unsigned int elemsize, 
-	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
+void VectorNew_(VectorBase*v, size_t elemsize, 
+	int(*DataCmp)(const void *key1, const void *key2, size_t keysize),
 	void(*FreeFunc)(void* elems));
 void VectorPush_(VectorBase* v, void* data);
-void* VectorAt_(VectorBase* v, unsigned int index);
+void* VectorAt_(VectorBase* v, size_t index);
 void* VectorGet_(VectorBase* v, void* data);
 void VectorClear_(VectorBase* v);
 void VectorDelete_(VectorBase* v);
 VectorIter* VectorIterator_(VectorBase* v);
 void* VectorNext_(VectorBase* v, VectorIter* veciter);
-unsigned int VectorSize_(VectorBase* v);
+size_t VectorSize_(VectorBase* v);
 
 typedef VectorT(void*) Vector;
 typedef VectorT(double) VectorDouble;
