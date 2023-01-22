@@ -78,7 +78,10 @@ Test(QueueDouble, PushPop) {
 
     double *five = QueueTop(q);
     *five = 6.25;
+<<<<<<< HEAD
 
+=======
+>>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
     iter = QueueIterator(q);
     sum = 0;
     while (QueueNext(q, iter)) {
@@ -87,12 +90,19 @@ Test(QueueDouble, PushPop) {
     cr_assert_float_eq(sum, 22.75, 0.0001, "Expected sum of elements to be 22.75, got %lf", sum);
 
     QueueDelete(q);
+<<<<<<< HEAD
     }
+=======
+}
+>>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
 
 Test(QueueString, PushPop) {
     QueueString *q = malloc(sizeof(QueueString));
     QueueNew(q, StringCompare, FreeString);
+<<<<<<< HEAD
 
+=======
+>>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
     QueuePush(q, "111");
     QueuePush(q, "211");
     QueuePush(q, "311");
@@ -131,5 +141,9 @@ Test(QueueString, PushPop) {
     cr_assert_eq(len, 15, "Expected total length of strings to be 15, got %d", len);
 
     QueueDelete(q);
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a

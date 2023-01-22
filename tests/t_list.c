@@ -1,5 +1,8 @@
 #include <criterion/criterion.h>
+<<<<<<< HEAD
 #include "../includes/c_list.h"
+=======
+>>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
 
 Test(LinkedListInt, Insert) {
     LinkedListInt *ll = malloc(sizeof(LinkedListInt));
@@ -69,7 +72,10 @@ Test(LinkedListDouble, Insert) {
     LinkedListInsertAtTail(ll, 5.25);
     LinkedListInsertAtTail(ll, 9.25);
     LinkedListInsertAtTail(ll, 9.25);
+<<<<<<< HEAD
 
+=======
+>>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
     double sum = 0;
     for (unsigned int i = 0; i < LinkedListSize(ll); i++) {
         sum += *(double*)LinkedListAt(ll, i);
@@ -115,8 +121,11 @@ Test(LinkedListString, Test_Insertion_and_Deletion) {
     LinkedListString *ll = malloc(sizeof(LinkedListString));
     LinkedListNew(ll, StringCompare, FreeString);
 
+<<<<<<< HEAD
     char* expected_list[] = {"1.25","0.25","9.25","2.25","3.25","4.25","5.25","9.25","9.25"};
 
+=======
+>>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
     LinkedListInsertAtHead(ll, "0.25");
     LinkedListInsertAtHead(ll, "1.25");
     LinkedListInsertAtTail(ll, "9.25");
@@ -133,8 +142,11 @@ Test(LinkedListString, Test_Insertion_and_Deletion) {
 
     LinkedListClear(ll);
 
+<<<<<<< HEAD
     char* expected_list2[] = {"9.25","2.25","3.25","4.25","5.25","9.25","9.25"};
 
+=======
+>>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
     LinkedListInsertAtTail(ll, "9.25");
     LinkedListInsertAtTail(ll, "2.25");
     LinkedListInsertAtTail(ll, "3.25");
@@ -146,7 +158,11 @@ Test(LinkedListString, Test_Insertion_and_Deletion) {
     LinkedListReplaceAll(ll, "9.25", "1.25");
 
     for (unsigned int i = 0; i < LinkedListSize(ll); i++) {
+<<<<<<< HEAD
         cr_assert_str_eq(*(char**)LinkedListAt(ll, i), expected_list2[i], "Unexpected string at index %d", i);
+=======
+        cr_assert_str_eq(*(char**)LinkedListAt(ll, i), "1.25", "Unexpected string at index %d", i);
+>>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
     }
 
     int index = LinkedListGetIndex(ll, "9.25");

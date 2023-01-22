@@ -4,17 +4,17 @@
 #include "c_helper.h"
 
 typedef struct QueueBase {
-	void* elems; unsigned int elemsize; unsigned int logiclen; unsigned int alloclen;
+	void* elems; size_t elemsize; size_t logiclen; size_t alloclen;
 	void* front; void* rear;
 
-	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize);
+	int(*DataCmp)(const void *key1, const void *key2, size_t keysize);
 	void(*FreeFunc)(void* elems);
 }QueueBase;
 
 typedef struct QueueIter {
 	void* data;
 	void* prevfront;
-	unsigned int index;
+	size_t index;
 }QueueIter;
 
 #define QueueT(T) \
@@ -48,8 +48,8 @@ struct { QueueBase base; T data_; }
 #define QueueSize(s) \
 	QueueSize_(&(s)->base)
 
-void QueueNew_(QueueBase* q, unsigned int elem_size,
-	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
+void QueueNew_(QueueBase* q, size_t elem_size,
+	int(*DataCmp)(const void *key1, const void *key2, size_t keysize),
 	void(*FreeFunc)(void* elems));
 void QueuePush_(QueueBase* q, void* elem);
 void* QueuePop_(QueueBase* q);
@@ -58,7 +58,7 @@ void QueueClear_(QueueBase* q);
 void QueueDelete_(QueueBase* q);
 QueueIter* QueueIterator_(QueueBase* q);
 void* QueueNext_(QueueBase* q, QueueIter* stackiter);
-unsigned int QueueSize_(QueueBase* q);
+size_t QueueSize_(QueueBase* q);
 
 typedef QueueT(void*) Queue;
 typedef QueueT(double) QueueDouble;

@@ -1,7 +1,7 @@
 #include "../includes/c_list.h"
 
 
-static void ListNodeNew(ListNode* ln, unsigned int elemsize, void* data)
+static void ListNodeNew(ListNode* ln, size_t elemsize, void* data)
 {
 	ASSERT(elemsize > 0);
 	ln->elemsize = elemsize;
@@ -20,8 +20,8 @@ static void ListDelete(ListNode* node, void(*FreeFunc)(void* elems)) {
 	FreeFunc(node);
 }
 
-void LinkedListNew_(LinkedListBase* ll, unsigned int elemsize,
-	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
+void LinkedListNew_(LinkedListBase* ll, size_t elemsize,
+	int(*DataCmp)(const void *key1, const void *key2, size_t keysize),
 	void(*FreeFunc)(void* elems))
 {
 	ASSERT(elemsize > 0);
@@ -108,7 +108,7 @@ int LinkedListGetIndex_(LinkedListBase* ll, void* data)
 	ASSERT(ll);
 	if (!ll->head) return -1;
 	void* temp = (ListNode*)ll->head;
-	unsigned int retindex = 0;
+	size_t retindex = 0;
 	while (temp != NULL)
 	{
 		if (ll->DataCmp(((ListNode*)temp)->elem, data, ((ListNode*)temp)->elemsize) == 0)
@@ -121,12 +121,12 @@ int LinkedListGetIndex_(LinkedListBase* ll, void* data)
 	return -1;
 }
 
-void* LinkedListAt_(LinkedListBase* ll, unsigned int index)
+void* LinkedListAt_(LinkedListBase* ll, size_t index)
 {
 	ASSERT(ll);
 	if (!ll->head) return NULL;
 	void* temp = (ListNode*)ll->head;
-	unsigned int retindex = 0;
+	size_t retindex = 0;
 	while (temp != NULL)
 	{
 		if (index == retindex)
@@ -154,7 +154,7 @@ void LinkedListDelete_(LinkedListBase* ll)
 }
 
 
-unsigned int LinkedListSize_(LinkedListBase* ll)
+size_t LinkedListSize_(LinkedListBase* ll)
 {
 	return ll->listsize;
 }
