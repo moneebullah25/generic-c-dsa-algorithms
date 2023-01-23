@@ -1,9 +1,11 @@
 #ifndef _C_LIST_HEADER_
 #define _C_LIST_HEADER_
 
-#include "c_helper.h"
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-#define MAX_UNSIGNED 4294967295
+#include "c_helper.h"
 
 typedef struct ListNode {
 	void* elem;
@@ -82,4 +84,8 @@ typedef LinkedListT(char*) LinkedListString;
 typedef LinkedListT(char) LinkedListChar;
 typedef LinkedListT(bool) LinkedListBool;
 
-#endif
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* _C_LIST_HEADER_ */
