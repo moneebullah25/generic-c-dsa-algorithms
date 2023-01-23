@@ -27,12 +27,12 @@
 
 void FreeString(void *elems);
 void FreeData(void *elems);
-void MemorySwap(void *vp1, void *vp2, size_t nbytes);
-void StringSwap(void *vp1, void *vp2, size_t nbytes);
-int DataCompare(const void *vp1, const void *vp2, size_t nbytes);
-int StringCompare(const void *vp1, const void *vp2, size_t nbytes);
-void *MemoryCopy(void *dest, const void *src, size_t nbytes);
-void StringCopy(void *dest, const void *src, size_t nbytes);
-void *MemoryMove(void *dest, void *src, size_t nbytes);
+void MemorySwap(void *vp1, void *vp2, unsigned int nbytes);
+void StringSwap(void *vp1, void *vp2, unsigned int nbytes);
+int DataCompare(const void *vp1, const void *vp2, unsigned int nbytes);
+int StringCompare(const void *vp1, const void *vp2, unsigned int nbytes);
+void *MemoryCopy(void *dest, const void *src, unsigned int nbytes);
+void StringCopy(void *dest, const void *src, unsigned int nbytes);
+void *MemoryMove(void *dest, void *src, unsigned int nbytes);
 
 #endif

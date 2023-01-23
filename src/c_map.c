@@ -1,11 +1,10 @@
 #include "../includes/c_map.h"
-#include <string.h>
 
-size_t HashFunctionInt(const void* key, size_t keysize)
+unsigned int HashFunctionInt(const void* key, unsigned int keysize)
 {
 	ASSERT(keysize > 0);
-	size_t x = 0;
-	for (size_t i = 0; i < keysize; i++)
+	unsigned int x = 0;
+	for (unsigned int i = 0; i < keysize; i++)
 		x += (int)(((char *)(key))[i]);
 
 	x = ((x >> 16) ^ x) * 0x45d9f3b;
@@ -13,45 +12,42 @@ size_t HashFunctionInt(const void* key, size_t keysize)
 	x = (x >> 16) ^ x;
 	return x;
 }
-size_t HashFunctionStr(const void* key, size_t keysize)
+unsigned int HashFunctionStr(const void* key, unsigned int keysize)
 {
-	size_t hash = 5381;
+	unsigned int hash = 5381;
 	int c;
+	int i = 0;
 
-	char* str = malloc(strlen((char*)key));
-	str = strdup((char*)key);
-
-	while ((c = *(*(char**)str)++))
+	while (c = *(*(char**)key + i++))
 		hash = ((hash << 5) + hash) + c; /* pstruct * 33 + c */
 
-	free(str);
 
 	return hash;
 }
-size_t LinearProbing(size_t hash, size_t i)
+unsigned int LinearProbing(unsigned int hash, unsigned int i)
 {
 	return hash+1;
 }
-size_t QuadraticProbing(size_t hash, size_t i)
+unsigned int QuadraticProbing(unsigned int hash, unsigned int i)
 {
 	return hash + (i * i);
 }
-size_t DoubleHashing(size_t hash, size_t i)
+unsigned int DoubleHashing(unsigned int hash, unsigned int i)
 {
 	return hash + (i * hash);
 }
-static void SetEmpty(void* key, size_t keysize)
+static void SetEmpty(void* key, unsigned int keysize)
 {
-	for (size_t j = 0; j < keysize; j++)
+	for (unsigned int j = 0; j < keysize; j++)
 		((char*)key)[j] = EMPTY;
 }
-static bool IsEmpty(void* key, size_t keysize)
+static bool IsEmpty(void* key, unsigned int keysize)
 {
-	for (size_t j = 0; j < keysize; j++)
+	for (unsigned int j = 0; j < keysize; j++)
 		if (((char*)key)[j] != (char)EMPTY) return false;
 	return true;
 }
-static void InitMapNpde(MapNode* mn, size_t keyize, size_t valuesize)
+static void InitMapNpde(MapNode* mn, unsigned int keyize, unsigned int valuesize)
 {
 	mn->key = malloc(keyize);
 	mn->value = malloc(valuesize);
@@ -60,10 +56,10 @@ static void InitMapNpde(MapNode* mn, size_t keyize, size_t valuesize)
 }
 
 
-void MapNew_(MapBase* m, size_t keysize, size_t valuesize,
-	size_t(*HashFunc)(const void* key, size_t keysize),
-	size_t(*CollRes)(size_t hash, size_t i),
-	int(*DataCmp)(const void* key1, const void* key2, size_t keysize),
+void MapNew_(MapBase* m, unsigned int keysize, unsigned int valuesize,
+	unsigned int(*HashFunc)(const void* key, unsigned int keysize),
+	unsigned int(*CollRes)(unsigned int hash, unsigned int i),
+	int(*DataCmp)(const void* key1, const void* key2, unsigned int keysize),
 	void(*FreeFuncKey)(void* elems), void(*FreeFuncVal)(void* elems))
 {
 	ASSERT(keysize > 0 && valuesize > 0);
@@ -77,7 +73,7 @@ void MapNew_(MapBase* m, size_t keysize, size_t valuesize,
 	m->DataCmp = DataCmp;
 	m->FreeFuncKey = FreeFuncKey;
 	m->FreeFuncVal = FreeFuncVal;
-	for (size_t i = 0; i < m->alloclen; i++)
+	for (unsigned int i = 0; i < m->alloclen; i++)
 		InitMapNpde(&m->elems[i], m->keysize, m->valuesize);
 }
 
@@ -86,9 +82,9 @@ void MapSet_(MapBase* m, void* key, void* value)
 	ASSERT(key && value);
 	if (m->logiclen == m->alloclen) MapResize_(m);
 	
-	size_t hash_value;
+	unsigned int hash_value;
 	hash_value = m->HashFunc(key, m->keysize) % m->alloclen;
-	size_t i = 1;
+	unsigned int i = 1;
 	while (!IsEmpty(m->elems[hash_value].key, m->keysize))
 	{
 		if (m->DataCmp(m->elems[hash_value].key, key, m->keysize) == 0) break;
@@ -112,13 +108,13 @@ void MapResize_(MapBase* m)
 		m->alloclen *= 2;
 		m->elems = malloc(m->alloclen * sizeof(MapNode));
 		ASSERT(m->elems);
-		for (size_t i = 0; i < m->alloclen; i++)
+		for (unsigned int i = 0; i < m->alloclen; i++)
 			InitMapNpde(&m->elems[i], m->keysize, m->valuesize);
 
 		// Paste old elements to new space
-		for (size_t i = 0; i < m->alloclen / 2; i++)
+		for (unsigned int i = 0; i < m->alloclen / 2; i++)
 		{
-			size_t hash_value = m->HashFunc(oldelemscpy[i].key, m->keysize) % m->alloclen;
+			unsigned int hash_value = m->HashFunc(oldelemscpy[i].key, m->keysize) % m->alloclen;
 			while (!IsEmpty(m->elems[hash_value].key, m->keysize))
 				hash_value = m->CollRes(hash_value, i) % m->alloclen;
 			
@@ -129,7 +125,7 @@ void MapResize_(MapBase* m)
 		free(oldelemscpy);
 }
 
-size_t MapSize_(MapBase* m)
+unsigned int MapSize_(MapBase* m)
 {
 	return m->logiclen;
 }
@@ -137,9 +133,9 @@ size_t MapSize_(MapBase* m)
 void* MapGet_(MapBase* m, void* key)
 {
 	ASSERT(key);
-	size_t hash_value = m->HashFunc(key, m->keysize) % m->alloclen;
-	size_t i = 0;
-	size_t last_hash;
+	unsigned int hash_value = m->HashFunc(key, m->keysize) % m->alloclen;
+	unsigned int i = 0;
+	unsigned int last_hash;
 	while (M_ABS(m->DataCmp(m->elems[hash_value].key, key, m->keysize)))
 	{
 		last_hash = hash_value;
@@ -150,12 +146,12 @@ void* MapGet_(MapBase* m, void* key)
 	return m->elems[hash_value].value;
 }
 
-size_t MapRemove_(MapBase* m, void* key)
+unsigned int MapRemove_(MapBase* m, void* key)
 {
 	ASSERT(key);
-	size_t hash_value = m->HashFunc(key, m->keysize) % m->alloclen;
-	size_t i = 0;
-	size_t last_hash;
+	unsigned int hash_value = m->HashFunc(key, m->keysize) % m->alloclen;
+	unsigned int i = 0;
+	unsigned int last_hash;
 	while (M_ABS(m->DataCmp(m->elems[hash_value].key, key, m->keysize)))
 	{
 		last_hash = hash_value;
@@ -186,7 +182,7 @@ void* MapNext_(MapBase* m, MapIter* mapiter)
 {
 	ASSERT(m && mapiter);
 	if (m->logiclen == 0 || mapiter->keyindex == m->alloclen) return NULL;
-	for (size_t i = mapiter->keyindex + 1; i < m->alloclen; i++)
+	for (unsigned int i = mapiter->keyindex + 1; i < m->alloclen; i++)
 	{
 		if (!IsEmpty(m->elems[i].key, m->keysize))
 		{
@@ -202,7 +198,7 @@ void* MapNext_(MapBase* m, MapIter* mapiter)
 
 void MapClear_(MapBase* m)
 {
-	for (size_t i = 0; i < m->alloclen; i++){
+	for (unsigned int i = 0; i < m->alloclen; i++){
 		SetEmpty(m->elems[i].key, m->keysize);
 		SetEmpty(m->elems[i].value, m->valuesize);
 	}
@@ -211,7 +207,7 @@ void MapClear_(MapBase* m)
 
 void MapDelete_(MapBase* m)
 {
-	for (size_t i = 0; i < m->alloclen; i++) {
+	for (unsigned int i = 0; i < m->alloclen; i++) {
 		m->FreeFuncKey(m->elems[i].key);
 		m->FreeFuncVal(m->elems[i].value);
 	}

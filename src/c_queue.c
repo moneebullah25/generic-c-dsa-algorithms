@@ -1,7 +1,7 @@
 #include "../includes/c_queue.h"
 
-void QueueNew_(QueueBase* q, size_t elem_size,
-	int(*DataCmp)(const void *key1, const void *key2, size_t keysize),
+void QueueNew_(QueueBase* q, unsigned int elem_size,
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems))
 {
 	ASSERT(elem_size > 0);
@@ -22,8 +22,8 @@ void QueuePush_(QueueBase* q, void* elem)
 		q->rear == (void *)((char *)q->elems + q->alloclen * q->elemsize)){
 		// resize
 		q->alloclen *= 2;
-		size_t frontOffset = (size_t)((char *)q->front - (char *)q->elems);
-		size_t rearOffset = (size_t)((char *)q->rear - (char *)q->elems);
+		unsigned int frontOffset = (unsigned int)((char *)q->front - (char *)q->elems);
+		unsigned int rearOffset = (unsigned int)((char *)q->rear - (char *)q->elems);
 		q->elems = realloc(q->elems, q->alloclen * q->elemsize);
 		ASSERT(q->elems != NULL);
 		// modifying pointer in case new address
@@ -42,7 +42,7 @@ void* QueuePop_(QueueBase* q)
 	{
 		// shrink size by half
 		q->alloclen = q->alloclen / 2;
-		for (size_t i = 0; i < q->logiclen; i++)
+		for (unsigned int i = 0; i < q->logiclen; i++)
 		{
 			MemoryCopy((char *)q->elems + i * q->elemsize,
 				(char *)q->front + i * q->elemsize, q->elemsize);
@@ -111,7 +111,7 @@ void* QueueNext_(QueueBase* q, QueueIter* queueiter)
 	return queueiter;
 }
 
-size_t QueueSize_(QueueBase* q)
+unsigned int QueueSize_(QueueBase* q)
 {
 	return q->logiclen;
 }

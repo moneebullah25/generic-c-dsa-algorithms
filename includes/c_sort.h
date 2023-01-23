@@ -3,16 +3,16 @@
 
 #include "c_helper.h"
 
-void* LinearSearch(void* key, void* base, size_t nelems, size_t elemsize, int(*MemCmp)(const void*, const void*, size_t));
-void* BinarySearch(void* key, void* base, size_t s, size_t n, size_t elemsize, int(*MemCmp)(const void*, const void*, size_t));
-void BubbleSort(void* base, size_t elemsize, size_t n, 
-    int(*MemCmp)(const void*, const void*, size_t),
-    void(*MemSwap)(void *vp1, void *vp2, size_t nbytes));
+void* LinearSearch(void* key, void* base, unsigned int nelems, unsigned int elemsize, int(*MemCmp)(const void*, const void*, unsigned int));
+void* BinarySearch(void* key, void* base, unsigned int s, unsigned int n, unsigned int elemsize, int(*MemCmp)(const void*, const void*, unsigned int));
+void BubbleSort(void* base, unsigned int elemsize, unsigned int n, 
+    int(*MemCmp)(const void*, const void*, unsigned int),
+    void(*MemSwap)(void *vp1, void *vp2, unsigned int nbytes));
 void QuickSort(void* base, int elemsize, int low, int high, 
-    int(*MemCmp)(const void*, const void*, size_t),
-    void(*MemSwap)(void *vp1, void *vp2, size_t nbytes));
-void MergeSort(void* base, size_t elemsize, size_t l, size_t r, 
-    int(*MemCmp)(const void*, const void*, size_t),
-    void(*MemSwap)(void *vp1, void *vp2, size_t nbytes));
+    int(*MemCmp)(const void*, const void*, unsigned int),
+    void(*MemSwap)(void *vp1, void *vp2, unsigned int nbytes));
+void MergeSort(void* base, unsigned int elemsize, unsigned int l, unsigned int r, 
+    int(*MemCmp)(const void*, const void*, unsigned int),
+    void(*MemSwap)(void *vp1, void *vp2, unsigned int nbytes));
 
 #endif 

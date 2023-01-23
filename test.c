@@ -23,7 +23,7 @@ void testLinearSearch()
 	printf("%s : \n", "Searching for values 0 - 4 using Linear Search in array and replacing them with 0");
 	for (int i = 0; i < 5; i++)
 	{
-		void* target = LinearSearch((void*)&i, (void*)&arr, (int)8, (int)sizeof(int), &DataCompare);
+		void* target = LinearSearch((void*)&i, (void*)arr, 8, sizeof(int), DataCompare);
 		if (target){
 			printf("%s %d : %p\n", "Getting Acual Address of int ", i, target);
 			printf("%s %d with 0\n", "Replacing Value of int ", i);
@@ -49,7 +49,7 @@ void testLinearSearch()
 	// Linear Search
 	char* abcd = "abcd\0";
 	// Address returned by LinearSearch will be 2 hops away
-	char* find_abcd = (char*)LinearSearch(&abcd, &str, 5, sizeof(char*), &StringCompare);
+	char* find_abcd = (char*)LinearSearch(&abcd, str, 5, sizeof(char*), StringCompare);
 	printf("%s \n", *(char**)find_abcd);
 	printf("%s : \n", "Searching for value abcd using Linear Search in array");
 	printf("&abcd=%p\n", find_abcd);
@@ -64,7 +64,7 @@ void testBubbleSort()
 		printf("%d ", arr[i]);
 	printf("\n");
 
-	BubbleSort(&arr, sizeof(int), 8, &DataCompare, &MemorySwap);
+	BubbleSort(&arr, sizeof(int), 8, DataCompare, MemorySwap);
 
 	printf("%s : ", "After Sorting array of 8 integers using Bubble Sort");
 	for (int i = 0; i < 8; i++)
@@ -79,7 +79,7 @@ void testBubbleSort()
 		printf("%s ", str[i]);
 	printf("\n");
 
-	BubbleSort(&str, sizeof(char*), 5, &StringCompare, &StringSwap);
+	BubbleSort(&str, sizeof(char*), 5, StringCompare, StringSwap);
 
 	for (int i = 0; i < 5; i++)
 		printf("%p %s ", &(str[i]), str[i]);
@@ -641,7 +641,7 @@ void testQuickSort(unsigned int size)
 
 	printf("\n Sorting the Array \n");
 
-	QuickSort(arr, sizeof(unsigned int), 0, size - 1, &DataCompare, &MemorySwap);
+	QuickSort(arr, sizeof(unsigned int), 0, size - 1, DataCompare, MemorySwap);
 
 	printf("After Sorting the Array : ");
 
@@ -668,7 +668,7 @@ void testMergeSort(unsigned int size)
 
 	printf("\n Sorting the Array \n");
 
-	MergeSort(arr, 4, 0, size - 1, &DataCompare, &MemorySwap);
+	MergeSort(arr, 4, 0, size - 1, DataCompare, MemorySwap);
 
 	printf("After Sorting the Array : ");
 
@@ -782,12 +782,13 @@ int main()
 {
 	testStack(100);
 	testQueue(100);
- 	testMap();
+	testMap();
 	testVector(100);
 	testBinarySearch();
 	testBubbleSort();
 	testLinearSearch();
 	testList(25);
-	testQuickSort(200); // don't works well for values greater than 100
-	testMergeSort(200); // don't works well for values greater than 100
+	testQuickSort(500); // don't works well for values greater than 100
+	testMergeSort(500); // don't works well for values greater than 100
 }
+

@@ -1,13 +1,13 @@
 #include "../includes/c_vector.h"
 
-static void* getPointer(void* elems, size_t index, 
+static void* getPointer(void* elems, unsigned int index, 
 	unsigned nbytes)
 {
 	return (void*)((char*)elems + index * nbytes);
 }
 
-void VectorNew_(VectorBase*v, size_t elemsize,
-	int(*DataCmp)(const void *key1, const void *key2, size_t keysize),
+void VectorNew_(VectorBase*v, unsigned int elemsize,
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems))
 {
 	ASSERT(elemsize > 0);
@@ -33,7 +33,7 @@ void VectorPush_(VectorBase* v, void* data)
 	v->logiclen++;
 }
 
-void* VectorAt_(VectorBase* v, size_t index)
+void* VectorAt_(VectorBase* v, unsigned int index)
 {
 	ASSERT(index >= 0 && index < v->logiclen);
 	void* target = getPointer(v->elems, index, v->elemsize);
@@ -43,7 +43,7 @@ void* VectorAt_(VectorBase* v, size_t index)
 void* VectorGet_(VectorBase* v, void* data)
 {
 	ASSERT(v && data);
-	for (size_t i = 0; i < v->logiclen; i++){
+	for (unsigned int i = 0; i < v->logiclen; i++){
 		if (v->DataCmp(getPointer(v->elems, i, v->elemsize),
 			data, v->elemsize) == 0)
 			return getPointer(v->elems, i, v->elemsize);
@@ -82,7 +82,7 @@ void* VectorNext_(VectorBase* v, VectorIter* veciter)
 	return veciter;
 }
 
-size_t VectorSize_(VectorBase* v)
+unsigned int VectorSize_(VectorBase* v)
 {
 	return v->logiclen;
 }
