@@ -1,4 +1,5 @@
 #include "../includes/c_queue.h"
+#include <stdlib.h>
 
 void QueueNew_(QueueBase* q, unsigned int elem_size,
 	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
@@ -99,7 +100,7 @@ QueueIter* QueueIterator_(QueueBase* q)
 	return ((QueueIter*)n);
 }
 
-void* QueueNext_(QueueBase* q, QueueIter* queueiter)
+QueueIter* QueueNext_(QueueBase* q, QueueIter* queueiter)
 {
 	ASSERT(q);
 	if (q->logiclen == 0 || queueiter->index == q->logiclen) { q->FreeFunc(queueiter); return NULL; };

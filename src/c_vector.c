@@ -1,4 +1,5 @@
 #include "../includes/c_vector.h"
+#include <stdlib.h>
 
 static void* getPointer(void* elems, unsigned int index, 
 	unsigned nbytes)
@@ -72,7 +73,7 @@ VectorIter* VectorIterator_(VectorBase* v)
 	return ((VectorIter*)n);
 }
 
-void* VectorNext_(VectorBase* v, VectorIter* veciter)
+VectorIter* VectorNext_(VectorBase* v, VectorIter* veciter)
 {
 	ASSERT(v && veciter);
 	if (v->logiclen == 0 || veciter->index + 1 == v->logiclen){ v->FreeFunc(veciter->data); return NULL; };

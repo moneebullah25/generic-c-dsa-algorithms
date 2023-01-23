@@ -1,4 +1,5 @@
 #include "../includes/c_stack.h"
+#include <stdlib.h>
 
 static void* getPointer(void* elems, unsigned int index,
 	unsigned nbytes)
@@ -78,7 +79,7 @@ StackIter* StackIterator_(StackBase* s)
 	return ((StackIter*)n);
 }
 
-void* StackNext_(StackBase* s, StackIter* stackiter)
+StackIter* StackNext_(StackBase* s, StackIter* stackiter)
 {
 	ASSERT(s);
 	if (s->logiclen == 0 || stackiter->index == 0) { s->FreeFunc(stackiter); return NULL; };
