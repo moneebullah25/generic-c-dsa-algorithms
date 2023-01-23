@@ -641,7 +641,7 @@ void testQuickSort(unsigned int size)
 
 	printf("\n Sorting the Array \n");
 
-	QuickSort(arr, sizeof(unsigned int), 0, size - 1, DataCompare, MemorySwap);
+	QuickSort(arr, sizeof(unsigned int), 0, size-1, DataCompare, MemorySwap);
 
 	printf("After Sorting the Array : ");
 
@@ -668,7 +668,7 @@ void testMergeSort(unsigned int size)
 
 	printf("\n Sorting the Array \n");
 
-	MergeSort(arr, 4, 0, size - 1, DataCompare, MemorySwap);
+	MergeSort(arr, 4, 0, size-1, DataCompare, MemorySwap);
 
 	printf("After Sorting the Array : ");
 
@@ -788,7 +788,7 @@ int main()
 	testBubbleSort();
 	testLinearSearch();
 	testList(25);
-	testQuickSort(500); // don't works well for values greater than 100
-	testMergeSort(500); // don't works well for values greater than 100
+	testQuickSort(300); // don't works well for values greater than 100
+	testMergeSort(300); // don't works well for values greater than 100
 }
 

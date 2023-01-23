@@ -1,7 +1,7 @@
 #include <criterion/criterion.h>
 #include "../includes/c_stack.h"
 
-Test(StackInt, PushPop) {
+Test(stack_test, test_stack_int) {
     StackInt *q = malloc(sizeof(StackInt));
     StackNew(q, DataCompare, FreeData);
 
@@ -45,7 +45,7 @@ Test(StackInt, PushPop) {
     StackDelete(q);
 }
 
-Test(StackDouble, PushPop) {
+Test(stack_test, test_stack_double) {
     StackDouble *q = malloc(sizeof(StackDouble));
     StackNew(q, DataCompare, FreeData);
 
@@ -78,10 +78,6 @@ Test(StackDouble, PushPop) {
 
     double *five = StackTop(q);
     *five = 6.25;
-<<<<<<< HEAD
-
-=======
->>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
     iter = StackIterator(q);
     sum = 0;
     while (StackNext(q, iter)) {
@@ -90,19 +86,11 @@ Test(StackDouble, PushPop) {
     cr_assert_float_eq(sum, 22.75, 0.0001, "Expected sum of elements to be 22.75, got %lf", sum);
 
     StackDelete(q);
-<<<<<<< HEAD
-    }
-=======
 }
->>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
 
-Test(StackString, PushPop) {
+Test(stack_test, test_stack_string) {
     StackString *q = malloc(sizeof(StackString));
     StackNew(q, StringCompare, FreeString);
-<<<<<<< HEAD
-
-=======
->>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
     StackPush(q, "111");
     StackPush(q, "211");
     StackPush(q, "311");
@@ -141,9 +129,4 @@ Test(StackString, PushPop) {
     cr_assert_eq(len, 15, "Expected total length of strings to be 15, got %d", len);
 
     StackDelete(q);
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a

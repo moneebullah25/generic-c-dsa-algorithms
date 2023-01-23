@@ -1,7 +1,7 @@
 #include <criterion/criterion.h>
 #include "../includes/c_map.h"
 
-Test(MapInt, test_map_int) {
+Test(map_test, test_map_int) {
     MapInt *m = malloc(sizeof(MapInt));
     MapNew(m, HashFunctionInt, LinearProbing, DataCompare, FreeData, FreeData);
 
@@ -25,7 +25,7 @@ Test(MapInt, test_map_int) {
     MapDelete(m);
 }
 
-Test(MapDouble, test_map_double) {
+Test(map_test, test_map_double) {
     MapDouble *m = malloc(sizeof(MapDouble));
     MapNew(m, HashFunctionInt, LinearProbing, DataCompare, FreeData, FreeData);
 
@@ -47,4 +47,40 @@ Test(MapDouble, test_map_double) {
     assert_double_equal(*val, 16.0, 0.01);
 
     MapDelete(m);
+}
+
+Test(map_test, test_map_string) {
+	MapStringInt *m = malloc(sizeof(Map));
+	MapNew(m, HashFunctionStr, LinearProbing, StringCompare, FreeString, FreeData);
+	MapSet(m, "Muneeb\0", 21);
+	MapSet(m, "Moiz\0", 15);
+	MapSet(m, "Moaaz\0", 45);
+	MapSet(m, "Arif\0", 75);
+
+	MapIter *iter = MapIterator(m);
+	int sum = 0;
+	while (MapNext(m, iter)) {
+		sum += *(int *)iter->node.value;
+	}
+	assert_int_equal(sum, 156);
+
+	MapSet(m, "Kashif\0", 43);
+	iter = MapIterator(m);
+	int sum = 0;
+	while (MapNext(m, iter)) {
+		sum += *(int *)iter->node.value;
+	}
+	assert_int_equal(sum, 199);
+
+	void *age = MapGet(m, "Moiz\0");
+	*(int *)age = 16;
+
+	iter = MapIterator(m);
+	int sum = 0;
+	while (MapNext(m, iter)) {
+		sum += *(int *)iter->node.value;
+	}
+	assert_int_equal(sum, 200);
+
+	MapDelete(m);
 }

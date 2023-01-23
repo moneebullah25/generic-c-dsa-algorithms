@@ -1,7 +1,7 @@
 #include <criterion/criterion.h>
 #include "../includes/c_queue.h"
 
-Test(QueueInt, PushPop) {
+Test(queue_test, test_queue_int) {
     QueueInt *q = malloc(sizeof(QueueInt));
     QueueNew(q, DataCompare, FreeData);
 
@@ -45,7 +45,7 @@ Test(QueueInt, PushPop) {
     QueueDelete(q);
 }
 
-Test(QueueDouble, PushPop) {
+Test(queue_test, test_queue_double) {
     QueueDouble *q = malloc(sizeof(QueueDouble));
     QueueNew(q, DataCompare, FreeData);
 
@@ -78,11 +78,8 @@ Test(QueueDouble, PushPop) {
 
     double *five = QueueTop(q);
     *five = 6.25;
-<<<<<<< HEAD
-
-=======
->>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
-    iter = QueueIterator(q);
+    
+	iter = QueueIterator(q);
     sum = 0;
     while (QueueNext(q, iter)) {
         sum += *(double *)iter->data;
@@ -90,19 +87,12 @@ Test(QueueDouble, PushPop) {
     cr_assert_float_eq(sum, 22.75, 0.0001, "Expected sum of elements to be 22.75, got %lf", sum);
 
     QueueDelete(q);
-<<<<<<< HEAD
-    }
-=======
+    
 }
->>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
 
-Test(QueueString, PushPop) {
+Test(queue_test, test_queue_string) {
     QueueString *q = malloc(sizeof(QueueString));
     QueueNew(q, StringCompare, FreeString);
-<<<<<<< HEAD
-
-=======
->>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
     QueuePush(q, "111");
     QueuePush(q, "211");
     QueuePush(q, "311");
@@ -141,9 +131,4 @@ Test(QueueString, PushPop) {
     cr_assert_eq(len, 15, "Expected total length of strings to be 15, got %d", len);
 
     QueueDelete(q);
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a

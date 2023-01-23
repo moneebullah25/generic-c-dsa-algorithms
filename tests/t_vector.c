@@ -1,16 +1,9 @@
 #include <criterion/criterion.h>
 #include "../includes/c_vector.h"
-#include <stdlib.h>
-#include <stdio.h>
 
-Test(Vector_Test, test_int_vector) {
+Test(vector_test, test_vector_int) {
     VectorInt *v = malloc(sizeof(VectorInt));
-<<<<<<< HEAD
-    VectorNew(v, memcmp, free);
-=======
     VectorNew(v, DataCompare, FreeData);
->>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
-
     VectorPush(v, 1);
     VectorPush(v, 2);
     VectorPush(v, 3);
@@ -61,14 +54,9 @@ Test(Vector_Test, test_int_vector) {
     VectorDelete(v);
 }
 
-Test(Vector_Test, test_double_vector) {
+Test(vector_test, test_vector_double) {
     VectorDouble *v = malloc(sizeof(VectorDouble));
-<<<<<<< HEAD
-    VectorNew(v, memcmp, free);
-=======
     VectorNew(v, DataCompare, FreeData);
->>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
-
     VectorPush(v, 1.0);
     VectorPush(v, 2.0);
     VectorPush(v, 3.0);
@@ -120,13 +108,9 @@ Test(Vector_Test, test_double_vector) {
 
 }
 
-Test(Vector_Test, test_string_vector) {
+Test(vector_test, test_vector_string) {
     VectorString *v = malloc(sizeof(VectorString));
-<<<<<<< HEAD
-    VectorNew(v, strncmp, free);
-=======
     VectorNew(v, StringCompare, FreeString);
->>>>>>> b6bd569769dc5b4784a0430d0dbc49e12d3cdb9a
     VectorPush(v, "111");
     VectorPush(v, "211");
     VectorPush(v, "311");
