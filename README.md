@@ -209,3 +209,61 @@ Additionally, there are a number of macros defined to make using the linked list
 - **LinkedListChar** is a linked list of characters.
 - **LinkedListBool** is a linked list of booleans.
 
+# **C MAP**
+
+This code defines a C-language implementation of a map data structure, which is a collection of key-value pairs. The structure, called MapBase, contains fields for the elements of the map (MapNode* elems), the number of elements in the map (unsigned int logiclen), the allocated size of the map (unsigned int alloclen), the size of the keys and values (unsigned int keysize and valuesize), a hash of the elements (char* hash), and several function pointers for hashing, collision resolution, data comparison, and freeing elements.
+
+## Macros:
+
+There are also several macros defined that simplify the use of the map, such as MapNew, MapSet, MapSize, MapGet, MapRemove, MapIterator, MapNext, MapClear, and MapDelete. The code also provides several example implementations of the function pointers for HashFunc, CollRes, and DataCmp, such as HashFunctionStr, HashFunctionInt, LinearProbing, QuadraticProbing, and DoubleHashing.
+
+- **MapNew** is a macro that creates a new map object, and initializes it with the specified HashFunc, CollRes, DataCmp, FreeFuncKey, and FreeFuncVal function pointers.
+- **MapSet** is a macro that sets a new key-value pair in the map.
+- **MapSize** is a macro that returns the number of elements in the map.
+- **MapGet** is a macro that gets the value associated with a specified key in the map.
+- **MapRemove** is a macro that removes a key-value pair from the map.
+- **MapIterator** is a macro that returns an iterator for the map, which can be used to iterate through the elements of the map.
+- **MapNext** is a macro that moves the iterator to the next element of the map.
+- **MapClear** is a macro that clears all elements from the map.
+- **MapDelete** is a macro that deletes the map and frees all memory associated with it.
+
+## Functions:
+
+- **MapNew\_(MapBase\* m, unsigned int keysize, unsigned int valuesize, unsigned int(\*HashFunc)(const void\* key, unsigned int keysize), unsigned int(\*CollRes)(unsigned int hash, unsigned int i),  int(\*DataCmp)(const void \*key1, const void \*key2, unsigned int keysize), void(\*FreeFuncKey)(void\* elems), void(\*FreeFuncVal)(void\* elems))** function creates a new map and initializes the base member of the MapBase struct. It also allocates memory for the array of map entries and initializes its elements with NULL. The function also assigns the passed key size, value size, hash function, collision resolution function, data comparison function, and free functions for key and value to the corresponding members of the base struct.
+- **MapSet\_(MapBase\* m, void\* key, void\* value)** function sets the value for a given key in the map. This function uses the hash function and collision resolution function to find the index of the map entry corresponding to the given key. If the key is not found in the map, a new entry is created and the key and value are inserted into it. If the key is found in the map, the corresponding value is updated with the given value. If the number of elements in the map is equal to the number of allocated entries, the map is resized to accomodate more elements.
+- **MapResize\_(MapBase\* m)** function resizes the map by creating a new array of map entries and copying the existing elements to the new array. This function doubles the size of the array and re-hashes the elements according to the new size.
+- **MapSize\_(MapBase\* m)** function returns the number of elements stored in the map.
+- **MapGet\_(MapBase\* m, void\* key)** function returns the value of the element with the specified key in the map.
+- **MapRemove\_(MapBase\* m, void\* key)** function removes the element with the specified key from the map.
+- **MapIterator\_(MapBase\* m)** function creates a new map iterator and initializes the keyindex member of the MapIter struct.
+- **MapNext\_(MapBase\* m, MapIter\* mapiter)** function returns the next non-empty key-value pair in the map.
+- **MapClear\_(MapBase\* m)** function clears all the elements from the map. And set all elements to NULL. Logical length become 0. However allocated length remains same.
+- **MapDelete_(MapBase* m)** function that deletes the map and frees all the allocated memory. 
+
+## Templates:
+
+- **Map** is map of void pointer keys and void pointer values.
+- **MapDouble** is map of double value keys and double value values.
+- **MapFloat** is map of float value keys and float value values.
+- **MapInt** is map of integer value keys and integer value values.
+- **MapString** is map of string char pointer keys and string char pointer values.
+- **MapStringDouble** is a map template that uses a string as the key and double as the value.
+- **MapStringFloat** is a map template that uses a string as the key and float as the value.
+- **MapStringInt** is a map template that uses a string as the key and integer as the value.
+- **MapStringBool** is a map template that uses a string as the key and boolean as the value.
+- **MapCharDouble** is a map template that uses a character as the key and double as the value.
+- **MapCharFloat** is a map template that uses a character as the key and float as the value.
+- **MapCharInteger** is a map template that uses a character as the key and integer as the value.
+- **MapCharBool** is a map template that uses a character as the key and boolean as the value.
+- **MapIntDouble** is a map template that uses a integer as the key and double as the value.
+- **MapIntFloat** is a map template that uses a integer as the key and float as the value.
+- **MapIntString** is a map template that uses a integer as the key and string as the value.
+- **MapIntBool** is a map template that uses a integer as the key and boolean as the value.
+- **MapFloatDouble** is a map template that uses a float as the key and double as the value.
+- **MapFloatInt** is a map template that uses a float as the key and integer as the value.
+- **MapFloatString** is a map template that uses a float as the key and string as the value.
+- **MapFloatBool** is a map template that uses a float as the key and boolean as the value.
+- **MapDoubleString** is a map template that uses a double as the key and string as the value.
+- **MapDoubleInt** is a map template that uses a double as the key and integer as the value.
+- **MapDoubleFloat** is a map template that uses a double as the key and float as the value.
+- **MapDoubleBool** is a map template that uses a double as the key and boolean as the value.
