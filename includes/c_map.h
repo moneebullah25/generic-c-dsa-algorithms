@@ -19,7 +19,7 @@ typedef struct {
 	unsigned int logiclen, alloclen, keysize, valuesize;
 	char* hash;
 	
-	unsigned int(*HashFunc)(void* key, unsigned int keysize);
+	unsigned int(*HashFunc)(const void* key, unsigned int keysize);
 	unsigned int(*CollRes)(unsigned int hash, unsigned int i);
 	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize);
 	void(*FreeFuncKey)(void* elems);

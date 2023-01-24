@@ -38,7 +38,7 @@ void *MemoryCopy(void *dest, const void *src, unsigned int nbytes) {
 }
 
 void StringCopy(void *dest, const void *src, unsigned int nbytes) {
-    *(char **)dest = _strdup(*(char **)src);
+    *(char **)dest = strdup(*(char **)src);
 }
 
 void *MemoryMove(void *dest, void *src, unsigned int nbytes) {

@@ -1,5 +1,5 @@
 #include "../includes/c_list.h"
-
+#include <stdlib.h>
 
 static void ListNodeNew(ListNode* ln, unsigned int elemsize, void* data)
 {

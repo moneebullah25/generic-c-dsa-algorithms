@@ -1,4 +1,5 @@
 #include "../includes/c_map.h"
+#include <stdlib.h>
 
 unsigned int HashFunctionInt(const void* key, unsigned int keysize)
 {
@@ -18,7 +19,7 @@ unsigned int HashFunctionStr(const void* key, unsigned int keysize)
 	int c;
 	int i = 0;
 
-	while (c = *(*(char**)key + i++))
+	while ((c = *(*(char**)key + i++)))
 		hash = ((hash << 5) + hash) + c; /* pstruct * 33 + c */
 
 
@@ -91,8 +92,8 @@ void MapSet_(MapBase* m, void* key, void* value)
 		hash_value = m->CollRes(hash_value, i) % m->alloclen;
 	}
 	
-	memcpy(m->elems[hash_value].key, key, m->keysize); // Insertion
-	memcpy(m->elems[hash_value].value, value, m->valuesize);
+	MemoryCopy(m->elems[hash_value].key, key, m->keysize); // Insertion
+	MemoryCopy(m->elems[hash_value].value, value, m->valuesize);
 	m->logiclen++;
 }
 
@@ -101,7 +102,7 @@ void MapResize_(MapBase* m)
 	/* Done Shallow copy and only stores the address of key/value pairs only */
 		MapNode* oldelemscpy = malloc(m->alloclen * sizeof(MapNode));
 		ASSERT(oldelemscpy);
-		memcpy(oldelemscpy, m->elems, m->alloclen * sizeof(MapNode));
+		MemoryCopy(oldelemscpy, m->elems, m->alloclen * sizeof(MapNode));
 		
 		// Just free the shallow copy
 		free(m->elems);
@@ -118,8 +119,8 @@ void MapResize_(MapBase* m)
 			while (!IsEmpty(m->elems[hash_value].key, m->keysize))
 				hash_value = m->CollRes(hash_value, i) % m->alloclen;
 			
-			memcpy(m->elems[hash_value].key, oldelemscpy[i].key, m->keysize); // Insertion
-			memcpy(m->elems[hash_value].value, oldelemscpy[i].value, m->valuesize);
+			MemoryCopy(m->elems[hash_value].key, oldelemscpy[i].key, m->keysize); // Insertion
+			MemoryCopy(m->elems[hash_value].value, oldelemscpy[i].value, m->valuesize);
 		}
 		// Just free the shallow copy
 		free(oldelemscpy);
@@ -187,8 +188,8 @@ void* MapNext_(MapBase* m, MapIter* mapiter)
 		if (!IsEmpty(m->elems[i].key, m->keysize))
 		{
 			mapiter->keyindex = i;
-			memcpy(mapiter->node.key, m->elems[i].key, m->keysize);
-			memcpy(mapiter->node.value, m->elems[i].value, m->valuesize);
+			MemoryCopy(mapiter->node.key, m->elems[i].key, m->keysize);
+			MemoryCopy(mapiter->node.value, m->elems[i].value, m->valuesize);
 			return mapiter;
 		}
 	}

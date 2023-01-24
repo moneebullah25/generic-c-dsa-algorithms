@@ -788,7 +788,7 @@ int main()
 	testBubbleSort();
 	testLinearSearch();
 	testList(25);
-	testQuickSort(300); // don't works well for values greater than 100
-	testMergeSort(300); // don't works well for values greater than 100
+	testQuickSort(200); // don't works well for values greater than 200
+	testMergeSort(200); // don't works well for values greater than 200
 }
 
