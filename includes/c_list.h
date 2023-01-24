@@ -7,12 +7,27 @@ extern "C" {
 
 #include "c_helper.h"
 
+/**
+ * A structure that represents the basic functionality of a list node.
+ * @param elems A pointer to the element of the list node
+ * @param elemsize The size of an element
+ * @param next A pointer to a next list node
+**/
 typedef struct ListNode {
 	void* elem;
 	unsigned int elemsize;
 	struct ListNode* next;
 } ListNode;
 
+/**
+ * A structure that represents the basic functionality of a linked list.
+ * @param head A pointer to the first element of the linked list
+ * @param tail A pointer to the last element of the linked list
+ * @param listsize The number of elements in the linked list 
+ * @param elemsize The size of an elem in list node
+ * @param DataCmp A pointer to a function that compares data
+ * @param FreeFunc A pointer to a function that frees memory
+*/
 typedef struct LinkedListBase {
 	ListNode* head; ListNode* tail;
 	unsigned int listsize; unsigned int elemsize;
@@ -21,16 +36,40 @@ typedef struct LinkedListBase {
 	void(*FreeFunc)(void* elems);
 } LinkedListBase;
 
+/**
+ * A macro that creates a linked list template for a given data type T.
+ * The macro creates a struct with a LinkedListBase as a member and an additional member with the name data_ of the type T and value_ of the type T.
+ * @param T The type of the data the linked list will hold
+*/
 #define LinkedListT(T) \
 struct { LinkedListBase base; T data_; T value_; }
 
+/**
+ * A macro that creates a new linked list with a given comparison function and a function to free memory.
+ * The macro calls the LinkedListNew_ function with the address of the base member of the LinkedListBase struct, the size of the data_ member, the comparison function and the memory freeing function as arguments.
+ * @param ll Pointer to the linked list struct
+ * @param DataCmp A pointer to a function that compares data
+ * @param FreeFunc A pointer to a function that frees memory
+*/
 #define LinkedListNew(ll, DataCmp, FreeFunc) \
 	LinkedListNew_(&(ll)->base, sizeof((ll)->data_), DataCmp, FreeFunc)
 
+/**
+ * A macro that inserts data at tail in the linked list pointer passed as argument.
+ * The macro calls the LinkedListInsertAtTail_ function with the address of the base member of the LinkedListBase struct and the address of the data_ member of the linked list struct as arguments.
+ * @param ll Pointer to the linked list struct
+ * @param data Data to be stored in linked list
+*/
 #define LinkedListInsertAtTail(ll, data) \
 	((ll)->data_ = data, \
 	LinkedListInsertAtTail_(&(ll)->base, &(ll)->data_))
 
+/**
+ * A macro that inserts data at head in the linked list pointer passed as argument.
+ * The macro calls the LinkedListInsertAtHead_ function with the address of the base member of the LinkedListBase struct and the address of the data_ member of the linked list struct as arguments.
+ * @param ll Pointer to the linked list struct
+ * @param data Data to be stored in linked list
+*/
 #define LinkedListInsertAtHead(ll, data) \
 	((ll)->data_ = data, \
 	LinkedListInsertAtHead_(&(ll)->base, &(ll)->data_))
