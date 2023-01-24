@@ -179,7 +179,7 @@ MapIter* MapIterator_(MapBase* m)
 	return ((MapIter*)n);
 }
 
-void* MapNext_(MapBase* m, MapIter* mapiter)
+MapIter* MapNext_(MapBase* m, MapIter* mapiter)
 {
 	ASSERT(m && mapiter);
 	if (m->logiclen == 0 || mapiter->keyindex == m->alloclen) return NULL;
