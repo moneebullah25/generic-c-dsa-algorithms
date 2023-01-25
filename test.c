@@ -781,6 +781,7 @@ void testMap()
 
 void testMatrix()
 {
+	printf("---------------------Matrix Start--------------------------\n");
 	Matrix* a = MatrixIdentity(4);
 	PrintMatrix(a, "%lf\t\t");
 	Matrix* i = MatrixZero(1, 4);
@@ -795,6 +796,7 @@ void testMatrix()
 	PrintMatrix(o, "%lf\t\t");
 	Matrix* n = MatrixN(3, 12, 0.891231);
 	PrintMatrix(n, "%lf\t\t");
+	printf("---------------------Matrix End--------------------------\n");
 }
 
 int main()
