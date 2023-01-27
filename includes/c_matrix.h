@@ -23,8 +23,9 @@ Matrix* MatrixFromFile(const char* file);
 Matrix* MatrixCopy(Matrix* m);
 
 /* Matrix Basic */
-bool MatrixEqualDim(Matrix* m1, Matrix* m2);
+bool IsMatrixEqualDim(Matrix* m1, Matrix* m2);
 void PrintMatrix(Matrix* m, const char* data_format);
+bool IsMatrixInvertible(Matrix* m);
 
 /* Matrix Accessing and Modifying */
 double MatrixGet(Matrix* m, unsigned row, unsigned col);
@@ -55,7 +56,14 @@ Matrix* MatrixMultiply(Matrix* m1, Matrix* m2);
 void MatrixTranspose(Matrix* m);
 double MatrixTrace(Matrix* m);
 double MatrixDeterminant(Matrix* m);
-Matrix* MatrixRowEchelon(Matrix* m);
-Matrix* MatrixReducedRowEchelon(Matrix* m);
+void MatrixRowEchelon(Matrix* m);
+void MatrixReducedRowEchelon(Matrix* m);
+Matrix* MatrixRowEchelonGet(Matrix* m);
+Matrix* MatrixReducedRowEchelonGet(Matrix* m);
+double MatrixColumnL2Norm(Matrix* m, unsigned int col);
+Matrix* MatrixL2Norm(Matrix* m);
+
+/* Matrix Dispose */
+void MatrixFree(Matrix* m);
 
 #endif /* _C_MATRIX_HEADER_ */

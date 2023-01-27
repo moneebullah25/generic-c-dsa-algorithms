@@ -1,7 +1,8 @@
-#include "c_matrix.h"
+#include "../includes/c_matrix.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 Matrix *MatrixNew(unsigned int num_rows, unsigned int num_cols)
 {
@@ -144,7 +145,7 @@ Matrix *MatrixCopy(Matrix *m)
 }
 
 /* Matrix Basic */
-bool MatrixEqualDim(Matrix *m1, Matrix *m2)
+bool IsMatrixEqualDim(Matrix *m1, Matrix *m2)
 {
 	return (m1->num_rows == m2->num_rows) &&
 		   (m1->num_cols == m2->num_cols);
@@ -163,6 +164,15 @@ void PrintMatrix(Matrix *m, const char *data_format)
 		fprintf(stdout, "\n");
 	}
 	fprintf(stdout, "\n");
+}
+
+bool IsMatrixInvertible(Matrix* m) {
+	if (m == NULL) {
+		fprintf(stderr, "Invalid matrix passed\n");
+		return false;
+	}
+	double determinant = MatrixDeterminant(m);
+	return (determinant != 0);
 }
 
 /* Matrix Accessing and Modifying */
@@ -216,12 +226,12 @@ void MatrixSet(Matrix *m, unsigned int row, unsigned int col, double value)
 	if (row >= m->num_rows)
 	{
 		fprintf(stderr, "Invalid 'row=%u' passed >= %u\n", row, m->num_rows);
-		return 0.;
+		return;
 	}
 	if (col >= m->num_cols)
 	{
 		fprintf(stderr, "Invalid 'col=%u' passed >= %u\n", col, m->num_cols);
-		return 0.;
+		return;
 	}
 	m->data[row][col] = value;
 }
@@ -484,7 +494,7 @@ void MatrixColumnSwap(Matrix *m, unsigned int col1, unsigned int col2)
 /* Matrix Operatons */
 Matrix *MatrixAdd(Matrix *m1, Matrix *m2)
 {
-	if (!MatrixEqualDim(m1, m2))
+	if (IsMatrixEqualDim(m1, m2))
 	{
 		fprintf(stderr, "Matrix 'm1(%u, %u)' & 'm2(%u, %u)' are not equivalent\n",
 				m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
@@ -503,7 +513,7 @@ Matrix *MatrixAdd(Matrix *m1, Matrix *m2)
 
 Matrix *MatrixSubtract(Matrix *m1, Matrix *m2)
 {
-	if (!MatrixEqualDim(m1, m2))
+	if (!IsMatrixEqualDim(m1, m2))
 	{
 		fprintf(stderr, "Matrix 'm1(%u, %u)' & 'm2(%u, %u)' are not equivalent\n",
 				m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
@@ -558,7 +568,7 @@ double MatrixTrace(Matrix *m)
 	if (!m->is_square)
 	{
 		fprintf(stderr, "Can't trace 'm' is not a square matrix\n");
-		return;
+		return 0.;
 	}
 	double trace = 0;
 	for (unsigned int i = 0; i < m->num_rows; i++)
@@ -570,15 +580,254 @@ double MatrixTrace(Matrix *m)
 
 double MatrixDeterminant(Matrix* m)
 {
-
+	if (m->num_rows != m->num_cols) {
+		printf("Error: Matrix must be square to find determinant\n");
+		return NAN;
+	}
+	if (m->num_rows == 1) {
+		return m->data[0][0];
+	}
+	if (m->num_rows == 2) {
+		return (m->data[0][0] * m->data[1][1]) - (m->data[0][1] * m->data[1][0]);
+	}
+	double det = 0.0;
+	for (unsigned int i = 0; i < m->num_cols; i++) {
+		Matrix *subMatrix = MatrixNew(m->num_rows - 1, m->num_cols - 1);
+		for (unsigned int row = 1; row < m->num_rows; row++) {
+			int subRow = 0;
+			for (unsigned int col = 0; col < m->num_cols; col++) {
+				if (col == i) {
+					continue;
+				}
+				subMatrix->data[subRow][col - (col > i)] = m->data[row][col];
+			}
+			subRow++;
+		}
+		det += pow(-1, i) * m->data[0][i] * MatrixDeterminant(subMatrix);
+		MatrixFree(subMatrix);
+	}
+	return det;
 }
 
-Matrix* MatrixRowEchelon(Matrix* m)
+void MatrixRowEchelon(Matrix *m)
 {
+	if (m == NULL) {
+		fprintf(stderr, "Invalid matrix passed\n");
+		return NULL;
+	}
+	unsigned int lead = 0;
+	for (unsigned int r = 0; r < m->num_rows; r++)
+	{
+		if (m->num_cols <= lead)
+			return;
 
+		unsigned int i = r;
+		while (MatrixGet(m, i, lead) == 0)
+		{
+			i++;
+			if (i == m->num_rows)
+			{
+				i = r;
+				lead++;
+				if (m->num_cols == lead)
+					return;
+			}
+		}
+		MatrixRowSwap(m, i, r);
+
+		if (MatrixGet(m, r, lead) != 0)
+		{
+			double val = MatrixGet(m, r, lead);
+			MatrixRowMultiplyValue(m, r, 1.0 / val);
+		}
+
+		for (unsigned int i = 0; i < m->num_rows; i++)
+		{
+			if (i != r)
+			{
+				double c = MatrixGet(m, i, lead);
+				for (unsigned int j = 0; j < m->num_cols; j++)
+				{
+					m->data[i][j] -= c * m->data[r][j];
+				}
+			}
+		}
+		lead++;
+	}
 }
 
-Matrix* MatrixReducedRowEchelon(Matrix* m)
-{
 
+void MatrixReducedRowEchelon(Matrix *m)
+{
+	if (m == NULL && IsMatrixInvertible(m) == false) {
+		fprintf(stderr, "Invalid matrix passed\n");
+		return NULL;
+	}
+	int lead = 0;
+	for (unsigned int r = 0; r < m->num_rows; r++)
+	{
+		if (m->num_cols <= lead)
+			return;
+		unsigned int i = r;
+		while (MatrixGet(m, i, lead) == 0)
+		{
+			i++;
+			if (i == m->num_rows)
+			{
+				i = r;
+				lead++;
+				if (m->num_cols == lead)
+					return;
+			}
+		}
+		MatrixRowSwap(m, i, r);
+		double value = MatrixGet(m, r, lead);
+		MatrixRowMultiplyValue(m, r, 1.0 / value);
+		for (unsigned int j = 0; j < m->num_rows; j++)
+		{
+			if (j != r)
+			{
+				value = MatrixGet(m, j, lead);
+				for (unsigned int c = 0; c < m->num_cols; c++)
+				{
+					m->data[j][c] -= value * m->data[r][c];
+				}
+			}
+		}
+		lead++;
+	}
+}
+
+
+Matrix* MatrixRowEchelonGet(Matrix *m)
+{
+	if (m == NULL) {
+		fprintf(stderr, "Invalid matrix passed\n");
+		return NULL;
+	}
+	Matrix* matrix = MatrixCopy(m);
+	unsigned int lead = 0;
+	for (unsigned int r = 0; r < matrix->num_rows; r++)
+	{
+		if (matrix->num_cols <= lead)
+			return matrix;
+
+		unsigned int i = r;
+		while (MatrixGet(matrix, i, lead) == 0)
+		{
+			i++;
+			if (i == matrix->num_rows)
+			{
+				i = r;
+				lead++;
+				if (matrix->num_cols == lead)
+					return matrix;
+			}
+		}
+		MatrixRowSwap(matrix, i, r);
+
+		if (MatrixGet(matrix, r, lead) != 0)
+		{
+			double val = MatrixGet(matrix, r, lead);
+			MatrixRowMultiplyValue(matrix, r, 1.0 / val);
+		}
+
+		for (unsigned int i = 0; i < matrix->num_rows; i++)
+		{
+			if (i != r)
+			{
+				double c = MatrixGet(matrix, i, lead);
+				for (unsigned int j = 0; j < matrix->num_cols; j++)
+				{
+					matrix->data[i][j] -= c * matrix->data[r][j];
+				}
+			}
+		}
+		lead++;
+	}
+	return matrix;
+}
+
+Matrix* MatrixReducedRowEchelonGet(Matrix *m)
+{
+	if (m == NULL && IsMatrixInvertible(m) == false) {
+		fprintf(stderr, "Invalid matrix passed\n");
+		return NULL;
+	}
+	Matrix* matrix = MatrixCopy(m);
+	unsigned int lead = 0;
+	for (unsigned int r = 0; r < matrix->num_rows; r++)
+	{
+		if (matrix->num_cols <= lead)
+			return matrix;
+		unsigned int i = r;
+		while (MatrixGet(matrix, i, lead) == 0)
+		{
+			i++;
+			if (i == matrix->num_rows)
+			{
+				i = r;
+				lead++;
+				if (matrix->num_cols == lead)
+					return matrix;
+			}
+		}
+		MatrixRowSwap(matrix, i, r);
+		double value = MatrixGet(matrix, r, lead);
+		MatrixRowMultiplyValue(matrix, r, 1.0 / value);
+		for (unsigned int j = 0; j < matrix->num_rows; j++)
+		{
+			if (j != r)
+			{
+				value = MatrixGet(matrix, j, lead);
+				for (unsigned int c = 0; c < matrix->num_cols; c++)
+				{
+					matrix->data[j][c] -= value * matrix->data[r][c];
+				}
+			}
+		}
+		lead++;
+	}
+	return matrix;
+}
+
+double MatrixColumnL2Norm(Matrix* m, unsigned int col)
+{
+	if (col >= m->num_cols)
+	{
+		fprintf(stderr, "Invalid 'col=%u' passed >= %u\n", col, m->num_cols);
+		return 0.;
+	}
+	double doublesum = 0.0;
+	for (unsigned int r = 0; r < m->num_rows; r++) {
+		doublesum += (m->data[r][col] * m->data[r][col]);
+	}
+	return sqrt(doublesum);
+}
+
+Matrix* MatrixL2Norm(Matrix* m)
+{
+	Matrix* matrix = MatrixNew(1, m->num_cols);
+	double square_sum;
+	for (unsigned int c = 0; c < m->num_cols; c++) {
+		square_sum = 0.0;
+		for (unsigned int r = 0; r < m->num_rows; r++) {
+			square_sum += m->data[r][c] * m->data[r][c];
+		}
+		matrix->data[0][c] = sqrt(square_sum);
+	}
+	return matrix;
+}
+
+/* Matrix Dispose */
+void MatrixFree(Matrix* m) {
+	if (m == NULL) {
+		fprintf(stderr, "Invalid matrix passed\n");
+		return;
+	}
+	for (unsigned int i = 0; i < m->num_rows; i++) {
+		free(m->data[i]);
+	}
+	free(m->data);
+	free(m);
 }
