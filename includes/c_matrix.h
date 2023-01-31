@@ -48,11 +48,16 @@ Matrix* MatrixRowRemove(Matrix* m, unsigned int row);
 Matrix* MatrixColumnRemove(Matrix* m, unsigned int col);
 void MatrixRowSwap(Matrix* m, unsigned int row1, unsigned int row2);
 void MatrixColumnSwap(Matrix* m, unsigned int col1, unsigned int col2);
+Matrix* MatrixBroadcastRows(Matrix* m, unsigned int row);
+Matrix* MatrixBroadcastColumns(Matrix* m, unsigned int col);
+Matrix* MatrixBroadcastRowsAndColumns(Matrix* m, unsigned int row, unsigned int col);
 
 /* Matrix Operatons */
 Matrix* MatrixAdd(Matrix* m1, Matrix* m2);
 Matrix* MatrixSubtract(Matrix* m1, Matrix* m2);
 Matrix* MatrixMultiply(Matrix* m1, Matrix* m2);
+Matrix* MatrixAddWithBroadcast(Matrix* m1, Matrix* m2);
+Matrix* MatrixSubtractWithBroadcast(Matrix* m1, Matrix* m2);
 void MatrixTranspose(Matrix* m);
 double MatrixTrace(Matrix* m);
 double MatrixDeterminant(Matrix* m);

@@ -491,10 +491,79 @@ void MatrixColumnSwap(Matrix *m, unsigned int col1, unsigned int col2)
 	}
 }
 
+Matrix* MatrixBroadcastRows(Matrix* m, unsigned int row)
+{
+	if (m->num_rows != 1)
+	{
+		fprintf(stderr, "Can't broadcast 'm->num_rows != '%u\n", m->num_rows);
+		return NULL;
+	}
+	if (row <= m->num_rows)
+	{
+		fprintf(stderr, "Invalid 'row=%u' passed <= %u\n", row, m->num_rows);
+		return NULL;
+	}
+	Matrix* matrix = MatrixNew(row, m->num_cols);
+	for (unsigned int c = 0; c < matrix->num_cols; c++)
+		matrix->data[0][c] = m->data[0][c];
+
+	for (unsigned int r = 1; r < matrix->num_rows; r++)
+	{
+		for (unsigned int c = 0; c < matrix->num_cols; c++)
+		{
+			matrix->data[r][c] = m->data[0][c];
+		}
+	}
+	return matrix;
+}
+
+Matrix* MatrixBroadcastColumns(Matrix* m, unsigned int col)
+{
+	if (m->num_cols != 1)
+	{
+		fprintf(stderr, "Can't broadcast 'm->num_cols != '%u\n", m->num_rows);
+		return NULL;
+	}
+	if (col <= m->num_cols)
+	{
+		fprintf(stderr, "Invalid 'col=%u' passed <= %u\n", col, m->num_cols);
+		return NULL;
+	}
+	Matrix* matrix = MatrixNew(m->num_rows, col);
+	for (unsigned int r = 0; r < matrix->num_rows; r++)
+		matrix->data[r][0] = m->data[r][0];
+
+	for (unsigned int c = 1; c < matrix->num_cols; c++)
+	{
+		for (unsigned int r = 0; r < matrix->num_rows; r++)
+		{
+			matrix->data[r][c] = m->data[r][0];
+		}
+	}
+	return matrix;
+}
+
+Matrix* MatrixBroadcastRowsAndColumns(Matrix* m, unsigned int row, unsigned int col)
+{
+	if (m->num_rows != 1)
+	{
+		fprintf(stderr, "Can't broadcast 'm->num_rows != '%u\n", m->num_rows);
+		return NULL;
+	}
+	if (m->num_cols != 1)
+	{
+		fprintf(stderr, "Can't broadcast 'm->num_cols != '%u\n", m->num_rows);
+		return NULL;
+	}
+	Matrix* matrix = MatrixBroadcastRows(m, row);
+	matrix = MatrixBroadcastColumns(matrix, col);
+	return matrix;
+}
+
 /* Matrix Operatons */
 Matrix *MatrixAdd(Matrix *m1, Matrix *m2)
 {
-	if (IsMatrixEqualDim(m1, m2))
+	if (!IsMatrixEqualDim(m1, m2))
 	{
 		fprintf(stderr, "Matrix 'm1(%u, %u)' & 'm2(%u, %u)' are not equivalent\n",
 				m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
@@ -550,6 +619,44 @@ Matrix *MatrixMultiply(Matrix *m1, Matrix *m2)
 		}
 	}
 	return matrix;
+}
+
+Matrix* MatrixAddWithBroadcast(Matrix* m1, Matrix* m2)
+{
+	Matrix* matrix1 = MatrixCopy(m1);
+	Matrix* matrix2 = MatrixCopy(m2);
+	if (!IsMatrixEqualDim(m1, m2))
+	{
+		unsigned int max_row = (m1->num_rows < m2->num_rows) ? m2->num_rows : m1->num_rows;
+		unsigned int max_col = (m1->num_cols < m2->num_cols) ? m2->num_cols : m1->num_cols;
+		matrix1 = (m1->num_rows < max_row) ? MatrixBroadcastRows(m1, max_row) : m1;
+		matrix1 = (m1->num_cols < max_col) ? MatrixBroadcastColumns(matrix1, max_col) : matrix1;
+		matrix2 = (m2->num_rows < max_row) ? MatrixBroadcastRows(m2, max_row) : m2; 
+		matrix2 = (m2->num_cols < max_col) ? MatrixBroadcastColumns(matrix2, max_col) : matrix2;
+	}
+	Matrix* result = MatrixAdd(matrix1, matrix2);
+	MatrixFree(matrix1);
+	MatrixFree(matrix2);
+	return result;
+}
+
+Matrix* MatrixSubtractWithBroadcast(Matrix* m1, Matrix* m2)
+{
+	Matrix* matrix1 = MatrixCopy(m1);
+	Matrix* matrix2 = MatrixCopy(m2);
+	if (!IsMatrixEqualDim(m1, m2))
+	{
+		unsigned int max_row = (m1->num_rows < m2->num_rows) ? m2->num_rows : m1->num_rows;
+		unsigned int max_col = (m1->num_cols < m2->num_cols) ? m2->num_cols : m1->num_cols;
+		matrix1 = (m1->num_rows < max_row) ? MatrixBroadcastRows(m1, max_row) : m1;
+		matrix1 = (m1->num_cols < max_col) ? MatrixBroadcastColumns(matrix1, max_col) : matrix1;
+		matrix2 = (m2->num_rows < max_row) ? MatrixBroadcastRows(m2, max_row) : m2;
+		matrix2 = (m2->num_cols < max_col) ? MatrixBroadcastColumns(matrix2, max_col) : matrix2;
+	}
+	Matrix* result = MatrixSubtract(matrix1, matrix2);
+	MatrixFree(matrix1);
+	MatrixFree(matrix2);
+	return result;
 }
 
 void MatrixTranspose(Matrix *m)
@@ -613,7 +720,7 @@ void MatrixRowEchelon(Matrix *m)
 {
 	if (m == NULL) {
 		fprintf(stderr, "Invalid matrix passed\n");
-		return NULL;
+		return;
 	}
 	unsigned int lead = 0;
 	for (unsigned int r = 0; r < m->num_rows; r++)
@@ -656,14 +763,13 @@ void MatrixRowEchelon(Matrix *m)
 	}
 }
 
-
 void MatrixReducedRowEchelon(Matrix *m)
 {
 	if (m == NULL && IsMatrixInvertible(m) == false) {
 		fprintf(stderr, "Invalid matrix passed\n");
-		return NULL;
+		return;
 	}
-	int lead = 0;
+	unsigned int lead = 0;
 	for (unsigned int r = 0; r < m->num_rows; r++)
 	{
 		if (m->num_cols <= lead)
@@ -697,7 +803,6 @@ void MatrixReducedRowEchelon(Matrix *m)
 		lead++;
 	}
 }
-
 
 Matrix* MatrixRowEchelonGet(Matrix *m)
 {
@@ -831,3 +936,6 @@ void MatrixFree(Matrix* m) {
 	free(m->data);
 	free(m);
 }
+
+//Broadcasting along specific dimensions : Broadcasting can be performed along specific dimensions by using the np.newaxis keyword.
+//Broadcasting arrays with different number of dimensions : Broadcasting can also be performed between arrays with different number of dimensions by using np.reshape.
