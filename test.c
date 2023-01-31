@@ -783,19 +783,48 @@ void testMatrix()
 {
 	printf("---------------------Matrix Start--------------------------\n");
 	Matrix* a = MatrixIdentity(4);
-	PrintMatrix(a, "%lf\t\t");
+	PrintMatrix(a, "%lf\t");
 	Matrix* i = MatrixZero(1, 4);
-	PrintMatrix(i, "%lf\t\t");
+	PrintMatrix(i, "%lf\t");
 	Matrix* r = MatrixRandom(4, 5, 0, 1);
-	PrintMatrix(r, "%lf\t\t");
+	PrintMatrix(r, "%lf\t");
 	Matrix* s = MatrixSquare(1);
-	PrintMatrix(s, "%lf\t\t");
+	PrintMatrix(s, "%lf\t");
 	Matrix* sr = MatrixSquareRandom(5, -1., 10.);
-	PrintMatrix(sr, "%lf\t\t");
+	PrintMatrix(sr, "%lf\t");
 	Matrix* o = MatrixOne(9, 9);
-	PrintMatrix(o, "%lf\t\t");
+	PrintMatrix(o, "%lf\t");
 	Matrix* n = MatrixN(3, 12, 0.891231);
-	PrintMatrix(n, "%lf\t\t");
+	PrintMatrix(n, "%lf\t");
+
+	{
+		double values[] = { 1., 3., 5., 9., 1., 3., 1., 7., 4., 3., 9., 7., 5., 2., 0., 9. };
+		Matrix* ref = MatrixFrom(4, 4, 16, values);
+		PrintMatrix(ref, "%lf\t");
+		Matrix* re = MatrixRowEchelonGet(ref);
+		PrintMatrix(re, "%lf\t");
+	}
+	{
+		double values[] = { 0., -3., -6., 4., 9., -1., -2., -1., 3., 1., -2., -3., 0., 3., -1., 1., 4., 5., -9., -7., };
+		Matrix* ref = MatrixFrom(4, 5, 20, values);
+		PrintMatrix(ref, "%lf\t");
+		Matrix* re = MatrixReducedRowEchelonGet(ref);
+		PrintMatrix(re, "%lf\t");
+	}
+	{
+		double values[] = { 1. };
+		Matrix* m = MatrixFrom(1, 1, 1, values);
+		Matrix* bm = MatrixBroadcastRowsAndColumns(m, 10, 10);
+		PrintMatrix(bm, "%.1f\t");
+	}
+	{
+		double values[] = { 0., 10., 20., 30. };
+		double values1[] = { 1., 2., 3. };
+		Matrix* m = MatrixFrom(4, 1, 4, values);
+		Matrix* m1 = MatrixFrom(1, 3, 3, values1);
+		Matrix* res = MatrixAddWithBroadcast(m, m1);
+		PrintMatrix(res, "%.1f\t");
+	}
 	printf("---------------------Matrix End--------------------------\n");
 }
 
