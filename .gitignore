@@ -1,3 +1,5 @@
+tests/bin
+
 # Prerequisites
 *.d
 

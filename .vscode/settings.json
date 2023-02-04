@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "math.h": "c",
+        "corecrt_math.h": "c",
+        "criterion.h": "c",
+        "atomic": "c"
+    },
+    "cmake.configureOnOpen": true
+}
