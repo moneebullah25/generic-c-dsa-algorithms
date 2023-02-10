@@ -1,3 +1,4 @@
+# **Usuage**
 ## **Compiling the project**
 To compile the project and create the executables, run the following command:
 ```
