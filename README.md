@@ -1,4 +1,30 @@
+## **Compiling the project**
+To compile the project and create the executables, run the following command:
+```
+make all
+```
 
+This will compile all the source files, create object files and libraries, and link them to create the executables.
+
+## **Creating Libraries**
+To just create the libraries, run the following command:
+```
+make lib
+```
+
+## **Running tests**
+To run the tests, run the following command:
+```
+make run_tests
+```
+This will compile and run all the tests in the tests directory.
+
+## **Cleaning up the directory**
+To clean up the directory and remove all the compiled files, run the following command:
+```
+make clean
+```
+This will remove all the object files, libraries, and executables.
 
 
 # **C HELPER**
