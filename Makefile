@@ -1,4 +1,6 @@
 CC := gcc
+AR := ar
+ARFLAGS := rcs
 
 OBJ_DIR := obj
 SRC_DIR := src
@@ -13,6 +15,11 @@ SRCS := $(wildcard $(SRC_DIR)/*.c)
 # List of object files
 OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
+# List of library files
+LIB_DIR := lib
+LIBS := $(patsubst $(OBJ_DIR)/%.o, $(LIB_DIR)/%.a, $(OBJS))
+LIBS += $(patsubst $(OBJ_DIR)/%.o, $(LIB_DIR)/%.lib, $(OBJS))
+
 # Name of the executable
 EXE := test.out
 
@@ -24,6 +31,15 @@ TEST_BINS=$(patsubst $(TEST_DIR)/%.c, $(TEST_DIR)/bin/%.out, $(TESTS))
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
+
+#Create a lib folder to store the .lib and .a files
+$(LIB_DIR)/%.a: $(OBJ_DIR)/%.o
+	@mkdir -p $(@D)
+	$(AR) $(ARFLAGS) $@ $<
+
+$(LIB_DIR)/%.lib: $(OBJ_DIR)/%.o
+	@mkdir -p $(@D)
+	$(AR) $(ARFLAGS) $@ $<
 
 # Link the object files to create the executable
 $(EXE): test.c $(OBJS) 
@@ -41,7 +57,8 @@ run_tests: $(TEST_BINS)
 # Clean up the directory
 .PHONY: clean
 clean:
-	rm -f $(OBJ_DIR)/*.o $(EXE) $(TEST_DIR)/bin/*
+	rm -f $(OBJ_DIR)/*.o $(EXE) $(TEST_DIR)/bin/* $(LIB_DIR)/*
 
 # Build targets
-all: $(EXE) $(TEST_BINS)
+lib: $(LIBS)
+all: $(EXE) $(LIBS) $(TEST_BINS)
