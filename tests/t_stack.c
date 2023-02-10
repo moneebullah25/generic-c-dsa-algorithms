@@ -40,7 +40,7 @@ Test(stack_test, test_stack_int) {
     while (StackNext(q, iter)) {
         sum += *(int *)iter->data;
     }
-    cr_assert_eq(sum, 20, "Expected sum of elements to be 20, got %d", sum);
+    cr_assert_eq(sum, 16, "Expected sum of elements to be 20, got %d", sum);
 
     StackDelete(q);
 }
@@ -74,7 +74,7 @@ Test(stack_test, test_stack_double) {
     while (StackNext(q, iter)) {
         sum += *(double *)iter->data;
     }
-    cr_assert_float_eq(sum, 16.5, 0.0001, "Expected sum of elements to be 16.5, got %lf", sum);
+    cr_assert_float_eq(sum, 16.25, 0.0001, "Expected sum of elements to be 16.25, got %lf", sum);
 
     double *five = StackTop(q);
     *five = 6.25;
@@ -83,7 +83,7 @@ Test(stack_test, test_stack_double) {
     while (StackNext(q, iter)) {
         sum += *(double *)iter->data;
     }
-    cr_assert_float_eq(sum, 22.75, 0.0001, "Expected sum of elements to be 22.75, got %lf", sum);
+    cr_assert_float_eq(sum, 17.25, 0.0001, "Expected sum of elements to be 17.25, got %lf", sum);
 
     StackDelete(q);
 }

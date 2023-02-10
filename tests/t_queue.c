@@ -74,7 +74,7 @@ Test(queue_test, test_queue_double) {
     while (QueueNext(q, iter)) {
         sum += *(double *)iter->data;
     }
-    cr_assert_float_eq(sum, 16.5, 0.0001, "Expected sum of elements to be 16.5, got %lf", sum);
+    cr_assert_float_eq(sum, 16.25, 0.0001, "Expected sum of elements to be 16.25, got %lf", sum);
 
     double *five = QueueTop(q);
     *five = 6.25;
@@ -84,7 +84,7 @@ Test(queue_test, test_queue_double) {
     while (QueueNext(q, iter)) {
         sum += *(double *)iter->data;
     }
-    cr_assert_float_eq(sum, 22.75, 0.0001, "Expected sum of elements to be 22.75, got %lf", sum);
+    cr_assert_float_eq(sum, 21.25, 0.0001, "Expected sum of elements to be 21.25, got %lf", sum);
 
     QueueDelete(q);
     

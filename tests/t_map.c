@@ -11,16 +11,16 @@ Test(map_test, test_map_int) {
     MapSet(m, 4, 15);
 
     int *val = MapGet(m, 2);
-    assert_int_equal(*val, 15);
+    cr_assert_eq(*val, 15);
 
     MapSet(m, 5, 43);
     val = MapGet(m, 5);
-    assert_int_equal(*val, 43);
+    cr_assert_eq(*val, 43);
 
     val = MapGet(m, 2);
     *val = 16;
     val = MapGet(m, 2);
-    assert_int_equal(*val, 16);
+    cr_assert_eq(*val, 16);
 
     MapDelete(m);
 }
@@ -35,16 +35,16 @@ Test(map_test, test_map_double) {
     MapSet(m, 4.0, 15.25);
 
     double *val = MapGet(m, 2.0);
-    assert_double_equal(*val, 15.25, 0.01);
+    cr_assert_float_eq(*val, 15.25, 0.01);
 
     MapSet(m, 5.0, 43.0);
     val = MapGet(m, 5.0);
-    assert_double_equal(*val, 43.0, 0.01);
+    cr_assert_float_eq(*val, 43.0, 0.01);
 
     val = MapGet(m, 2.0);
     *val = 16.0;
     val = MapGet(m, 2.0);
-    assert_double_equal(*val, 16.0, 0.01);
+    cr_assert_float_eq(*val, 16.0, 0.01);
 
     MapDelete(m);
 }
@@ -62,25 +62,25 @@ Test(map_test, test_map_string) {
 	while (MapNext(m, iter)) {
 		sum += *(int *)iter->node.value;
 	}
-	assert_int_equal(sum, 156);
+	cr_assert_eq(sum, 156);
 
 	MapSet(m, "Kashif\0", 43);
 	iter = MapIterator(m);
-	int sum = 0;
+	sum = 0;
 	while (MapNext(m, iter)) {
 		sum += *(int *)iter->node.value;
 	}
-	assert_int_equal(sum, 199);
+	cr_assert_eq(sum, 199);
 
 	void *age = MapGet(m, "Moiz\0");
 	*(int *)age = 16;
 
 	iter = MapIterator(m);
-	int sum = 0;
+	sum = 0;
 	while (MapNext(m, iter)) {
 		sum += *(int *)iter->node.value;
 	}
-	assert_int_equal(sum, 200);
+	cr_assert_eq(sum, 200);
 
 	MapDelete(m);
 }

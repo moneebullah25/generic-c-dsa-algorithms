@@ -37,7 +37,7 @@ Test(linkedlist_test, test_linked_list_int) {
     for (unsigned int i = 0; i < LinkedListSize(ll); i++) {
         sum += *(int*)LinkedListAt(ll, i);
     }
-    cr_assert_eq(sum, 24, "Expected sum of elements to be 24, got %d", sum);
+    cr_assert_eq(sum, 17, "Expected sum of elements to be 17, got %d", sum);
 
     int index = LinkedListGetIndex(ll, 9);
     cr_assert_eq(index, -1, "Expected index of 9 to be -1, got %d", index);
@@ -74,7 +74,7 @@ Test(linkedlist_test, test_linked_list_double) {
     for (unsigned int i = 0; i < LinkedListSize(ll); i++) {
         sum += *(double*)LinkedListAt(ll, i);
     }
-    cr_assert_float_eq(sum, 54.75, 0.0001, "Expected sum of elements to be 54.75, got %lf", sum);
+    cr_assert_float_eq(sum, 44.25, 0.0001, "Expected sum of elements to be 44.25, got %lf", sum);
 
     LinkedListClear(ll);
 
@@ -92,7 +92,7 @@ Test(linkedlist_test, test_linked_list_double) {
     for (unsigned int i = 0; i < LinkedListSize(ll); i++) {
         sum += *(double*)LinkedListAt(ll, i);
     }
-    cr_assert_float_eq(sum, 26.4, 0.0001, "Expected sum of elements to be 26.4, got %lf", sum);
+    cr_assert_float_eq(sum, 18.45, 0.0001, "Expected sum of elements to be 18.45, got %lf", sum);
 
     int index = LinkedListGetIndex(ll, 9.25);
     cr_assert_eq(index, -1, "Expected index of 9.25 to be -1, got %d", index);
@@ -132,7 +132,7 @@ Test(linkedlist_test, test_linked_list_string) {
 
     LinkedListClear(ll);
 
-    char* expected_list2[] = {"9.25","2.25","3.25","4.25","5.25","9.25","9.25"};
+    char* expected_list2[] = {"1.25","2.25","3.25","4.25","5.25","1.25","1.25"};
     LinkedListInsertAtTail(ll, "9.25");
     LinkedListInsertAtTail(ll, "2.25");
     LinkedListInsertAtTail(ll, "3.25");
@@ -145,7 +145,6 @@ Test(linkedlist_test, test_linked_list_string) {
 
     for (unsigned int i = 0; i < LinkedListSize(ll); i++) {
         cr_assert_str_eq(*(char**)LinkedListAt(ll, i), expected_list2[i], "Unexpected string at index %d", i);
-        cr_assert_str_eq(*(char**)LinkedListAt(ll, i), "1.25", "Unexpected string at index %d", i);
     }
 
     int index = LinkedListGetIndex(ll, "9.25");

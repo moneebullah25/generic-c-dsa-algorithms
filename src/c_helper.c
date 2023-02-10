@@ -29,6 +29,20 @@ int DataCompare(const void *vp1, const void *vp2, unsigned int nbytes) {
 	return memcmp(vp1, vp2, nbytes);
 }
 
+int DoubleDataCompare(const void *vp1, const void *vp2, unsigned int nbytes)
+{
+	if (*(double*)vp1 < *(double*)vp2) return -1;
+	else if (*(double*)vp1 == *(double*)vp2) return 0;
+	else return 1;
+}
+
+int IntDataCompare(const void *vp1, const void *vp2, unsigned int nbytes)
+{
+	if (*(int*)vp1 < *(int*)vp2) return -1;
+	else if (*(int*)vp1 == *(int*)vp2) return 0;
+	else return 1;
+}
+
 int StringCompare(const void *vp1, const void *vp2, unsigned int nbytes) {
 	return strcmp(*(char **)vp1, *(char **)vp2);
 }

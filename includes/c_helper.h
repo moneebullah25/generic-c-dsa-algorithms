@@ -114,6 +114,8 @@ extern "C" {
 	*/
 	int DataCompare(const void *vp1, const void *vp2, unsigned int nbytes);
 
+int DoubleDataCompare(const void *vp1, const void *vp2, unsigned int nbytes);
+int IntDataCompare(const void *vp1, const void *vp2, unsigned int nbytes);
 	/**
 	* Compare two given strings.
 	* Requirements:

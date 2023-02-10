@@ -18,7 +18,7 @@ EXE := test.out
 
 TEST_DIR=tests
 TESTS=$(wildcard $(TEST_DIR)/*.c)
-TEST_BINS=$(patsubst $(TEST_DIR)/%.c, $(TEST_DIR)/bin/%, $(TESTS))
+TEST_BINS=$(patsubst $(TEST_DIR)/%.c, $(TEST_DIR)/bin/%.out, $(TESTS))
 
 # Compile all the object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -30,8 +30,13 @@ $(EXE): test.c $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 
 # Create Tests
-$(TEST_DIR)/bin/%: $(TEST_DIR)/%.c $(OBJS)
+$(TEST_DIR)/bin/%.out: $(TEST_DIR)/%.c $(OBJS)
 	$(CC) $(CFLAGS) $< $(OBJS) -o $@ -lcriterion -lm
+
+run_tests: $(TEST_BINS)
+	for test in $(TEST_BINS); do \
+		./$$test; \
+	done
 
 # Clean up the directory
 .PHONY: clean
