@@ -20,9 +20,6 @@ LIB_DIR := lib
 LIBS := $(patsubst $(OBJ_DIR)/%.o, $(LIB_DIR)/%.a, $(OBJS))
 LIBS += $(patsubst $(OBJ_DIR)/%.o, $(LIB_DIR)/%.lib, $(OBJS))
 
-# Name of the executable
-EXE := test.out
-
 TEST_DIR=tests
 TESTS=$(wildcard $(TEST_DIR)/*.c)
 TEST_BINS=$(patsubst $(TEST_DIR)/%.c, $(TEST_DIR)/bin/%.out, $(TESTS))
@@ -41,10 +38,6 @@ $(LIB_DIR)/%.lib: $(OBJ_DIR)/%.o
 	@mkdir -p $(@D)
 	$(AR) $(ARFLAGS) $@ $<
 
-# Link the object files to create the executable
-$(EXE): test.c $(OBJS) 
-	$(CC) $(CFLAGS) $^ -o $@ -lm
-
 # Create Tests
 $(TEST_DIR)/bin/%.out: $(TEST_DIR)/%.c $(OBJS)
 	$(CC) $(CFLAGS) $< $(OBJS) -o $@ -lcriterion -lm
@@ -57,8 +50,8 @@ run_tests: $(TEST_BINS)
 # Clean up the directory
 .PHONY: clean
 clean:
-	rm -f $(OBJ_DIR)/*.o $(EXE) $(TEST_DIR)/bin/* $(LIB_DIR)/*
+	rm -f $(OBJ_DIR)/*.o $(TEST_DIR)/bin/* $(LIB_DIR)/*
 
 # Build targets
 lib: $(LIBS)
-all: $(EXE) $(LIBS) $(TEST_BINS)
+all: $(LIBS) $(TEST_BINS)

@@ -4,13 +4,75 @@ To compile the project and create the executables, run the following command:
 ```
 make all
 ```
-
-This will compile all the source files, create object files and libraries, and link them to create the executables.
+This will compile all the source files, create object files and libraries, and link them to create the executables. This will generate following output:
+```
+└─$ make all
+gcc -Wall -g -I includes -c src/c_helper.c -o obj/c_helper.o
+ar rcs lib/c_helper.a obj/c_helper.o
+gcc -Wall -g -I includes -c src/c_list.c -o obj/c_list.o
+ar rcs lib/c_list.a obj/c_list.o
+gcc -Wall -g -I includes -c src/c_map.c -o obj/c_map.o
+ar rcs lib/c_map.a obj/c_map.o
+gcc -Wall -g -I includes -c src/c_matrix.c -o obj/c_matrix.o
+ar rcs lib/c_matrix.a obj/c_matrix.o
+gcc -Wall -g -I includes -c src/c_queue.c -o obj/c_queue.o
+ar rcs lib/c_queue.a obj/c_queue.o
+gcc -Wall -g -I includes -c src/c_sort.c -o obj/c_sort.o
+ar rcs lib/c_sort.a obj/c_sort.o
+gcc -Wall -g -I includes -c src/c_stack.c -o obj/c_stack.o
+ar rcs lib/c_stack.a obj/c_stack.o
+gcc -Wall -g -I includes -c src/c_vector.c -o obj/c_vector.o
+ar rcs lib/c_vector.a obj/c_vector.o
+ar rcs lib/c_helper.lib obj/c_helper.o
+ar rcs lib/c_list.lib obj/c_list.o
+ar rcs lib/c_map.lib obj/c_map.o
+ar rcs lib/c_matrix.lib obj/c_matrix.o
+ar rcs lib/c_queue.lib obj/c_queue.o
+ar rcs lib/c_sort.lib obj/c_sort.o
+ar rcs lib/c_stack.lib obj/c_stack.o
+ar rcs lib/c_vector.lib obj/c_vector.o
+gcc -Wall -g tests/t_list.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_list.out -lcriterion -lm
+gcc -Wall -g tests/t_map.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_map.out -lcriterion -lm
+gcc -Wall -g tests/t_queue.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_queue.out -lcriterion -lm
+gcc -Wall -g tests/t_sort.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_sort.out -lcriterion -lm
+gcc -Wall -g tests/t_stack.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_stack.out -lcriterion -lm
+gcc -Wall -g tests/t_vector.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_vector.out -lcriterion -lm
+rm obj/c_list.o obj/c_stack.o obj/c_map.o obj/c_matrix.o obj/c_sort.o obj/c_vector.o obj/c_helper.o obj/c_queue.o
+```
 
 ## **Creating Libraries**
 To just create the libraries, run the following command:
 ```
 make lib
+```
+You should see the following output after running the above command and it will populate .a and .lib files in lib directory.
+```
+└─$ make lib
+gcc -Wall -g -I includes -c src/c_helper.c -o obj/c_helper.o
+ar rcs lib/c_helper.a obj/c_helper.o
+gcc -Wall -g -I includes -c src/c_list.c -o obj/c_list.o
+ar rcs lib/c_list.a obj/c_list.o
+gcc -Wall -g -I includes -c src/c_map.c -o obj/c_map.o
+ar rcs lib/c_map.a obj/c_map.o
+gcc -Wall -g -I includes -c src/c_matrix.c -o obj/c_matrix.o
+ar rcs lib/c_matrix.a obj/c_matrix.o
+gcc -Wall -g -I includes -c src/c_queue.c -o obj/c_queue.o
+ar rcs lib/c_queue.a obj/c_queue.o
+gcc -Wall -g -I includes -c src/c_sort.c -o obj/c_sort.o
+ar rcs lib/c_sort.a obj/c_sort.o
+gcc -Wall -g -I includes -c src/c_stack.c -o obj/c_stack.o
+ar rcs lib/c_stack.a obj/c_stack.o
+gcc -Wall -g -I includes -c src/c_vector.c -o obj/c_vector.o
+ar rcs lib/c_vector.a obj/c_vector.o
+ar rcs lib/c_helper.lib obj/c_helper.o
+ar rcs lib/c_list.lib obj/c_list.o
+ar rcs lib/c_map.lib obj/c_map.o
+ar rcs lib/c_matrix.lib obj/c_matrix.o
+ar rcs lib/c_queue.lib obj/c_queue.o
+ar rcs lib/c_sort.lib obj/c_sort.o
+ar rcs lib/c_stack.lib obj/c_stack.o
+ar rcs lib/c_vector.lib obj/c_vector.o
+rm obj/c_list.o obj/c_stack.o obj/c_map.o obj/c_matrix.o obj/c_sort.o obj/c_vector.o obj/c_helper.o obj/c_queue.o
 ```
 
 ## **Running tests**
@@ -18,15 +80,44 @@ To run the tests, run the following command:
 ```
 make run_tests
 ```
-This will compile and run all the tests in the tests directory.
+This will compile and run all the tests in the tests directory. You should see the following output:
+```
+└─$ make run_tests
+gcc -Wall -g -I includes -c src/c_helper.c -o obj/c_helper.o
+gcc -Wall -g -I includes -c src/c_list.c -o obj/c_list.o
+gcc -Wall -g -I includes -c src/c_map.c -o obj/c_map.o
+gcc -Wall -g -I includes -c src/c_matrix.c -o obj/c_matrix.o
+gcc -Wall -g -I includes -c src/c_queue.c -o obj/c_queue.o
+gcc -Wall -g -I includes -c src/c_sort.c -o obj/c_sort.o
+gcc -Wall -g -I includes -c src/c_stack.c -o obj/c_stack.o
+gcc -Wall -g -I includes -c src/c_vector.c -o obj/c_vector.o
+gcc -Wall -g tests/t_list.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_list.out -lcriterion -lm
+gcc -Wall -g tests/t_map.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_map.out -lcriterion -lm
+gcc -Wall -g tests/t_queue.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_queue.out -lcriterion -lm
+gcc -Wall -g tests/t_sort.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_sort.out -lcriterion -lm
+gcc -Wall -g tests/t_stack.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_stack.out -lcriterion -lm
+gcc -Wall -g tests/t_vector.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_vector.out -lcriterion -lm
+for test in  tests/bin/t_list.out  tests/bin/t_map.out  tests/bin/t_queue.out  tests/bin/t_sort.out  tests/bin/t_stack.out  tests/bin/t_vector.out; do \
+        ./$test; \
+done
+[====] Synthesis: Tested: 3 | Passing: 3 | Failing: 0 | Crashing: 0 
+[====] Synthesis: Tested: 3 | Passing: 3 | Failing: 0 | Crashing: 0 
+[====] Synthesis: Tested: 3 | Passing: 3 | Failing: 0 | Crashing: 0 
+[====] Synthesis: Tested: 15 | Passing: 15 | Failing: 0 | Crashing: 0 
+[====] Synthesis: Tested: 3 | Passing: 3 | Failing: 0 | Crashing: 0 
+[====] Synthesis: Tested: 3 | Passing: 3 | Failing: 0 | Crashing: 0
+rm obj/c_list.o obj/c_stack.o obj/c_map.o obj/c_matrix.o obj/c_sort.o obj/c_vector.o obj/c_helper.o obj/c_queue.o
+```
 
 ## **Cleaning up the directory**
 To clean up the directory and remove all the compiled files, run the following command:
 ```
 make clean
 ```
-This will remove all the object files, libraries, and executables.
-
+This will remove all the object files, libraries, and executables. This will generate following output in console:
+```
+rm -f obj/*.o tests/bin/* lib/*
+```
 
 # **C HELPER**
 
