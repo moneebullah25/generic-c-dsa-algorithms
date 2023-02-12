@@ -27,7 +27,7 @@ typedef struct ListNode {
  * @param elemsize The size of an elem in list node
  * @param DataCmp A pointer to a function that compares data
  * @param FreeFunc A pointer to a function that frees memory
-*/
+**/
 typedef struct LinkedListBase {
 	ListNode* head; ListNode* tail;
 	unsigned int listsize; unsigned int elemsize;
@@ -40,7 +40,7 @@ typedef struct LinkedListBase {
  * A macro that creates a linked list template for a given data type T.
  * The macro creates a struct with a LinkedListBase as a member and an additional member with the name data_ of the type T and value_ of the type T.
  * @param T The type of the data the linked list will hold
-*/
+**/
 #define LinkedListT(T) \
 struct { LinkedListBase base; T data_; T value_; }
 
@@ -50,7 +50,7 @@ struct { LinkedListBase base; T data_; T value_; }
  * @param ll Pointer to the linked list struct
  * @param DataCmp A pointer to a function that compares data
  * @param FreeFunc A pointer to a function that frees memory
-*/
+**/
 #define LinkedListNew(ll, DataCmp, FreeFunc) \
 	LinkedListNew_(&(ll)->base, sizeof((ll)->data_), DataCmp, FreeFunc)
 
@@ -59,7 +59,7 @@ struct { LinkedListBase base; T data_; T value_; }
  * The macro calls the LinkedListInsertAtTail_ function with the address of the base member of the LinkedListBase struct and the address of the data_ member of the linked list struct as arguments.
  * @param ll Pointer to the linked list struct
  * @param data Data to be stored in linked list
-*/
+**/
 #define LinkedListInsertAtTail(ll, data) \
 	((ll)->data_ = data, \
 	LinkedListInsertAtTail_(&(ll)->base, &(ll)->data_))
@@ -69,7 +69,7 @@ struct { LinkedListBase base; T data_; T value_; }
  * The macro calls the LinkedListInsertAtHead_ function with the address of the base member of the LinkedListBase struct and the address of the data_ member of the linked list struct as arguments.
  * @param ll Pointer to the linked list struct
  * @param data Data to be stored in linked list
-*/
+**/
 #define LinkedListInsertAtHead(ll, data) \
 	((ll)->data_ = data, \
 	LinkedListInsertAtHead_(&(ll)->base, &(ll)->data_))
@@ -80,7 +80,7 @@ struct { LinkedListBase base; T data_; T value_; }
  * @param ll pointer to the linked list
  * @param data pointer to the data of the element to be replaced
  * @param value pointer to the new value to be set
-*/
+**/
 #define LinkedListReplace(ll, data, value) \
 	((ll)->data_ = data, \
 	(ll)->value_ = value, \
@@ -92,7 +92,7 @@ struct { LinkedListBase base; T data_; T value_; }
  * @param ll pointer to the linked list
  * @param data pointer to the data of the elements to be replaced
  * @param value pointer to the new value to be set
-*/
+**/
 #define LinkedListReplaceAll(ll, data, value) \
 	((ll)->data_ = data, \
 	(ll)->value_ = value, \
@@ -104,7 +104,7 @@ struct { LinkedListBase base; T data_; T value_; }
  * @param ll pointer to the linked list
  * @param data pointer to the data of the element for which the index needs to be found
  * @return returns the index of the first element with the specified data, if not found returns -1
-*/
+**/
 #define LinkedListGetIndex(ll, data) \
 	((ll)->data_ = data, \
 	LinkedListGetIndex_(&(ll)->base, &(ll)->data_))
@@ -115,7 +115,7 @@ struct { LinkedListBase base; T data_; T value_; }
  * @param ll pointer to the linked list
  * @param index index of the element which needs to be found
  * @return returns the element at the specified index
-*/
+**/
 #define LinkedListAt(ll, index) \
 	LinkedListAt_(&(ll)->base, index)
 
@@ -123,7 +123,7 @@ struct { LinkedListBase base; T data_; T value_; }
  * Macro that clears all the elements in the linked list.
  * The macro LinkedListClear calls the function LinkedListClear_ with the address of the base member of the LinkedListBase struct as an argument.
  * @param ll pointer to the linked list
-*/
+**/
 #define LinkedListClear(ll) \
 	LinkedListClear_(&(ll)->base)
 
@@ -131,7 +131,7 @@ struct { LinkedListBase base; T data_; T value_; }
  * Macro that deletes the linked list.
  * The macro LinkedListDelete calls the function LinkedListDelete_ with the address of the base member of the LinkedListBase struct as an argument.
  * @param ll pointer to the linked list
-*/
+**/
 #define LinkedListDelete(ll) \
 	LinkedListDelete_(&(ll)->base)
 
@@ -139,7 +139,7 @@ struct { LinkedListBase base; T data_; T value_; }
  * Macro that gets the number of elements in the linked list.
  * The macro LinkedListSize calls the function LinkedListSize_ with the address of the base member of the LinkedListBase struct
  * @param ll pointer to the linked list
-*/
+**/
 #define LinkedListSize(ll) \
 	LinkedListSize_(&(ll)->base)
 
@@ -153,11 +153,11 @@ struct { LinkedListBase base; T data_; T value_; }
  * @param DataCmp pointer to the data comparison function
  * @param FreeFunc pointer to the free function
  * Requirements:
- * 		- ll pointer should not be nullptr
- * 		- elemsize should be greater than zero
+ * - ll pointer should not be nullptr
+ * - elemsize should be greater than zero
  * Time complexity: O(1)
  * Space complexity: O(1)
-*/
+**/
 void LinkedListNew_(LinkedListBase* ll, unsigned int elemsize,
 	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems));
@@ -170,10 +170,10 @@ void LinkedListNew_(LinkedListBase* ll, unsigned int elemsize,
  * @param ll pointer to the linked list
  * @param data pointer to the data to be inserted
  * Requirements:
- *  	- ll pointer should not be nullptr
+ * - ll pointer should not be nullptr
  * Time complexity: O(1)
  * Space complexity: O(1)
-*/
+**/
 void LinkedListInsertAtTail_(LinkedListBase* ll, void* data);
 
 /**
@@ -184,11 +184,10 @@ void LinkedListInsertAtTail_(LinkedListBase* ll, void* data);
  * @param ll pointer to the linked list
  * @param data pointer to the data to be inserted
  * Requirements:
- * Copy code
- *  - ll pointer should not be nullptr
+ * - ll pointer should not be nullptr
  * Time complexity: O(1)
  * Space complexity: O(1)
-*/
+**/
 void LinkedListInsertAtHead_(LinkedListBase* ll, void* data);
 
 /**
@@ -199,11 +198,11 @@ void LinkedListInsertAtHead_(LinkedListBase* ll, void* data);
  * @param data pointer to the data that needs to be replaced
  * @param value pointer to the new value
  * Requirements:
- * 	- ll pointer should not be nullptr
- * 	- data and value pointer should not be nullptr
+ * - ll pointer should not be nullptr
+ * - data and value pointer should not be nullptr
  * Time complexity: O(n)
  * Space complexity: O(1)
-*/
+**/
 void LinkedListReplace_(LinkedListBase* ll, void* data, void* value);
 
 /**
@@ -214,11 +213,11 @@ void LinkedListReplace_(LinkedListBase* ll, void* data, void* value);
  * @param data pointer to the data that needs to be replaced
  * @param value pointer to the new value
  * Requirements:
- * 	- ll pointer should not be nullptr
- * 	- data and value pointer should not be nullptr
+ * - ll pointer should not be nullptr
+ * - data and value pointer should not be nullptr
  * Time complexity: O(n)
  * Space complexity: O(1)
-*/
+**/
 void LinkedListReplaceAll_(LinkedListBase* ll, void* data, void* value);
 
 /**
@@ -229,11 +228,11 @@ void LinkedListReplaceAll_(LinkedListBase* ll, void* data, void* value);
  * @param ll pointer to the linked list
  * @param data pointer to the data to be searched in the linked list
  * Requirements:
- * 		- ll pointer should not be nullptr
- *  	- data pointer should not be nullptr
+ * - ll pointer should not be nullptr
+ * - data pointer should not be nullptr
  * Time complexity: O(n)
  * Space complexity: O(1)
-*/
+**/
 int LinkedListGetIndex_(LinkedListBase* ll, void* data);
 
 /**
@@ -242,11 +241,11 @@ int LinkedListGetIndex_(LinkedListBase* ll, void* data);
  * @param ll pointer to the linked list
  * @param index index of the node whose data is to be returned
  * Requirements:
- *  	- ll pointer should not be nullptr
- *  	- index should be greater than or equal to 0 and less than the size of the linked list
+ * - ll pointer should not be nullptr
+ * - index should be greater than or equal to 0 and less than the size of the linked list
  * Time complexity: O(n)
  * Space complexity: O(1)
-*/
+**/
 void* LinkedListAt_(LinkedListBase* ll, unsigned int index);
 
 /**
@@ -255,10 +254,10 @@ void* LinkedListAt_(LinkedListBase* ll, unsigned int index);
  * The function also sets the head and tail pointers to NULL.
  * @param ll pointer to the linked list
  * Requirements:
- *  	- ll pointer should not be nullptr
+ * - ll pointer should not be nullptr
  * Time complexity: O(n) where n is the number of elements in the list
  * Space complexity: O(1)
-*/
+**/
 void LinkedListClear_(LinkedListBase* ll);
 
 /**
@@ -266,69 +265,69 @@ void LinkedListClear_(LinkedListBase* ll);
  * The function calls the LinkedListClear_ function to clear all elements and then frees the memory allocated for the head node.
  * @param ll pointer to the linked list
  * Requirements:
- *  	- ll pointer should not be nullptr
+ * - ll pointer should not be nullptr
  * Time complexity: O(n) where n is the number of elements in the list
  * Space complexity: O(1)
-*/
+**/
 void LinkedListDelete_(LinkedListBase* ll);
 
 /**
  * Function that returns the number of elements in the linked list.
  * @param ll pointer to the linked list
  * Requirements:
- *  	- ll pointer should not be nullptr
+ * - ll pointer should not be nullptr
  * Time complexity: O(1)
  * Space complexity: O(1)
-*/
+**/
 unsigned int LinkedListSize_(LinkedListBase* ll);
 
 /**
  * Define a linked list of void pointers.
  * Time complexity:
- *		- Depends on the operations performed on the linked list.
-*/
+ * - Depends on the operations performed on the linked list.
+**/
 typedef LinkedListT(void*) LinkedList;
 
 /**
  * Define a linked list of double values.
  * Time complexity:
- *		- Depends on the operations performed on the linked list.
-*/
+ * - Depends on the operations performed on the linked list.
+**/
 typedef LinkedListT(double) LinkedListDouble;
 
 /**
  * Define a linked list of float values.
  * Time complexity:
- *		- Depends on the operations performed on the linked list.
-*/
+ * - Depends on the operations performed on the linked list.
+**/
 typedef LinkedListT(float) LinkedListFloat;
 
 /**
  * Define a linked list of signed integer values.
  * Time complexity:
- *		- Depends on the operations performed on the linked list.
-*/
+ * - Depends on the operations performed on the linked list.
+**/
 typedef LinkedListT(int) LinkedListInt;
 
 /**
  * Define a linked list of pointer to character(s).
  * Time complexity:
- *		- Depends on the operations performed on the linked list.
-*/
+ * - Depends on the operations performed on the linked list.
+**/
 typedef LinkedListT(char*) LinkedListString;
 
 /**
  * Define a linked list of character.
  * Time complexity:
- *		- Depends on the operations performed on the linked list.
-*/
+ * - Depends on the operations performed on the linked list.
+**/
 typedef LinkedListT(char) LinkedListChar;
 
 /**
  * Define a linked list of boolean values.
  * Time complexity:
- *		- Depends on the operations performed on the linked list.
-*/
+ * - Depends on the operations performed on the linked list.
+**/
 typedef LinkedListT(bool) LinkedListBool;
 
 #ifdef __cplusplus

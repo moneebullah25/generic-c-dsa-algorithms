@@ -18,10 +18,10 @@ extern "C" {
  * @param elemsize size of each element in the array
  * @param MemCmp pointer to the memory comparison function
  * Requirements:
- *  	- key pointer, base pointer, and MemCmp pointer should not be nullptr
+ * - key pointer, base pointer, and MemCmp pointer should not be nullptr
  * Time complexity: O(n)
  * Space complexity: O(1)
-*/
+**/
 void* LinearSearch(void* key, void* base, unsigned int nelems, unsigned int elemsize, int(*MemCmp)(const void*, const void*, unsigned int));
 
 /**
@@ -37,10 +37,10 @@ void* LinearSearch(void* key, void* base, unsigned int nelems, unsigned int elem
  * @param elemsize size of each element in the array
  * @param MemCmp pointer to the comparison function
  * Requirements:
- *  	- key, base, and MemCmp pointer should not be nullptr
+ * - key, base, and MemCmp pointer should not be nullptr
  * Time complexity: O(log n)
  * Space complexity: O(log n)
-*/
+**/
 void* BinarySearch(void* key, void* base, unsigned int s, unsigned int n, unsigned int elemsize, int(*MemCmp)(const void*, const void*, unsigned int));
 
 /**
@@ -53,10 +53,10 @@ void* BinarySearch(void* key, void* base, unsigned int s, unsigned int n, unsign
  * @param MemCmp pointer to a memory comparison function that compares two elements
  * @param MemSwap pointer to a memory swap function that swaps two elements
  * Requirements:
- *  	- key, base, MemSwap and MemCmp pointer should not be nullptr
+ * - key, base, MemSwap and MemCmp pointer should not be nullptr
  * Time complexity: O(n^2)
  * Space complexity: O(1)
-*/
+**/
 void BubbleSort(void* base, unsigned int elemsize, unsigned int n, 
     int(*MemCmp)(const void*, const void*, unsigned int),
     void(*MemSwap)(void *vp1, void *vp2, unsigned int nbytes));
@@ -72,10 +72,10 @@ void BubbleSort(void* base, unsigned int elemsize, unsigned int n,
  * @param MemCmp pointer to a comparison function
  * @param MemSwap pointer to a swap function
  * Requirements:
- *  	- base pointer, MemCmp and MemSwap should not be nullptr
+ * - base pointer, MemCmp and MemSwap should not be nullptr
  * Time complexity: O(n^2) in worst case, O(n*log n) on average case
  * Space complexity: O(log n)
-*/
+**/
 void QuickSort(void* base, int elemsize, int low, int high, 
     int(*MemCmp)(const void*, const void*, unsigned int),
     void(*MemSwap)(void *vp1, void *vp2, unsigned int nbytes));
@@ -92,10 +92,10 @@ void QuickSort(void* base, int elemsize, int low, int high,
  * @param MemCmp pointer to a function that compares elements
  * @param MemSwap pointer to a function that swaps elements
  * Requirements:
- *  	- base pointer and elemsize should not be nullptr
+ * - base pointer and elemsize should not be nullptr
  * Time complexity: O(nlogn)
  * Space complexity: O(n)
-*/
+**/
 void MergeSort(void* base, unsigned int elemsize, unsigned int l, unsigned int r, 
     int(*MemCmp)(const void*, const void*, unsigned int),
     void(*MemSwap)(void *vp1, void *vp2, unsigned int nbytes));
