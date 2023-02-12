@@ -388,3 +388,48 @@ There are also several macros defined that simplify the use of the map, such as 
 - **MapDoubleInt** is a map template that uses a double as the key and integer as the value.
 - **MapDoubleFloat** is a map template that uses a double as the key and float as the value.
 - **MapDoubleBool** is a map template that uses a double as the key and boolean as the value.
+
+# **C MATRIX**
+
+## Functions: 
+
+- **Matrix\* MatrixNew(unsigned int num\_rows, unsigned int num\_cols)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols.
+- **Matrix\* MatrixRandom(unsigned int num\_rows, unsigned int num\_cols, double min, double max)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with random numbers in the range [min, max].
+- **Matrix\* MatrixSquare(unsigned int size)** Allocates memory for a new Matrix structure with the given size and size number of columns and rows.
+- **Matrix\* MatrixSquareRandom(unsigned int size, double min, double max)** Allocates memory for a new square Matrix structure with the given size and fills it with random numbers in the range [min, max].
+- **Matrix\* MatrixZero(unsigned int num\_rows, unsigned int num\_cols)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with zeros.
+- **Matrix\* MatrixOne(unsigned int num\_rows, unsigned int num\_cols)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with ones.
+- **Matrix\* MatrixN(unsigned int num\_rows, unsigned int num\_cols, double value)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with the given value.
+- **Matrix\* MatrixIdentity(unsigned int size)** Allocates memory for a new square Matrix structure with the given size and fills it with an identity matrix.
+- **Matrix\* MatrixFrom(unsigned int num\_rows, unsigned int num\_cols, unsigned int n\_values, double \*values)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with the first n_values from the given array of values.
+- **Matrix\* MatrixFromFile(const char\* file)** Allocates memory for a new Matrix structure and fills it with the data from the file specified by file.
+- **Matrix\* MatrixCopy(Matrix\* m)** Allocates memory for a new Matrix structure and copies the data from the given Matrix structure m.
+- **bool IsMatrixEqualDim(Matrix\* m1, Matrix\* m2)** Returns true if the dimensions of Matrix structures m1 and m2 are equal, false otherwise.
+- **void PrintMatrix(Matrix\* m, const char\* data_format)** Prints the contents of the matrix in the specified data format.
+
+- **IsMatrixInvertible(Matrix\* m)** Returns true if the matrix is invertible, false otherwise.
+- **MatrixGet(Matrix\* m, unsigned row, unsigned col)** Returns the value stored in the matrix at the specified row and column.
+- **MatrixColumnGet(Matrix\* m, unsigned int col)** Returns a column vector containing the values in the specified column of the matrix.
+- **MatrixRowGet(Matrix\* m, unsigned int row)** Returns a row vector containing the values in the specified row of the matrix.
+- **MatrixSet(Matrix\* m, unsigned int row, unsigned int col, double value)** Sets the value of the matrix at the specified row and column.
+- **MatrixAllSet(Matrix\* m, double value)** Sets the value of all elements in the matrix to the specified value.
+- **MatrixDiagonalSet(Matrix\* m, double value)** Sets the value of all elements along the main diagonal of the matrix to the specified value.
+- **MatrixRowMultiplyValue(Matrix\* m, unsigned int row, double value)** Multiplies all elements in the specified row of the matrix by the specified value.
+- **MatrixRowAddValue(Matrix\* m, unsigned int row, double value)** Adds the specified value to all elements in the specified row of the matrix.
+- **MatrixColumnMultiplyValue(Matrix\* m, unsigned int col, double value)** Multiplies all elements in the specified column of the matrix by the specified value.
+- **MatrixColumnAddValue(Matrix\* m, unsigned int col, double value)** Adds the specified value to all elements in the specified column of the matrix.
+- **MatrixRowMultiplyRow(Matrix\* m, unsigned int where, unsigned int row, double value)** Multiplies the elements in the specified row by the elements in another specified row.
+- **MatrixRowAddRow(Matrix\* m, unsigned int where, unsigned int row, double value)** Adds the elements in one specified row to another specified row.
+- **MatrixColumnMultiplyColumn(Matrix\* m, unsigned int where, unsigned int col, double value)** Multiplies the elements in the specified column by the elements in another specified column.
+- **MatrixColumnAddValueColumn(Matrix\* m, unsigned int where, unsigned int col, double value)** Adds the elements in one specified column to another specified column.
+- **MatrixWholeMultiply(Matrix\* m, double value)** Multiplies all elements in the matrix by the specified value.
+- **MatrixWholeAdd(Matrix\* m, double value)** Adds the specified value to all elements in the matrix.
+- **MatrixRowRemove(Matrix\* m, unsigned int row)** Removes a specified row from the matrix and returns the new modified matrix.
+- **MatrixColumnRemove(Matrix\* m, unsigned int row)** Removes a specified column from the matrix and returns the new modified matrix.
+- **MatrixRowSwap(Matrix\* m, unsigned int row1, unsigned int row2)** Swaps two specified rows in the matrix.
+- **MatrixColumnSwap(Matrix\* m, unsigned int col1, unsigned int col2)** Swaps two specified columns in the matrix.
+- **MatrixBroadcastRows(Matrix\* m, unsigned int row)** Replicates a specified row of the matrix to create a new matrix with multiple instances of that row.
+- **MatrixBroadcastColumns(Matrix\* m, unsigned int col)** Replicates a specified column of the matrix to create a new matrix with multiple instances of that column.
+- **MatrixBroadcastRowsAndColumns(Matrix\* m, unsigned int row, unsigned int col)** Replicates a specified row and column of the matrix to create a new matrix with multiple instances of those elements.
+
+
