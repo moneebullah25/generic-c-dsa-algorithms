@@ -391,6 +391,13 @@ There are also several macros defined that simplify the use of the map, such as 
 
 # **C MATRIX**
 
+The **Matrix** class is a data structure for representing and manipulating matrices in C. The class definition starts with a header guard, followed by an include for a "c\_helper.h" file. The definition of the **Matrix** structure starts with the definition of a struct, which consists of the following member variables:
+
+- **unsigned int num\_rows** : Number of rows in the matrix.
+- **unsigned int num\_cols** : Number of columns in the matrix.
+- **double\*\* data** : A two-dimensional array of double-precision floating-point values representing the data in the matrix.
+- **bool is\_square** : A boolean value indicating whether the matrix is square or not.
+
 ## Functions: 
 
 - **Matrix\* MatrixNew(unsigned int num\_rows, unsigned int num\_cols)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols.
@@ -431,5 +438,18 @@ There are also several macros defined that simplify the use of the map, such as 
 - **MatrixBroadcastRows(Matrix\* m, unsigned int row)** Replicates a specified row of the matrix to create a new matrix with multiple instances of that row.
 - **MatrixBroadcastColumns(Matrix\* m, unsigned int col)** Replicates a specified column of the matrix to create a new matrix with multiple instances of that column.
 - **MatrixBroadcastRowsAndColumns(Matrix\* m, unsigned int row, unsigned int col)** Replicates a specified row and column of the matrix to create a new matrix with multiple instances of those elements.
-
-
+- **MatrixAdd(Matrix\* m1, Matrix\* m2)** Adds two matrices together element-wise and returns the result as a new matrix. The matrices must have the same dimensions.
+- **MatrixSubtract(Matrix\* m1, Matrix\* m2)** Subtracts one matrix from another element-wise and returns the result as a new matrix. The matrices must have the same dimensions.
+- **MatrixMultiply(Matrix\* m1, Matrix\* m2)** Performs matrix multiplication between two matrices and returns the result as a new matrix. The number of columns in **m1** must be equal to the number of rows in **m2**.
+- **MatrixAddWithBroadcast(Matrix\* m1, Matrix\* m2)** Adds two matrices together element-wise, with broadcasting of the smaller matrix to match the dimensions of the larger matrix.
+- **MatrixSubtractWithBroadcast(Matrix\* m1, Matrix\* m2)** Subtracts one matrix from another element-wise, with broadcasting of the smaller matrix to match the dimensions of the larger matrix.
+- **MatrixTranspose(Matrix\* m)** Transposes the input matrix by swapping rows and columns, and modifies the input matrix in-place.
+- **MatrixTrace(Matrix\* m)** Computes the trace of the input matrix, which is the sum of the elements on the main diagonal.
+- **MatrixDeterminant(Matrix\* m)** Computes the determinant of the input matrix.
+- **MatrixRowEchelon(Matrix\* m)** Transforms the input matrix into row echelon form, a type of triangular form, by row operations. The function modifies the input matrix in-place.
+- **MatrixReducedRowEchelon(Matrix\* m)** Transforms the input matrix into reduced row echelon form, a type of triangular form, by row operations. The function modifies the input matrix in-place.
+- **MatrixRowEchelonGet(Matrix\* m)** Returns a new matrix that is the row echelon form of the input matrix, without modifying the input matrix.
+- **MatrixReducedRowEchelonGet(Matrix\* m)** Returns a new matrix that is the reduced row echelon form of the input matrix, without modifying the input matrix.
+- **MatrixColumnL2Norm(Matrix\* m, unsigned int col)** Computes the L2 norm, also known as the Euclidean norm, of a specified column of the input matrix.
+- **MatrixL2Norm(Matrix\* m)** Computes the L2 norm, also known as the Euclidean norm, of each column of the input matrix and returns a new matrix with the results.
+- **MatrixFree(Matrix\* m)** Deallocates the memory associated with the input matrix, freeing it for use by other parts of the program.
