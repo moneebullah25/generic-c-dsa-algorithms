@@ -388,3 +388,68 @@ There are also several macros defined that simplify the use of the map, such as 
 - **MapDoubleInt** is a map template that uses a double as the key and integer as the value.
 - **MapDoubleFloat** is a map template that uses a double as the key and float as the value.
 - **MapDoubleBool** is a map template that uses a double as the key and boolean as the value.
+
+# **C MATRIX**
+
+The **Matrix** class is a data structure for representing and manipulating matrices in C. The class definition starts with a header guard, followed by an include for a "c\_helper.h" file. The definition of the **Matrix** structure starts with the definition of a struct, which consists of the following member variables:
+
+- **unsigned int num\_rows** : Number of rows in the matrix.
+- **unsigned int num\_cols** : Number of columns in the matrix.
+- **double\*\* data** : A two-dimensional array of double-precision floating-point values representing the data in the matrix.
+- **bool is\_square** : A boolean value indicating whether the matrix is square or not.
+
+## Functions: 
+
+- **Matrix\* MatrixNew(unsigned int num\_rows, unsigned int num\_cols)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols.
+- **Matrix\* MatrixRandom(unsigned int num\_rows, unsigned int num\_cols, double min, double max)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with random numbers in the range [min, max].
+- **Matrix\* MatrixSquare(unsigned int size)** Allocates memory for a new Matrix structure with the given size and size number of columns and rows.
+- **Matrix\* MatrixSquareRandom(unsigned int size, double min, double max)** Allocates memory for a new square Matrix structure with the given size and fills it with random numbers in the range [min, max].
+- **Matrix\* MatrixZero(unsigned int num\_rows, unsigned int num\_cols)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with zeros.
+- **Matrix\* MatrixOne(unsigned int num\_rows, unsigned int num\_cols)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with ones.
+- **Matrix\* MatrixN(unsigned int num\_rows, unsigned int num\_cols, double value)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with the given value.
+- **Matrix\* MatrixIdentity(unsigned int size)** Allocates memory for a new square Matrix structure with the given size and fills it with an identity matrix.
+- **Matrix\* MatrixFrom(unsigned int num\_rows, unsigned int num\_cols, unsigned int n\_values, double \*values)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with the first n_values from the given array of values.
+- **Matrix\* MatrixFromFile(const char\* file)** Allocates memory for a new Matrix structure and fills it with the data from the file specified by file.
+- **Matrix\* MatrixCopy(Matrix\* m)** Allocates memory for a new Matrix structure and copies the data from the given Matrix structure m.
+- **bool IsMatrixEqualDim(Matrix\* m1, Matrix\* m2)** Returns true if the dimensions of Matrix structures m1 and m2 are equal, false otherwise.
+- **void PrintMatrix(Matrix\* m, const char\* data_format)** Prints the contents of the matrix in the specified data format.
+
+- **IsMatrixInvertible(Matrix\* m)** Returns true if the matrix is invertible, false otherwise.
+- **MatrixGet(Matrix\* m, unsigned row, unsigned col)** Returns the value stored in the matrix at the specified row and column.
+- **MatrixColumnGet(Matrix\* m, unsigned int col)** Returns a column vector containing the values in the specified column of the matrix.
+- **MatrixRowGet(Matrix\* m, unsigned int row)** Returns a row vector containing the values in the specified row of the matrix.
+- **MatrixSet(Matrix\* m, unsigned int row, unsigned int col, double value)** Sets the value of the matrix at the specified row and column.
+- **MatrixAllSet(Matrix\* m, double value)** Sets the value of all elements in the matrix to the specified value.
+- **MatrixDiagonalSet(Matrix\* m, double value)** Sets the value of all elements along the main diagonal of the matrix to the specified value.
+- **MatrixRowMultiplyValue(Matrix\* m, unsigned int row, double value)** Multiplies all elements in the specified row of the matrix by the specified value.
+- **MatrixRowAddValue(Matrix\* m, unsigned int row, double value)** Adds the specified value to all elements in the specified row of the matrix.
+- **MatrixColumnMultiplyValue(Matrix\* m, unsigned int col, double value)** Multiplies all elements in the specified column of the matrix by the specified value.
+- **MatrixColumnAddValue(Matrix\* m, unsigned int col, double value)** Adds the specified value to all elements in the specified column of the matrix.
+- **MatrixRowMultiplyRow(Matrix\* m, unsigned int where, unsigned int row, double value)** Multiplies the elements in the specified row by the elements in another specified row.
+- **MatrixRowAddRow(Matrix\* m, unsigned int where, unsigned int row, double value)** Adds the elements in one specified row to another specified row.
+- **MatrixColumnMultiplyColumn(Matrix\* m, unsigned int where, unsigned int col, double value)** Multiplies the elements in the specified column by the elements in another specified column.
+- **MatrixColumnAddValueColumn(Matrix\* m, unsigned int where, unsigned int col, double value)** Adds the elements in one specified column to another specified column.
+- **MatrixWholeMultiply(Matrix\* m, double value)** Multiplies all elements in the matrix by the specified value.
+- **MatrixWholeAdd(Matrix\* m, double value)** Adds the specified value to all elements in the matrix.
+- **MatrixRowRemove(Matrix\* m, unsigned int row)** Removes a specified row from the matrix and returns the new modified matrix.
+- **MatrixColumnRemove(Matrix\* m, unsigned int row)** Removes a specified column from the matrix and returns the new modified matrix.
+- **MatrixRowSwap(Matrix\* m, unsigned int row1, unsigned int row2)** Swaps two specified rows in the matrix.
+- **MatrixColumnSwap(Matrix\* m, unsigned int col1, unsigned int col2)** Swaps two specified columns in the matrix.
+- **MatrixBroadcastRows(Matrix\* m, unsigned int row)** Replicates a specified row of the matrix to create a new matrix with multiple instances of that row.
+- **MatrixBroadcastColumns(Matrix\* m, unsigned int col)** Replicates a specified column of the matrix to create a new matrix with multiple instances of that column.
+- **MatrixBroadcastRowsAndColumns(Matrix\* m, unsigned int row, unsigned int col)** Replicates a specified row and column of the matrix to create a new matrix with multiple instances of those elements.
+- **MatrixAdd(Matrix\* m1, Matrix\* m2)** Adds two matrices together element-wise and returns the result as a new matrix. The matrices must have the same dimensions.
+- **MatrixSubtract(Matrix\* m1, Matrix\* m2)** Subtracts one matrix from another element-wise and returns the result as a new matrix. The matrices must have the same dimensions.
+- **MatrixMultiply(Matrix\* m1, Matrix\* m2)** Performs matrix multiplication between two matrices and returns the result as a new matrix. The number of columns in **m1** must be equal to the number of rows in **m2**.
+- **MatrixAddWithBroadcast(Matrix\* m1, Matrix\* m2)** Adds two matrices together element-wise, with broadcasting of the smaller matrix to match the dimensions of the larger matrix.
+- **MatrixSubtractWithBroadcast(Matrix\* m1, Matrix\* m2)** Subtracts one matrix from another element-wise, with broadcasting of the smaller matrix to match the dimensions of the larger matrix.
+- **MatrixTranspose(Matrix\* m)** Transposes the input matrix by swapping rows and columns, and modifies the input matrix in-place.
+- **MatrixTrace(Matrix\* m)** Computes the trace of the input matrix, which is the sum of the elements on the main diagonal.
+- **MatrixDeterminant(Matrix\* m)** Computes the determinant of the input matrix.
+- **MatrixRowEchelon(Matrix\* m)** Transforms the input matrix into row echelon form, a type of triangular form, by row operations. The function modifies the input matrix in-place.
+- **MatrixReducedRowEchelon(Matrix\* m)** Transforms the input matrix into reduced row echelon form, a type of triangular form, by row operations. The function modifies the input matrix in-place.
+- **MatrixRowEchelonGet(Matrix\* m)** Returns a new matrix that is the row echelon form of the input matrix, without modifying the input matrix.
+- **MatrixReducedRowEchelonGet(Matrix\* m)** Returns a new matrix that is the reduced row echelon form of the input matrix, without modifying the input matrix.
+- **MatrixColumnL2Norm(Matrix\* m, unsigned int col)** Computes the L2 norm, also known as the Euclidean norm, of a specified column of the input matrix.
+- **MatrixL2Norm(Matrix\* m)** Computes the L2 norm, also known as the Euclidean norm, of each column of the input matrix and returns a new matrix with the results.
+- **MatrixFree(Matrix\* m)** Deallocates the memory associated with the input matrix, freeing it for use by other parts of the program.
