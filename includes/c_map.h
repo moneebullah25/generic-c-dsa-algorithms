@@ -187,8 +187,8 @@ unsigned int DoubleHashing(unsigned int hash, unsigned int i);
  * @param FreeFuncKey pointer to the free function for key
  * @param FreeFuncVal pointer to the free function for value
  * Requirements:
- *  	- m pointer should not be nullptr
- *  	- keysize and valuesize should be greater than zero
+ * - m pointer should not be nullptr
+ * - keysize and valuesize should be greater than zero
  * Time complexity: O(1)
  * Space complexity: O(1)
 **/
@@ -209,8 +209,8 @@ void MapNew_(MapBase* m, unsigned int keysize, unsigned int valuesize,
  * @param key pointer to the key to be stored in the map
  * @param value pointer to the value to be stored in the map
  * Requirements:
- *  	- m pointer should not be nullptr
- *  	- key and value pointer should not be nullptr
+ * - m pointer should not be nullptr
+ * - key and value pointer should not be nullptr
  * Time complexity: O(1) on average, O(n) in worst case
  * Space complexity: O(1)
 **/
@@ -222,7 +222,7 @@ void MapSet_(MapBase* m, void* key, void* value);
  * The function asserts that the memory allocation for the new array is successful.
  * @param m pointer to the map
  * Requirements:
- *  	- m pointer should not be nullptr
+ * - m pointer should not be nullptr
  * Time complexity: O(n)
  * Space complexity: O(n)
 **/
@@ -245,7 +245,7 @@ unsigned int MapSize_(MapBase* m);
  * @param m pointer to the map
  * @param key pointer to the key of the element to be retrieved
  * Requirements:
- *  	- m pointer and key pointer should not be nullptr
+ * - m pointer and key pointer should not be nullptr
  * Time complexity: O(1) on average case, O(n) in worst case
  * Space complexity: O(1)
 **/
@@ -258,7 +258,7 @@ void* MapGet_(MapBase* m, void* key);
  * @param m pointer to the map
  * @param key pointer to the key of the element to be removed
  * Requirements:
- *  	- m pointer and key pointer should not be nullptr
+ * - m pointer and key pointer should not be nullptr
  * Time complexity: O(1) on average case, O(n) in worst case
  * Space complexity: O(1)
 **/
@@ -269,7 +269,7 @@ unsigned int MapRemove_(MapBase* m, void* key);
  * The function asserts that the map pointer passed is not null.
  * @param m pointer to the map
  * Requirements:
- *  	- m pointer should not be nullptr
+ * - m pointer should not be nullptr
  * Time complexity: O(1)
  * Space complexity: O(1)
 **/
@@ -281,7 +281,7 @@ MapIter* MapIterator_(MapBase* m);
  * @param m pointer to the map
  * @param mapiter pointer to the map iterator
  * Requirements:
- *  	- m pointer and mapiter pointer should not be nullptr
+ * - m pointer and mapiter pointer should not be nullptr
  * Time complexity: O(1) on average case, O(n) in worst case
  * Space complexity: O(1)
 **/
@@ -293,7 +293,7 @@ MapIter* MapNext_(MapBase* m, MapIter* mapiter);
  * The function also calls the free function for key and value if provided.
  * @param m pointer to the map
  * Requirements:
- *  	- m pointer should not be nullptr
+ * - m pointer should not be nullptr
  * Time complexity: O(n)
  * Space complexity: O(1)
 **/
@@ -305,7 +305,7 @@ void MapClear_(MapBase* m);
  * The function also calls the free function for key and value if provided.
  * @param m pointer to the map
  * Requirements:
- *  	- m pointer should not be nullptr
+ * - m pointer should not be nullptr
  * Time complexity: O(n)
  * Space complexity: O(1)
 **/
@@ -315,42 +315,42 @@ void MapDelete_(MapBase* m);
 /**
  * Define a map of void pointer keys and void pointer values.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(void*, void*) Map;
 
 /**
  * Define a map of double keys and double values.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(double, double) MapDouble;
 
 /**
  * Define a map of float keys and float values.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(float, float) MapFloat;
 
 /**
  * Define a map of int keys and int values.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(int, int) MapInt;
 
 /**
  * Define a map of string keys and string values.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(char*, char*) MapString;
 
 /**
  * Define a map of char keys and char values.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(char, char) MapChar;
 
@@ -358,112 +358,112 @@ typedef MapT(char, char) MapChar;
 /**
  * Define a map template that uses a string as the key and double as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(char*, double) MapStringDouble;
 
 /**
  * Define a map template that uses a string as the key and float as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(char*, float) MapStringFloat;
 
 /**
  * Define a map template that uses a string as the key and int as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(char*, int) MapStringInt;
 
 /**
  * Define a map template that uses a string as the key and boolean as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(char*, bool) MapStringBool;
 
 /**
  * Define a map template that uses a character as the key and double as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(char, double) MapCharDouble;
 
 /**
  * Define a map template that uses a character as the key and float as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(char, float) MapCharFloat;
 
 /**
  * Define a map template that uses a character as the key and integer as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(char, int) MapCharInt;
 
 /**
  * Define a map template that uses a character as the key and boolean as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(char, bool) MapCharBool;
 
 /**
  * Define a map template that uses a integer as the key and double as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(int, double) MapIntDouble;
 
 /**
  * Define a map template that uses a integer as the key and float as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(int, float) MapIntFloat;
 
 /**
  * Define a map template that uses a integer as the key and string as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(int, char*) MapIntString;
 
 /**
  * Define a map template that uses a integer as the key and boolean as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(int, bool) MapIntBool;
 
 /**
  * Define a map template that uses a float as the key and double as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(float, double) MapFloatDouble;
 
 /**
  * Define a map template that uses a float as the key and string as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(float, char*) MapFloatString;
 
 /**
  * Define a map template that uses a float as the key and integer as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(float, int) MapFloatInt;
 
 /**
  * Define a map template that uses a float as the key and boolean as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(float, bool) MapFloatBool;
 
@@ -471,28 +471,28 @@ typedef MapT(float, bool) MapFloatBool;
 /**
  * Define a map template that uses a double as the key and string as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(double, char*) MapDoubleString;
 
 /**
  * Define a map template that uses a double as the key and integer as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(double, int) MapDoubleInt;
 
 /**
  * Define a map template that uses a double as the key and float as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(double, float) MapDoubleFloat;
 
 /**
  * Define a map template that uses a double as the key and bool as the value.
  * Time complexity:
- *  	- Depends on the operations performed on the map.
+ * - Depends on the operations performed on the map.
 **/
 typedef MapT(double, bool) MapDoubleBool;
 
