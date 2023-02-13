@@ -7,8 +7,14 @@ extern "C" {
 
 #define EMPTY 0xfe
 #define TRAVERSE_COUNT 5
-#define SHOPPTR "sh"
-#define DHOPPTR "dh"
+
+#ifndef NULL
+#define NULL 0
+#endif
+
+#define bool _Bool
+#define false 0
+#define true 1
 
 
 /**

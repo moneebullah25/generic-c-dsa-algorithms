@@ -1,5 +1,6 @@
 #include <criterion/criterion.h>
 #include "../includes/c_list.h"
+#include "../includes/c_helper.h"
 
 Test(linkedlist_test, test_linked_list_int) {
     LinkedListInt *ll = malloc(sizeof(LinkedListInt));

@@ -5,6 +5,14 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#ifndef NULL
+#define NULL 0
+#endif
+
+#define bool _Bool
+#define false 0
+#define true 1
+
 /**
  * Function that performs a linear search on an array of elements for a specific key.
  * The function compares the key with each element in the array using the provided memory comparison function and returns the address of the first element that matches the key.

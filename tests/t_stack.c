@@ -1,5 +1,6 @@
 #include <criterion/criterion.h>
 #include "../includes/c_stack.h"
+#include "../includes/c_helper.h"
 
 Test(stack_test, test_stack_int) {
     StackInt *q = malloc(sizeof(StackInt));

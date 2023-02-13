@@ -1,5 +1,6 @@
 #include <criterion/criterion.h>
 #include "../includes/c_queue.h"
+#include "../includes/c_helper.h"
 
 Test(queue_test, test_queue_int) {
     QueueInt *q = malloc(sizeof(QueueInt));

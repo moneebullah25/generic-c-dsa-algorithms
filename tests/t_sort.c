@@ -1,5 +1,6 @@
 #include <criterion/criterion.h>
 #include "../includes/c_sort.h"
+#include "../includes/c_helper.h"
 
 Test(linear_search_test, test_linear_search_int) {
 	int arr[8] = { 8, 7, 6, 5, 4, 3, 2, 1 };

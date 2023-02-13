@@ -1,5 +1,6 @@
 #include <criterion/criterion.h>
 #include "../includes/c_map.h"
+#include "../includes/c_helper.h"
 
 Test(map_test, test_map_int) {
     MapInt *m = malloc(sizeof(MapInt));

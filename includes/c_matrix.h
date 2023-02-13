@@ -1,6 +1,14 @@
 #ifndef _C_MATRIX_HEADER_
 #define _C_MATRIX_HEADER_
 
+#ifndef NULL
+#define NULL 0
+#endif
+
+#define bool _Bool
+#define false 0
+#define true 1
+
 /**
  * Defination of the matrix structure
  * unsigned int num_rows : Number of rows in the matrix.

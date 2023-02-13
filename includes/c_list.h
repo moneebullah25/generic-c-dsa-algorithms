@@ -5,6 +5,14 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#ifndef NULL
+#define NULL 0
+#endif
+
+#define bool _Bool
+#define false 0
+#define true 1
+
 /**
  * A structure that represents the basic functionality of a list node.
  * @param elems A pointer to the element of the list node
