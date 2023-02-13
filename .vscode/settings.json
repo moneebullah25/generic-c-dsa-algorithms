@@ -3,7 +3,8 @@
         "math.h": "c",
         "corecrt_math.h": "c",
         "criterion.h": "c",
-        "atomic": "c"
+        "atomic": "c",
+        "c_helper.h": "c"
     },
     "cmake.configureOnOpen": true
 }

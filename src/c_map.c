@@ -1,4 +1,5 @@
 #include "../includes/c_map.h"
+#include "../includes/c_helper.h"
 #include <stdlib.h>
 
 unsigned int HashFunctionInt(const void* key, unsigned int keysize)

@@ -5,8 +5,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#include "c_helper.h"
-
 /**
  * Function that performs a linear search on an array of elements for a specific key.
  * The function compares the key with each element in the array using the provided memory comparison function and returns the address of the first element that matches the key.

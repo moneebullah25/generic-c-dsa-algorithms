@@ -1,4 +1,5 @@
 ﻿#include "../includes/c_sort.h"
+#include "../includes/c_helper.h"
 #include <stdlib.h>
 
 void *LinearSearch(void *key, void *base, unsigned int nelems, unsigned int elemsize, int(*MemCmp)(const void* vp1, const void* vp2, unsigned int nbytes))

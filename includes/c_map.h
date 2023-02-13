@@ -5,8 +5,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#include "c_helper.h"
-
 #define EMPTY 0xfe
 #define TRAVERSE_COUNT 5
 #define SHOPPTR "sh"

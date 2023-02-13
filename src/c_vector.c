@@ -1,4 +1,5 @@
 #include "../includes/c_vector.h"
+#include "../includes/c_helper.h"
 #include <stdlib.h>
 
 static void* getPointer(void* elems, unsigned int index, 

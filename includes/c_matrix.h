@@ -1,8 +1,6 @@
 #ifndef _C_MATRIX_HEADER_
 #define _C_MATRIX_HEADER_
 
-#include "c_helper.h"
-
 /**
  * Defination of the matrix structure
  * unsigned int num_rows : Number of rows in the matrix.

@@ -1,4 +1,5 @@
 #include "../includes/c_queue.h"
+#include "../includes/c_helper.h"
 #include <stdlib.h>
 
 void QueueNew_(QueueBase* q, unsigned int elem_size,

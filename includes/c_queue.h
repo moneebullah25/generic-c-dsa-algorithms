@@ -5,7 +5,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#include "c_helper.h"
 
 /**
  * A structure that represents the basic functionality of a Queue.

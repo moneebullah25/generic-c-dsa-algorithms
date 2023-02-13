@@ -5,8 +5,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#include "c_helper.h"
-
 /**
  * A structure that represents the basic functionality of a list node.
  * @param elems A pointer to the element of the list node
