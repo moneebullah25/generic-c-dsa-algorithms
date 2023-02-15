@@ -646,14 +646,14 @@ Matrix* MatrixAddWithBroadcast(Matrix* m1, Matrix* m2)
 {
 	Matrix* matrix1 = MatrixCopy(m1);
 	Matrix* matrix2 = MatrixCopy(m2);
-	if (!IsMatrixEqualDim(m1, m2))
+	if (!IsMatrixEqualDim(matrix1, matrix2))
 	{
-		unsigned int max_row = (m1->num_rows < m2->num_rows) ? m2->num_rows : m1->num_rows;
-		unsigned int max_col = (m1->num_cols < m2->num_cols) ? m2->num_cols : m1->num_cols;
-		matrix1 = (m1->num_rows < max_row) ? MatrixBroadcastRows(m1, max_row) : m1;
-		matrix1 = (m1->num_cols < max_col) ? MatrixBroadcastColumns(matrix1, max_col) : matrix1;
-		matrix2 = (m2->num_rows < max_row) ? MatrixBroadcastRows(m2, max_row) : m2; 
-		matrix2 = (m2->num_cols < max_col) ? MatrixBroadcastColumns(matrix2, max_col) : matrix2;
+		unsigned int max_row = (matrix1->num_rows < matrix2->num_rows) ? matrix2->num_rows : matrix1->num_rows;
+		unsigned int max_col = (matrix1->num_cols < matrix2->num_cols) ? matrix2->num_cols : matrix1->num_cols;
+		matrix1 = (matrix1->num_rows < max_row) ? MatrixBroadcastRows(matrix1, max_row) : matrix1;
+		matrix1 = (matrix1->num_cols < max_col) ? MatrixBroadcastColumns(matrix1, max_col) : matrix1;
+		matrix2 = (matrix2->num_rows < max_row) ? MatrixBroadcastRows(matrix2, max_row) : matrix2; 
+		matrix2 = (matrix2->num_cols < max_col) ? MatrixBroadcastColumns(matrix2, max_col) : matrix2;
 	}
 	Matrix* result = MatrixAdd(matrix1, matrix2);
 	MatrixFree(matrix1);
@@ -665,14 +665,14 @@ Matrix* MatrixSubtractWithBroadcast(Matrix* m1, Matrix* m2)
 {
 	Matrix* matrix1 = MatrixCopy(m1);
 	Matrix* matrix2 = MatrixCopy(m2);
-	if (!IsMatrixEqualDim(m1, m2))
+	if (!IsMatrixEqualDim(matrix1, matrix2))
 	{
-		unsigned int max_row = (m1->num_rows < m2->num_rows) ? m2->num_rows : m1->num_rows;
-		unsigned int max_col = (m1->num_cols < m2->num_cols) ? m2->num_cols : m1->num_cols;
-		matrix1 = (m1->num_rows < max_row) ? MatrixBroadcastRows(m1, max_row) : m1;
-		matrix1 = (m1->num_cols < max_col) ? MatrixBroadcastColumns(matrix1, max_col) : matrix1;
-		matrix2 = (m2->num_rows < max_row) ? MatrixBroadcastRows(m2, max_row) : m2;
-		matrix2 = (m2->num_cols < max_col) ? MatrixBroadcastColumns(matrix2, max_col) : matrix2;
+		unsigned int max_row = (matrix1->num_rows < matrix2->num_rows) ? matrix2->num_rows : matrix1->num_rows;
+		unsigned int max_col = (matrix1->num_cols < matrix2->num_cols) ? matrix2->num_cols : matrix1->num_cols;
+		matrix1 = (matrix1->num_rows < max_row) ? MatrixBroadcastRows(matrix1, max_row) : matrix1;
+		matrix1 = (matrix1->num_cols < max_col) ? MatrixBroadcastColumns(matrix1, max_col) : matrix1;
+		matrix2 = (matrix2->num_rows < max_row) ? MatrixBroadcastRows(matrix2, max_row) : matrix2;
+		matrix2 = (matrix2->num_cols < max_col) ? MatrixBroadcastColumns(matrix2, max_col) : matrix2;
 	}
 	Matrix* result = MatrixSubtract(matrix1, matrix2);
 	MatrixFree(matrix1);
@@ -680,18 +680,34 @@ Matrix* MatrixSubtractWithBroadcast(Matrix* m1, Matrix* m2)
 	return result;
 }
 
+Matrix* MatrixMultiplyWithBroadcast(Matrix* m1, Matrix* m2)
+{
+	Matrix* matrix1 = MatrixCopy(m1);
+	Matrix* matrix2 = MatrixCopy(m2);
+	if (matrix1->num_cols != matrix2->num_rows)
+	{
+		unsigned int max_diff = (matrix1->num_cols < matrix2->num_rows) ? matrix2->num_rows : matrix1->num_cols;
+		matrix1 = (matrix1->num_cols < max_diff) ? MatrixBroadcastColumns(matrix1, max_diff) : matrix1;
+		matrix2 = (matrix2->num_rows < max_diff) ? MatrixBroadcastRows(matrix2, max_diff) : matrix2;
+	}
+	Matrix* result = MatrixMultiply(matrix1, matrix2);
+	MatrixFree(matrix1);
+	MatrixFree(matrix2);
+	return result;
+}
+	
 Matrix* MatrixElementWiseMultiplyWithBroadcast(Matrix* m1, Matrix* m2)
 {
 	Matrix* matrix1 = MatrixCopy(m1);
 	Matrix* matrix2 = MatrixCopy(m2);
-	if (!IsMatrixEqualDim(m1, m2))
+	if (!IsMatrixEqualDim(matrix1, matrix2))
 	{
-		unsigned int max_row = (m1->num_rows < m2->num_rows) ? m2->num_rows : m1->num_rows;
-		unsigned int max_col = (m1->num_cols < m2->num_cols) ? m2->num_cols : m1->num_cols;
-		matrix1 = (m1->num_rows < max_row) ? MatrixBroadcastRows(m1, max_row) : m1;
-		matrix1 = (m1->num_cols < max_col) ? MatrixBroadcastColumns(matrix1, max_col) : matrix1;
-		matrix2 = (m2->num_rows < max_row) ? MatrixBroadcastRows(m2, max_row) : m2;
-		matrix2 = (m2->num_cols < max_col) ? MatrixBroadcastColumns(matrix2, max_col) : matrix2;
+		unsigned int max_row = (matrix1->num_rows < matrix2->num_rows) ? matrix2->num_rows : matrix1->num_rows;
+		unsigned int max_col = (matrix1->num_cols < matrix2->num_cols) ? matrix2->num_cols : matrix1->num_cols;
+		matrix1 = (matrix1->num_rows < max_row) ? MatrixBroadcastRows(matrix1, max_row) : matrix1;
+		matrix1 = (matrix1->num_cols < max_col) ? MatrixBroadcastColumns(matrix1, max_col) : matrix1;
+		matrix2 = (matrix2->num_rows < max_row) ? MatrixBroadcastRows(matrix2, max_row) : matrix2;
+		matrix2 = (matrix2->num_cols < max_col) ? MatrixBroadcastColumns(matrix2, max_col) : matrix2;
 	}
 	Matrix* result = MatrixElementWiseMultiply(matrix1, matrix2);
 	MatrixFree(matrix1);
