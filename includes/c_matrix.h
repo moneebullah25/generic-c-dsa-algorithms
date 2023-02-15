@@ -548,7 +548,7 @@ Matrix* MatrixElementWiseMultiply(Matrix* m1, Matrix* m2);
 
 
 /**
- * Add two matrices m1 and m2 with broadcast and return the result.
+ * Add two matrices m1 and m2 with broadcast if required and return the result.
  * Time complexity: O(mn), where m is the number of rows and n is the number of columns in the matrices.
  * Space complexity: O(mn), for storing the result.
  * Requirements:
@@ -561,7 +561,7 @@ Matrix* MatrixElementWiseMultiply(Matrix* m1, Matrix* m2);
 Matrix* MatrixAddWithBroadcast(Matrix* m1, Matrix* m2);
 
 /**
- * Subtract two matrices m2 from m1 with broadcast and return the result.
+ * Subtract two matrices m2 from m1 with broadcast if required and return the result.
  * Time complexity: O(mn), where m is the number of rows and n is the number of columns in the matrices.
  * Space complexity: O(mn), for storing the result.
  * Requirements:
@@ -572,6 +572,32 @@ Matrix* MatrixAddWithBroadcast(Matrix* m1, Matrix* m2);
  * @return Pointer to the result matrix.
 **/
 Matrix* MatrixSubtractWithBroadcast(Matrix* m1, Matrix* m2);
+
+/**
+ * Multiply two matrices m1 and m2 with Broadcast if required and return the result.
+ * Time complexity: O(mnp), where m is the number of rows in m1, n is the number of columns in m1, and p is the number of columns in m2.
+ * Space complexity: O(mnp), for storing the result.
+ * Requirements:
+ * - m1 and m2 pointers should not be nullptr
+ * - number of columns in m1 should be equal to the number of rows in m2.
+ * @param m1 Pointer to the first matrix.
+ * @param m2 Pointer to the second matrix.
+ * @return Pointer to the result matrix.
+**/
+Matrix* MatrixMultiplyWithBroadcast(Matrix* m1, Matrix* m2);
+
+/**
+ * Mutiply two matrices element wise aka (Hadamard product) m1 and m2 with Broadcast if required and return and create the resultant matrix.
+ * Time complexity: O(mn), where m is the number of rows and n is the number of columns in the matrices.
+ * Space complexity: O(mn), for storing the result.
+ * Requirements:
+ * - m1 and m2 pointers should not be nullptr
+ * - m1 and m2 should have the same number of rows and columns.
+ * @param m1 Pointer to the first matrix.
+ * @param m2 Pointer to the second matrix.
+ * @return Pointer to the result matrix.
+**/
+Matrix* MatrixElementWiseMultiplyWithBroadcast(Matrix* m1, Matrix* m2);
 
 /**
  * Calculates the transpose of a matrix.
