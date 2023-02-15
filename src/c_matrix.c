@@ -622,6 +622,26 @@ Matrix *MatrixMultiply(Matrix *m1, Matrix *m2)
 	return matrix;
 }
 
+Matrix* MatrixElementWiseMultiply(Matrix* m1, Matrix* m2)
+{
+	
+	if (!IsMatrixEqualDim(m1, m2))
+	{
+		fprintf(stderr, "Matrix 'm1(%u, %u)' & 'm2(%u, %u)' are not equivalent\n",
+				m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
+		return NULL;
+	}
+	Matrix *matrix = MatrixNew(m1->num_rows, m1->num_cols);
+	for (unsigned int r = 0; r < m1->num_rows; r++)
+	{
+		for (unsigned int c = 0; c < m1->num_cols; c++)
+		{
+			matrix->data[r][c] = m1->data[r][c] + m2->data[r][c];
+		}
+	}
+	return matrix;
+}
+
 Matrix* MatrixAddWithBroadcast(Matrix* m1, Matrix* m2)
 {
 	Matrix* matrix1 = MatrixCopy(m1);
@@ -655,6 +675,25 @@ Matrix* MatrixSubtractWithBroadcast(Matrix* m1, Matrix* m2)
 		matrix2 = (m2->num_cols < max_col) ? MatrixBroadcastColumns(matrix2, max_col) : matrix2;
 	}
 	Matrix* result = MatrixSubtract(matrix1, matrix2);
+	MatrixFree(matrix1);
+	MatrixFree(matrix2);
+	return result;
+}
+
+Matrix* MatrixElementWiseMultiplyWithBroadcast(Matrix* m1, Matrix* m2)
+{
+	Matrix* matrix1 = MatrixCopy(m1);
+	Matrix* matrix2 = MatrixCopy(m2);
+	if (!IsMatrixEqualDim(m1, m2))
+	{
+		unsigned int max_row = (m1->num_rows < m2->num_rows) ? m2->num_rows : m1->num_rows;
+		unsigned int max_col = (m1->num_cols < m2->num_cols) ? m2->num_cols : m1->num_cols;
+		matrix1 = (m1->num_rows < max_row) ? MatrixBroadcastRows(m1, max_row) : m1;
+		matrix1 = (m1->num_cols < max_col) ? MatrixBroadcastColumns(matrix1, max_col) : matrix1;
+		matrix2 = (m2->num_rows < max_row) ? MatrixBroadcastRows(m2, max_row) : m2;
+		matrix2 = (m2->num_cols < max_col) ? MatrixBroadcastColumns(matrix2, max_col) : matrix2;
+	}
+	Matrix* result = MatrixElementWiseMultiply(matrix1, matrix2);
 	MatrixFree(matrix1);
 	MatrixFree(matrix2);
 	return result;
