@@ -534,6 +534,20 @@ Matrix* MatrixSubtract(Matrix* m1, Matrix* m2);
 Matrix* MatrixMultiply(Matrix* m1, Matrix* m2);
 
 /**
+ * Mutiply two matrices element wise aka (Hadamard product) m1 and m2 and return and create the resultant matrix.
+ * Time complexity: O(mn), where m is the number of rows and n is the number of columns in the matrices.
+ * Space complexity: O(mn), for storing the result.
+ * Requirements:
+ * - m1 and m2 pointers should not be nullptr
+ * - m1 and m2 should have the same number of rows and columns.
+ * @param m1 Pointer to the first matrix.
+ * @param m2 Pointer to the second matrix.
+ * @return Pointer to the result matrix.
+**/
+Matrix* MatrixElementWiseMultiply(Matrix* m1, Matrix* m2);
+
+
+/**
  * Add two matrices m1 and m2 with broadcast and return the result.
  * Time complexity: O(mn), where m is the number of rows and n is the number of columns in the matrices.
  * Space complexity: O(mn), for storing the result.
