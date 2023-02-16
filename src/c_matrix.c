@@ -721,7 +721,9 @@ void MatrixTranspose(Matrix *m)
 	{
 		for (unsigned int c = 0; c < m->num_cols; c++)
 		{
+			double temp = m->data[r][c];
 			m->data[r][c] = m->data[c][r];
+			m->data[c][r] = temp;
 		}
 	}
 }
