@@ -1,6 +1,10 @@
 #ifndef _C_MATRIX_HEADER_
 #define _C_MATRIX_HEADER_
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #ifndef NULL
 #define NULL 0
 #endif
@@ -713,5 +717,9 @@ Matrix* MatrixL2Norm(Matrix* m);
  * @param m Pointer to the matrix.
 **/
 void MatrixFree(Matrix* m);
+	
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* _C_MATRIX_HEADER_ */
