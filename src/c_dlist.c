@@ -69,7 +69,7 @@ void DoublyLinkedListInsertAtHead_(DoublyLinkedListBase* dll, void* data)
 	}
 	else
 	{
-		dll->head->prev = node;
+		dll->head->back = node;
 		node->next = dll->head;
 		dll->head = node;
 	}
@@ -173,21 +173,21 @@ DoublyLinkedListIter * DoublyLinkedListIterator_(DoublyLinkedListBase * dll)
 	return ((DoublyLinkedListIter*)n);
 }
 
-DoublyLinkedListIter * DoublyLinkedListNext_(DoublyLinkedListBase * dll, DoublyLinkedListIter * lliter)
+DoublyLinkedListIter * DoublyLinkedListNext_(DoublyLinkedListBase * dll, DoublyLinkedListIter * dlliter)
 {
 	ASSERT(dll);
-	if (dll->listsize == 0 || lliter->index + 1 == v->logiclen){ v->FreeFunc(lliter->data); return NULL; };
-	lliter->index = lliter->index + 1;
-	lliter->data = DoublyLinkedListAt_(dll, dll->index);
-	return lliter;
+	if (dll->listsize == 0 || dlliter->index + 1 == dll->listsize){ dll->FreeFunc(dlliter->data); return NULL; };
+	dlliter->index = dlliter->index + 1;
+	dlliter->data = DoublyLinkedListAt_(dll, dlliter->index);
+	return dlliter;
 }
 
-DoublyLinkedListIter * DoublyLinkedListBack_(DoublyLinkedListBase * dll, DoublyLinkedListIter * lliter)
+DoublyLinkedListIter * DoublyLinkedListBack_(DoublyLinkedListBase * dll, DoublyLinkedListIter * dlliter)
 {
 	ASSERT(dll);
-	if (dll->listsize == 0 || lliter->index + 1 == v->logiclen){ v->FreeFunc(lliter->data); return NULL; };
-	if (lliter->index == -1) {lliter->data = dll->tail->data; lliter->index = dll->listsize - 1; return lliter;}
-	lliter->index = lliter->index - 1;
-	lliter->data = DoublyLinkedListAt_(dll, dll->index);
-	return lliter;
+	if (dll->listsize == 0 || dlliter->index + 1 == dll->listsize){ dll->FreeFunc(dlliter->data); return NULL; };
+	if (dlliter->index == -1) dlliter->index = dll->listsize; 
+	dlliter->index = dlliter->index - 1;
+	MemoryCopy(dlliter->data, DoublyLinkedListAt_(dll, dlliter->index), dll->elemsize);
+	return dlliter;
 }

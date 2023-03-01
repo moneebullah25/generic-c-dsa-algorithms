@@ -128,7 +128,7 @@ void CircularLinkedListClear_(CircularLinkedListBase* cll)
 {
 	ASSERT(cll != NULL);
 	ListDelete(cll->head, cll->FreeFunc);
-	cll->head = cll->tail = NULL;
+	cll->head = NULL;
 	cll->listsize = 0;
 }
 
@@ -154,11 +154,11 @@ CircularLinkedListIter * CircularLinkedListIterator_(CircularLinkedListBase * cl
 	return ((CircularLinkedListIter*)n);
 }
 
-CircularLinkedListIter * CircularLinkedListNext_(CircularLinkedListBase * cll, CircularLinkedListIter * lliter)
+CircularLinkedListIter * CircularLinkedListNext_(CircularLinkedListBase * cll, CircularLinkedListIter * clliter)
 {
 	ASSERT(cll);
-	if (cll->listsize == 0 || lliter->index + 1 == v->logiclen){ v->FreeFunc(lliter->data); return NULL; };
-	lliter->index = lliter->index + 1;
-	lliter->data = CircularLinkedListAt_(cll, cll->index);
-	return lliter;
+	if (cll->listsize == 0 || clliter->index + 1 == cll->listsize){ cll->FreeFunc(clliter->data); return NULL; };
+	clliter->index = clliter->index + 1;
+	MemoryCopy(clliter->data, CircularLinkedListAt_(cll, clliter->index), cll->elemsize);
+	return clliter;
 }

@@ -316,10 +316,10 @@ CircularLinkedListIter * CircularLinkedListIterator_(CircularLinkedListBase * cl
  * Time complexity:
  * - O(1)
  * @param cll pointer to the circular linked list
- * @param lliter pointer to the iterator
+ * @param clliter pointer to the iterator
  * @return pointer to the next element of the circular linked list
 **/
-CircularLinkedListIter * CircularLinkedListNext_(CircularLinkedListBase * cll, CircularLinkedListIter * lliter);
+CircularLinkedListIter * CircularLinkedListNext_(CircularLinkedListBase * cll, CircularLinkedListIter * clliter);
 
 
 /**

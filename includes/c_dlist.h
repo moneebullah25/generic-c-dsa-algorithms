@@ -350,10 +350,10 @@ DoublyLinkedListIter * DoublyLinkedListIterator_(DoublyLinkedListBase * dll);
  * Time complexity:
  * - O(1)
  * @param dll pointer to the doubly linked list
- * @param lliter pointer to the iterator
+ * @param dlliter pointer to the iterator
  * @return pointer to the next element of the doubly linked list
 **/
-DoublyLinkedListIter * DoublyLinkedListNext_(DoublyLinkedListBase * dll, DoublyLinkedListIter * lliter);
+DoublyLinkedListIter * DoublyLinkedListNext_(DoublyLinkedListBase * dll, DoublyLinkedListIter * dlliter);
 
 /**
  * Function that returns the previous element of the doubly linked list through the iterator.
@@ -363,10 +363,10 @@ DoublyLinkedListIter * DoublyLinkedListNext_(DoublyLinkedListBase * dll, DoublyL
  * Time complexity:
  * - O(1)
  * @param dll pointer to the doubly linked list
- * @param lliter pointer to the iterator
+ * @param dlliter pointer to the iterator
  * @return pointer to the previous element of the doubly linked list
 **/
-DoublyLinkedListIter * DoublyLinkedListBack_(DoublyLinkedListBase * dll, DoublyLinkedListIter * lliter);
+DoublyLinkedListIter * DoublyLinkedListBack_(DoublyLinkedListBase * dll, DoublyLinkedListIter * dlliter);
 
 /**
  * Define a doubly linked list of void pointers.

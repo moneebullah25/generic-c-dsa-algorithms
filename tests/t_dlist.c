@@ -70,10 +70,13 @@ Test(linkedlist_test, test_linked_list_int) {
 	while (DoublyLinkedListNext(dll, iter))
 	{
 		cr_assert_eq(*(int *)iter->data, values[i], "Expected %d but got %d", values[i], *(int *)iter->data);
+        i++;
 	}
-	while (DoublyLinkedListBack(dll, iter))
+    i=0;
+	while (DoublyLinkedListBack(dll, riter))
 	{
-		cr_assert_eq(*(int *)iter->data, rvalues[i], "Expected %d but got %d", rvalues[i], *(int *)iter->data);
+		cr_assert_eq(*(int *)riter->data, rvalues[i], "Expected %d but got %d", rvalues[i], *(int *)iter->data);
+        i++;
 	}
 	
     DoublyLinkedListDelete(dll);
@@ -146,12 +149,15 @@ Test(linkedlist_test, test_linked_list_double) {
 	DoublyLinkedListIter* riter = DoublyLinkedListIterator(dll);
 	while (DoublyLinkedListNext(dll, iter))
 	{
-		cr_assert_float_eq(*(double *)iter->data, values[i], "Expected %lf but got %lf", values[i], *(double *)iter->data);
-	}
-	while (DoublyLinkedListBack(dll, iter))
+		cr_assert_float_eq(*(double *)iter->data, values[i], 0.01, "Expected %lf but got %lf", values[i], *(double *)iter->data);
+        i++;
+    }
+    i=0;
+	while (DoublyLinkedListBack(dll, riter))
 	{
-		cr_assert_float_eq(*(double *)iter->data, rvalues[i], "Expected %lf but got %lf", rvalues[i], *(double *)iter->data);
-	}
+		cr_assert_float_eq(*(double *)riter->data, rvalues[i], 0.01, "Expected %lf but got %lf", rvalues[i], *(double *)iter->data);
+        i++;
+    }
 	
     DoublyLinkedListDelete(dll);
 }
@@ -220,10 +226,13 @@ Test(linkedlist_test, test_linked_list_string) {
 	while (DoublyLinkedListNext(dll, iter))
 	{
 		cr_assert_str_eq(*(char**)iter->data, values[i], "Expected %s but got %s", values[i], *(char**)iter->data);
+        i++;
 	}
-	while (DoublyLinkedListBack(dll, iter))
+    i=0;
+	while (DoublyLinkedListBack(dll, riter))
 	{
-		cr_assert_str_eq(*(char**)iter->data, rvalues[i], "Expected %s but got %s", rvalues[i], *(char**)iter->data);
+		cr_assert_str_eq(*(char**)riter->data, rvalues[i], "Expected %s but got %s", rvalues[i], *(char**)iter->data);
+        i++;
 	}
 
     DoublyLinkedListDelete(dll);

@@ -174,8 +174,8 @@ LinkedListIter * LinkedListIterator_(LinkedListBase * ll)
 LinkedListIter * LinkedListNext_(LinkedListBase * ll, LinkedListIter * lliter)
 {
 	ASSERT(ll);
-	if (ll->listsize == 0 || lliter->index + 1 == v->logiclen){ v->FreeFunc(lliter->data); return NULL; };
+	if (ll->listsize == 0 || lliter->index + 1 == ll->listsize){ ll->FreeFunc(lliter->data); return NULL; };
 	lliter->index = lliter->index + 1;
-	lliter->data = DoublyLinkedListAt_(ll, ll->index);
+	MemoryCopy(lliter->data, LinkedListAt_(ll, lliter->index), ll->elemsize);
 	return lliter;
 }
