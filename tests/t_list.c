@@ -54,6 +54,28 @@ Test(linkedlist_test, test_linked_list_int) {
     }
     cr_assert_eq(sum, 18, "Expected sum of elements to be 18, got %d", sum);
 
+	LinkedListClear(ll);
+
+    LinkedListInsertAtTail(ll, 1);
+    LinkedListInsertAtTail(ll, 2);
+    LinkedListInsertAtTail(ll, 3);
+    LinkedListInsertAtTail(ll, 4);
+    LinkedListInsertAtTail(ll, 5);
+	
+	int values[] = {1, 2, 3, 4, 5};
+	int rvalues[] = {5, 4, 3, 2, 1};
+	int i = 0;
+	LinkedListIter* iter = LinkedListIterator(ll);
+	LinkedListIter* riter = LinkedListIterator(ll);
+	while (LinkedListNext(ll, iter))
+	{
+		cr_assert_eq(*(int *)iter->data, values[i], "Expected %d but got %d", values[i], *(int *)iter->data);
+	}
+	while (LinkedListBack(ll, iter))
+	{
+		cr_assert_eq(*(int *)iter->data, rvalues[i], "Expected %d but got %d", rvalues[i], *(int *)iter->data);
+	}
+	
     LinkedListDelete(ll);
 }
 
@@ -108,7 +130,29 @@ Test(linkedlist_test, test_linked_list_double) {
         sum += *(double*)LinkedListAt(ll, i);
     }
     cr_assert_float_eq(sum, 18.5, 0.0001, "Expected sum of elements to be 18.5, got %lf", sum);
+	
+	LinkedListClear(ll);
 
+    LinkedListInsertAtTail(ll, 1.25);
+    LinkedListInsertAtTail(ll, 2.25);
+    LinkedListInsertAtTail(ll, 3.25);
+    LinkedListInsertAtTail(ll, 4.25);
+    LinkedListInsertAtTail(ll, 5.25);
+	
+	double values[] = {1.25, 2.25, 3.25, 4.25, 5.25};
+	double rvalues[] = {5.25, 4.25, 3.25, 2.25, 1.25};
+	int i = 0;
+	LinkedListIter* iter = LinkedListIterator(ll);
+	LinkedListIter* riter = LinkedListIterator(ll);
+	while (LinkedListNext(ll, iter))
+	{
+		cr_assert_float_eq(*(double *)iter->data, values[i], "Expected %lf but got %lf", values[i], *(double *)iter->data);
+	}
+	while (LinkedListBack(ll, iter))
+	{
+		cr_assert_float_eq(*(double *)iter->data, rvalues[i], "Expected %lf but got %lf", rvalues[i], *(double *)iter->data);
+	}
+	
     LinkedListDelete(ll);
 }
 
@@ -159,6 +203,28 @@ Test(linkedlist_test, test_linked_list_string) {
     for (unsigned int i = 0; i < LinkedListSize(ll); i++) {
         cr_assert_str_eq(*(char**)LinkedListAt(ll, i), "9.25", "Unexpected string at index %d", i);
     }
+	
+	LinkedListClear(ll);
 
+    LinkedListInsertAtTail(ll, "1.25");
+    LinkedListInsertAtTail(ll, "2.25");
+    LinkedListInsertAtTail(ll, "3.25");
+    LinkedListInsertAtTail(ll, "4.25");
+    LinkedListInsertAtTail(ll, "5.25");
+	
+	char* values[] = {"1.25", "2.25", "3.25", "4.25", "5.25"};
+	char* rvalues[] = {"5.25", "4.25", "3.25", "2.25", "1.25"};
+	int i = 0;
+	LinkedListIter* iter = LinkedListIterator(ll);
+	LinkedListIter* riter = LinkedListIterator(ll);
+	while (LinkedListNext(ll, iter))
+	{
+		cr_assert_str_eq(*(char**)iter->data, values[i], "Expected %s but got %s", values[i], *(char**)iter->data);
+	}
+	while (LinkedListBack(ll, iter))
+	{
+		cr_assert_str_eq(*(char**)iter->data, rvalues[i], "Expected %s but got %s", rvalues[i], *(char**)iter->data);
+	}
+	
     LinkedListDelete(ll);
 }
