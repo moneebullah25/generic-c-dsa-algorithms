@@ -2,7 +2,7 @@
 #include "../includes/c_clist.h"
 #include "../includes/c_helper.h"
 
-Test(linkedlist_test, test_linked_list_int) {
+Test(clinkedlist_test, test_clinkedlist_int) {
     CircularLinkedListInt *cll = malloc(sizeof(CircularLinkedListInt));
     CircularLinkedListNew(cll, DataCompare, FreeData);
 
@@ -72,7 +72,7 @@ Test(linkedlist_test, test_linked_list_int) {
     CircularLinkedListDelete(cll);
 }
 
-Test(linkedlist_test, test_linked_list_double) {
+Test(clinkedlist_test, test_clinkedlist_double) {
     CircularLinkedListDouble *cll = malloc(sizeof(CircularLinkedListDouble));
     CircularLinkedListNew(cll, DataCompare, FreeData);
 
@@ -142,7 +142,7 @@ Test(linkedlist_test, test_linked_list_double) {
     CircularLinkedListDelete(cll);
 }
 
-Test(linkedlist_test, test_linked_list_string) {
+Test(clinkedlist_test, test_clinkedlist_string) {
     CircularLinkedListString *cll = malloc(sizeof(CircularLinkedListString));
     CircularLinkedListNew(cll, StringCompare, FreeString);
 

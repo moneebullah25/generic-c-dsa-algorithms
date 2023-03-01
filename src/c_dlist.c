@@ -186,8 +186,8 @@ DoublyLinkedListIter * DoublyLinkedListBack_(DoublyLinkedListBase * dll, DoublyL
 {
 	ASSERT(dll);
 	if (dll->listsize == 0 || dlliter->index + 1 == dll->listsize){ dll->FreeFunc(dlliter->data); return NULL; };
-	if (dlliter->index == -1) dlliter->index = dll->listsize; 
-	dlliter->index = dlliter->index - 1;
+	if (dlliter->index == -1) dlliter->index = dll->listsize - 1; 
 	MemoryCopy(dlliter->data, DoublyLinkedListAt_(dll, dlliter->index), dll->elemsize);
+	dlliter->index = dlliter->index - 1;
 	return dlliter;
 }

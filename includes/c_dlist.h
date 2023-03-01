@@ -176,21 +176,21 @@ struct { DoublyLinkedListBase base; T data_; T value_; }
  * A macro that returns the next element of the doubly linked list using an iterator.
  * The macro calls the DoublyLinkedListNext_ function with the address of the base member of the doubly linked list struct and the iterator as the arguments.
  * @param dll Pointer to the doubly linked list struct
- * @param iter Pointer to the iterator
+ * @param dlliter Pointer to the iterator
  * @return A pointer to the next element of the doubly linked list
 **/
-#define DoublyLinkedListNext(dll, iter) \
-	DoublyLinkedListNext_(&(dll)->base, iter)
+#define DoublyLinkedListNext(dll, dlliter) \
+	DoublyLinkedListNext_(&(dll)->base, dlliter)
 	
 /**
  * A macro that returns the previous element of the doubly linked list using an iterator.
  * The macro calls the DoublyLinkedListBack_ function with the address of the base member of the doubly linked list struct and the iterator as the arguments.
  * @param dll Pointer to the doubly linked list struct
- * @param iter Pointer to the iterator
+ * @param dlliter Pointer to the iterator
  * @return A pointer to the next element of the doubly linked list
 **/
-#define DoublyLinkedListBack(dll, iter) \
-	DoublyLinkedListBack_(&(dll)->base, iter)	
+#define DoublyLinkedListBack(dll, dlliter) \
+	DoublyLinkedListBack_(&(dll)->base, dlliter)	
 	
 /**
  * Function that creates a new doubly linked list and initializes the base member of the DoublyLinkedListBase struct.

@@ -75,7 +75,7 @@ Test(linkedlist_test, test_linked_list_int) {
     i=0;
 	while (DoublyLinkedListBack(dll, riter))
 	{
-		cr_assert_eq(*(int *)riter->data, rvalues[i], "Expected %d but got %d", rvalues[i], *(int *)iter->data);
+		cr_assert_eq(*(int *)riter->data, rvalues[i], "Expected %d but got %d", rvalues[i], *(int *)riter->data);
         i++;
 	}
 	
@@ -155,7 +155,7 @@ Test(linkedlist_test, test_linked_list_double) {
     i=0;
 	while (DoublyLinkedListBack(dll, riter))
 	{
-		cr_assert_float_eq(*(double *)riter->data, rvalues[i], 0.01, "Expected %lf but got %lf", rvalues[i], *(double *)iter->data);
+		cr_assert_float_eq(*(double *)riter->data, rvalues[i], 0.01, "Expected %lf but got %lf", rvalues[i], *(double *)riter->data);
         i++;
     }
 	
