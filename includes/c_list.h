@@ -43,6 +43,16 @@ typedef struct LinkedListBase {
 } LinkedListBase;
 
 /**
+ * A structure that represents an iterator for a linked list.
+ * @param data A pointer to the data of the current element
+ * @param index The index of the current element
+**/
+typedef struct LinkedListIter{
+	void * data;
+	unsigned int index;
+}LinkedListIter;
+
+/**
  * A macro that creates a linked list template for a given data type T.
  * The macro creates a struct with a LinkedListBase as a member and an additional member with the name data_ of the type T and value_ of the type T.
  * @param T The type of the data the linked list will hold
@@ -149,6 +159,26 @@ struct { LinkedListBase base; T data_; T value_; }
 #define LinkedListSize(ll) \
 	LinkedListSize_(&(ll)->base)
 
+/**
+ * A macro that returns an iterator for the linked list.
+ * The macro calls the LinkedListIterator_ function with the address of the base member of the Vector struct as the argument.
+ * @param ll Pointer to the linked list struct
+ * @return A VectorIter struct representing the iterator
+**/
+#define LinkedListIterator(ll) \
+	LinkedListIterator_(&(ll)->base)
+
+/**
+ * A macro that returns the next element of the linked list using an iterator.
+ * The macro calls the LinkedListNext_ function with the address of the base member of the linked list struct and the iterator as the arguments.
+ * @param ll Pointer to the linked list struct
+ * @param iter Pointer to the iterator
+ * @return A pointer to the next element of the linked list
+**/
+#define LinkedListNext(ll, iter) \
+	LinkedListNext_(&(ll)->base, iter)
+	
+	
 /**
  * Function that creates a new linked list and initializes the base member of the LinkedListBase struct.
  * The function allocates memory for the head node of the linked list and initializes its data and value members with NULL.
@@ -286,6 +316,31 @@ void LinkedListDelete_(LinkedListBase* ll);
  * Space complexity: O(1)
 **/
 unsigned int LinkedListSize_(LinkedListBase* ll);
+
+/**
+ * Function that creates an iterator for the linked list.
+ * Requirements:
+ * - The linked list should not be empty
+ * Time complexity:
+ * - O(1)
+ * @param ll pointer to the linked list
+ * @return pointer to the iterator of the linked list
+**/
+LinkedListIter * LinkedListIterator_(LinkedListBase * ll);
+
+/**
+ * Function that returns the next element of the linked list through the iterator.
+ * Requirements:
+ * - The linked list should not be empty
+ * - The iterator should not be at the end of the linked list
+ * Time complexity:
+ * - O(1)
+ * @param ll pointer to the linked list
+ * @param lliter pointer to the iterator
+ * @return pointer to the next element of the linked list
+**/
+LinkedListIter * LinkedListNext_(LinkedListBase * ll, LinkedListIter * lliter);
+
 
 /**
  * Define a linked list of void pointers.

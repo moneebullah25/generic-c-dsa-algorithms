@@ -139,6 +139,7 @@ void* LinkedListAt_(LinkedListBase* ll, unsigned int index)
 	}
 	return NULL;
 }
+
 void LinkedListClear_(LinkedListBase* ll)
 {
 	ASSERT(ll != NULL);
@@ -158,4 +159,23 @@ void LinkedListDelete_(LinkedListBase* ll)
 unsigned int LinkedListSize_(LinkedListBase* ll)
 {
 	return ll->listsize;
+}
+
+LinkedListIter * LinkedListIterator_(LinkedListBase * ll)
+{
+	ASSERT(ll);
+	if (ll->listsize == 0) return NULL;
+	void* n = malloc(sizeof(LinkedListIter));
+	((LinkedListIter*)n)->data = malloc(ll->elemsize);
+	((LinkedListIter*)n)->index = -1;
+	return ((LinkedListIter*)n);
+}
+
+LinkedListIter * LinkedListNext_(LinkedListBase * ll, LinkedListIter * lliter)
+{
+	ASSERT(ll);
+	if (ll->listsize == 0 || lliter->index + 1 == v->logiclen){ v->FreeFunc(lliter->data); return NULL; };
+	lliter->index = lliter->index + 1;
+	lliter->data = DoublyLinkedListAt_(ll, ll->index);
+	return lliter;
 }
