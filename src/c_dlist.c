@@ -178,16 +178,15 @@ DoublyLinkedListIter * DoublyLinkedListNext_(DoublyLinkedListBase * dll, DoublyL
 	ASSERT(dll);
 	if (dll->listsize == 0 || dlliter->index + 1 == dll->listsize){ dll->FreeFunc(dlliter->data); return NULL; };
 	dlliter->index = dlliter->index + 1;
-	dlliter->data = DoublyLinkedListAt_(dll, dlliter->index);
+	MemoryCopy(dlliter->data, DoublyLinkedListAt_(dll, dlliter->index), dll->elemsize);
 	return dlliter;
 }
 
 DoublyLinkedListIter * DoublyLinkedListBack_(DoublyLinkedListBase * dll, DoublyLinkedListIter * dlliter)
 {
 	ASSERT(dll);
-	if (dll->listsize == 0 || dlliter->index + 1 == dll->listsize){ dll->FreeFunc(dlliter->data); return NULL; };
-	if (dlliter->index == -1) dlliter->index = dll->listsize - 1; 
-	MemoryCopy(dlliter->data, DoublyLinkedListAt_(dll, dlliter->index), dll->elemsize);
-	dlliter->index = dlliter->index - 1;
+	if (dll->listsize == 0 || dlliter->index + 1 == dll->listsize) { dll->FreeFunc(dlliter->data); return NULL; };
+	dlliter->index = dlliter->index + 1;
+	MemoryCopy(dlliter->data, DoublyLinkedListAt_(dll, dll->listsize - dlliter->index - 1), dll->elemsize);
 	return dlliter;
 }

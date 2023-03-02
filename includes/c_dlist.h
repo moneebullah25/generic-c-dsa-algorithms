@@ -35,7 +35,7 @@ typedef struct ListNode {
 **/
 typedef struct DoublyLinkedListIter{
 	void * data;
-	unsigned int index;
+	int index;
 }DoublyLinkedListIter;
 
 /**
