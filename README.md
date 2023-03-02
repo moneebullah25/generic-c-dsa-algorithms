@@ -16,120 +16,28 @@ To compile the project and create the executables, run the following command:
 ```
 make all
 ```
-This will compile all the source files, create object files and libraries, and link them to create the executables. This will generate following output:
-```
-└─$ make all
-gcc -Wall -g -I includes -c src/c_helper.c -o obj/c_helper.o
-ar rcs lib/c_helper.a obj/c_helper.o
-gcc -Wall -g -I includes -c src/c_list.c -o obj/c_list.o
-ar rcs lib/c_list.a obj/c_list.o
-gcc -Wall -g -I includes -c src/c_map.c -o obj/c_map.o
-ar rcs lib/c_map.a obj/c_map.o
-gcc -Wall -g -I includes -c src/c_matrix.c -o obj/c_matrix.o
-ar rcs lib/c_matrix.a obj/c_matrix.o
-gcc -Wall -g -I includes -c src/c_queue.c -o obj/c_queue.o
-ar rcs lib/c_queue.a obj/c_queue.o
-gcc -Wall -g -I includes -c src/c_sort.c -o obj/c_sort.o
-ar rcs lib/c_sort.a obj/c_sort.o
-gcc -Wall -g -I includes -c src/c_stack.c -o obj/c_stack.o
-ar rcs lib/c_stack.a obj/c_stack.o
-gcc -Wall -g -I includes -c src/c_vector.c -o obj/c_vector.o
-ar rcs lib/c_vector.a obj/c_vector.o
-ar rcs lib/c_helper.lib obj/c_helper.o
-ar rcs lib/c_list.lib obj/c_list.o
-ar rcs lib/c_map.lib obj/c_map.o
-ar rcs lib/c_matrix.lib obj/c_matrix.o
-ar rcs lib/c_queue.lib obj/c_queue.o
-ar rcs lib/c_sort.lib obj/c_sort.o
-ar rcs lib/c_stack.lib obj/c_stack.o
-ar rcs lib/c_vector.lib obj/c_vector.o
-gcc -Wall -g tests/t_list.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_list.out -lcriterion -lm
-gcc -Wall -g tests/t_map.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_map.out -lcriterion -lm
-gcc -Wall -g tests/t_queue.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_queue.out -lcriterion -lm
-gcc -Wall -g tests/t_sort.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_sort.out -lcriterion -lm
-gcc -Wall -g tests/t_stack.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_stack.out -lcriterion -lm
-gcc -Wall -g tests/t_vector.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_vector.out -lcriterion -lm
-rm obj/c_list.o obj/c_stack.o obj/c_map.o obj/c_matrix.o obj/c_sort.o obj/c_vector.o obj/c_helper.o obj/c_queue.o
-```
+This will compile all the source files, create object files and libraries, and link them to create the executables. 
 
 ## **Creating Libraries**
 To just create the libraries, run the following command:
 ```
 make lib
 ```
-You should see the following output after running the above command and it will populate .a and .lib files in lib directory.
-```
-└─$ make lib
-gcc -Wall -g -I includes -c src/c_helper.c -o obj/c_helper.o
-ar rcs lib/c_helper.a obj/c_helper.o
-gcc -Wall -g -I includes -c src/c_list.c -o obj/c_list.o
-ar rcs lib/c_list.a obj/c_list.o
-gcc -Wall -g -I includes -c src/c_map.c -o obj/c_map.o
-ar rcs lib/c_map.a obj/c_map.o
-gcc -Wall -g -I includes -c src/c_matrix.c -o obj/c_matrix.o
-ar rcs lib/c_matrix.a obj/c_matrix.o
-gcc -Wall -g -I includes -c src/c_queue.c -o obj/c_queue.o
-ar rcs lib/c_queue.a obj/c_queue.o
-gcc -Wall -g -I includes -c src/c_sort.c -o obj/c_sort.o
-ar rcs lib/c_sort.a obj/c_sort.o
-gcc -Wall -g -I includes -c src/c_stack.c -o obj/c_stack.o
-ar rcs lib/c_stack.a obj/c_stack.o
-gcc -Wall -g -I includes -c src/c_vector.c -o obj/c_vector.o
-ar rcs lib/c_vector.a obj/c_vector.o
-ar rcs lib/c_helper.lib obj/c_helper.o
-ar rcs lib/c_list.lib obj/c_list.o
-ar rcs lib/c_map.lib obj/c_map.o
-ar rcs lib/c_matrix.lib obj/c_matrix.o
-ar rcs lib/c_queue.lib obj/c_queue.o
-ar rcs lib/c_sort.lib obj/c_sort.o
-ar rcs lib/c_stack.lib obj/c_stack.o
-ar rcs lib/c_vector.lib obj/c_vector.o
-rm obj/c_list.o obj/c_stack.o obj/c_map.o obj/c_matrix.o obj/c_sort.o obj/c_vector.o obj/c_helper.o obj/c_queue.o
-```
+It will populate .a and .lib files in lib directory.
 
 ## **Running tests**
 To run the tests, run the following command:
 ```
 make run_tests
 ```
-This will compile and run all the tests in the tests directory. You should see the following output:
-```
-└─$ make run_tests
-gcc -Wall -g -I includes -c src/c_helper.c -o obj/c_helper.o
-gcc -Wall -g -I includes -c src/c_list.c -o obj/c_list.o
-gcc -Wall -g -I includes -c src/c_map.c -o obj/c_map.o
-gcc -Wall -g -I includes -c src/c_matrix.c -o obj/c_matrix.o
-gcc -Wall -g -I includes -c src/c_queue.c -o obj/c_queue.o
-gcc -Wall -g -I includes -c src/c_sort.c -o obj/c_sort.o
-gcc -Wall -g -I includes -c src/c_stack.c -o obj/c_stack.o
-gcc -Wall -g -I includes -c src/c_vector.c -o obj/c_vector.o
-gcc -Wall -g tests/t_list.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_list.out -lcriterion -lm
-gcc -Wall -g tests/t_map.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_map.out -lcriterion -lm
-gcc -Wall -g tests/t_queue.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_queue.out -lcriterion -lm
-gcc -Wall -g tests/t_sort.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_sort.out -lcriterion -lm
-gcc -Wall -g tests/t_stack.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_stack.out -lcriterion -lm
-gcc -Wall -g tests/t_vector.c  obj/c_helper.o  obj/c_list.o  obj/c_map.o  obj/c_matrix.o  obj/c_queue.o  obj/c_sort.o  obj/c_stack.o  obj/c_vector.o -o tests/bin/t_vector.out -lcriterion -lm
-for test in  tests/bin/t_list.out  tests/bin/t_map.out  tests/bin/t_queue.out  tests/bin/t_sort.out  tests/bin/t_stack.out  tests/bin/t_vector.out; do \
-        ./$test; \
-done
-[====] Synthesis: Tested: 3 | Passing: 3 | Failing: 0 | Crashing: 0 
-[====] Synthesis: Tested: 3 | Passing: 3 | Failing: 0 | Crashing: 0 
-[====] Synthesis: Tested: 3 | Passing: 3 | Failing: 0 | Crashing: 0 
-[====] Synthesis: Tested: 15 | Passing: 15 | Failing: 0 | Crashing: 0 
-[====] Synthesis: Tested: 3 | Passing: 3 | Failing: 0 | Crashing: 0 
-[====] Synthesis: Tested: 3 | Passing: 3 | Failing: 0 | Crashing: 0
-rm obj/c_list.o obj/c_stack.o obj/c_map.o obj/c_matrix.o obj/c_sort.o obj/c_vector.o obj/c_helper.o obj/c_queue.o
-```
+This will compile and run all the tests in the tests directory. 
 
 ## **Cleaning up the directory**
 To clean up the directory and remove all the compiled files, run the following command:
 ```
 make clean
 ```
-This will remove all the object files, libraries, and executables. This will generate following output in console:
-```
-rm -f obj/*.o tests/bin/* lib/*
-```
+This will remove all the object files, libraries, and executables. 
 
 # **C HELPER**
 
@@ -346,7 +254,6 @@ Additionally, there are a number of macros defined to make using the linked list
 - **LinkedListChar** is a linked list of characters.
 - **LinkedListBool** is a linked list of booleans.
 
-
 # **C DOUBLY LIST**
 
 This is a header file for a doubly linked list implementation in C. It defines two structures: ListNode, which contains basic information about a node in the list such as the element pointer, element size, and the next node pointer, and DoublyLinkedListBase, which contains basic information about the doubly linked list such as the head and tail pointer, logical length, and allocated length. It also contains function pointers for data comparison and memory freeing.
@@ -394,7 +301,6 @@ Additionally, there are a number of macros defined to make using the doubly link
 - **DoublyLinkedListChar** is a doubly linked list of characters.
 - **DoublyLinkedListBool** is a doubly linked list of booleans.
 
-
 # **C CIRCULAR LIST**
 
 This is a header file for a circular linked list implementation in C. It defines two structures: ListNode, which contains basic information about a node in the list such as the element pointer, element size, and the next node pointer, and CircularLinkedListBase, which contains basic information about the circular linked list such as the head and tail pointer, logical length, and allocated length. It also contains function pointers for data comparison and memory freeing.
@@ -439,7 +345,6 @@ Additionally, there are a number of macros defined to make using the circular li
 - **CircularLinkedListString** is a circular linked list of strings (represented by char pointers).
 - **CircularLinkedListChar** is a circular linked list of characters.
 - **CircularLinkedListBool** is a circular linked list of booleans.
-
 
 # **C MAP**
 
@@ -524,7 +429,6 @@ The **Matrix** class is a data structure for representing and manipulating matri
 - **Matrix\* MatrixCopy(Matrix\* m)** Allocates memory for a new Matrix structure and copies the data from the given Matrix structure m.
 - **bool IsMatrixEqualDim(Matrix\* m1, Matrix\* m2)** Returns true if the dimensions of Matrix structures m1 and m2 are equal, false otherwise.
 - **void PrintMatrix(Matrix\* m, const char\* data_format)** Prints the contents of the matrix in the specified data format.
-
 - **IsMatrixInvertible(Matrix\* m)** Returns true if the matrix is invertible, false otherwise.
 - **MatrixGet(Matrix\* m, unsigned row, unsigned col)** Returns the value stored in the matrix at the specified row and column.
 - **MatrixColumnGet(Matrix\* m, unsigned int col)** Returns a column vector containing the values in the specified column of the matrix.
