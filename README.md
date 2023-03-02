@@ -318,6 +318,8 @@ Additionally, there are a number of macros defined to make using the linked list
 - **LinkedListGetIndex** returns the index of a given element in the linked list.
 - **LinkedListAt** returns the element at a given index in the linked list.
 - **LinkedListClear** clears the linked list, and LinkedListDelete deletes the linked list.
+- **LinkedListIterator** returns the address of the newly created iterator for linked list.
+- **LinkedListNext** sets the data and index in iterator to the value pointing in the linked list.
 
 ## Functions:
 
@@ -331,6 +333,8 @@ Additionally, there are a number of macros defined to make using the linked list
 - **LinkedListClear\_(LinkedListBase\* ll)**: This function clears the linked list. It takes in a pointer to the LinkedListBase structure as an argument. It removes all elements from the linked list, decreases the logical length of the linked list to 0, and calls the memory freeing function for each element.
 - **LinkedListDelete\_(LinkedListBase\* ll)**: This function deletes the linked list. It takes in a pointer to the LinkedListBase structure as an argument. It calls the memory freeing function for each element in the linked list, deallocates memory and set the linked list pointer to NULL.
 - **LinkedListSize\_(LinkedListBase\* ll)**: This function returns the logical length of the linked list. It takes in a pointer to the LinkedListBase structure as an argument. It returns the logical length of the linked list.
+- **LinkedListIterator\_(LinkedListBase\* ll)**:  This function creates a new linked list iterator and returns a pointer to it. It takes in a pointer to the LinkedListBase structure as an argument. It allocates memory for the iterator and its data, sets the index to -1, and returns a pointer to the iterator.
+- **LinkedListNext\_(LinkedListBase\* ll, LinkedListIter\* lliter)**: This function advances the iterator to the next element in the linked list and returns a pointer to it. It takes in a pointer to the LinkedListBase structure and a pointer to the current iterator as arguments. It checks if the linked list is empty or if the current index is already at the end of the list, in which case it frees the memory for the iterator's data and returns NULL. Otherwise, it increments the index, copies the data at the new index into the iterator's data, and returns the iterator.
 
 ## Templates:
 
@@ -341,6 +345,101 @@ Additionally, there are a number of macros defined to make using the linked list
 - **LinkedListString** is a linked list of strings (represented by char pointers).
 - **LinkedListChar** is a linked list of characters.
 - **LinkedListBool** is a linked list of booleans.
+
+
+# **C DOUBLY LIST**
+
+This is a header file for a doubly linked list implementation in C. It defines two structures: ListNode, which contains basic information about a node in the list such as the element pointer, element size, and the next node pointer, and DoublyLinkedListBase, which contains basic information about the doubly linked list such as the head and tail pointer, logical length, and allocated length. It also contains function pointers for data comparison and memory freeing.
+
+Additionally, there are a number of macros defined to make using the doubly linked list more convenient. 
+
+## Macros:
+
+- **DoublyLinkedListT** creates a doubly linked list template for a given data type.
+- **DoublyLinkedListNew** creates a new doubly linked list with a given comparison function and memory freeing function.
+- **DoublyLinkedListInsertAtTail** insert elements at the tail of the doubly linked list.
+- **DoublyLinkedListInsertAtHead** insert elements at the head of the doubly linked list.
+- **DoublyLinkedListReplace** replace only first found element in the doubly linked list.
+- **DoublyLinkedListReplaceAll** replace all found elements in the doubly linked list.
+- **DoublyLinkedListGetIndex** returns the index of a given element in the doubly linked list.
+- **DoublyLinkedListAt** returns the element at a given index in the doubly linked list.
+- **DoublyLinkedListClear** clears the doubly linked list, and DoublyLinkedListDelete deletes the doubly linked list.
+- **DoublyLinkedListIterator** returns the address of the newly created iterator for doubly linked list.
+- **DoublyLinkedListNext** sets the data and index in iterator to the value pointing next in the doubly linked list.
+- **DoublyLinkedListBack** sets the data and index in iterator to the value pointing previous in the doubly linked list.
+
+## Functions:
+
+- **DoublyLinkedListNew\_(DoublyLinkedListBase\* dll, unsigned int elemsize, int(\*DataCmp)(const void \*key1, const void \*key2, unsigned int keysize), void(\*FreeFunc)(void \*elems))**: This function creates a new doubly linked list with a given comparison function and memory freeing function. It sets up the DoublyLinkedListBase structure with the appropriate values and initializes the doubly linked list. The function takes in a pointer to the DoublyLinkedListBase structure, the size of an element, a pointer to a function that compares data, and a pointer to a function that frees memory as arguments.
+- **DoublyLinkedListInsertAtTail\_(DoublyLinkedListBase\* dll, void\* data)**: This function inserts an element at the tail of the doubly linked list. It takes in a pointer to the DoublyLinkedListBase structure and a pointer to the element to be inserted as arguments. It adds the element to the tail of the doubly linked list, increases the logical length of the doubly linked list.
+- **DoublyLinkedListInsertAtHead\_(DoublyLinkedListBase\* dll, void\* data)**: This function inserts an element at the head of the doubly linked list. It takes in a pointer to the DoublyLinkedListBase structure and a pointer to the element to be inserted as arguments. It adds the element to the head of the doubly linked list, increases the logical length of the doubly linked list.
+- **DoublyLinkedListReplace\_(DoublyLinkedListBase\* dll, void\* data, void\* value)**: This function replaces the first element in the doubly linked list that matches a given data with a given value. It takes in a pointer to the DoublyLinkedListBase structure and a pointer to the data and value to be replaced as arguments.
+- **DoublyLinkedListReplaceAll\_(DoublyLinkedListBase\* dll, void\* data, void\* value)**: This function replaces all elements in the doubly linked list that matches a given data with a given value. It takes in a pointer to the DoublyLinkedListBase structure and a pointer to the data and value to be replaced as arguments.
+- **DoublyLinkedListGetIndex\_(DoublyLinkedListBase\* dll, void\* data)**: This function returns the index of the first element in the doubly linked list that matches a given data. It takes in a pointer to the DoublyLinkedListBase structure and a pointer to the data to be searched as arguments. It returns the index of the element if found, otherwise it returns -1.
+- **DoublyLinkedListAt_(DoublyLinkedListBase\* dll, unsigned int index)**: This function returns the element at a given index in the doubly linked list. It takes in a pointer to the DoublyLinkedListBase structure and the index of the element as arguments. It returns a pointer to the element if found, otherwise it returns NULL.
+- **DoublyLinkedListClear\_(DoublyLinkedListBase\* dll)**: This function clears the doubly linked list. It takes in a pointer to the DoublyLinkedListBase structure as an argument. It removes all elements from the doubly linked list, decreases the logical length of the doubly linked list to 0, and calls the memory freeing function for each element.
+- **DoublyLinkedListDelete\_(DoublyLinkedListBase\* dll)**: This function deletes the doubly linked list. It takes in a pointer to the DoublyLinkedListBase structure as an argument. It calls the memory freeing function for each element in the doubly linked list, deallocates memory and set the doubly linked list pointer to NULL.
+- **DoublyLinkedListSize\_(DoublyLinkedListBase\* dll)**: This function returns the logical length of the doubly linked list. It takes in a pointer to the DoublyLinkedListBase structure as an argument. It returns the logical length of the doubly linked list.
+- **DoublyLinkedListIterator\_(DoublyLinkedListBase\* dll)**:  This function creates a new doubly linked list iterator and returns a pointer to it. It takes in a pointer to the DoublyLinkedListBase structure as an argument. It allocates memory for the iterator and its data, sets the index to -1, and returns a pointer to the iterator.
+- **DoublyLinkedListNext\_(DoublyLinkedListBase\* dll, DoublyLinkedListIter\* dlliter)**: This function advances the iterator to the next element in the doubly linked list and returns a pointer to it. It takes in a pointer to the DoublyLinkedListBase structure and a pointer to the current iterator as arguments. It checks if the doubly linked list is empty or if the current index is already at the end of the list, in which case it frees the memory for the iterator's data and returns NULL. Otherwise, it increments the index, copies the data at the new index into the iterator's data, and returns the iterator.
+- **DoublyLinkedListBack\_(DoublyLinkedListBase\* dll, DoublyLinkedListIter\* dlliter)**: This function advances the iterator to the previous element in the doubly linked list and returns a pointer to it. It takes in a pointer to the DoublyLinkedListBase structure and a pointer to the current iterator as arguments. It checks if the doubly linked list is empty or if the current index is already at the beginning of the list, in which case it frees the memory for the iterator's data and returns NULL. Otherwise, it increments the index, calculates the index of the previous element from the end of the list, copies the data at the new index into the iterator's data, and returns the iterator.
+
+## Templates:
+
+- **DoublyLinkedList** is a doubly linked list of void pointers.
+- **DoublyLinkedListDouble** is a doubly linked list of double values.
+- **DoublyLinkedListFloat** is a doubly linked list of float values.
+- **DoublyLinkedListInt** is a doubly linked list of integers.
+- **DoublyLinkedListString** is a doubly linked list of strings (represented by char pointers).
+- **DoublyLinkedListChar** is a doubly linked list of characters.
+- **DoublyLinkedListBool** is a doubly linked list of booleans.
+
+
+# **C CIRCULAR LIST**
+
+This is a header file for a circular linked list implementation in C. It defines two structures: ListNode, which contains basic information about a node in the list such as the element pointer, element size, and the next node pointer, and CircularLinkedListBase, which contains basic information about the circular linked list such as the head and tail pointer, logical length, and allocated length. It also contains function pointers for data comparison and memory freeing.
+
+Additionally, there are a number of macros defined to make using the circular linked list more convenient. 
+
+## Macros:
+
+- **CircularLinkedListT** creates a circular linked list template for a given data type.
+- **CircularLinkedListNew** creates a new circular linked list with a given comparison function and memory freeing function.
+- **CircularLinkedListInsertAtTail** insert elements at the tail of the circular linked list.
+- **CircularLinkedListInsertAtHead** insert elements at the head of the circular linked list.
+- **CircularLinkedListReplace** replace only first found element in the circular linked list.
+- **CircularLinkedListReplaceAll** replace all found elements in the circular linked list.
+- **CircularLinkedListGetIndex** returns the index of a given element in the circular linked list.
+- **CircularLinkedListAt** returns the element at a given index in the circular linked list.
+- **CircularLinkedListClear** clears the circular linked list, and CircularLinkedListDelete deletes the circular linked list.
+- **CircularLinkedListIterator** returns the address of the newly created iterator for circular linked list.
+- **CircularLinkedListNext** sets the data and index in iterator to the value pointing in the circular linked list.
+
+## Functions:
+
+- **CircularLinkedListNew\_(CircularLinkedListBase\* cll, unsigned int elemsize, int(\*DataCmp)(const void \*key1, const void \*key2, unsigned int keysize), void(\*FreeFunc)(void \*elems))**: This function creates a new circular linked list with a given comparison function and memory freeing function. It sets up the CircularLinkedListBase structure with the appropriate values and initializes the circular linked list. The function takes in a pointer to the CircularLinkedListBase structure, the size of an element, a pointer to a function that compares data, and a pointer to a function that frees memory as arguments.
+- **CircularLinkedListInsertAtTail\_(CircularLinkedListBase\* cll, void\* data)**: This function inserts an element at the tail of the circular linked list. It takes in a pointer to the CircularLinkedListBase structure and a pointer to the element to be inserted as arguments. It adds the element to the tail of the circular linked list, increases the logical length of the circular linked list.
+- **CircularLinkedListInsertAtHead\_(CircularLinkedListBase\* cll, void\* data)**: This function inserts an element at the head of the circular linked list. It takes in a pointer to the CircularLinkedListBase structure and a pointer to the element to be inserted as arguments. It adds the element to the head of the circular linked list, increases the logical length of the circular linked list.
+- **CircularLinkedListReplace\_(CircularLinkedListBase\* cll, void\* data, void\* value)**: This function replaces the first element in the circular linked list that matches a given data with a given value. It takes in a pointer to the CircularLinkedListBase structure and a pointer to the data and value to be replaced as arguments.
+- **CircularLinkedListReplaceAll\_(CircularLinkedListBase\* cll, void\* data, void\* value)**: This function replaces all elements in the circular linked list that matches a given data with a given value. It takes in a pointer to the CircularLinkedListBase structure and a pointer to the data and value to be replaced as arguments.
+- **CircularLinkedListGetIndex\_(CircularLinkedListBase\* cll, void\* data)**: This function returns the index of the first element in the circular linked list that matches a given data. It takes in a pointer to the CircularLinkedListBase structure and a pointer to the data to be searched as arguments. It returns the index of the element if found, otherwise it returns -1.
+- **CircularLinkedListAt_(CircularLinkedListBase\* cll, unsigned int index)**: This function returns the element at a given index in the circular linked list. It takes in a pointer to the CircularLinkedListBase structure and the index of the element as arguments. It returns a pointer to the element if found, otherwise it returns NULL.
+- **CircularLinkedListClear\_(CircularLinkedListBase\* cll)**: This function clears the circular linked list. It takes in a pointer to the CircularLinkedListBase structure as an argument. It removes all elements from the circular linked list, decreases the logical length of the circular linked list to 0, and calls the memory freeing function for each element.
+- **CircularLinkedListDelete\_(CircularLinkedListBase\* cll)**: This function deletes the circular linked list. It takes in a pointer to the CircularLinkedListBase structure as an argument. It calls the memory freeing function for each element in the circular linked list, deallocates memory and set the circular linked list pointer to NULL.
+- **CircularLinkedListSize\_(CircularLinkedListBase\* cll)**: This function returns the logical length of the circular linked list. It takes in a pointer to the CircularLinkedListBase structure as an argument. It returns the logical length of the circular linked list.
+- **CircularLinkedListIterator\_(CircularLinkedListBase\* cll)**:  This function creates a new circular linked list iterator and returns a pointer to it. It takes in a pointer to the CircularLinkedListBase structure as an argument. It allocates memory for the iterator and its data, sets the index to -1, and returns a pointer to the iterator.
+- **CircularLinkedListNext\_(CircularLinkedListBase\* cll, CircularLinkedListIter\* clliter)**: This function advances the iterator to the next element in the circular linked list and returns a pointer to it. It takes in a pointer to the CircularLinkedListBase structure and a pointer to the current iterator as arguments. It checks if the circular linked list is empty or if the current index is already at the end of the list, in which case it frees the memory for the iterator's data and returns NULL. Otherwise, it increments the index, copies the data at the new index into the iterator's data, and returns the iterator.
+
+## Templates:
+
+- **CircularLinkedList** is a circular linked list of void pointers.
+- **CircularLinkedListDouble** is a circular linked list of double values.
+- **CircularLinkedListFloat** is a circular linked list of float values.
+- **CircularLinkedListInt** is a circular linked list of integers.
+- **CircularLinkedListString** is a circular linked list of strings (represented by char pointers).
+- **CircularLinkedListChar** is a circular linked list of characters.
+- **CircularLinkedListBool** is a circular linked list of booleans.
+
 
 # **C MAP**
 
