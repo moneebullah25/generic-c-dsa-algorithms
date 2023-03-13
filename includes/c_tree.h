@@ -1,5 +1,5 @@
-#ifndef _C_HELPER_HEADER_
-#define _C_HELPER_HEADER_
+#ifndef _C_TREE_HEADER_
+#define _C_TREE_HEADER_
 
 #ifdef __cplusplus
 extern "C"
@@ -102,4 +102,4 @@ typedef TreeT(char*) TreeString;
 }
 #endif /* __cplusplus */
 
-#endif /* _C_HELPER_HEADER_ */
+#endif /* _C_TREE_HEADER_ */
