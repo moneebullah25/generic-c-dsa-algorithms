@@ -27,6 +27,18 @@ typedef struct AvlTreeBase {
 #define AvlTreeNew(t, DataCmp, FreeFunc) \
     AvlTreeNew_(&(t)->base, sizeof((t)->data_), DataCmp, FreeFunc)
 
+#define AvlTreeHeight(t) \
+    AvlTreeHeight_(&(t)->base)
+
+#define AvlTreeBalance(t) \
+    AvlTreeBalance_(&(t)->base)
+
+#define AvlTreeLeftRotate(t) \ 
+    AvlTreeLeftRotate_(&(t)->base)
+
+#define AvlTreeRightRotate(t) \ 
+    AvlTreeRightRotate_(&(t)->base)
+
 #define AvlTreeInsert(t, data) \
     AvlTreeInsert_(&(t)->base, &(t)->data_)
 
@@ -63,6 +75,14 @@ void AvlTreeNew_(AvlTreeBase* t, unsigned int elemsize,
 	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems));
 
+int AvlTreeHeight_(AvlTreeBase* t);
+
+int AvlTreeBalance_(AvlTreeBase* t);
+
+AvlTreeBase* AvlTreeLeftRotate_(AvlTreeBase* t);
+
+AvlTreeBase* AvlTreeRightRotate_(AvlTreeBase* t);
+
 AvlTreeBase* AvlTreeInsert_(AvlTreeBase* t, void* data);
 
 bool AvlTreeContains_(AvlTreeBase* t, void* data);
@@ -86,8 +106,6 @@ void AvlTreeInOrder_(AvlTreeBase* t, const char *data_format);
 void AvlTreePreOrder_(AvlTreeBase* t, const char *data_format);
 
 void AvlTreePostOrder_(AvlTreeBase* t, const char *data_format);
-
-
 
 typedef AvlTreeT(void*) AvlTree;
 typedef AvlTreeT(int) AvlTreeInt;
