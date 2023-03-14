@@ -12,7 +12,7 @@ void VectorNew_(VectorBase*v, unsigned int elemsize,
 	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems))
 {
-	ASSERT(elemsize > 0);
+	ASSERT(elemsize);
 	v->elemsize = elemsize;
 	v->logiclen = 0;
 	v->alloclen = 4;

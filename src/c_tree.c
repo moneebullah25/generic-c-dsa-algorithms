@@ -7,7 +7,7 @@ void TreeNew_(TreeBase *t, unsigned int elemsize,
               int (*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
               void (*FreeFunc)(void *elems))
 {
-    ASSERT(t && elemsize > 0);
+    ASSERT(t && elemsize);
     t->data = malloc(elemsize);
     ASSERT(t->data);
     t->data = NULL;
@@ -53,16 +53,14 @@ bool TreeContains_(TreeBase *t, void *data)
         {
             temp = temp->left;
         }
-        else if (t->DataCmp(temp->data, data, t->elemsize) > 0)
+        else if (t->DataCmp(temp->data, data, t->elemsize))
         {
             temp = temp->right;
         }
     }
     if (temp != NULL)
         return true;
-    else
-        return false;
-    return;
+	return false;
 }
 
 TreeBase *TreeRemove_(TreeBase *t, void *data)

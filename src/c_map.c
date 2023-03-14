@@ -4,7 +4,7 @@
 
 unsigned int HashFunctionInt(const void* key, unsigned int keysize)
 {
-	ASSERT(keysize > 0);
+	ASSERT(keysize);
 	unsigned int x = 0;
 	for (unsigned int i = 0; i < keysize; i++)
 		x += (int)(((char *)(key))[i]);
@@ -64,7 +64,7 @@ void MapNew_(MapBase* m, unsigned int keysize, unsigned int valuesize,
 	int(*DataCmp)(const void* key1, const void* key2, unsigned int keysize),
 	void(*FreeFuncKey)(void* elems), void(*FreeFuncVal)(void* elems))
 {
-	ASSERT(keysize > 0 && valuesize > 0);
+	ASSERT(keysize && valuesize);
 	m->alloclen = 4; m->logiclen = 0;
 	m->elems = malloc(m->alloclen * sizeof(MapNode));
 	ASSERT(m->elems != 0);

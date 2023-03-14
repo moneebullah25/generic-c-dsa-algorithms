@@ -4,12 +4,12 @@
 
 static void ListNodeNew(ListNode* ln, unsigned int elemsize, void* data)
 {
-	ASSERT(elemsize > 0);
+	ASSERT(elemsize);
 	ln->elemsize = elemsize;
 	ln->elem = malloc(ln->elemsize);
 	ln->next = NULL;
 	ln->back = NULL;
-	ASSERT(ln->elem != NULL);
+	ASSERT(ln->elem);
 	MemoryCopy(ln->elem, data, elemsize);
 }
 
@@ -26,12 +26,9 @@ void DoublyLinkedListNew_(DoublyLinkedListBase* dll, unsigned int elemsize,
 	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems))
 {
-	ASSERT(elemsize > 0);
+	ASSERT(elemsize);
 	dll->elemsize = elemsize;
 	dll->listsize = 0;
-	dll->head = (ListNode*)malloc(sizeof(ListNode));
-	dll->tail = (ListNode*)malloc(sizeof(ListNode));
-	ASSERT(dll->head != NULL && dll->tail != NULL);
 	dll->head = NULL;
 	dll->tail = NULL;
 	dll->DataCmp = DataCmp;
@@ -40,9 +37,9 @@ void DoublyLinkedListNew_(DoublyLinkedListBase* dll, unsigned int elemsize,
 
 void DoublyLinkedListInsertAtTail_(DoublyLinkedListBase* dll, void* data)
 {
-	ASSERT(dll != NULL);
+	ASSERT(dll);
 	ListNode* node = (ListNode*)malloc(sizeof(ListNode));
-	ASSERT(node != NULL);
+	ASSERT(node);
 	ListNodeNew(node, dll->elemsize, data);
 	if (dll->head == NULL)
 	{
@@ -59,9 +56,9 @@ void DoublyLinkedListInsertAtTail_(DoublyLinkedListBase* dll, void* data)
 
 void DoublyLinkedListInsertAtHead_(DoublyLinkedListBase* dll, void* data)
 {
-	ASSERT(dll != NULL);
+	ASSERT(dll);
 	ListNode* node = (ListNode*)malloc(sizeof(ListNode));
-	ASSERT(node != NULL);
+	ASSERT(node);
 	ListNodeNew(node, dll->elemsize, data);
 	if (dll->head == NULL)
 	{
@@ -81,7 +78,7 @@ void DoublyLinkedListReplace_(DoublyLinkedListBase* dll, void* data, void* value
 	ASSERT(dll);
 	if (!dll->head) return;
 	void* temp = (ListNode*)dll->head;
-	while (temp != NULL)
+	while (temp)
 	{
 		if (dll->DataCmp(((ListNode*)temp)->elem, data, ((ListNode*)temp)->elemsize) == 0)
 		{
@@ -97,7 +94,7 @@ void DoublyLinkedListReplaceAll_(DoublyLinkedListBase* dll, void* data, void* va
 	ASSERT(dll);
 	if (!dll->head) return;
 	void* temp = (ListNode*)dll->head;
-	while (temp != NULL)
+	while (temp)
 	{
 		if (dll->DataCmp(((ListNode*)temp)->elem, data, ((ListNode*)temp)->elemsize) == 0)
 		{
@@ -113,7 +110,7 @@ int DoublyLinkedListGetIndex_(DoublyLinkedListBase* dll, void* data)
 	if (!dll->head) return -1;
 	void* temp = (ListNode*)dll->head;
 	unsigned int retindex = 0;
-	while (temp != NULL)
+	while (temp)
 	{
 		if (dll->DataCmp(((ListNode*)temp)->elem, data, ((ListNode*)temp)->elemsize) == 0)
 		{
@@ -131,7 +128,7 @@ void* DoublyLinkedListAt_(DoublyLinkedListBase* dll, unsigned int index)
 	if (!dll->head) return NULL;
 	void* temp = (ListNode*)dll->head;
 	unsigned int retindex = 0;
-	while (temp != NULL)
+	while (temp)
 	{
 		if (index == retindex)
 		{
@@ -145,7 +142,7 @@ void* DoublyLinkedListAt_(DoublyLinkedListBase* dll, unsigned int index)
 
 void DoublyLinkedListClear_(DoublyLinkedListBase* dll)
 {
-	ASSERT(dll != NULL);
+	ASSERT(dll);
 	ListDelete(dll->head, dll->FreeFunc);
 	dll->head = dll->tail = NULL;
 	dll->listsize = 0;
@@ -153,7 +150,7 @@ void DoublyLinkedListClear_(DoublyLinkedListBase* dll)
 
 void DoublyLinkedListDelete_(DoublyLinkedListBase* dll)
 {
-	ASSERT(dll != NULL);
+	ASSERT(dll);
 	ListDelete(dll->head, dll->FreeFunc);
 	dll->FreeFunc(dll);
 }

@@ -4,11 +4,11 @@
 
 static void ListNodeNew(ListNode *ln, unsigned int elemsize, void *data)
 {
-	ASSERT(elemsize > 0);
+	ASSERT(elemsize);
 	ln->elemsize = elemsize;
 	ln->elem = malloc(ln->elemsize);
 	ln->next = NULL;
-	ASSERT(ln->elem != NULL);
+	ASSERT(ln->elem);
 	MemoryCopy(ln->elem, data, elemsize);
 }
 
@@ -27,11 +27,9 @@ void CircularLinkedListNew_(CircularLinkedListBase *cll, unsigned int elemsize,
 							int (*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 							void (*FreeFunc)(void *elems))
 {
-	ASSERT(elemsize > 0);
+	ASSERT(elemsize);
 	cll->elemsize = elemsize;
 	cll->listsize = 0;
-	cll->head = (ListNode *)malloc(sizeof(ListNode));
-	ASSERT(cll->head != NULL);
 	cll->head = NULL;
 	cll->DataCmp = DataCmp;
 	cll->FreeFunc = FreeFunc;
@@ -39,9 +37,9 @@ void CircularLinkedListNew_(CircularLinkedListBase *cll, unsigned int elemsize,
 
 void CircularLinkedListInsert_(CircularLinkedListBase *cll, void *data)
 {
-	ASSERT(cll != NULL);
+	ASSERT(cll);
 	ListNode *node = (ListNode *)malloc(sizeof(ListNode));
-	ASSERT(node != NULL);
+	ASSERT(node);
 	ListNodeNew(node, cll->elemsize, data);
 	if (cll->head == NULL)
 	{
@@ -143,7 +141,7 @@ void *CircularLinkedListAt_(CircularLinkedListBase *cll, unsigned int index)
 
 void CircularLinkedListClear_(CircularLinkedListBase *cll)
 {
-	ASSERT(cll != NULL);
+	ASSERT(cll);
 	ListDelete(cll->head, cll->head, cll->FreeFunc);
 	cll->head = NULL;
 	cll->listsize = 0;
@@ -151,7 +149,7 @@ void CircularLinkedListClear_(CircularLinkedListBase *cll)
 
 void CircularLinkedListDelete_(CircularLinkedListBase *cll)
 {
-	ASSERT(cll != NULL);
+	ASSERT(cll);
 	ListDelete(cll->head, cll->head, cll->FreeFunc);
 	cll->FreeFunc(cll);
 }

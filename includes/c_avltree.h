@@ -14,12 +14,14 @@ extern "C"
 #define false 0
 #define true 1
 
-typedef struct AvlTreeBase {
+typedef struct AvlTreeBase AvlTreeBase;
+
+struct AvlTreeBase {
     void* data; unsigned int elemsize, logiclen, height;
     AvlTreeBase* left, *right;
     int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize);
 	void(*FreeFunc)(void* elems);
-} AvlTreeBase;
+};
 
 #define AvlTreeT(T) \
     struct { AvlTreeBase base; T data_; } 
@@ -33,11 +35,11 @@ typedef struct AvlTreeBase {
 #define AvlTreeBalance(t) \
     AvlTreeBalance_(&(t)->base)
 
-#define AvlTreeLeftRotate(t) \ 
-    AvlTreeLeftRotate_(&(t)->base)
+#define AvlTreeLeftRotate(t) \
+	AvlTreeLeftRotate_(&(t)->base)
 
-#define AvlTreeRightRotate(t) \ 
-    AvlTreeRightRotate_(&(t)->base)
+#define AvlTreeRightRotate(t) \
+	AvlTreeRightRotate_(&(t)->base)
 
 #define AvlTreeInsert(t, data) \
     AvlTreeInsert_(&(t)->base, &(t)->data_)

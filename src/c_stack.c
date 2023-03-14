@@ -12,14 +12,14 @@ void StackNew_(StackBase* s, unsigned int elem_size,
 	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems))
 {
-	ASSERT(elem_size > 0);
+	ASSERT(elem_size);
 	s->elemsize = elem_size;
 	s->logiclen = 0;
 	s->alloclen = 4;
 	s->elems = malloc(s->alloclen * s->elemsize);
 	s->DataCmp = DataCmp;
 	s->FreeFunc = FreeFunc;
-	ASSERT(s->elems != NULL);
+	ASSERT(s->elems);
 }
 
 void StackPush_(StackBase* s, void* elem)
@@ -28,7 +28,7 @@ void StackPush_(StackBase* s, void* elem)
 		// resize
 		s->alloclen *= 2;
 		s->elems = realloc(s->elems, s->alloclen * s->elemsize);
-		ASSERT(s->elems != NULL);
+		ASSERT(s->elems);
 	}
 
 	void* target = getPointer(s->elems, s->logiclen, s->elemsize);
@@ -38,12 +38,12 @@ void StackPush_(StackBase* s, void* elem)
 
 void* StackPop_(StackBase* s)
 {
-	ASSERT(s->logiclen > 0); 
+	ASSERT(s->logiclen); 
 	if (s->logiclen == (s->alloclen / 2))
 	{
 		s->alloclen = s->alloclen / 2;
 		s->elems = realloc(s->elems, s->alloclen * s->elemsize);
-		ASSERT(s->elems != NULL);
+		ASSERT(s->elems);
 	}
 	void* target = getPointer(s->elems, s->logiclen--, s->elemsize);
 	return target;
@@ -51,7 +51,7 @@ void* StackPop_(StackBase* s)
 
 void* StackTop_(StackBase* s)
 {
-	ASSERT(s->logiclen > 0);
+	ASSERT(s->logiclen);
 	void* target = getPointer(s->elems, s->logiclen-1, s->elemsize);
 	return target;
 }
@@ -63,7 +63,7 @@ void StackClear_(StackBase* s)
 
 void StackDelete_(StackBase* s)
 {
-	ASSERT(s->elems != NULL);
+	ASSERT(s->elems);
 	s->FreeFunc(s->elems);
 	s->alloclen = 0;
 	s->logiclen = 0;

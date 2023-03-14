@@ -7,7 +7,7 @@ void AvlTreeNew_(AvlTreeBase* t, unsigned int elemsize,
                  int (*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
                  void (*FreeFunc)(void *elems))
 {
-    ASSERT(t && elemsize > 0);
+    ASSERT(t && elemsize);
     t->data = malloc(elemsize);
     ASSERT(t->data);
     t->data = NULL;
@@ -49,8 +49,8 @@ AvlTreeBase* AvlTreeLeftRotate_(AvlTreeBase* t)
     AvlTreeBase* temp = newroot->left;
     newroot->left = t;
     t->right = temp;
-    t->height = 1 + MAX(AvlTreeHeight_(t->left), AvlTreeHeight_(t->right));
-    newroot->height = 1 + MAX(AvlTreeHeight_(newroot->left), AvlTreeHeight_(newroot->right));
+    t->height = 1 + M_MAX(AvlTreeHeight_(t->left), AvlTreeHeight_(t->right));
+    newroot->height = 1 + M_MAX(AvlTreeHeight_(newroot->left), AvlTreeHeight_(newroot->right));
     return newroot;
 }
 
@@ -60,8 +60,8 @@ AvlTreeBase* AvlTreeRightRotate_(AvlTreeBase* t)
     AvlTreeBase* temp = newroot->right;
     newroot->right = t;
     t->left = temp;
-    t->height = 1 + MAX(AvlTreeHeight_(t->left), AvlTreeHeight_(t->right));
-    newroot->height = 1 + MAX(AvlTreeHeight_(newroot->left), AvlTreeHeight_(newroot->right));
+    t->height = 1 + M_MAX(AvlTreeHeight_(t->left), AvlTreeHeight_(t->right));
+    newroot->height = 1 + M_MAX(AvlTreeHeight_(newroot->left), AvlTreeHeight_(newroot->right));
     return newroot;
 }
 
@@ -84,7 +84,7 @@ AvlTreeBase* AvlTreeInsert_(AvlTreeBase* t, void *data)
     {
         temp->left = AvlTreeInsert_(temp->left, data);
     }
-    else if (t->DataCmp(temp->data, data, t->elemsize) > 0)
+    else if (t->DataCmp(temp->data, data, t->elemsize))
     {
         temp->right = AvlTreeInsert_(temp->right, data);
     }
@@ -95,7 +95,7 @@ AvlTreeBase* AvlTreeInsert_(AvlTreeBase* t, void *data)
     }
 
     // Update height of ancestor node
-    temp->height = 1 + max(AvlTreeHeight_(temp->left), AvlTreeHeight_(temp->right));
+    temp->height = 1 + M_MAX(AvlTreeHeight_(temp->left), AvlTreeHeight_(temp->right));
 
     // Check if the tree is balanced
     int balance = AvlTreeBalance_(temp);
@@ -107,13 +107,13 @@ AvlTreeBase* AvlTreeInsert_(AvlTreeBase* t, void *data)
     }
 
     // Right Right Case
-    if (balance < -1 && t->DataCmp(temp->right->data, data, t->elemsize) > 0)
+    if (balance < -1 && t->DataCmp(temp->right->data, data, t->elemsize))
     {
         return AvlTreeLeftRotate_(temp);
     }
 
     // Left Right Case
-    if (balance > 1 && t->DataCmp(temp->left->data, data, t->elemsize) > 0)
+    if (balance > 1 && t->DataCmp(temp->left->data, data, t->elemsize))
     {
         temp->left = AvlTreeLeftRotate_(temp->left);
         return AvlTreeRightRotate_(temp);
@@ -143,16 +143,14 @@ bool AvlTreeContains_(AvlTreeBase* t, void *data)
         {
             temp = temp->left;
         }
-        else if (t->DataCmp(temp->data, data, t->elemsize) > 0)
+        else if (t->DataCmp(temp->data, data, t->elemsize))
         {
             temp = temp->right;
         }
     }
     if (temp != NULL)
         return true;
-    else
-        return false;
-    return;
+	return false;
 }
 
 AvlTreeBase* AvlTreeRemove_(AvlTreeBase* t, void *data)
@@ -163,7 +161,7 @@ AvlTreeBase* AvlTreeRemove_(AvlTreeBase* t, void *data)
     {
         t->left = AvlTreeRemove_(t->left, data);
     }
-    else if (t->DataCmp(t->data, data, t->elemsize) > 0)
+    else if (t->DataCmp(t->data, data, t->elemsize))
     {
         t->right = AvlTreeRemove_(t->right, data);
     }
@@ -201,7 +199,7 @@ AvlTreeBase* AvlTreeRemove_(AvlTreeBase* t, void *data)
         return t;
     }
 
-    t->height = 1 + MAX(AvlTreeHeight_(t->left), AvlTreeHeight_(t->right));
+    t->height = 1 + M_MAX(AvlTreeHeight_(t->left), AvlTreeHeight_(t->right));
 
     int balance = AvlTreeBalance_(t);
     if (balance > 1 && AvlTreeBalance_(t->left) >= 0)
@@ -217,7 +215,7 @@ AvlTreeBase* AvlTreeRemove_(AvlTreeBase* t, void *data)
     {
         return AvlTreeLeftRotate_(t);
     }
-    if (balance < -1 && AvlTreeBalance_(t->right) > 0)
+    if (balance < -1 && AvlTreeBalance_(t->right))
     {
         t->right = AvlTreeRightRotate_(t->right);
         return AvlTreeLeftRotate_(t);

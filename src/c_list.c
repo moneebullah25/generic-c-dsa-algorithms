@@ -4,11 +4,11 @@
 
 static void ListNodeNew(ListNode* ln, unsigned int elemsize, void* data)
 {
-	ASSERT(elemsize > 0);
+	ASSERT(elemsize);
 	ln->elemsize = elemsize;
 	ln->elem = malloc(ln->elemsize);
 	ln->next = NULL;
-	ASSERT(ln->elem != NULL);
+	ASSERT(ln->elem);
 	MemoryCopy(ln->elem, data, elemsize);
 }
 
@@ -25,12 +25,9 @@ void LinkedListNew_(LinkedListBase* ll, unsigned int elemsize,
 	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems))
 {
-	ASSERT(elemsize > 0);
+	ASSERT(elemsize);
 	ll->elemsize = elemsize;
 	ll->listsize = 0;
-	ll->head = (ListNode*)malloc(sizeof(ListNode));
-	ll->tail = (ListNode*)malloc(sizeof(ListNode));
-	ASSERT(ll->head != NULL && ll->tail != NULL);
 	ll->head = NULL;
 	ll->tail = NULL;
 	ll->DataCmp = DataCmp;
@@ -39,9 +36,9 @@ void LinkedListNew_(LinkedListBase* ll, unsigned int elemsize,
 
 void LinkedListInsertAtTail_(LinkedListBase* ll, void* data)
 {
-	ASSERT(ll != NULL);
+	ASSERT(ll);
 	ListNode* node = (ListNode*)malloc(sizeof(ListNode));
-	ASSERT(node != NULL);
+	ASSERT(node);
 	ListNodeNew(node, ll->elemsize, data);
 	if (ll->head == NULL)
 	{
@@ -57,9 +54,9 @@ void LinkedListInsertAtTail_(LinkedListBase* ll, void* data)
 
 void LinkedListInsertAtHead_(LinkedListBase* ll, void* data)
 {
-	ASSERT(ll != NULL);
+	ASSERT(ll);
 	ListNode* node = (ListNode*)malloc(sizeof(ListNode));
-	ASSERT(node != NULL);
+	ASSERT(node);
 	ListNodeNew(node, ll->elemsize, data);
 	if (ll->head == NULL)
 	{
@@ -78,7 +75,7 @@ void LinkedListReplace_(LinkedListBase* ll, void* data, void* value)
 	ASSERT(ll);
 	if (!ll->head) return;
 	void* temp = (ListNode*)ll->head;
-	while (temp != NULL)
+	while (temp)
 	{
 		if (ll->DataCmp(((ListNode*)temp)->elem, data, ((ListNode*)temp)->elemsize) == 0)
 		{
@@ -94,7 +91,7 @@ void LinkedListReplaceAll_(LinkedListBase* ll, void* data, void* value)
 	ASSERT(ll);
 	if (!ll->head) return;
 	void* temp = (ListNode*)ll->head;
-	while (temp != NULL)
+	while (temp)
 	{
 		if (ll->DataCmp(((ListNode*)temp)->elem, data, ((ListNode*)temp)->elemsize) == 0)
 		{
@@ -110,7 +107,7 @@ int LinkedListGetIndex_(LinkedListBase* ll, void* data)
 	if (!ll->head) return -1;
 	void* temp = (ListNode*)ll->head;
 	unsigned int retindex = 0;
-	while (temp != NULL)
+	while (temp)
 	{
 		if (ll->DataCmp(((ListNode*)temp)->elem, data, ((ListNode*)temp)->elemsize) == 0)
 		{
@@ -128,7 +125,7 @@ void* LinkedListAt_(LinkedListBase* ll, unsigned int index)
 	if (!ll->head) return NULL;
 	void* temp = (ListNode*)ll->head;
 	unsigned int retindex = 0;
-	while (temp != NULL)
+	while (temp)
 	{
 		if (index == retindex)
 		{
@@ -142,7 +139,7 @@ void* LinkedListAt_(LinkedListBase* ll, unsigned int index)
 
 void LinkedListClear_(LinkedListBase* ll)
 {
-	ASSERT(ll != NULL);
+	ASSERT(ll);
 	ListDelete(ll->head, ll->FreeFunc);
 	ll->head = ll->tail = NULL;
 	ll->listsize = 0;
@@ -150,7 +147,7 @@ void LinkedListClear_(LinkedListBase* ll)
 
 void LinkedListDelete_(LinkedListBase* ll)
 {
-	ASSERT(ll != NULL);
+	ASSERT(ll);
 	ListDelete(ll->head, ll->FreeFunc);
 	ll->FreeFunc(ll);
 }

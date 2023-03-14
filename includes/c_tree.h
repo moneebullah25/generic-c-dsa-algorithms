@@ -14,12 +14,17 @@ extern "C"
 #define false 0
 #define true 1
 
-typedef struct TreeBase {
-    void* data; unsigned int elemsize, logiclen;
-    TreeBase* left, *right;
-    int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize);
+typedef struct TreeBase TreeBase;  // Forward declaration
+
+struct TreeBase {
+	void* data;
+	unsigned int elemsize;
+	unsigned int logiclen;
+	TreeBase* left;
+	TreeBase* right;
+	int(*DataCmp)(const void* key1, const void* key2, unsigned int keysize);
 	void(*FreeFunc)(void* elems);
-} TreeBase;
+};
 
 #define TreeT(T) \
     struct { TreeBase base; T data_; } 
