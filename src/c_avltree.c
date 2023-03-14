@@ -8,8 +8,6 @@ void AvlTreeNew_(AvlTreeBase* t, unsigned int elemsize,
                  void (*FreeFunc)(void *elems))
 {
     ASSERT(t && elemsize);
-    t->data = malloc(elemsize);
-    ASSERT(t->data);
     t->data = NULL;
     t->elemsize = elemsize;
     t->left = NULL;
@@ -70,6 +68,7 @@ AvlTreeBase* AvlTreeInsert_(AvlTreeBase* t, void *data)
     ASSERT(t && data);
     AvlTreeBase* temp = t;
     AvlTreeBase* new_node = (AvlTreeBase* )malloc(sizeof(AvlTreeBase));
+	new_node->data = malloc(t->elemsize);
     MemoryCopy(new_node->data, data, t->elemsize);
     new_node->left = NULL;
     new_node->right = NULL;

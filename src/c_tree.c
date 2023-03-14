@@ -1,4 +1,4 @@
-#include "../includes/c_tree.h"
+ #include "../includes/c_tree.h"
 #include "../includes/c_helper.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,9 +7,7 @@ void TreeNew_(TreeBase *t, unsigned int elemsize,
               int (*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
               void (*FreeFunc)(void *elems))
 {
-    ASSERT(t && elemsize);
-    t->data = malloc(elemsize);
-    ASSERT(t->data);
+    ASSERT(t && elemsize);        
     t->data = NULL;
     t->elemsize = elemsize;
     t->left = NULL;
@@ -34,6 +32,7 @@ TreeBase *TreeInsert_(TreeBase *t, void *data)
             temp = temp->right;
         }
     }
+	temp->data = malloc(t->elemsize);
     MemoryCopy(temp->data, data, t->elemsize);
     t->logiclen++;
     return temp;
