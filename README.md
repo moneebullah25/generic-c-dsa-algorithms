@@ -38,13 +38,15 @@
   - [Macros](#macros-7)
   - [Functions](#functions-7)
   - [Templates](#templates-6)
+- [c MATRIX](#c-matrix)
+  - [Functions](#functions-8)
 - [C TREE](#c-tree)
   - [Macros](#macros-8)
-  - [Functions](#functions-8)
+  - [Functions](#functions-9)
   - [Templates](#templates-7)
 - [C AVL TREE](#c-avl-tree)
   - [Macros](#macros-8)
-  - [Functions](#functions-8)
+  - [Functions](#functions-10)
   - [Templates](#templates-7)
 
 # **Introduction**
