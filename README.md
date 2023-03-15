@@ -38,6 +38,14 @@
   - [Macros](#macros-7)
   - [Functions](#functions-7)
   - [Templates](#templates-6)
+- [C TREE](#c-tree)
+  - [Macros](#macros-8)
+  - [Functions](#functions-8)
+  - [Templates](#templates-7)
+- [C AVL TREE](#c-avl-tree)
+  - [Macros](#macros-8)
+  - [Functions](#functions-8)
+  - [Templates](#templates-7)
 
 # **Introduction**
 
@@ -509,3 +517,105 @@ The **Matrix** class is a data structure for representing and manipulating matri
 - **MatrixColumnL2Norm(Matrix\* m, unsigned int col)** Computes the L2 norm, also known as the Euclidean norm, of a specified column of the input matrix.
 - **MatrixL2Norm(Matrix\* m)** Computes the L2 norm, also known as the Euclidean norm, of each column of the input matrix and returns a new matrix with the results.
 - **MatrixFree(Matrix\* m)** Deallocates the memory associated with the input matrix, freeing it for use by other parts of the program.
+
+# **C TREE**
+
+This is a header file for a binary tree implementation in C. It defines a structure called TreeBase, which contains basic information about the tree such as the element pointer, element size, logical length, and allocated length. It also contains function pointers for data comparison and memory freeing. Additionally, there are a number of macros defined to make using the binary tree more convenient.
+
+## Macros: 
+
+The given macros are for creating and manipulating a binary tree template for a specific data type T.
+
+- **TreeT(T)** macro creates a struct with a TreeBase as a member and an additional member with the name data\_ of the type T.
+- **TreeNew(t, DataCmp, FreeFunc)** macro creates a new Tree object using the provided DataCmp function to compare elements and FreeFunc to free memory, then returns a pointer to the newly created Tree object.
+- **TreeInsert(t, data)** macro inserts the provided data into the Tree object referenced by 't'.
+- **TreeContains(t, data)** macro checks if the provided data exists in the Tree object referenced by 't', returning 1 if it is found, and 0 otherwise.
+- **TreeRemove(t, data)** macro removes the provided data from the Tree object referenced by 't'.
+- **TreeClear(t)** macro removes all elements from the Tree object referenced by 't'.
+- **TreeDelete(t)** macro frees all memory associated with the Tree object referenced by 't'.
+- **TreeSize(t)** macro returns the number of elements currently stored in the Tree object referenced by 't'.
+- **TreeEmpty(t)** macro checks if the Tree object referenced by 't' is empty, returning 1 if it is empty and 0 otherwise.
+- **TreeMin(t)** macro returns a pointer to the minimum element stored in the Tree object referenced by 't'.
+- **TreeMax(t)** macro returns a pointer to the maximum element stored in the Tree object referenced by 't'.
+- **TreeInOrder(t, data\_format)** macro traverses the Tree object referenced by 't' in in-order traversal and prints each element using the provided 'data\_format' format string.
+- **TreePreOrder(t, data\_format)** macro traverses the Tree object referenced by 't' in pre-order traversal and prints each element using the provided 'data\_format' format string.
+- **TreePostOrder(t, data\_format)** macro traverses the Tree object referenced by 't' in post-order traversal and prints each element using the provided 'data\_format' format string.
+
+## Functions: 
+
+- **void TreeNew\_(TreeBase\* t, unsigned int elemsize, int(\*DataCmp)(const void \*key1, const void \*key2, unsigned int keysize), void(\*FreeFunc)(void\* elems))**: This function creates a new binary tree with a given comparison function and memory freeing function. It sets up the TreeBase structure with the appropriate values and initializes the binary tree. The function takes in a pointer to the TreeBase structure, the size of an element, a pointer to a function that compares data, and a pointer to a function that frees memory as arguments.
+- **TreeBase TreeInsert\_(TreeBase\* t, void\* data)**: This function inserts an element into the binary tree. It takes in a pointer to the TreeBase structure and a pointer to the element to be inserted as arguments.
+- **bool TreeContains\_(TreeBase\* t, void\* data)**: This function checks if an element is present in the binary tree. It takes in a pointer to the TreeBase structure and a pointer to the element to be checked as arguments.
+- **TreeBase TreeRemove\_(TreeBase\* t, void\* data)**: This function removes an element from the binary tree. It takes in a pointer to the TreeBase structure and a pointer to the element to be removed as arguments.
+- **void TreeClear\_(TreeBase\* t)**: This function clears all elements from the binary tree. It takes in a pointer to the TreeBase structure as an argument.
+- **void TreeDelete\_(TreeBase\* t)**: This function deletes the binary tree and frees the memory associated with it. It takes in a pointer to the TreeBase structure as an argument.
+- **unsigned int TreeSize\_(TreeBase\* t)**: This function returns the number of elements in the binary tree. It takes in a pointer to the TreeBase structure as an argument.
+- **bool TreeEmpty\_(TreeBase\* t)**: This function checks if the binary tree is empty. It takes in a pointer to the TreeBase structure as an argument.
+- **TreeBase\* TreeMin\_(TreeBase\* t)**: This function returns a pointer to the smallest element in the binary tree. It takes in a pointer to the TreeBase structure as an argument.
+- **TreeBase\* TreeMax\_(TreeBase\* t)**: This function returns a pointer to the largest element in the binary tree. It takes in a pointer to the TreeBase structure as an argument.
+- **void TreeInOrder\_(TreeBase\* t, const char\* data\_format)**: This function performs an in-order traversal of the binary tree and prints the data in the specified format. It takes in a pointer to the TreeBase structure and a string specifying the format of the data as arguments.
+- **void TreePreOrder\_(TreeBase\* t, const char\* data\_format)**: This function performs a pre-order traversal of the tree and prints the data of each node in the specified format. The function takes in a pointer to the TreeBase structure and a pointer to a string specifying the format of the data to print as arguments.
+- **void** **TreePostOrder\_(TreeBase\* t, const char\* data\_format)**: This function performs a post-order traversal of the tree and prints the data of each node in the specified format. The function takes in a pointer to the TreeBase structure and a pointer to a string specifying the format of the data to print as arguments.
+
+## Templates: 
+
+- **Tree** is a binary tree template for any data type.
+- **TreeInt** is a binary tree template specifically for integers.
+- **TreeFloat** is a binary tree template specifically for single-precision floating-point numbers.
+- **TreeDouble** is a binary tree template specifically for double-precision floating-point numbers.
+- **TreeChar** is a binary tree template specifically for characters.
+- **TreeString** is a binary tree template specifically for null-terminated character strings.
+
+# **C AVL TREE**
+
+## Macros: 
+
+The given macros are for creating and manipulating a avl binary tree template for a specific data type T.
+
+- **AvlTreeT(T)** macro creates a struct with an AvlTreeBase as a member and an additional member with the name data\_ of the type T.
+- **AvlTreeNew(t, DataCmp, FreeFunc)** macro initializes an Avl tree pointed to by 't' with a comparison function 'DataCmp' and a function 'FreeFunc' to free the tree elements.
+- **AvlTreeHeight(t)** macro returns the height of the Avl tree pointed to by 't'.
+- **AvlTreeBalance(t)** macro returns the balance factor of the Avl tree pointed to by 't'.
+- **AvlTreeLeftRotate(t)** macro performs a left rotation on the Avl tree pointed to by 't'.
+- **AvlTreeRightRotate(t)** macro performs a right rotation on the Avl tree pointed to by 't'.
+- **AvlTreeInsert(t, data)** macro inserts the data pointed to by 'data' into the Avl tree pointed to by 't'.
+- **AvlTreeContains(t, data)** macro returns true if the Avl tree pointed to by 't' contains the data pointed to by 'data'.
+- **AvlTreeRemove(t, data)** macro removes the data pointed to by 'data' from the Avl tree pointed to by 't'.
+- **AvlTreeClear(t)** macro clears all the elements of the Avl tree pointed to by 't'.
+- **AvlTreeDelete(t)** macro clears and deletes the Avl tree pointed to by 't'.
+- **AvlTreeSize(t)** macro returns the number of elements in the Avl tree pointed to by 't'.
+- **AvlTreeEmpty(t)** macro returns true if the Avl tree pointed to by 't' is empty.
+- **AvlTreeMin(t)** macro returns the minimum element of the Avl tree pointed to by 't'.
+- **AvlTreeMax(t)** macro returns the maximum element of the Avl tree pointed to by 't'.
+- **AvlTreeInOrder(t, data\_format)** macro performs an in-order traversal of the Avl tree pointed to by 't', printing each element using the specified 'data\_format'.
+- **AvlTreePreOrder(t, data\_format)** macro performs a pre-order traversal of the Avl tree pointed to by 't', printing each element using the specified 'data\_format'.
+- **AvlTreePostOrder(t, data\_format)** macro performs a post-order traversal of the Avl tree pointed to by 't', printing each element using the specified 'data\_format'.
+
+## Functions: 
+
+- **AvlTreeNew\_(AvlTreeBase**_ **t, unsigned int elemsize, int(\*DataCmp)(const void \*key1, const void** _**key2, unsigned int keysize), void(\*FreeFunc)(void**_ **elems)):** This function creates a new AVL tree with a given comparison function and memory freeing function. It sets up the AvlTreeBase structure with the appropriate values and initializes the AVL tree. The function takes in a pointer to the AvlTreeBase structure, the size of an element, a pointer to a function that compares data, and a pointer to a function that frees memory as arguments.
+- **AvlTreeHeight\_(AvlTreeBase**_ **t):** This function returns the height of the AVL tree with the root node specified by the pointer t.
+- **AvlTreeBalance\_(AvlTreeBase**_ **t):** This function returns the balance factor of the AVL tree with the root node specified by the pointer t.
+- **AvlTreeLeftRotate\_(AvlTreeBase**_ **t):** This function performs a left rotation on the AVL tree with the root node specified by the pointer t and returns a pointer to the new root.
+- **AvlTreeRightRotate\_(AvlTreeBase**_ **t):** This function performs a right rotation on the AVL tree with the root node specified by the pointer t and returns a pointer to the new root.
+- **AvlTreeInsert\_(AvlTreeBase t, void**_ **data):** This function inserts a new node with the given data into the AVL tree with the root node specified by the pointer t and returns a pointer to the new root.
+- **AvlTreeContains\_(AvlTreeBase t, void**_ **data):** This function checks if a node with the given data exists in the AVL tree with the root node specified by the pointer t and returns a boolean value.
+- **AvlTreeRemove\_(AvlTreeBase t, void_** **data):** This function removes the node with the given data from the AVL tree with the root node specified by the pointer t and returns a pointer to the new root. If the node does not exist, it returns NULL.
+- **AvlTreeClear\_(AvlTreeBase**_ **t):** This function removes all the nodes from the AVL tree and resets the AVL tree to an empty state. It takes a pointer to an AvlTreeBase structure as an argument.
+- **AvlTreeDelete\_(AvlTreeBase**_ **t):** This function removes all the nodes from the AVL tree and frees the memory allocated for the AVL tree. It takes a pointer to an AvlTreeBase structure as an argument.
+- **AvlTreeSize\_(AvlTreeBase**_ **t):** This function returns the number of elements in the AVL tree. It takes a pointer to an AvlTreeBase structure as an argument.
+- **AvlTreeEmpty\_(AvlTreeBase**_ **t):** This function returns a boolean value indicating whether the AVL tree is empty or not. It takes a pointer to an AvlTreeBase structure as an argument.
+- **AvlTreeMin\_(AvlTreeBase**_ **t):** This function returns a pointer to the node containing the smallest element in the AVL tree. It takes a pointer to an AvlTreeBase structure as an argument.
+- **AvlTreeMax\_(AvlTreeBase**_ **t):** This function returns a pointer to the node containing the largest element in the AVL tree. It takes a pointer to an AvlTreeBase structure as an argument.
+- **AvlTreeInOrder\_(AvlTreeBase_** **t, const char \*data\_format):** This function traverses the AVL tree in-order and prints the data of each node using the provided format string. It takes a pointer to an AvlTreeBase structure and a format string as arguments.
+- **AvlTreePreOrder\_(AvlTreeBase_** **t, const char \*data\_format):** This function traverses the AVL tree pre-order and prints the data of each node using the provided format string. It takes a pointer to an AvlTreeBase structure and a format string as arguments.
+- **AvlTreePostOrder\_(AvlTreeBase**_ **t, const char \*data\_format):** This function traverses the AVL tree post-order and prints the data of each node using the provided format string. It takes a pointer to an AvlTreeBase structure and a format string as arguments.
+
+## Templates: 
+
+- **AvlTree** is a typedef of AvlTreeT(void), which creates an AvlTree struct with a void data\_ member.
+- **AvlTreeInt** is a typedef of AvlTreeT(int), which creates an AvlTree struct with an int data\_ member.
+- **AvlTreeFloat** is a typedef of AvlTreeT(float), which creates an AvlTree struct with a float data\_ member.
+- **AvlTreeDouble** is a typedef of AvlTreeT(double), which creates an AvlTree struct with a double data\_ member.
+- **AvlTreeChar** is a typedef of AvlTreeT(char), which creates an AvlTree struct with a char data\_ member.
+- **AvlTreeString** is a typedef of AvlTreeT(char), which creates an AvlTree struct with a char data\_ member.
