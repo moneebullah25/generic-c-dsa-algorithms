@@ -93,10 +93,7 @@ AvlTreeBase* AvlTreeInsert_(AvlTreeBase* t, void *data)
         return temp;
     }
 
-    // Update height of ancestor node
     temp->height = 1 + M_MAX(AvlTreeHeight_(temp->left), AvlTreeHeight_(temp->right));
-
-    // Check if the tree is balanced
     int balance = AvlTreeBalance_(temp);
 
     // Left Left Case
@@ -262,7 +259,7 @@ bool AvlTreeEmpty_(AvlTreeBase* t)
     return (t->elemsize) ? true : false;
 }
 
-AvlTreeBase* AvlTreeMin(AvlTreeBase* t)
+AvlTreeBase* AvlTreeMin_(AvlTreeBase* t)
 {
     ASSERT(t);
     AvlTreeBase* temp = t;
@@ -273,7 +270,7 @@ AvlTreeBase* AvlTreeMin(AvlTreeBase* t)
     return temp;
 }
 
-AvlTreeBase* AvlTreeMax(AvlTreeBase* t)
+AvlTreeBase* AvlTreeMax_(AvlTreeBase* t)
 {
     ASSERT(t);
     AvlTreeBase* temp = t;

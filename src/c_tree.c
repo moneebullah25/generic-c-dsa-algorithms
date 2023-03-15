@@ -190,7 +190,7 @@ bool TreeEmpty_(TreeBase *t)
     return (t->elemsize) ? true : false;
 }
 
-TreeBase *TreeMin(TreeBase *t)
+TreeBase *TreeMin_(TreeBase *t)
 {
     ASSERT(t);
     TreeBase *temp = t;
@@ -201,7 +201,7 @@ TreeBase *TreeMin(TreeBase *t)
     return temp;
 }
 
-TreeBase *TreeMax(TreeBase *t)
+TreeBase *TreeMax_(TreeBase *t)
 {
     ASSERT(t);
     TreeBase *temp = t;
