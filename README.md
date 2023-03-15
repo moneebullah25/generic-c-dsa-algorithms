@@ -45,9 +45,9 @@
   - [Functions](#functions-9)
   - [Templates](#templates-7)
 - [C AVL TREE](#c-avl-tree)
-  - [Macros](#macros-8)
+  - [Macros](#macros-9)
   - [Functions](#functions-10)
-  - [Templates](#templates-7)
+  - [Templates](#templates-8)
 
 # **Introduction**
 
