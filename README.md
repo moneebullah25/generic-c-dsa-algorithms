@@ -466,15 +466,30 @@ The **Matrix** class is a data structure for representing and manipulating matri
 - **bool is\_square** : A boolean value indicating whether the matrix is square or not.
 
 ## Functions: 
-
+- **Matrix\* MatrixEmpty(unsigned int num\_rows, unsigned int num\_cols)** creates and returns a new empty matrix with given number of rows and columns and all values are remains uninitialized.
+- **Matrix\* MatrixEmptyLike(Matrix\* m)** creates and returns a new empty matrix with the same number of rows and columns as the given matrix and all values are remains uninitialized.
 - **Matrix\* MatrixNew(unsigned int num\_rows, unsigned int num\_cols)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols.
+- **Matrix\* MatrixNewLike(Matrix\* m)** creates and returns a new empty matrix with the same number of rows and columns as the given matrix and all values set to 0.
 - **Matrix\* MatrixRandom(unsigned int num\_rows, unsigned int num\_cols, double min, double max)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with random numbers in the range [min, max].
+- **Matrix\* MatrixRandomLike(Matrix\* m, double min, double max)** creates and returns a new matrix with given number of rows and columns as given matrix and all values set randomly within a specified range.
 - **Matrix\* MatrixSquare(unsigned int size)** Allocates memory for a new Matrix structure with the given size and size number of columns and rows.
+- **Matrix\* MatrixSquareLike(Matrix\* m)** creates and returns a new square matrix with size as given matrix and all values set to 0.
 - **Matrix\* MatrixSquareRandom(unsigned int size, double min, double max)** Allocates memory for a new square Matrix structure with the given size and fills it with random numbers in the range [min, max].
+- **Matrix\* MatrixSquareRandomLike(Matrix\* m, double min, double max)** creates and returns a new square matrix with size as given matrix and all values set randomly within a specified range.
 - **Matrix\* MatrixZero(unsigned int num\_rows, unsigned int num\_cols)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with zeros.
+- **Matrix\* MatrixZeroLike(Matrix\* m)** creates and returns a new matrix with rows and columns as given matrix and all values set to 0.
 - **Matrix\* MatrixOne(unsigned int num\_rows, unsigned int num\_cols)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with ones.
+- **Matrix\* MatrixOneLike(Matrix\* m)** creates and returns a new matrix with rows and columns as given matrix and all values set to 1.
 - **Matrix\* MatrixN(unsigned int num\_rows, unsigned int num\_cols, double value)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with the given value.
+- **Matrix\* MatrixNLike(Matrix\* m, double value)** creates and returns a new matrix with dimensions same to passed matrix and all elements set to a given value.
 - **Matrix\* MatrixIdentity(unsigned int size)** Allocates memory for a new square Matrix structure with the given size and fills it with an identity matrix.
+- **Matrix\* MatrixIdentityLike(Matrix\* m)** creates and returns a new identity matrix with dimensions same as given matrix.
+- **Matrix\* MatrixEye(unsigned int size, int k)** inspired from numpy python; creates and returns a new matrix with ones on the diagonal and zeros elsewhere. The position of diagonal can be changed by specifying the value of k parameter. See header file comments for more information.
+- **Matrix\* MatrixEyeLike(Matrix\* m, int k)** inspired from numpy python; creates and returns a new matrix with ones on the diagonal and zeros elsewhere of size nxn same as matrix passed. The position of diagonal can be changed by specifying the value of k parameter. See header file comments for more information.
+- **Matrix\* MatrixARange(double start, double stop, double step)** inspired from numpy python; Returns a pointer to a Matrix containing evenly spaced values within a given interval, with a given step size. See header file comments for more information.
+- **Matrix\* MatrixLinearSpace(double start, double stop, unsigned int n)** inspired from numpy python; Returns a pointer to a Matrix containing evenly spaced values within a given interval, with a given number of samples. See header file comments for more information.
+- **Matrix\* MatrixLogSpace(double start, double stop, unsigned int n)** inspired from numpy python; Returns a pointer to a Matrix containing evenly spaced values within a given interval, with a given number of samples, in logarithmic space. See header file comments for more information.
+- **Matrix\* MatrixGeometrySpace(double start, double stop, unsigned int n)** inspired from numpy python; Returns a pointer to a Matrix containing values within a given interval, with a geometric spacing. See header file comments for more information.
 - **Matrix\* MatrixFrom(unsigned int num\_rows, unsigned int num\_cols, unsigned int n\_values, double \*values)** Allocates memory for a new Matrix structure with the given number of num_rows and num_cols and fills it with the first n_values from the given array of values.
 - **Matrix\* MatrixFromFile(const char\* file)** Allocates memory for a new Matrix structure and fills it with the data from the file specified by file.
 - **Matrix\* MatrixCopy(Matrix\* m)** Allocates memory for a new Matrix structure and copies the data from the given Matrix structure m.
