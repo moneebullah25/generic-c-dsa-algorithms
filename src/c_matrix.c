@@ -1062,6 +1062,86 @@ Matrix* MatrixBroadcastRowsAndColumns(Matrix *m, unsigned int row, unsigned int 
 	return matrix;
 }
 
+Matrix* MatrixRowStack(Matrix *m1, Matrix *m2)
+{
+	if (m1 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m1 passed\n");
+		return false;
+	}
+
+	if (m2 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m2 passed\n");
+		return false;
+	}
+
+	if (m1->num_cols != m2->num_cols)
+	{
+		fprintf(stderr, "Can't stack rows m1->num_cols != m2->num_cols %f!=%f\n", m1->num_cols, m2->num_cols);
+		return NULL;
+	}
+
+	Matrix *matrix = MatrixEmpty(m1->num_rows + m2->num_rows, m1->num_cols);
+	for (int i = 0; i < m1->num_rows; i++)
+	{
+		for (int j = 0; j < m1->num_cols; j++)
+		{
+			matrix->data[i][j] = m1->data[i][j];
+		}
+	}
+
+	for (int i = 0; i < m2->num_rows; i++)
+	{
+		for (int j = 0; j < m2->num_cols; j++)
+		{
+			matrix->data[m1->num_rows + i][j] = m2->data[i][j];
+		}
+	}
+
+	return matrix;
+}
+
+Matrix* MatrixColumnStack(Matrix *m1, Matrix *m2)
+{
+	if (m1 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m1 passed\n");
+		return false;
+	}
+
+	if (m2 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m2 passed\n");
+		return false;
+	}
+
+	if (m1->num_rows != m2->num_rows)
+	{
+		fprintf(stderr, "Can't stack columns m1->num_cols != m2->num_cols %f!=%f\n", m1->num_cols, m2->num_cols);
+		return NULL;
+	}
+
+	Matrix *matrix = MatrixEmpty(m1->num_rows, m1->num_cols + m2->num_cols);
+	for (int i = 0; i < m1->num_rows; i++)
+	{
+		for (int j = 0; j < m1->num_cols; j++)
+		{
+			matrix->data[i][j] = m1->data[i][j];
+		}
+	}
+
+	for (int i = 0; i < m2->num_rows; i++)
+	{
+		for (int j = 0; j < m2->num_cols; j++)
+		{
+			matrix->data[i][m1->num_cols + j] = m2->data[i][j];
+		}
+	}
+
+	return matrix;
+}
+
 /*Matrix Operatons */
 Matrix* MatrixAdd(Matrix *m1, Matrix *m2)
 {

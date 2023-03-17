@@ -286,7 +286,7 @@ Matrix* MatrixEyeLike(Matrix* m, int k);
  * - start should be less than stop
  * - step should not be zero and must be positive
 **/
-Matrix MatrixARange(double start, double stop, double step);
+Matrix* MatrixARange(double start, double stop, double step);
 
 /**
  * Returns a pointer to a Matrix containing evenly spaced values within a given interval, with a given number of samples.
@@ -300,7 +300,7 @@ Matrix MatrixARange(double start, double stop, double step);
  * - start should be less than stop
  * - n should not be less than 2
 **/
-Matrix MatrixLinearSpace(double start, double stop, unsigned int n);
+Matrix* MatrixLinearSpace(double start, double stop, unsigned int n);
 
 /**
  * Returns a pointer to a Matrix containing evenly spaced values within a given interval, with a given number of samples, in logarithmic space.
@@ -314,7 +314,7 @@ Matrix MatrixLinearSpace(double start, double stop, unsigned int n);
  * - start should be less than stop
  * - n should not be less than 2
 **/
-Matrix MatrixLogSpace(double start, double stop, unsigned int n);
+Matrix* MatrixLogSpace(double start, double stop, unsigned int n);
 
 /**
  * Returns a pointer to a Matrix containing values within a given interval, with a geometric spacing.
@@ -328,7 +328,7 @@ Matrix MatrixLogSpace(double start, double stop, unsigned int n);
  * - start should be less than stop
  * - n should not be less than 2
 **/
-Matrix MatrixGeometrySpace(double start, double stop, unsigned int n);
+Matrix* MatrixGeometrySpace(double start, double stop, unsigned int n);
 
 /**
  * Function that creates and returns a new matrix from a given array of values.
@@ -702,6 +702,34 @@ Matrix* MatrixBroadcastColumns(Matrix* m, unsigned int col);
  * @return Pointer to the matrix with the specified row broadcasted to all other rows.
 **/
 Matrix* MatrixBroadcastRowsAndColumns(Matrix* m, unsigned int row, unsigned int col);
+
+/**
+ * Stack two matrices row-wise (vertically) and return a new matrix.
+ * This function assumes that both matrices have the same number of columns.
+ * Time complexity: O(mn), where m and n are the number of rows and columns respectively in the matrices.
+ * Space complexity: O(mn)
+ * Requirements:
+ * - m1 and m2 pointers should not be nullptr
+ * - m1 and m2 should have the same number of columns
+ * @param m1 Pointer to the first matrix.
+ * @param m2 Pointer to the second matrix.
+ * @return Pointer to the matrix obtained by stacking the rows of the input matrices.
+**/
+Matrix* MatrixRowStack(Matrix* m1, Matrix* m2);
+
+/**
+ * Stack two matrices column-wise (horizontally) and return a new matrix.
+ * This function assumes that both matrices have the same number of rows.
+ * Time complexity: O(mn), where m and n are the number of rows and columns respectively in the matrices.
+ * Space complexity: O(mn)
+ * Requirements:
+ * - m1 and m2 pointers should not be nullptr
+ * - m1 and m2 should have the same number of rows
+ * @param m1 Pointer to the first matrix.
+ * @param m2 Pointer to the second matrix.
+ * @return Pointer to the matrix obtained by stacking the columns of the input matrices.
+**/
+Matrix* MatrixColumnStack(Matrix* m1, Matrix* m2);
 
 /* Matrix Operatons */
 /**
