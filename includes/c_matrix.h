@@ -27,6 +27,33 @@ typedef struct {
 }Matrix;
 
 /* Matrix Allocation */
+
+
+/**
+ * Function that creates and returns a new empty matrix with given number of rows and columns and all values are remains uninitialized.
+ * If either the number of rows or columns is zero, the function returns NULL and prints an error message.
+ * @param num_rows the number of rows in the matrix
+ * @param num_cols the number of columns in the matrix
+ * @return a pointer to the newly created matrix, or NULL if an error occurs
+ * Requirements:
+ * - num_rows and num_cols should be positive values
+ * Time complexity: O(n*m), where n is the number of rows and m is the number of columns
+ * Space complexity: O(n*m), where n is the number of rows and m is the number of columns
+**/
+Matrix* MatrixEmpty(unsigned int num_rows, unsigned int num_cols);
+
+/**
+ * Function that creates and returns a new empty matrix with the same number of rows and columns as the given matrix and all values are remains uninitialized.
+ * If either the number of rows or columns of the given matrix is zero, the function returns NULL and prints an error message.
+ * @param m the matrix to be emulated
+ * @return a pointer to the newly created matrix, or NULL if an error occurs
+ * Requirements:
+ * - the given matrix should not be NULL
+ * Time complexity: O(n*m), where n is the number of rows and m is the number of columns of the given matrix
+ * Space complexity: O(n*m), where n is the number of rows and m is the number of columns of the given matrix
+**/
+Matrix* MatrixEmptyLike(Matrix* m);
+
 /**
  * Function that creates and returns a new matrix with given number of rows and columns and all values set to 0.
  * @param num_rows number of rows in the new matrix
@@ -38,6 +65,18 @@ typedef struct {
  * Space complexity: O(num_rows * num_cols)
 **/
 Matrix* MatrixNew(unsigned int num_rows, unsigned int num_cols);
+
+/**
+ * Function that creates and returns a new empty matrix with the same number of rows and columns as the given matrix and all values set to 0.
+ * If either the number of rows or columns of the given matrix is zero, the function returns NULL and prints an error message.
+ * @param m the matrix to be emulated
+ * @return a pointer to the newly created matrix, or NULL if an error occurs
+ * Requirements:
+ * - the given matrix should not be NULL
+ * Time complexity: O(n*m), where n is the number of rows and m is the number of columns of the given matrix
+ * Space complexity: O(n*m), where n is the number of rows and m is the number of columns of the given matrix
+**/
+Matrix* MatrixNewLike(Matrix* m);
 
 /**
  * Function that creates and returns a new matrix with given number of rows and columns and all values set randomly within a specified range.
@@ -54,6 +93,17 @@ Matrix* MatrixNew(unsigned int num_rows, unsigned int num_cols);
 Matrix* MatrixRandom(unsigned int num_rows, unsigned int num_cols, double min, double max);
 
 /**
+ * Function that creates and returns a new matrix with given number of rows and columns as given matrix and all values set randomly within a specified range.
+ * @param m the matrix to be emulated
+ * @return pointer to the newly created matrix
+ * Requirements:
+ * - the given matrix should not be NULL
+ * Time complexity: O(num_rows * num_cols)
+ * Space complexity: O(num_rows * num_cols)
+**/
+Matrix* MatrixRandomLike(Matrix* m, double min, double max);
+
+/**
  * Function that creates and returns a new square matrix with given size and all values set to 0.
  * @param size number of rows and columns in the new matrix
  * @return pointer to the newly created square matrix
@@ -63,6 +113,17 @@ Matrix* MatrixRandom(unsigned int num_rows, unsigned int num_cols, double min, d
  * Space complexity: O(size^2)
 **/
 Matrix* MatrixSquare(unsigned int size);
+
+/**
+ * Function that creates and returns a new square matrix with size as given matrix and all values set to 0.
+ * @param m the matrix to be emulated
+ * @return pointer to the newly created square matrix
+ * Requirements:
+ * - the given matrix should not be NULL
+ * Time complexity: O(size^2)
+ * Space complexity: O(size^2)
+**/
+Matrix* MatrixSquareLike(Matrix* m);
 
 /**
  * Function that creates and returns a new square matrix with given size and all values set randomly within a specified range.
@@ -78,6 +139,19 @@ Matrix* MatrixSquare(unsigned int size);
 Matrix* MatrixSquareRandom(unsigned int size, double min, double max);
 
 /**
+ * Function that creates and returns a new square matrix with size as given matrix and all values set randomly within a specified range.
+ * @param m the matrix to be emulated
+ * @param min minimum value for the randomly generated values
+ * @param max maximum value for the randomly generated values
+ * @return pointer to the newly created square matrix
+ * Requirements:
+ * - the given matrix should not be NULL
+ * Time complexity: O(size^2)
+ * Space complexity: O(size^2)
+**/
+Matrix* MatrixSquareRandomLike(Matrix* m, double min, double max);
+
+/**
  * Function that creates and returns a new matrix with given number of rows and columns and all values set to 0.
  * @param num_rows number of rows in the new matrix
  * @param num_cols number of columns in the new matrix
@@ -88,6 +162,17 @@ Matrix* MatrixSquareRandom(unsigned int size, double min, double max);
  * Space complexity: O(num_rows * num_cols)
 **/
 Matrix* MatrixZero(unsigned int num_rows, unsigned int num_cols);
+
+/**
+ * Function that creates and returns a new matrix with rows and columns as given matrix and all values set to 0.
+ * @param m the matrix to be emulated
+ * @return pointer to the newly created matrix
+ * Requirements:
+ * - the given matrix should not be NULL
+ * Time complexity: O(num_rows * num_cols)
+ * Space complexity: O(num_rows * num_cols)
+**/
+Matrix* MatrixZeroLike(Matrix* m);
 
 /**
  * Function that creates and returns a new matrix with given number of rows and columns and all values set to 1.
@@ -102,7 +187,18 @@ Matrix* MatrixZero(unsigned int num_rows, unsigned int num_cols);
 Matrix* MatrixOne(unsigned int num_rows, unsigned int num_cols);
 
 /**
- * Function that creates and returns a new matrix with all elements set to a given value.
+ * Function that creates and returns a new matrix with rows and columns as given matrix and all values set to 1.
+ * @param m the matrix to be emulated
+ * @return pointer to the newly created matrix
+ * Requirements:
+ * - the given matrix should not be NULL
+ * Time complexity: O(num_rows * num_cols)
+ * Space complexity: O(num_rows * num_cols)
+**/
+Matrix* MatrixOneLike(Matrix* m);
+
+/**
+ * Function that creates and returns a new matrix with given number of rows and columns and all elements set to a given value.
  * @param num_rows the number of rows in the matrix
  * @param num_cols the number of columns in the matrix
  * @param value the value to initialize all elements in the matrix with
@@ -114,6 +210,17 @@ Matrix* MatrixOne(unsigned int num_rows, unsigned int num_cols);
 Matrix* MatrixN(unsigned int num_rows, unsigned int num_cols, double value);
 
 /**
+ * Function that creates and returns a new matrix with dimensions same to passed matrix and all elements set to a given value.
+ * @param m the matrix to be emulated
+ * @param value the value to initialize all elements in the matrix with
+ * Requirements:
+ * - the given matrix should not be NULL
+ * Time complexity: O(mn), where m is the number of rows and n is the number of columns
+ * Space complexity: O(mn), where m is the number of rows and n is the number of columns
+**/
+Matrix* MatrixNLike(Matrix* m, double value);
+
+/**
  * Function that creates and returns a new identity matrix with given size.
  * An identity matrix is a square matrix with 1's on the main diagonal and 0's everywhere else.
  * @param size the size of the matrix (number of rows and columns)
@@ -123,6 +230,105 @@ Matrix* MatrixN(unsigned int num_rows, unsigned int num_cols, double value);
  * Space complexity: O(n^2), where n is the size of the matrix
 **/
 Matrix* MatrixIdentity(unsigned int size);
+
+/**
+ * Function that creates and returns a new identity matrix with dimensions same as given matrix.
+ * An identity matrix is a square matrix with 1's on the main diagonal and 0's everywhere else.
+ * @param m the matrix to be emulated
+ * Requirements:
+ * - the given matrix should not be NULL
+ * Time complexity: O(n^2), where n is the size of the matrix
+ * Space complexity: O(n^2), where n is the size of the matrix
+**/
+Matrix* MatrixIdentityLike(Matrix* m);
+
+/**
+ * Function that creates and returns a new matrix with ones on the diagonal and zeros elsewhere.
+ * The position of diagonal can be changed by specifying the value of k parameter.
+ * k = 0 refers to the main diagonal
+ * k > 0 refers to an upper diagonal
+ * k < 0 refers to a lower diagonal.
+ * @param size The number of rows and columns in the square matrix
+ * @param k The index of the diagonal
+ * Time complexity: O(n^2), where n is the size of the matrix.
+ * Space complexity: O(n^2), where n is the size of the matrix.
+ * Requirements:
+ * - size should be a positive value.
+ * @return A new Matrix instance representing the eye matrix.
+*/
+Matrix* MatrixEye(unsigned int size, int k);
+
+/**
+ * Function that creates and returns a new matrix with ones on the diagonal and zeros elsewhere.
+ * The position of diagonal can be changed by specifying the value of k parameter.
+ * k = 0 refers to the main diagonal
+ * k > 0 refers to an upper diagonal
+ * k < 0 refers to a lower diagonal.
+ * @param m the matrix to be emulated
+ * @param k The index of the diagonal
+ * Time complexity: O(n^2), where n is the size of the matrix.
+ * Space complexity: O(n^2), where n is the size of the matrix.
+ * Requirements:
+ * - the given matrix should not be NULL
+ * @return A new Matrix instance representing the eye matrix.
+*/
+Matrix* MatrixEyeLike(Matrix* m, int k);
+
+/**
+ * Returns a pointer to a Matrix containing evenly spaced values within a given interval, with a given step size.
+ * @param start The starting value of the sequence.
+ * @param stop The end value of the sequence, not included in the result.
+ * @param step The spacing between the values.
+ * @return A pointer to a Matrix containing the evenly spaced values.
+ * Time complexity: O((stop-start)/step)
+ * Space complexity: O((stop-start)/step)
+ * Requirements:
+ * - start should be less than stop
+ * - step should not be zero and must be positive
+**/
+Matrix MatrixARange(double start, double stop, double step);
+
+/**
+ * Returns a pointer to a Matrix containing evenly spaced values within a given interval, with a given number of samples.
+ * @param start The starting value of the sequence.
+ * @param stop The end value of the sequence, not included in the result.
+ * @param n The number of samples to generate.
+ * @return A pointer to a Matrix containing the evenly spaced values.
+ * Time complexity: O(n)
+ * Space complexity: O(n)
+ * Requirements:
+ * - start should be less than stop
+ * - n should not be less than 2
+**/
+Matrix MatrixLinearSpace(double start, double stop, unsigned int n);
+
+/**
+ * Returns a pointer to a Matrix containing evenly spaced values within a given interval, with a given number of samples, in logarithmic space.
+ * @param start The starting value of the sequence.
+ * @param stop The end value of the sequence, not included in the result.
+ * @param n The number of samples to generate.
+ * @return A pointer to a Matrix containing the evenly spaced values.
+ * Time complexity: O(n)
+ * Space complexity: O(n)
+ * Requirements:
+ * - start should be less than stop
+ * - n should not be less than 2
+**/
+Matrix MatrixLogSpace(double start, double stop, unsigned int n);
+
+/**
+ * Returns a pointer to a Matrix containing values within a given interval, with a geometric spacing.
+ * @param start The starting value of the sequence.
+ * @param stop The end value of the sequence, not included in the result.
+ * @param n The number of samples to generate.
+ * @return A pointer to a Matrix containing the values with geometric spacing.
+ * Time complexity: O(n)
+ * Space complexity: O(n)
+ * Requirements:
+ * - start should be less than stop
+ * - n should not be less than 2
+**/
+Matrix MatrixGeometrySpace(double start, double stop, unsigned int n);
 
 /**
  * Function that creates and returns a new matrix from a given array of values.
