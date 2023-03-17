@@ -55,11 +55,11 @@ This project provides a collection of data structures and algorithms implemented
 
 The project is designed to be flexible and user-friendly. It comes with a set of comparison and free functions for the supported data types which are declared and defined in the c_helper file. However, users are encouraged to use their own comparison and free functions if they wish to use the algorithms with other data types. If the user chooses to use the provided data types, they can simply use the built-in comparison and free functions and pass the pointer of their own comparison and free functions in the initialization of the data structure.
 
-The data structures currently supported by the project include Stack, Queue, Vector, Hash Maps, Matrix, Linked List and some basic searching and sorting functions. Each data structure is implemented with a set of generic functions that perform standard operations such as insertion, deletion, traversal and searching.
+The data structures currently supported by the project include Stack, Queue, Vector, Hash Maps, Matrix, Linked List, Tree, Avl Tree and some basic searching and sorting functions. Each data structure is implemented with a set of generic functions that perform standard operations such as insertion, deletion, traversal and searching.
 
 The project also provides a set of efficient algorithms for sorting and searching. The sorting algorithms include Bubble Sort, Selection Sort, Insertion Sort, Quick Sort, Merge Sort and Heap Sort. The searching algorithms include Linear Search and Binary Search.
 
-This project has been thoroughly tested with the supported data types to ensure that it is reliable and efficient. We are committed to providing a high-quality product that meets the needs of our users. We welcome your feedback and suggestions for future improvements. 
+This project has been thoroughly tested with the supported data types to ensure that it is reliable and efficient.
 
 # **Usuage**
 ## **Compiling the project**
