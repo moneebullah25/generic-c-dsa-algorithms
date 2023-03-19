@@ -157,9 +157,9 @@ struct TreeBase {
  * Time complexity: O(1)
  * Space complexity: O(1)
 **/
-void TreeNew_(TreeBase t, unsigned int elemsize, 
-int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
-void(FreeFunc)(void elems));
+void TreeNew_(TreeBase* t, unsigned int elemsize,
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
+	void(*FreeFunc)(void* elems));
 
 /**
  * Function that inserts a new node with the specified data into the binary tree.
@@ -172,7 +172,7 @@ void(FreeFunc)(void elems));
  * Time complexity: O(log n)
  * Space complexity: O(1)
 **/
-TreeBase TreeInsert_(TreeBase t, void* data);
+TreeBase* TreeInsert_(TreeBase* t, void* data);
 
 /**
  * Function that checks if the binary tree contains a node with the specified data.
@@ -184,7 +184,7 @@ TreeBase TreeInsert_(TreeBase t, void* data);
  * Time complexity: O(log n)
  * Space complexity: O(1)
 **/
-bool TreeContains_(TreeBase t, void data);
+bool TreeContains_(TreeBase* t, void* data);
 
 /**
  * Function that removes the node with the specified data from the binary tree.
@@ -197,7 +197,7 @@ bool TreeContains_(TreeBase t, void data);
  * Time complexity: O(log n)
  * Space complexity: O(1)
 **/
-TreeBase TreeRemove_(TreeBase t, void* data);
+TreeBase* TreeRemove_(TreeBase* t, void* data);
 
 /**
  * Function that clears the binary tree, removing all nodes from it and freeing the memory.
@@ -207,7 +207,7 @@ TreeBase TreeRemove_(TreeBase t, void* data);
  * Time complexity: O(n)
  * Space complexity: O(1)
 **/
-void TreeClear_(TreeBase t);
+void TreeClear_(TreeBase* t);
 
 /**
  * Function that deletes the binary tree, freeing the memory occupied by its nodes.
@@ -217,7 +217,7 @@ void TreeClear_(TreeBase t);
  * Time complexity: O(n)
  * Space complexity: O(1)
 **/
-void TreeDelete_(TreeBase t);
+void TreeDelete_(TreeBase* t);
 
 /**
  * Function that returns the number of nodes in the binary tree.
@@ -228,7 +228,7 @@ void TreeDelete_(TreeBase t);
  * Time complexity: O(n)
  * Space complexity: O(1)
 **/
-unsigned int TreeSize_(TreeBase t);
+unsigned int TreeSize_(TreeBase* t);
 
 /**
  * Function that checks if the binary tree is empty.
@@ -303,7 +303,7 @@ void TreePostOrder_(TreeBase* t, const char *data_format);
  * Time complexity:
  * Depends on the operations performed on the binary tree.
 **/
-typedef TreeT(void) Tree;
+typedef TreeT(void*) Tree;
 
 /**
  * Define a binary tree of integers.
@@ -338,7 +338,7 @@ typedef TreeT(char) TreeChar;
  * Time complexity:
  * Depends on the operations performed on the binary tree.
 **/
-typedef TreeT(char) TreeString;
+typedef TreeT(char*) TreeString;
 
 #ifdef __cplusplus
 }

@@ -144,8 +144,7 @@ bool AvlTreeContains_(AvlTreeBase* t, void *data)
             temp = temp->right;
         }
     }
-    if (temp != NULL)
-        return true;
+    if (temp) return true;
 	return false;
 }
 
@@ -184,7 +183,7 @@ AvlTreeBase* AvlTreeRemove_(AvlTreeBase* t, void *data)
         else
         {
             // Node has two children
-            AvlTreeBase* temp = AvlTreeMin(t->right);
+            AvlTreeBase* temp = AvlTreeMin_(t->right);
             MemoryCopy(t->data, temp->data, t->elemsize);
             t->right = AvlTreeRemove_(t->right, temp->data);
         }

@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void TreeNew_(TreeBase *t, unsigned int elemsize,
-              int (*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
-              void (*FreeFunc)(void *elems))
+void TreeNew_(TreeBase* t, unsigned int elemsize,
+	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
+	void(*FreeFunc)(void* elems))
 {
     ASSERT(t && elemsize);        
     t->data = NULL;
@@ -17,50 +17,46 @@ void TreeNew_(TreeBase *t, unsigned int elemsize,
     t->FreeFunc = FreeFunc;
 }
 
-TreeBase *TreeInsert_(TreeBase *t, void *data)
+TreeBase* TreeInsert_(TreeBase* t, void* data)
 {
-    ASSERT(t && data);
-    TreeBase *temp = t;
-    while (temp != NULL)
+    if (t == NULL)
     {
-        if (t->DataCmp(temp->data, data, t->elemsize) < 0)
-        {
-            temp = temp->left;
-        }
-        else if (t->DataCmp(temp->data, data, t->elemsize) >= 0)
-        {
-            temp = temp->right;
-        }
+        t = (TreeBase*)malloc(sizeof(TreeBase));
+        t->data = malloc(t->elemsize);
+        MemoryCopy(t->data, data, t->elemsize);
+        t->logiclen = 1;
+        t->left = NULL;
+        t->right = NULL;
     }
-	temp->data = malloc(t->elemsize);
-    MemoryCopy(temp->data, data, t->elemsize);
-    t->logiclen++;
-    return temp;
+    else
+    {
+        int cmp = t->DataCmp(t->data, data, t->elemsize);
+        if (cmp < 0)
+        {
+            t->left = TreeInsert_(t->left, data);
+        }
+        else if (cmp >= 0)
+        {
+            t->right = TreeInsert_(t->right, data);
+        }
+        t->logiclen = TreeSize_(t->left) + TreeSize_(t->right) + 1;
+    }
+    return t;
 }
 
-bool TreeContains_(TreeBase *t, void *data)
-{
+
+bool TreeContains_(TreeBase* t, void* data) {
     ASSERT(t && data);
-    TreeBase *temp = t;
-    while (temp != NULL)
-    {
-        if (t->DataCmp(temp->data, data, t->elemsize) == 0)
-        {
-            break;
-        }
-        else if (t->DataCmp(temp->data, data, t->elemsize) < 0)
-        {
-            temp = temp->left;
-        }
-        else if (t->DataCmp(temp->data, data, t->elemsize))
-        {
-            temp = temp->right;
-        }
+    TreeBase* temp = t->data;
+    while (temp != NULL) {
+        int cmp = t->DataCmp(temp->data, data, t->elemsize);
+        if (cmp == 0) return true;
+        else if (cmp < 0) temp = temp->left;
+        else temp = temp->right;
     }
-    if (temp != NULL)
-        return true;
-	return false;
+    return false;
 }
+
 
 TreeBase *TreeRemove_(TreeBase *t, void *data)
 {
@@ -135,7 +131,7 @@ TreeBase *TreeRemove_(TreeBase *t, void *data)
     else
     {
         // Node has two children
-        TreeBase *successor = TreeMin(curr->right);
+        TreeBase *successor = TreeMin_(curr->right);
         curr->data = successor->data;
         curr->right = TreeRemove_(curr->right, successor->data);
     }

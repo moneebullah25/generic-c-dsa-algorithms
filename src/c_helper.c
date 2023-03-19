@@ -51,6 +51,11 @@ void *MemoryCopy(void *dest, const void *src, unsigned int nbytes) {
 	return memcpy(dest, src, nbytes);
 }
 
+void* MemorySet(void* dest, int value, unsigned int nbytes)
+{
+	return memset(dest, value, nbytes);
+}
+
 void StringCopy(void *dest, const void *src, unsigned int nbytes) {
 	*(char **)dest = strdup(*(char **)src);
 }

@@ -395,7 +395,7 @@ void AvlTreePostOrder_(AvlTreeBase* t, const char *data_format);
  * Time complexity:
  * Depends on the operations performed on the AVL tree.
 **/
-typedef AvlTreeT(void) AvlTree;
+typedef AvlTreeT(void*) AvlTree;
 
 /**
  * Define an AVL tree that stores integers.
@@ -430,7 +430,7 @@ typedef AvlTreeT(char) AvlTreeChar;
  * Time complexity:
  * Depends on the operations performed on the AVL tree.
 **/
-typedef AvlTreeT(char) AvlTreeString;
+typedef AvlTreeT(char*) AvlTreeString;
 
 #ifdef __cplusplus
 }

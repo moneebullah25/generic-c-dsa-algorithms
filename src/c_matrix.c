@@ -5,7 +5,7 @@
 #include <string.h>
 #include <math.h>
 
-Matrix* MatrixEmpty(unsigned int num_rows, unsigned int num_cols)
+Matrix *MatrixEmpty(unsigned int num_rows, unsigned int num_cols)
 {
 	if (num_rows == 0)
 	{
@@ -23,27 +23,27 @@ Matrix* MatrixEmpty(unsigned int num_rows, unsigned int num_cols)
 	matrix->num_rows = num_rows;
 	matrix->num_cols = num_cols;
 	matrix->is_square = (num_rows == num_cols) ? true : false;
-	matrix->data = malloc(matrix->num_rows* sizeof(*matrix->data));
+	matrix->data = malloc(matrix->num_rows * sizeof(*matrix->data));
 	for (unsigned int r = 0; r < matrix->num_rows; r++)
 	{
-		matrix->data[r] = malloc(matrix->num_cols* sizeof(**matrix->data));
+		matrix->data[r] = malloc(matrix->num_cols * sizeof(**matrix->data));
 	}
 
 	return matrix;
 }
 
-Matrix* MatrixEmptyLike(Matrix *m)
+Matrix *MatrixEmptyLike(Matrix *m)
 {
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
 	}
 
-	Matrix *marix = MatrixEmpty(m->num_rows, m->num_cols);
+	Matrix *matrix = MatrixEmpty(m->num_rows, m->num_cols);
 	return matrix;
 }
 
-Matrix* MatrixNew(unsigned int num_rows, unsigned int num_cols)
+Matrix *MatrixNew(unsigned int num_rows, unsigned int num_cols)
 {
 	if (num_rows == 0)
 	{
@@ -70,7 +70,7 @@ Matrix* MatrixNew(unsigned int num_rows, unsigned int num_cols)
 	return matrix;
 }
 
-Matrix* MatrixNewLike(Matrix *m)
+Matrix *MatrixNewLike(Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -81,21 +81,21 @@ Matrix* MatrixNewLike(Matrix *m)
 	return matrix;
 }
 
-Matrix* MatrixRandom(unsigned int num_rows, unsigned int num_cols, double min, double max)
+Matrix *MatrixRandom(unsigned int num_rows, unsigned int num_cols, double min, double max)
 {
 	Matrix *matrix = MatrixEmpty(num_rows, num_cols);
 	for (unsigned int r = 0; r < num_rows; r++)
 	{
 		for (unsigned int c = 0; c < num_cols; c++)
 		{
-			matrix->data[r][c] = min + ((float) rand() / (float)(0x7fff)) *(max - min);
+			matrix->data[r][c] = min + ((float)rand() / (float)(0x7fff)) * (max - min);
 		}
 	}
 
 	return matrix;
 }
 
-Matrix* MatrixRandom(Matrix *m, double min, double max)
+Matrix *MatrixRandomLike(Matrix *m, double min, double max)
 {
 	if (m == NULL)
 	{
@@ -106,13 +106,13 @@ Matrix* MatrixRandom(Matrix *m, double min, double max)
 	return matrix;
 }
 
-Matrix* MatrixSquare(unsigned int size)
+Matrix *MatrixSquare(unsigned int size)
 {
 	Matrix *matrix = MatrixNew(size, size);
 	return matrix;
 }
 
-Matrix* MatrixSquareLike(Matrix *m)
+Matrix *MatrixSquareLike(Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -129,13 +129,13 @@ Matrix* MatrixSquareLike(Matrix *m)
 	return matrix;
 }
 
-Matrix* MatrixSquareRandom(unsigned int size, double min, double max)
+Matrix *MatrixSquareRandom(unsigned int size, double min, double max)
 {
 	Matrix *matrix = MatrixRandom(size, size, min, max);
 	return matrix;
 }
 
-Matrix* MatrixSquareRandomLike(Matrix *m, double min, double max)
+Matrix *MatrixSquareRandomLike(Matrix *m, double min, double max)
 {
 	if (m == NULL)
 	{
@@ -152,24 +152,24 @@ Matrix* MatrixSquareRandomLike(Matrix *m, double min, double max)
 	return matrix;
 }
 
-Matrix* MatrixZero(unsigned int num_rows, unsigned int num_cols)
+Matrix *MatrixZero(unsigned int num_rows, unsigned int num_cols)
 {
 	Matrix *matrix = MatrixNew(num_rows, num_cols);
 	return matrix;
 }
 
-Matrix* MatrixZeroLike(Matrix *m)
+Matrix *MatrixZeroLike(Matrix *m)
 {
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
 	}
 
-	Matrix *matrix = MatrixZero(num_rows, num_cols);
+	Matrix *matrix = MatrixZero(m->num_rows, m->num_cols);
 	return matrix;
 }
 
-Matrix* MatrixOne(unsigned int num_rows, unsigned int num_cols)
+Matrix *MatrixOne(unsigned int num_rows, unsigned int num_cols)
 {
 	Matrix *matrix = MatrixEmpty(num_rows, num_cols);
 	for (unsigned int r = 0; r < num_rows; r++)
@@ -183,7 +183,7 @@ Matrix* MatrixOne(unsigned int num_rows, unsigned int num_cols)
 	return matrix;
 }
 
-Matrix* MatrixOneLike(Matrix *m)
+Matrix *MatrixOneLike(Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -194,7 +194,7 @@ Matrix* MatrixOneLike(Matrix *m)
 	return matrix;
 }
 
-Matrix* MatrixN(unsigned int num_rows, unsigned int num_cols, double value)
+Matrix *MatrixN(unsigned int num_rows, unsigned int num_cols, double value)
 {
 	Matrix *matrix = MatrixNew(num_rows, num_cols);
 	for (unsigned int r = 0; r < num_rows; r++)
@@ -208,7 +208,7 @@ Matrix* MatrixN(unsigned int num_rows, unsigned int num_cols, double value)
 	return matrix;
 }
 
-Matrix* MatrixNLike(Matrix *m, double value)
+Matrix *MatrixNLike(Matrix *m, double value)
 {
 	if (m == NULL)
 	{
@@ -219,7 +219,7 @@ Matrix* MatrixNLike(Matrix *m, double value)
 	return matrix;
 }
 
-Matrix* MatrixIdentity(unsigned int size)
+Matrix *MatrixIdentity(unsigned int size)
 {
 	Matrix *matrix = MatrixNew(size, size);
 	for (unsigned int i = 0; i < size; i++)
@@ -227,7 +227,7 @@ Matrix* MatrixIdentity(unsigned int size)
 	return matrix;
 }
 
-Matrix* MatrixIdentityLike(Matrix *m)
+Matrix *MatrixIdentityLike(Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -244,7 +244,7 @@ Matrix* MatrixIdentityLike(Matrix *m)
 	return matrix;
 }
 
-Matrix* MatrixEye(unsigned int size, int k)
+Matrix *MatrixEye(unsigned int size, int k)
 {
 	if (k >= size)
 	{
@@ -272,7 +272,7 @@ Matrix* MatrixEye(unsigned int size, int k)
 	return m;
 }
 
-Matrix* MatrixEyeLike(Matrix *m, int k)
+Matrix *MatrixEyeLike(Matrix *m, int k)
 {
 	if (m == NULL)
 	{
@@ -286,14 +286,14 @@ Matrix* MatrixEyeLike(Matrix *m, int k)
 	}
 
 	Matrix *matrix = MatrixEye(m->num_rows, k);
-	returm matrix;
+	return matrix;
 }
 
-Matrix* MatrixARange(double start, double stop, double step)
+Matrix *MatrixARange(double start, double stop, double step)
 {
 	if (start >= stop)
 	{
-		fprintf(stderr, "Invalid 'start=%u' passed >= %u\n", start, stop);
+		fprintf(stderr, "Invalid 'start=%f' passed >= %f\n", start, stop);
 		return NULL;
 	}
 
@@ -310,7 +310,7 @@ Matrix* MatrixARange(double start, double stop, double step)
 	}
 
 	int num_elements = (int)((stop - start) / step);
-	if ((num_elements <= 0) || ((num_elements *step) + start > stop))
+	if ((num_elements <= 0) || ((num_elements * step) + start > stop))
 	{
 		fprintf(stderr, "Invalid values for 'start=%f', 'stop=%f', 'step=%f'\n", start, stop, step);
 		return NULL;
@@ -328,11 +328,11 @@ Matrix* MatrixARange(double start, double stop, double step)
 	return matrix;
 }
 
-Matrix* MatrixLinearSpace(double start, double stop, unsigned int n)
+Matrix *MatrixLinearSpace(double start, double stop, unsigned int n)
 {
 	if (start >= stop)
 	{
-		fprintf(stderr, "Invalid 'start=%u' passed >= %u\n", start, stop);
+		fprintf(stderr, "Invalid 'start=%f' passed >= %f\n", start, stop);
 		return NULL;
 	}
 
@@ -346,17 +346,17 @@ Matrix* MatrixLinearSpace(double start, double stop, unsigned int n)
 	double step = (stop - start) / (n - 1);
 	for (unsigned int i = 0; i < n; i++)
 	{
-		m[0][i] = start + ((double) i *step);
+		m->data[0][i] = start + ((double)i * step);
 	}
 
 	return m;
 }
 
-Matrix* MatrixLogSpace(double start, double stop, unsigned int n)
+Matrix *MatrixLogSpace(double start, double stop, unsigned int n)
 {
 	if (start >= stop)
 	{
-		fprintf(stderr, "Invalid 'start=%u' passed >= %u\n", start, stop);
+		fprintf(stderr, "Invalid 'start=%f' passed >= %f\n", start, stop);
 		return NULL;
 	}
 
@@ -378,11 +378,11 @@ Matrix* MatrixLogSpace(double start, double stop, unsigned int n)
 	return matrix;
 }
 
-Matrix* MatrixGeometrySpace(double start, double stop, unsigned int n)
+Matrix *MatrixGeometrySpace(double start, double stop, unsigned int n)
 {
 	if (start >= stop)
 	{
-		fprintf(stderr, "Invalid 'start=%u' passed >= %u\n", start, stop);
+		fprintf(stderr, "Invalid 'start=%f' passed >= %f\n", start, stop);
 		return NULL;
 	}
 
@@ -404,7 +404,7 @@ Matrix* MatrixGeometrySpace(double start, double stop, unsigned int n)
 	return matrix;
 }
 
-Matrix* MatrixFrom(unsigned int num_rows, unsigned int num_cols, unsigned int n_values, double *values)
+Matrix *MatrixFrom(unsigned int num_rows, unsigned int num_cols, unsigned int n_values, double *values)
 {
 	Matrix *matrix = MatrixNew(num_rows, num_cols);
 	unsigned int values_index;
@@ -412,7 +412,7 @@ Matrix* MatrixFrom(unsigned int num_rows, unsigned int num_cols, unsigned int n_
 	{
 		for (unsigned int c = 0; c < num_cols; c++)
 		{
-			values_index = r *num_cols + c;
+			values_index = r * num_cols + c;
 			matrix->data[r][c] = (values_index < n_values) ? values[values_index] : 0.;
 		}
 	}
@@ -420,7 +420,7 @@ Matrix* MatrixFrom(unsigned int num_rows, unsigned int num_cols, unsigned int n_
 	return matrix;
 }
 
-Matrix* MatrixFromFile(const char *file)
+Matrix *MatrixFromFile(const char *file)
 {
 	FILE *f = fopen(file, "r");
 	if (f == NULL)
@@ -445,7 +445,7 @@ Matrix* MatrixFromFile(const char *file)
 	return matrix;
 }
 
-Matrix* MatrixCopy(Matrix *m)
+Matrix *MatrixCopy(Matrix *m)
 {
 	Matrix *matrix = MatrixNew(m->num_rows, m->num_cols);
 	for (unsigned int r = 0; r < matrix->num_rows; r++)
@@ -463,7 +463,7 @@ Matrix* MatrixCopy(Matrix *m)
 bool IsMatrixEqualDim(Matrix *m1, Matrix *m2)
 {
 	return (m1->num_rows == m2->num_rows) &&
-		(m1->num_cols == m2->num_cols);
+		   (m1->num_cols == m2->num_cols);
 }
 
 void PrintMatrix(Matrix *m, const char *data_format)
@@ -471,7 +471,7 @@ void PrintMatrix(Matrix *m, const char *data_format)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	printf("%u %u\n", m->num_rows, m->num_cols);
@@ -525,7 +525,7 @@ double MatrixGet(Matrix *m, unsigned row, unsigned col)
 	return m->data[row][col];
 }
 
-Matrix* MatrixColumnGet(Matrix *m, unsigned int col)
+Matrix *MatrixColumnGet(Matrix *m, unsigned int col)
 {
 	if (m == NULL)
 	{
@@ -548,7 +548,7 @@ Matrix* MatrixColumnGet(Matrix *m, unsigned int col)
 	return matrix;
 }
 
-Matrix* MatrixRowGet(Matrix *m, unsigned int row)
+Matrix *MatrixRowGet(Matrix *m, unsigned int row)
 {
 	if (m == NULL)
 	{
@@ -576,7 +576,7 @@ void MatrixSet(Matrix *m, unsigned int row, unsigned int col, double value)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	if (row >= m->num_rows)
@@ -599,7 +599,7 @@ void MatrixAllSet(Matrix *m, double value)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	for (unsigned int r = 0; r < m->num_rows; r++)
@@ -616,7 +616,7 @@ void MatrixDiagonalSet(Matrix *m, double value)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	if (!m->is_square)
@@ -636,7 +636,7 @@ void MatrixRowMultiplyValue(Matrix *m, unsigned int row, double value)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	if (row >= m->num_rows)
@@ -656,7 +656,7 @@ void MatrixRowAddValue(Matrix *m, unsigned int row, double value)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	if (row >= m->num_rows)
@@ -676,7 +676,7 @@ void MatrixColumnMultiplyValue(Matrix *m, unsigned int col, double value)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	if (col >= m->num_cols)
@@ -696,7 +696,7 @@ void MatrixColumnAddValue(Matrix *m, unsigned int col, double value)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	if (col >= m->num_cols)
@@ -716,7 +716,7 @@ void MatrixRowMultiplyRow(Matrix *m, unsigned int where, unsigned int row, doubl
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	if (where >= m->num_rows)
@@ -733,7 +733,7 @@ void MatrixRowMultiplyRow(Matrix *m, unsigned int where, unsigned int row, doubl
 
 	for (unsigned int c = 0; c < m->num_cols; c++)
 	{
-		m->data[where][c] *= value *m->data[row][c];
+		m->data[where][c] *= value * m->data[row][c];
 	}
 }
 
@@ -742,7 +742,7 @@ void MatrixRowAddRow(Matrix *m, unsigned int where, unsigned int row, double val
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	if (where >= m->num_rows)
@@ -759,7 +759,7 @@ void MatrixRowAddRow(Matrix *m, unsigned int where, unsigned int row, double val
 
 	for (unsigned int c = 0; c < m->num_cols; c++)
 	{
-		m->data[where][c] += value *m->data[row][c];
+		m->data[where][c] += value * m->data[row][c];
 	}
 }
 
@@ -768,7 +768,7 @@ void MatrixColumnMultiplyColumn(Matrix *m, unsigned int where, unsigned int col,
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	if (where >= m->num_cols)
@@ -785,7 +785,7 @@ void MatrixColumnMultiplyColumn(Matrix *m, unsigned int where, unsigned int col,
 
 	for (unsigned int r = 0; r < m->num_rows; r++)
 	{
-		m->data[r][where] *= value *m->data[r][col];
+		m->data[r][where] *= value * m->data[r][col];
 	}
 }
 
@@ -794,7 +794,7 @@ void MatrixColumnAddValueColumn(Matrix *m, unsigned int where, unsigned int col,
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	if (where >= m->num_cols)
@@ -811,7 +811,7 @@ void MatrixColumnAddValueColumn(Matrix *m, unsigned int where, unsigned int col,
 
 	for (unsigned int r = 0; r < m->num_rows; r++)
 	{
-		m->data[r][where] += value *m->data[r][col];
+		m->data[r][where] += value * m->data[r][col];
 	}
 }
 
@@ -820,7 +820,7 @@ void MatrixWholeMultiply(Matrix *m, double value)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	for (unsigned int r = 0; r < m->num_rows; r++)
@@ -837,7 +837,7 @@ void MatrixWholeAdd(Matrix *m, double value)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	for (unsigned int r = 0; r < m->num_rows; r++)
@@ -849,12 +849,12 @@ void MatrixWholeAdd(Matrix *m, double value)
 	}
 }
 
-Matrix* MatrixRowRemove(Matrix *m, unsigned int row)
+Matrix *MatrixRowRemove(Matrix *m, unsigned int row)
 {
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (row >= m->num_rows)
@@ -880,12 +880,12 @@ Matrix* MatrixRowRemove(Matrix *m, unsigned int row)
 	return matrix;
 }
 
-Matrix* MatrixColumnRemove(Matrix *m, unsigned int col)
+Matrix *MatrixColumnRemove(Matrix *m, unsigned int col)
 {
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (col >= m->num_cols)
@@ -914,7 +914,7 @@ void MatrixRowSwap(Matrix *m, unsigned int row1, unsigned int row2)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	if (row1 >= m->num_rows)
@@ -941,7 +941,7 @@ void MatrixColumnSwap(Matrix *m, unsigned int col1, unsigned int col2)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	if (col1 >= m->num_cols)
@@ -967,12 +967,12 @@ void MatrixColumnSwap(Matrix *m, unsigned int col1, unsigned int col2)
 	}
 }
 
-Matrix* MatrixBroadcastRows(Matrix *m, unsigned int row)
+Matrix *MatrixBroadcastRows(Matrix *m, unsigned int row)
 {
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m->num_rows != 1)
@@ -1002,12 +1002,12 @@ Matrix* MatrixBroadcastRows(Matrix *m, unsigned int row)
 	return matrix;
 }
 
-Matrix* MatrixBroadcastColumns(Matrix *m, unsigned int col)
+Matrix *MatrixBroadcastColumns(Matrix *m, unsigned int col)
 {
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m->num_cols != 1)
@@ -1037,12 +1037,12 @@ Matrix* MatrixBroadcastColumns(Matrix *m, unsigned int col)
 	return matrix;
 }
 
-Matrix* MatrixBroadcastRowsAndColumns(Matrix *m, unsigned int row, unsigned int col)
+Matrix *MatrixBroadcastRowsAndColumns(Matrix *m, unsigned int row, unsigned int col)
 {
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m->num_rows != 1)
@@ -1062,23 +1062,23 @@ Matrix* MatrixBroadcastRowsAndColumns(Matrix *m, unsigned int row, unsigned int 
 	return matrix;
 }
 
-Matrix* MatrixRowStack(Matrix *m1, Matrix *m2)
+Matrix *MatrixRowStack(Matrix *m1, Matrix *m2)
 {
 	if (m1 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m1 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m2 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m2 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m1->num_cols != m2->num_cols)
 	{
-		fprintf(stderr, "Can't stack rows m1->num_cols != m2->num_cols %f!=%f\n", m1->num_cols, m2->num_cols);
+		fprintf(stderr, "Can't stack rows m1->num_cols!=m2->num_cols %u!=%u\n", m1->num_cols, m2->num_cols);
 		return NULL;
 	}
 
@@ -1102,23 +1102,23 @@ Matrix* MatrixRowStack(Matrix *m1, Matrix *m2)
 	return matrix;
 }
 
-Matrix* MatrixColumnStack(Matrix *m1, Matrix *m2)
+Matrix *MatrixColumnStack(Matrix *m1, Matrix *m2)
 {
 	if (m1 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m1 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m2 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m2 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m1->num_rows != m2->num_rows)
 	{
-		fprintf(stderr, "Can't stack columns m1->num_cols != m2->num_cols %f!=%f\n", m1->num_cols, m2->num_cols);
+		fprintf(stderr, "Can't stack columns m1->num_cols != m2->num_cols %u!=%u\n", m1->num_cols, m2->num_cols);
 		return NULL;
 	}
 
@@ -1143,24 +1143,24 @@ Matrix* MatrixColumnStack(Matrix *m1, Matrix *m2)
 }
 
 /*Matrix Operatons */
-Matrix* MatrixAdd(Matrix *m1, Matrix *m2)
+Matrix *MatrixAdd(Matrix *m1, Matrix *m2)
 {
 	if (m1 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m1 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m2 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m2 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (!IsMatrixEqualDim(m1, m2))
 	{
 		fprintf(stderr, "Matrix 'm1(%u, %u)' &'m2(%u, %u)' are not equivalent\n",
-			m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
+				m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
 		return NULL;
 	}
 
@@ -1176,24 +1176,24 @@ Matrix* MatrixAdd(Matrix *m1, Matrix *m2)
 	return matrix;
 }
 
-Matrix* MatrixSubtract(Matrix *m1, Matrix *m2)
+Matrix *MatrixSubtract(Matrix *m1, Matrix *m2)
 {
 	if (m1 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m1 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m2 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m2 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (!IsMatrixEqualDim(m1, m2))
 	{
 		fprintf(stderr, "Matrix 'm1(%u, %u)' &'m2(%u, %u)' are not equivalent\n",
-			m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
+				m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
 		return NULL;
 	}
 
@@ -1209,24 +1209,24 @@ Matrix* MatrixSubtract(Matrix *m1, Matrix *m2)
 	return matrix;
 }
 
-Matrix* MatrixMultiply(Matrix *m1, Matrix *m2)
+Matrix *MatrixMultiply(Matrix *m1, Matrix *m2)
 {
 	if (m1 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m1 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m2 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m2 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m1->num_cols != m2->num_rows)
 	{
 		fprintf(stderr, "Matrix 'm1->cols=%u' &'m2->rows=%u' are not equal; can't mulitply\n",
-			m1->num_cols, m2->num_rows);
+				m1->num_cols, m2->num_rows);
 		return NULL;
 	}
 
@@ -1237,7 +1237,7 @@ Matrix* MatrixMultiply(Matrix *m1, Matrix *m2)
 		{
 			for (unsigned int i = 0; i < m1->num_cols; i++)
 			{
-				matrix->data[r][c] += m1->data[r][i] *m2->data[i][c];
+				matrix->data[r][c] += m1->data[r][i] * m2->data[i][c];
 			}
 		}
 	}
@@ -1245,24 +1245,24 @@ Matrix* MatrixMultiply(Matrix *m1, Matrix *m2)
 	return matrix;
 }
 
-Matrix* MatrixElementWiseMultiply(Matrix *m1, Matrix *m2)
+Matrix *MatrixElementWiseMultiply(Matrix *m1, Matrix *m2)
 {
 	if (m1 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m1 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m2 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m2 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (!IsMatrixEqualDim(m1, m2))
 	{
 		fprintf(stderr, "Matrix 'm1(%u, %u)' &'m2(%u, %u)' are not equivalent\n",
-			m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
+				m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
 		return NULL;
 	}
 
@@ -1278,18 +1278,18 @@ Matrix* MatrixElementWiseMultiply(Matrix *m1, Matrix *m2)
 	return matrix;
 }
 
-Matrix* MatrixAddWithBroadcast(Matrix *m1, Matrix *m2)
+Matrix *MatrixAddWithBroadcast(Matrix *m1, Matrix *m2)
 {
 	if (m1 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m1 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m2 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m2 passed\n");
-		return false;
+		return NULL;
 	}
 
 	Matrix *matrix1 = MatrixCopy(m1);
@@ -1310,18 +1310,18 @@ Matrix* MatrixAddWithBroadcast(Matrix *m1, Matrix *m2)
 	return result;
 }
 
-Matrix* MatrixSubtractWithBroadcast(Matrix *m1, Matrix *m2)
+Matrix *MatrixSubtractWithBroadcast(Matrix *m1, Matrix *m2)
 {
 	if (m1 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m1 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m2 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m2 passed\n");
-		return false;
+		return NULL;
 	}
 
 	Matrix *matrix1 = MatrixCopy(m1);
@@ -1342,18 +1342,18 @@ Matrix* MatrixSubtractWithBroadcast(Matrix *m1, Matrix *m2)
 	return result;
 }
 
-Matrix* MatrixMultiplyWithBroadcast(Matrix *m1, Matrix *m2)
+Matrix *MatrixMultiplyWithBroadcast(Matrix *m1, Matrix *m2)
 {
 	if (m1 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m1 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m2 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m2 passed\n");
-		return false;
+		return NULL;
 	}
 
 	Matrix *matrix1 = MatrixCopy(m1);
@@ -1371,18 +1371,18 @@ Matrix* MatrixMultiplyWithBroadcast(Matrix *m1, Matrix *m2)
 	return result;
 }
 
-Matrix* MatrixElementWiseMultiplyWithBroadcast(Matrix *m1, Matrix *m2)
+Matrix *MatrixElementWiseMultiplyWithBroadcast(Matrix *m1, Matrix *m2)
 {
 	if (m1 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m1 passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (m2 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m2 passed\n");
-		return false;
+		return NULL;
 	}
 
 	Matrix *matrix1 = MatrixCopy(m1);
@@ -1408,7 +1408,7 @@ void MatrixTranspose(Matrix *m)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return;
 	}
 
 	for (unsigned int r = 0; r < m->num_rows; r++)
@@ -1427,13 +1427,13 @@ double MatrixTrace(Matrix *m)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return NAN;
 	}
 
 	if (!m->is_square)
 	{
 		fprintf(stderr, "'m' is not a square matrix\n");
-		return 0.;
+		return NAN;
 	}
 
 	double trace = 0;
@@ -1450,6 +1450,7 @@ double MatrixDeterminant(Matrix *m)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
+		return NAN;
 	}
 
 	if (m->num_rows != m->num_cols)
@@ -1465,7 +1466,7 @@ double MatrixDeterminant(Matrix *m)
 
 	if (m->num_rows == 2)
 	{
-		return (m->data[0][0] *m->data[1][1]) - (m->data[0][1] *m->data[1][0]);
+		return (m->data[0][0] * m->data[1][1]) - (m->data[0][1] * m->data[1][0]);
 	}
 
 	double det = 0.0;
@@ -1488,7 +1489,7 @@ double MatrixDeterminant(Matrix *m)
 			subRow++;
 		}
 
-		det += pow(-1, i) *m->data[0][i] *MatrixDeterminant(subMatrix);
+		det += pow(-1, i) * m->data[0][i] * MatrixDeterminant(subMatrix);
 		MatrixFree(subMatrix);
 	}
 
@@ -1497,11 +1498,6 @@ double MatrixDeterminant(Matrix *m)
 
 void MatrixRowEchelon(Matrix *m)
 {
-	if (m == NULL)
-	{
-		fprintf(stderr, "Invalid matrix passed\n");
-	}
-
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
@@ -1542,7 +1538,7 @@ void MatrixRowEchelon(Matrix *m)
 				double c = MatrixGet(m, i, lead);
 				for (unsigned int j = 0; j < m->num_cols; j++)
 				{
-					m->data[i][j] -= c *m->data[r][j];
+					m->data[i][j] -= c * m->data[r][j];
 				}
 			}
 		}
@@ -1587,7 +1583,7 @@ void MatrixReducedRowEchelon(Matrix *m)
 				value = MatrixGet(m, j, lead);
 				for (unsigned int c = 0; c < m->num_cols; c++)
 				{
-					m->data[j][c] -= value *m->data[r][c];
+					m->data[j][c] -= value * m->data[r][c];
 				}
 			}
 		}
@@ -1596,7 +1592,7 @@ void MatrixReducedRowEchelon(Matrix *m)
 	}
 }
 
-Matrix* MatrixRowEchelonGet(Matrix *m)
+Matrix *MatrixRowEchelonGet(Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -1639,7 +1635,7 @@ Matrix* MatrixRowEchelonGet(Matrix *m)
 				double c = MatrixGet(matrix, i, lead);
 				for (unsigned int j = 0; j < matrix->num_cols; j++)
 				{
-					matrix->data[i][j] -= c *matrix->data[r][j];
+					matrix->data[i][j] -= c * matrix->data[r][j];
 				}
 			}
 		}
@@ -1650,7 +1646,7 @@ Matrix* MatrixRowEchelonGet(Matrix *m)
 	return matrix;
 }
 
-Matrix* MatrixReducedRowEchelonGet(Matrix *m)
+Matrix *MatrixReducedRowEchelonGet(Matrix *m)
 {
 	if (m == NULL && IsMatrixInvertible(m) == false)
 	{
@@ -1687,7 +1683,7 @@ Matrix* MatrixReducedRowEchelonGet(Matrix *m)
 				value = MatrixGet(matrix, j, lead);
 				for (unsigned int c = 0; c < matrix->num_cols; c++)
 				{
-					matrix->data[j][c] -= value *matrix->data[r][c];
+					matrix->data[j][c] -= value * matrix->data[r][c];
 				}
 			}
 		}
@@ -1703,28 +1699,30 @@ double MatrixColumnL2Norm(Matrix *m, unsigned int col)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
+		return NAN;
 	}
 
 	if (col >= m->num_cols)
 	{
 		fprintf(stderr, "Invalid 'col=%u' passed >= %u\n", col, m->num_cols);
-		return 0.;
+		return NAN;
 	}
 
 	double doublesum = 0.0;
 	for (unsigned int r = 0; r < m->num_rows; r++)
 	{
-		doublesum += (m->data[r][col] *m->data[r][col]);
+		doublesum += (m->data[r][col] * m->data[r][col]);
 	}
 
 	return sqrt(doublesum);
 }
 
-Matrix* MatrixL2Norm(Matrix *m)
+Matrix *MatrixL2Norm(Matrix *m)
 {
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
+		return NULL;
 	}
 
 	Matrix *matrix = MatrixNew(1, m->num_cols);
@@ -1734,7 +1732,7 @@ Matrix* MatrixL2Norm(Matrix *m)
 		square_sum = 0.0;
 		for (unsigned int r = 0; r < m->num_rows; r++)
 		{
-			square_sum += m->data[r][c] *m->data[r][c];
+			square_sum += m->data[r][c] * m->data[r][c];
 		}
 
 		matrix->data[0][c] = sqrt(square_sum);
