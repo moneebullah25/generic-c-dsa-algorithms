@@ -17,20 +17,31 @@ extern "C"
 /**
  * A structure that represents the basic functionality of a binary tree node.
  * @param data A pointer to the data of the tree node
- * @param elemsize The size of an element
- * @param logiclen The number of elements stored in the node
  * @param left A pointer to the left child node
  * @param right A pointer to the right child node
+ * @param elemsize The size of an element
+**/
+typedef struct TreeNode TreeNode;
+typedef struct TreeNode {
+	void* data;
+	TreeNode* left;
+	TreeNode* right;
+	unsigned int elemsize;
+};
+
+/**
+ * A structure that represents the basic functionality of a binary tree.
+ * @param root A pointer to the base of the tree node
+ * @param elemsize The size of an each element
+ * @param logiclen The number of elements stored in the node
  * @param DataCmp A pointer to a function that compares two keys of the tree node
  * @param FreeFunc A pointer to a function that frees the memory allocated for the data of the node
 **/
 typedef struct TreeBase TreeBase;
 struct TreeBase {
-	void* data;
-	unsigned int elemsize;
+	TreeNode* root;
 	unsigned int logiclen;
-	TreeBase* left;
-	TreeBase* right;
+	unsigned int elemsize;
 	int(*DataCmp)(const void* key1, const void* key2, unsigned int keysize);
 	void(*FreeFunc)(void* elems);
 };
@@ -58,7 +69,8 @@ struct TreeBase {
  * @param data A pointer to the data to be inserted
 **/
 #define TreeInsert(t, data) \
-    TreeInsert_(&(t)->base, &(t)->data_)
+	((t)->data_ = data, \
+    TreeInsert_(&(t)->base, &(t)->data_))
 
 /**
  * A macro that checks if the tree contains a given data element.
@@ -66,7 +78,8 @@ struct TreeBase {
  * @param data A pointer to the data to be searched
 **/
 #define TreeContains(t, data) \
-    TreeContains_(&(t)->base, &(t)->data_)
+	((t)->data_ = data, \
+    TreeContains_(&(t)->base, &(t)->data_))
 
 /**
  * A macro that removes a data element from the tree.
@@ -74,7 +87,8 @@ struct TreeBase {
  * @param data A pointer to the data to be removed
 **/
 #define TreeRemove(t, data) \
-    TreeRemove_(&(t)->base, &(t)->data_)
+	((t)->data_ = data, \
+    TreeRemove_(&(t)->base, &(t)->data_))
 
 /**
  * A macro that clears the contents of the tree.
@@ -163,16 +177,16 @@ void TreeNew_(TreeBase* t, unsigned int elemsize,
 
 /**
  * Function that inserts a new node with the specified data into the binary tree.
- * If the binary tree already contains a node with the same data, the function does nothing.
+ * If the binary tree already contains a node with the same data, the function does nothing
  * @param t pointer to the binary tree
  * @param data pointer to the data to be inserted
- * @return pointer to the binary tree
+ * @return pointer to the tree node
  * Requirements:
  * - t pointer should not be nullptr
  * Time complexity: O(log n)
  * Space complexity: O(1)
 **/
-TreeBase* TreeInsert_(TreeBase* t, void* data);
+TreeNode* TreeInsert_(TreeBase* t, void* data);
 
 /**
  * Function that checks if the binary tree contains a node with the specified data.
@@ -191,13 +205,12 @@ bool TreeContains_(TreeBase* t, void* data);
  * If the binary tree does not contain a node with the specified data, the function does nothing.
  * @param t pointer to the binary tree
  * @param data pointer to the data to be removed
- * @return pointer to the binary tree
  * Requirements:
  * - t pointer should not be nullptr
  * Time complexity: O(log n)
  * Space complexity: O(1)
 **/
-TreeBase* TreeRemove_(TreeBase* t, void* data);
+void TreeRemove_(TreeBase* t, void* data);
 
 /**
  * Function that clears the binary tree, removing all nodes from it and freeing the memory.
@@ -249,7 +262,7 @@ bool TreeEmpty_(TreeBase* t);
  * Time complexity: O(h), where h is the height of the binary tree
  * Space complexity: O(1)
 **/
-TreeBase* TreeMin_(TreeBase* t);
+void* TreeMin_(TreeBase* t);
 
 /**
  * Function that returns a pointer to the node with the maximum data value in the binary tree.
@@ -260,7 +273,7 @@ TreeBase* TreeMin_(TreeBase* t);
  * Time complexity: O(h), where h is the height of the binary tree
  * Space complexity: O(1)
 **/
-TreeBase* TreeMax_(TreeBase* t);
+void* TreeMax_(TreeBase* t);
 
 /**
  * Function that performs an in-order traversal of the binary tree and applies the passed format string to the data of each node.
