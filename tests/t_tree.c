@@ -31,8 +31,8 @@ Test(tree_test, test_tree_int)
     cr_assert(TreeContains(tree, 6), "Expected tree to contain 6 after removing element");
     cr_assert_not(TreeContains(tree, 2), "Expected tree not to contain 2 after removing it");
 
-    cr_assert_eq(*(int *)TreeMin(tree)->data, 1, "Expected minimum element to be 1");
-    cr_assert_eq(*(int *)TreeMax(tree)->data, 7, "Expected maximum element to be 7");
+    cr_assert_eq(*(int *)TreeMin(tree), 1, "Expected minimum element to be 1");
+    cr_assert_eq(*(int *)TreeMax(tree), 7, "Expected maximum element to be 7");
 
     TreeClear(tree);
 
@@ -55,7 +55,7 @@ Test(tree_test, test_tree_double)
     TreeInsert(tree, 3.25);
     TreeInsert(tree, 1.25);
 
-    cr_assert_eq(TreeSize(tree), 7.25, "Expected tree size to be 7.25");
+    cr_assert_eq(TreeSize(tree), 7, "Expected tree size to be 7");
 
     cr_assert(TreeContains(tree, 5.25), "Expected tree to contain 5.25");
     cr_assert(TreeContains(tree, 7.25), "Expected tree to contain 7.25");
@@ -64,13 +64,13 @@ Test(tree_test, test_tree_double)
     TreeRemove(tree, 2.25);
     TreeRemove(tree, 5.25);
 
-    cr_assert_eq(TreeSize(tree), 5.25, "Expected tree size to be 5 after removing elements");
+    cr_assert_eq(TreeSize(tree), 5, "Expected tree size to be 5 after removing elements");
 
     cr_assert(TreeContains(tree, 6.25), "Expected tree to contain 6.25 after removing element");
     cr_assert_not(TreeContains(tree, 2.25), "Expected tree not to contain 2.25 after removing it");
 
-    cr_assert_eq(*(int *)TreeMin(tree)->data, 1.25, "Expected minimum element to be 1.25");
-    cr_assert_eq(*(int *)TreeMax(tree)->data, 7.25, "Expected maximum element to be 7.25");
+    cr_assert_eq(*(int *)TreeMin(tree), 1.25, "Expected minimum element to be 1.25");
+    cr_assert_eq(*(int *)TreeMax(tree), 7.25, "Expected maximum element to be 7.25");
 
     TreeClear(tree);
 
@@ -106,8 +106,8 @@ Test(tree_test, test_tree_string)
     cr_assert(TreeContains(tree, "hello"), "Expected tree to contain 'hello' after removing elements");
     cr_assert_not(TreeContains(tree, "test"), "Expected tree not to contain 'test' after removing it");
 
-    cr_assert_str_eq((char *)TreeMin(tree)->data, "a", "Expected minimum element to be 'a'");
-    cr_assert_str_eq((char *)TreeMax(tree)->data, "world", "Expected maximum element to be 'world'");
+    cr_assert_str_eq((char *)TreeMin(tree), "a", "Expected minimum element to be 'a'");
+    cr_assert_str_eq((char *)TreeMax(tree), "world", "Expected maximum element to be 'world'");
 
     TreeClear(tree);
 

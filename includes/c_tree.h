@@ -22,7 +22,7 @@ extern "C"
  * @param elemsize The size of an element
 **/
 typedef struct TreeNode TreeNode;
-typedef struct TreeNode {
+struct TreeNode {
 	void* data;
 	TreeNode* left;
 	TreeNode* right;

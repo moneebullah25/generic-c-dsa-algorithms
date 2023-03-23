@@ -34,17 +34,6 @@ static TreeNode* TreeNodeMin(TreeNode* tn)
 	return current;
 }
 
-static TreeNode* TreeNodeMax(TreeNode* tn)
-{
-	ASSERT(tn && tn->data);
-	TreeNode* current = tn;
-	while (current->right != NULL)
-	{
-		current = current->right;
-	}
-	return current;
-}
-
 void TreeNew_(TreeBase* t, unsigned int elemsize,
 	int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize),
 	void(*FreeFunc)(void* elems))
@@ -208,7 +197,7 @@ void TreeDelete_(TreeBase *t)
 
 unsigned int TreeSize_(TreeBase *t)
 {
-    return t->elemsize;
+    return t->logiclen;
 }
 
 bool TreeEmpty_(TreeBase *t)
