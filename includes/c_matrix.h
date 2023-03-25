@@ -20,11 +20,8 @@ extern "C" {
  * double** data : A two-dimensional array of double-precision floating-point values representing the data in the matrix.
  * bool is_square : A boolean value indicating whether the matrix is square or not. 
 **/
-typedef struct {
-	unsigned int num_rows, num_cols;
-	double** data;
-	bool is_square;
-}Matrix;
+typedef struct Matrix Matrix;
+
 
 /* Matrix Allocation */
 

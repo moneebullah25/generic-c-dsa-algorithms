@@ -5,6 +5,12 @@
 #include <string.h>
 #include <math.h>
 
+struct Matrix {
+	unsigned int num_rows, num_cols;
+	double** data;
+	bool is_square;
+};
+
 Matrix *MatrixEmpty(unsigned int num_rows, unsigned int num_cols)
 {
 	if (num_rows == 0)
