@@ -977,7 +977,7 @@ Matrix *MatrixBroadcastRows(Matrix *m, unsigned int row)
 
 	if (m->num_rows != 1)
 	{
-		fprintf(stderr, "Can't broadcast 'm->num_rows != '%u\n", m->num_rows);
+		fprintf(stderr, "Can't broadcast 'm->num_rows != 1'%u\n", m->num_rows);
 		return NULL;
 	}
 
@@ -1012,7 +1012,7 @@ Matrix *MatrixBroadcastColumns(Matrix *m, unsigned int col)
 
 	if (m->num_cols != 1)
 	{
-		fprintf(stderr, "Can't broadcast 'm->num_cols != '%u\n", m->num_rows);
+		fprintf(stderr, "Can't broadcast 'm->num_cols != 1'%u\n", m->num_rows);
 		return NULL;
 	}
 
@@ -1047,13 +1047,13 @@ Matrix *MatrixBroadcastRowsAndColumns(Matrix *m, unsigned int row, unsigned int 
 
 	if (m->num_rows != 1)
 	{
-		fprintf(stderr, "Can't broadcast 'm->num_rows != '%u\n", m->num_rows);
+		fprintf(stderr, "Can't broadcast 'm->num_rows != 1'%u\n", m->num_rows);
 		return NULL;
 	}
 
 	if (m->num_cols != 1)
 	{
-		fprintf(stderr, "Can't broadcast 'm->num_cols != '%u\n", m->num_rows);
+		fprintf(stderr, "Can't broadcast 'm->num_cols != 1'%u\n", m->num_rows);
 		return NULL;
 	}
 
@@ -1455,7 +1455,7 @@ double MatrixDeterminant(Matrix *m)
 
 	if (m->num_rows != m->num_cols)
 	{
-		printf("Error: Matrix must be square to find determinant\n");
+		fprintf(stderr, "'m' is not a square matrix\n");
 		return NAN;
 	}
 
@@ -1739,6 +1739,162 @@ Matrix *MatrixL2Norm(Matrix *m)
 	}
 
 	return matrix;
+}
+
+double MatrixCosineSimilarity(Matrix* m1, Matrix* m2)
+{
+	if (m1 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m1 passed\n");
+		return NAN;
+	}
+
+	if (m2 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m2 passed\n");
+		return NAN;
+	}
+
+	double dot_product = 0.0;
+	double m1_norm = 0.0;
+	double m2_norm = 0.0;
+
+	for (unsigned int i = 0; i < m1->num_rows; i++) {
+		dot_product += m1->data[i][0] * m2->data[i][0];
+		m1_norm += m1->data[i][0] * m1->data[i][0];
+		m2_norm += m2->data[i][0] * m2->data[i][0];
+	}
+
+	double denominator = sqrt(m1_norm * m2_norm);
+
+	if (denominator == 0) {
+		return 0.0;
+	}
+
+	return dot_product / denominator;
+}
+
+double MatrixTSSSSimilarity(Matrix* m1, Matrix* m2) 
+{
+	if (m1 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m1 passed\n");
+		return NAN;
+	}
+
+	if (m2 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m2 passed\n");
+		return NAN;
+	}
+
+	if (!IsMatrixEqualDim(m1, m2))
+	{
+		fprintf(stderr, "Matrix 'm1(%u, %u)' &'m2(%u, %u)' are not equivalent\n",
+			m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
+		return NAN;
+	}
+
+	if (m1->num_rows != 1)
+	{
+		fprintf(stderr, "Not a row matrix 'm1->num_rows != 1'%u\n", m1->num_rows);
+		return NULL;
+	}
+
+	if (m2->num_rows != 1)
+	{
+		fprintf(stderr, "Not a row matrix 'm2->num_rows != 1'%u\n", m2->num_rows);
+		return NULL;
+	}
+	
+	if (m1->num_cols != m2->num_cols) 
+	{
+		fprintf(stderr, "Not a row matrix 'm1->num_cols != m2->num_cols'%u!=%u\n", m1->num_cols, m2->num_cols);
+		return -1;
+	}
+
+	// Compute the TSSS distance
+	double tsss_distance = MatrixEuclideanDistance(m1, m2);
+
+	// Compute the variance of the two time series
+	double var_m1 = MatrixColumnL2Norm(m1, 0) / m1->num_cols;
+	double var_m2 = MatrixColumnL2Norm(m2, 0) / m2->num_cols;
+
+	// Compute the TS-SS similarity
+	double ts_ss_similarity = 1 - tsss_distance / sqrt(m1->num_cols * var_m1 * var_m2);
+
+	return ts_ss_similarity;
+}
+
+
+double MatrixEuclideanDistance(Matrix* m1, Matrix* m2)
+{
+	if (m1 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m1 passed\n");
+		return NAN;
+	}
+
+	if (m2 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m2 passed\n");
+		return NAN;
+	}
+
+	double sum_squares = 0.0;
+	for (unsigned int i = 0; i < m1->num_rows; i++) {
+		for (unsigned int j = 0; j < m1->num_cols; j++) {
+			double diff = m1->data[i][j] - m2->data[i][j];
+			sum_squares += diff * diff;
+		}
+	}
+	return sqrt(sum_squares);
+}
+
+double MatrixManhattanDistance(Matrix* m1, Matrix* m2) 
+{
+	if (m1 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m1 passed\n");
+		return NAN;
+	}
+
+	if (m2 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m2 passed\n");
+		return NAN;
+	}
+
+	double dist = 0.0;
+	for (unsigned int i = 0; i < m1->num_rows; i++) {
+		for (unsigned int j = 0; j < m1->num_cols; j++) {
+			dist += fabs(m1->data[i][j] - m2->data[i][j]);
+		}
+	}
+	return dist;
+}
+
+double MatrixMinkowskiDistance(Matrix* m1, Matrix* m2, int p) 
+{
+	if (m1 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m1 passed\n");
+		return NAN;
+	}
+
+	if (m2 == NULL)
+	{
+		fprintf(stderr, "Invalid matrix m2 passed\n");
+		return NAN;
+	}
+
+	double dist = 0.0;
+	for (unsigned int i = 0; i < m1->num_rows; i++) {
+		for (unsigned int j = 0; j < m1->num_cols; j++) {
+			dist += pow(fabs(m1->data[i][j] - m2->data[i][j]), p);
+		}
+	}
+	return pow(dist, 1.0 / p);
 }
 
 /*Matrix Dispose */
