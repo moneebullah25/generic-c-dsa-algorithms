@@ -537,6 +537,11 @@ The **Matrix** class is a data structure for representing and manipulating matri
 - **Matrix\* MatrixReducedRowEchelonGet(Matrix\* m)** Returns a new matrix that is the reduced row echelon form of the input matrix, without modifying the input matrix.
 - **double MatrixColumnL2Norm(Matrix\* m, unsigned int col)** Computes the L2 norm, also known as the Euclidean norm, of a specified column of the input matrix.
 - **Matrix\* MatrixL2Norm(Matrix\* m)** Computes the L2 norm, also known as the Euclidean norm, of each column of the input matrix and returns a new matrix with the results.
+- **double MatrixCosineSimilarity(Matrix\* m1, Matrix\* m2)** Compute the cosine similarity between two column matrices.
+- **double MatrixTSSSSimilarity(Matrix\* m1, Matrix\* m2)** Calculate the Time Series Similarity using TS-SS similarity metric between two row vectors.
+- **double MatrixEuclideanDistance(Matrix\* m1, Matrix\* m2)** Compute the Euclidean distance between two column matrices.
+- **double MatrixManhattanDistance(Matrix\* m1, Matrix\* m2)** Calculate Manhattan distance between two matrices.
+- **double MatrixMinkowskiDistance(Matrix\* m1, Matrix\* m2, int p)** Calculate Minkowski distance between two matrices.
 - **void MatrixFree(Matrix\* m)** Deallocates the memory associated with the input matrix, freeing it for use by other parts of the program.
 
 # **C TREE**
