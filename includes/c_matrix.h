@@ -945,6 +945,86 @@ double MatrixColumnL2Norm(Matrix* m, unsigned int col);
 **/
 Matrix* MatrixL2Norm(Matrix* m);
 
+/**
+ * Compute the cosine similarity between two column matrices.
+ * Time complexity: O(n), where n is the number of elements in the matrices.
+ * Space complexity: O(1)
+ * Requirements:
+ * - m1 and m2 should not be nullptr
+ * - m1 and m2 should have the same number of rows and one column
+ * @param m1 Pointer to the first column matrix.
+ * @param m2 Pointer to the second column matrix.
+ * @return The cosine similarity between the two matrices.
+**/
+double MatrixCosineSimilarity(Matrix* m1, Matrix* m2);
+
+/**
+ * Calculate the Time Series Similarity using TS-SS similarity metric between two row vectors.
+ * Time complexity: O(n), where n is the length of the row vectors.
+ * Space complexity: O(1).
+ * Requirements:
+ * - m1 and m2 should not be nullptr.
+ * - m1 and m2 should have the same dimensions (1 x n).
+ * @param m1 Pointer to the first row vector matrix.
+ * @param m2 Pointer to the second row vector matrix.
+ * @return The TS-SS similarity between m1 and m2.
+ * Returns -1 if the matrices do not meet the requirements or an error occurs.
+ * TS-SS similarity is a metric that ranges between 0 and 1, where 1 means the two row vectors are identical.
+ * The lower the TS-SS similarity value, the less similar the two row vectors are.
+ * A value of -1 indicates an error has occurred.
+ * TS-SS similarity is calculated using the following formula:
+ * 1 - (TSSS distance between m1 and m2) / sqrt(n * var_m1 * var_m2),
+ * where var_m1 and var_m2 are the variances of m1 and m2, respectively.
+ * The TSSS distance between two row vectors is the Euclidean distance between their normalized values.
+ * The normalization is done by dividing each element in a row vector by the square root of the variance of that row vector.
+ * The Euclidean distance is the square root of the sum of the squared differences between corresponding elements in the two row vectors.
+ * The larger the TSSS distance, the less similar the two row vectors are.
+ * The square root in the denominator of the TS-SS similarity formula ensures that the metric is scaled properly.
+ * The smaller the TS-SS similarity value, the less similar the two row vectors are.
+ * Refer to the following paper for more information: https://github.com/taki0112/Vector_Similarity
+**/
+double MatrixTSSSSimilarity(Matrix* m1, Matrix* m2);
+
+/**
+* Compute the Euclidean distance between two column matrices.
+* Time complexity: O(mn), where m is the number of rows and n is the number of columns in the matrix.
+* Space complexity: O(1)
+* Requirements:
+* - m1 and m2 pointers should not be nullptr
+* - m1 and m2 should have the same number of rows and columns
+* @param m1 Pointer to the first matrix.
+* @param m2 Pointer to the second matrix.
+* @return The Euclidean distance between m1 and m2.
+**/
+double MatrixEuclideanDistance(Matrix* m1, Matrix* m2);
+
+/**
+* Calculate Manhattan distance between two matrices.
+* Time complexity: O(mn), where m is the number of rows and n is the number of columns in the matrix.
+* Space complexity: O(1)
+* Requirements:
+* - m1 and m2 should not be nullptr
+* - m1 and m2 should have the same dimensions
+* @param m1 Pointer to the first matrix.
+* @param m2 Pointer to the second matrix.
+* @return The Manhattan distance between m1 and m2.
+**/
+double MatrixManhattanDistance(Matrix* m1, Matrix* m2);
+
+/**
+* Calculate Minkowski distance between two matrices.
+* Time complexity: O(mn), where m is the number of rows and n is the number of columns in the matrix.
+* Space complexity: O(1)
+* Requirements:
+* - m1 and m2 should not be nullptr
+* - m1 and m2 should have the same dimensions
+* @param m1 Pointer to the first matrix.
+* @param m2 Pointer to the second matrix.
+* @param p The order of the Minkowski distance.
+* @return The Minkowski distance between m1 and m2.
+**/
+double MatrixMinkowskiDistance(Matrix* m1, Matrix* m2, int p);
+
 /* Matrix Dispose */
 /**
  * Free the memory allocated for the matrix.
