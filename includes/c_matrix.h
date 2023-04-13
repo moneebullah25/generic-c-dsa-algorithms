@@ -52,7 +52,7 @@ Matrix* MatrixEmpty(unsigned int num_rows, unsigned int num_cols);
  * Time complexity: O(n*m), where n is the number of rows and m is the number of columns of the given matrix
  * Space complexity: O(n*m), where n is the number of rows and m is the number of columns of the given matrix
 **/
-Matrix* MatrixEmptyLike(Matrix* m);
+Matrix* MatrixEmptyLike(const Matrix* m);
 
 /**
  * Function that creates and returns a new matrix with given number of rows and columns and all values set to 0.
@@ -76,7 +76,7 @@ Matrix* MatrixNew(unsigned int num_rows, unsigned int num_cols);
  * Time complexity: O(n*m), where n is the number of rows and m is the number of columns of the given matrix
  * Space complexity: O(n*m), where n is the number of rows and m is the number of columns of the given matrix
 **/
-Matrix* MatrixNewLike(Matrix* m);
+Matrix* MatrixNewLike(const Matrix* m);
 
 /**
  * Function that creates and returns a new matrix with given number of rows and columns and all values set randomly within a specified range.
@@ -101,7 +101,7 @@ Matrix* MatrixRandom(unsigned int num_rows, unsigned int num_cols, double min, d
  * Time complexity: O(num_rows * num_cols)
  * Space complexity: O(num_rows * num_cols)
 **/
-Matrix* MatrixRandomLike(Matrix* m, double min, double max);
+Matrix* MatrixRandomLike(const Matrix* m, double min, double max);
 
 /**
  * Function that creates and returns a new square matrix with given size and all values set to 0.
@@ -123,7 +123,7 @@ Matrix* MatrixSquare(unsigned int size);
  * Time complexity: O(size^2)
  * Space complexity: O(size^2)
 **/
-Matrix* MatrixSquareLike(Matrix* m);
+Matrix* MatrixSquareLike(const Matrix* m);
 
 /**
  * Function that creates and returns a new square matrix with given size and all values set randomly within a specified range.
@@ -149,7 +149,7 @@ Matrix* MatrixSquareRandom(unsigned int size, double min, double max);
  * Time complexity: O(size^2)
  * Space complexity: O(size^2)
 **/
-Matrix* MatrixSquareRandomLike(Matrix* m, double min, double max);
+Matrix* MatrixSquareRandomLike(const Matrix* m, double min, double max);
 
 /**
  * Function that creates and returns a new matrix with given number of rows and columns and all values set to 0.
@@ -172,7 +172,7 @@ Matrix* MatrixZero(unsigned int num_rows, unsigned int num_cols);
  * Time complexity: O(num_rows * num_cols)
  * Space complexity: O(num_rows * num_cols)
 **/
-Matrix* MatrixZeroLike(Matrix* m);
+Matrix* MatrixZeroLike(const Matrix* m);
 
 /**
  * Function that creates and returns a new matrix with given number of rows and columns and all values set to 1.
@@ -195,7 +195,7 @@ Matrix* MatrixOne(unsigned int num_rows, unsigned int num_cols);
  * Time complexity: O(num_rows * num_cols)
  * Space complexity: O(num_rows * num_cols)
 **/
-Matrix* MatrixOneLike(Matrix* m);
+Matrix* MatrixOneLike(const Matrix* m);
 
 /**
  * Function that creates and returns a new matrix with given number of rows and columns and all elements set to a given value.
@@ -218,7 +218,7 @@ Matrix* MatrixN(unsigned int num_rows, unsigned int num_cols, double value);
  * Time complexity: O(mn), where m is the number of rows and n is the number of columns
  * Space complexity: O(mn), where m is the number of rows and n is the number of columns
 **/
-Matrix* MatrixNLike(Matrix* m, double value);
+Matrix* MatrixNLike(const Matrix* m, double value);
 
 /**
  * Function that creates and returns a new identity matrix with given size.
@@ -240,7 +240,7 @@ Matrix* MatrixIdentity(unsigned int size);
  * Time complexity: O(n^2), where n is the size of the matrix
  * Space complexity: O(n^2), where n is the size of the matrix
 **/
-Matrix* MatrixIdentityLike(Matrix* m);
+Matrix* MatrixIdentityLike(const Matrix* m);
 
 /**
  * Function that creates and returns a new matrix with ones on the diagonal and zeros elsewhere.
@@ -272,7 +272,7 @@ Matrix* MatrixEye(unsigned int size, int k);
  * - the given matrix should not be NULL
  * @return A new Matrix instance representing the eye matrix.
 */
-Matrix* MatrixEyeLike(Matrix* m, int k);
+Matrix* MatrixEyeLike(const Matrix* m, int k);
 
 /**
  * Returns a pointer to a Matrix containing evenly spaced values within a given interval, with a given step size.
@@ -344,7 +344,7 @@ Matrix* MatrixGeometrySpace(double start, double stop, unsigned int n);
  * Time complexity: O(mn), where m is the number of rows and n is the number of columns
  * Space complexity: O(mn), where m is the number of rows and n is the number of columns
 **/
-Matrix* MatrixFrom(unsigned int num_rows, unsigned int num_cols, unsigned int n_values, double *values);
+Matrix* MatrixFrom(unsigned int num_rows, unsigned int num_cols, unsigned int n_values, const double *values);
 
 /**
  * Function that creates and returns a new matrix from values stored in a given file.
@@ -365,7 +365,7 @@ Matrix* MatrixFromFile(const char* file);
  * Time complexity: O(mn), where m is the number of rows and n is the number of columns
  * Space complexity: O(mn), where m is the number of rows and n is the number of columns
 **/
-Matrix* MatrixCopy(Matrix* m);
+Matrix* MatrixCopy(const Matrix* m);
 
 /* Matrix Basic */
 /**
@@ -379,7 +379,7 @@ Matrix* MatrixCopy(Matrix* m);
  * Space complexity: O(1)
  * @return true if the number of rows and columns of the two matrices are equal, false otherwise
 **/
-bool IsMatrixEqualDim(Matrix* m1, Matrix* m2);
+bool IsMatrixEqualDim(const Matrix* m1, const Matrix* m2);
 
 /**
  * Function that prints a matrix to the console.
@@ -392,7 +392,7 @@ bool IsMatrixEqualDim(Matrix* m1, Matrix* m2);
  * Time complexity: O(mn) where m and n are the number of rows and columns of the matrix respectively
  * Space complexity: O(1)
 **/
-void PrintMatrix(Matrix* m, const char* data_format);
+void PrintMatrix(const Matrix* m, const char* data_format);
 
 /**
  * Function that checks if a matrix is invertible.
@@ -404,7 +404,7 @@ void PrintMatrix(Matrix* m, const char* data_format);
  * Space complexity: O(1)
  * @return true if the matrix is invertible, false otherwise
 **/
-bool IsMatrixInvertible(Matrix* m);
+bool IsMatrixInvertible(const Matrix* m);
 
 /* Matrix Accessing and Modifying */
 /**
@@ -418,7 +418,7 @@ bool IsMatrixInvertible(Matrix* m);
  * @param col Column index of the desired value.
  * @return The value stored at the specified row and column in the matrix.
 **/
-double MatrixGet(Matrix* m, unsigned row, unsigned col);
+double MatrixGet(const Matrix* m, unsigned row, unsigned col);
 
 /**
  * Returns a column from the matrix as a new matrix.
@@ -430,7 +430,7 @@ double MatrixGet(Matrix* m, unsigned row, unsigned col);
  * @param col Column index to extract from the matrix.
  * @return A new matrix representing the specified column from the input matrix.
 **/
-Matrix* MatrixColumnGet(Matrix* m, unsigned int col);
+Matrix* MatrixColumnGet(const Matrix* m, unsigned int col);
 
 /**
  * Returns a row from the matrix as a new matrix.
@@ -442,7 +442,7 @@ Matrix* MatrixColumnGet(Matrix* m, unsigned int col);
  * @param row Row index to extract from the matrix.
  * @return A new matrix representing the specified row from the input matrix.
 **/
-Matrix* MatrixRowGet(Matrix* m, unsigned int row);
+Matrix* MatrixRowGet(const Matrix* m, unsigned int row);
 
 /**
  * Sets the value at the specified row and column in the matrix.
@@ -620,7 +620,7 @@ void MatrixWholeAdd(Matrix* m, double value);
  * @param row The row to be removed from the matrix.
  * @return Pointer to the matrix with the specified row removed.
 **/
-Matrix* MatrixRowRemove(Matrix* m, unsigned int row);
+Matrix* MatrixRowRemove(const Matrix* m, unsigned int row);
 
 /**
  * Remove a specific column from a matrix.
@@ -633,7 +633,7 @@ Matrix* MatrixRowRemove(Matrix* m, unsigned int row);
  * @param col The column to be removed from the matrix.
  * @return Pointer to the matrix with the specified column removed.
 **/
-Matrix* MatrixColumnRemove(Matrix* m, unsigned int col);
+Matrix* MatrixColumnRemove(const Matrix* m, unsigned int col);
 
 /**
  * Swap two rows of a matrix.
@@ -672,7 +672,7 @@ void MatrixColumnSwap(Matrix* m, unsigned int col1, unsigned int col2);
  * @param row The number of rows that new broadcasted matrix will have
  * @return Pointer to the matrix with the specified row broadcasted to all other rows.
 **/
-Matrix* MatrixBroadcastRows(Matrix* m, unsigned int row);
+Matrix* MatrixBroadcastRows(const Matrix* m, unsigned int row);
 
 /**
  * Broadcast the column of a matrix to column passed as argument and return that new matrix.
@@ -685,7 +685,7 @@ Matrix* MatrixBroadcastRows(Matrix* m, unsigned int row);
  * @param col The number of columns that new broadcasted matrix will have
  * @return Pointer to the matrix with the specified row broadcasted to all other rows.
 **/
-Matrix* MatrixBroadcastColumns(Matrix* m, unsigned int col);
+Matrix* MatrixBroadcastColumns(const Matrix* m, unsigned int col);
 
 /**
  * Broadcast the row of a matrix to row passed as argument and return that new matrix. 
@@ -701,7 +701,7 @@ Matrix* MatrixBroadcastColumns(Matrix* m, unsigned int col);
  * @param col The number of columns that new broadcasted matrix will have
  * @return Pointer to the matrix with the specified row broadcasted to all other rows.
 **/
-Matrix* MatrixBroadcastRowsAndColumns(Matrix* m, unsigned int row, unsigned int col);
+Matrix* MatrixBroadcastRowsAndColumns(const Matrix* m, unsigned int row, unsigned int col);
 
 /**
  * Stack two matrices row-wise (vertically) and return a new matrix.
@@ -715,7 +715,7 @@ Matrix* MatrixBroadcastRowsAndColumns(Matrix* m, unsigned int row, unsigned int 
  * @param m2 Pointer to the second matrix.
  * @return Pointer to the matrix obtained by stacking the rows of the input matrices.
 **/
-Matrix* MatrixRowStack(Matrix* m1, Matrix* m2);
+Matrix* MatrixRowStack(const Matrix* m1, const Matrix* m2);
 
 /**
  * Stack two matrices column-wise (horizontally) and return a new matrix.
@@ -729,7 +729,7 @@ Matrix* MatrixRowStack(Matrix* m1, Matrix* m2);
  * @param m2 Pointer to the second matrix.
  * @return Pointer to the matrix obtained by stacking the columns of the input matrices.
 **/
-Matrix* MatrixColumnStack(Matrix* m1, Matrix* m2);
+Matrix* MatrixColumnStack(const Matrix* m1, const Matrix* m2);
 
 /* Matrix Operatons */
 /**
@@ -743,7 +743,7 @@ Matrix* MatrixColumnStack(Matrix* m1, Matrix* m2);
  * @param m2 Pointer to the second matrix.
  * @return Pointer to the result matrix.
 **/
-Matrix* MatrixAdd(Matrix* m1, Matrix* m2);
+Matrix* MatrixAdd(const Matrix* m1, const Matrix* m2);
 
 /**
  * Subtract two matrices m1 and m2 (m1 - m2) and return and create the resultant matrix.
@@ -756,7 +756,7 @@ Matrix* MatrixAdd(Matrix* m1, Matrix* m2);
  * @param m2 Pointer to the second matrix.
  * @return Pointer to the result matrix.
 **/
-Matrix* MatrixSubtract(Matrix* m1, Matrix* m2);
+Matrix* MatrixSubtract(const Matrix* m1, const Matrix* m2);
 
 /**
  * Multiply two matrices m1 and m2 and return the result.
@@ -769,7 +769,7 @@ Matrix* MatrixSubtract(Matrix* m1, Matrix* m2);
  * @param m2 Pointer to the second matrix.
  * @return Pointer to the result matrix.
 **/
-Matrix* MatrixMultiply(Matrix* m1, Matrix* m2);
+Matrix* MatrixMultiply(const Matrix* m1, const Matrix* m2);
 
 /**
  * Mutiply two matrices element wise aka (Hadamard product) m1 and m2 and return and create the resultant matrix.
@@ -782,7 +782,7 @@ Matrix* MatrixMultiply(Matrix* m1, Matrix* m2);
  * @param m2 Pointer to the second matrix.
  * @return Pointer to the result matrix.
 **/
-Matrix* MatrixElementWiseMultiply(Matrix* m1, Matrix* m2);
+Matrix* MatrixElementWiseMultiply(const Matrix* m1, const Matrix* m2);
 
 
 /**
@@ -796,7 +796,7 @@ Matrix* MatrixElementWiseMultiply(Matrix* m1, Matrix* m2);
  * @param m2 Pointer to the second matrix.
  * @return Pointer to the result matrix.
 **/
-Matrix* MatrixAddWithBroadcast(Matrix* m1, Matrix* m2);
+Matrix* MatrixAddWithBroadcast(const Matrix* m1, const Matrix* m2);
 
 /**
  * Subtract two matrices m2 from m1 with broadcast if required and return the result.
@@ -809,7 +809,7 @@ Matrix* MatrixAddWithBroadcast(Matrix* m1, Matrix* m2);
  * @param m2 Pointer to the second matrix.
  * @return Pointer to the result matrix.
 **/
-Matrix* MatrixSubtractWithBroadcast(Matrix* m1, Matrix* m2);
+Matrix* MatrixSubtractWithBroadcast(const Matrix* m1, const Matrix* m2);
 
 /**
  * Multiply two matrices m1 and m2 with Broadcast if required and return the result.
@@ -822,7 +822,7 @@ Matrix* MatrixSubtractWithBroadcast(Matrix* m1, Matrix* m2);
  * @param m2 Pointer to the second matrix.
  * @return Pointer to the result matrix.
 **/
-Matrix* MatrixMultiplyWithBroadcast(Matrix* m1, Matrix* m2);
+Matrix* MatrixMultiplyWithBroadcast(const Matrix* m1, const Matrix* m2);
 
 /**
  * Mutiply two matrices element wise aka (Hadamard product) m1 and m2 with Broadcast if required and return and create the resultant matrix.
@@ -835,7 +835,7 @@ Matrix* MatrixMultiplyWithBroadcast(Matrix* m1, Matrix* m2);
  * @param m2 Pointer to the second matrix.
  * @return Pointer to the result matrix.
 **/
-Matrix* MatrixElementWiseMultiplyWithBroadcast(Matrix* m1, Matrix* m2);
+Matrix* MatrixElementWiseMultiplyWithBroadcast(const Matrix* m1, const Matrix* m2);
 
 /**
  * Calculates the transpose of a matrix.
@@ -859,7 +859,7 @@ void MatrixTranspose(Matrix* m);
  * @param m Pointer to the square matrix.
  * @return The trace of the matrix.
 **/
-double MatrixTrace(Matrix* m);
+double MatrixTrace(const Matrix* m);
 
 /**
  * Calculates the determinant of a matrix.
@@ -872,7 +872,7 @@ double MatrixTrace(Matrix* m);
  * @param m Pointer to the square matrix.
  * @return The determinant of the matrix.
 **/
-double MatrixDeterminant(Matrix* m);
+double MatrixDeterminant(const Matrix* m);
 
 /**
  * Calculates the row echelon form of a matrix.
@@ -906,7 +906,7 @@ void MatrixReducedRowEchelon(Matrix* m);
  * @param m Pointer to the matrix.
  * @return A new matrix with the row echelon form of the input matrix.
 **/
-Matrix* MatrixRowEchelonGet(Matrix* m);
+Matrix* MatrixRowEchelonGet(const Matrix* m);
 
 /**
  * Calculates the reduced row echelon form of a matrix and returns the result as a new matrix.
@@ -918,7 +918,7 @@ Matrix* MatrixRowEchelonGet(Matrix* m);
  * @param m Pointer to the matrix.
  * @return A new matrix with the row echelon form of the input matrix.
 **/
-Matrix* MatrixReducedRowEchelonGet(Matrix* m);
+Matrix* MatrixReducedRowEchelonGet(const Matrix* m);
 
 /**
  * Calculate the L2-norm of a specified column in a matrix.
@@ -931,7 +931,7 @@ Matrix* MatrixReducedRowEchelonGet(Matrix* m);
  * @param col The index of the column for which the L2-norm is to be calculated.
  * @return The L2-norm of the specified column.
 **/
-double MatrixColumnL2Norm(Matrix* m, unsigned int col);
+double MatrixColumnL2Norm(const Matrix* m, unsigned int col);
 
 /**
  * Calculate the L2-norm of all columns in a matrix.
@@ -943,7 +943,7 @@ double MatrixColumnL2Norm(Matrix* m, unsigned int col);
  * @return Pointer to a matrix with one row and n columns, where n is the number of columns in the original matrix.
  * Each entry in this matrix is the L2-norm of the corresponding column in the original matrix.
 **/
-Matrix* MatrixL2Norm(Matrix* m);
+Matrix* MatrixL2Norm(const Matrix* m);
 
 /**
  * Compute the cosine similarity between two column matrices.
@@ -956,7 +956,7 @@ Matrix* MatrixL2Norm(Matrix* m);
  * @param m2 Pointer to the second column matrix.
  * @return The cosine similarity between the two matrices.
 **/
-double MatrixCosineSimilarity(Matrix* m1, Matrix* m2);
+double MatrixCosineSimilarity(const Matrix* m1, const Matrix* m2);
 
 /**
  * Calculate the Time Series Similarity using TS-SS similarity metric between two row vectors.
@@ -983,7 +983,7 @@ double MatrixCosineSimilarity(Matrix* m1, Matrix* m2);
  * The smaller the TS-SS similarity value, the less similar the two row vectors are.
  * Refer to the following paper for more information: https://github.com/taki0112/Vector_Similarity
 **/
-double MatrixTSSSSimilarity(Matrix* m1, Matrix* m2);
+double MatrixTSSSSimilarity(const Matrix* m1, const Matrix* m2);
 
 /**
 * Compute the Euclidean distance between two column matrices.
@@ -996,7 +996,7 @@ double MatrixTSSSSimilarity(Matrix* m1, Matrix* m2);
 * @param m2 Pointer to the second matrix.
 * @return The Euclidean distance between m1 and m2.
 **/
-double MatrixEuclideanDistance(Matrix* m1, Matrix* m2);
+double MatrixEuclideanDistance(const Matrix* m1, const Matrix* m2);
 
 /**
 * Calculate Manhattan distance between two matrices.
@@ -1009,7 +1009,7 @@ double MatrixEuclideanDistance(Matrix* m1, Matrix* m2);
 * @param m2 Pointer to the second matrix.
 * @return The Manhattan distance between m1 and m2.
 **/
-double MatrixManhattanDistance(Matrix* m1, Matrix* m2);
+double MatrixManhattanDistance(const Matrix* m1, const Matrix* m2);
 
 /**
 * Calculate Minkowski distance between two matrices.
@@ -1023,7 +1023,7 @@ double MatrixManhattanDistance(Matrix* m1, Matrix* m2);
 * @param p The order of the Minkowski distance.
 * @return The Minkowski distance between m1 and m2.
 **/
-double MatrixMinkowskiDistance(Matrix* m1, Matrix* m2, int p);
+double MatrixMinkowskiDistance(const Matrix* m1, const Matrix* m2, int p);
 
 /* Matrix Dispose */
 /**
