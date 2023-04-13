@@ -5,7 +5,7 @@
 #include <string.h>
 #include <math.h>
 
-Matrix *MatrixEmpty(unsigned int num_rows, unsigned int num_cols)
+Matrix* MatrixEmpty(unsigned int num_rows, unsigned int num_cols)
 {
 	if (num_rows == 0)
 	{
@@ -23,16 +23,16 @@ Matrix *MatrixEmpty(unsigned int num_rows, unsigned int num_cols)
 	matrix->num_rows = num_rows;
 	matrix->num_cols = num_cols;
 	matrix->is_square = (num_rows == num_cols) ? true : false;
-	matrix->data = malloc(matrix->num_rows * sizeof(*matrix->data));
+	matrix->data = malloc(matrix->num_rows* sizeof(*matrix->data));
 	for (unsigned int r = 0; r < matrix->num_rows; r++)
 	{
-		matrix->data[r] = malloc(matrix->num_cols * sizeof(**matrix->data));
+		matrix->data[r] = malloc(matrix->num_cols* sizeof(**matrix->data));
 	}
 
 	return matrix;
 }
 
-Matrix *MatrixEmptyLike(Matrix *m)
+Matrix* MatrixEmptyLike(const Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -43,7 +43,7 @@ Matrix *MatrixEmptyLike(Matrix *m)
 	return matrix;
 }
 
-Matrix *MatrixNew(unsigned int num_rows, unsigned int num_cols)
+Matrix* MatrixNew(unsigned int num_rows, unsigned int num_cols)
 {
 	if (num_rows == 0)
 	{
@@ -70,7 +70,7 @@ Matrix *MatrixNew(unsigned int num_rows, unsigned int num_cols)
 	return matrix;
 }
 
-Matrix *MatrixNewLike(Matrix *m)
+Matrix* MatrixNewLike(const Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -81,21 +81,21 @@ Matrix *MatrixNewLike(Matrix *m)
 	return matrix;
 }
 
-Matrix *MatrixRandom(unsigned int num_rows, unsigned int num_cols, double min, double max)
+Matrix* MatrixRandom(unsigned int num_rows, unsigned int num_cols, double min, double max)
 {
 	Matrix *matrix = MatrixEmpty(num_rows, num_cols);
 	for (unsigned int r = 0; r < num_rows; r++)
 	{
 		for (unsigned int c = 0; c < num_cols; c++)
 		{
-			matrix->data[r][c] = min + ((float)rand() / (float)(0x7fff)) * (max - min);
+			matrix->data[r][c] = min + ((float)rand() / (float)(0x7fff)) *(max - min);
 		}
 	}
 
 	return matrix;
 }
 
-Matrix *MatrixRandomLike(Matrix *m, double min, double max)
+Matrix* MatrixRandomLike(const Matrix *m, double min, double max)
 {
 	if (m == NULL)
 	{
@@ -106,13 +106,13 @@ Matrix *MatrixRandomLike(Matrix *m, double min, double max)
 	return matrix;
 }
 
-Matrix *MatrixSquare(unsigned int size)
+Matrix* MatrixSquare(unsigned int size)
 {
 	Matrix *matrix = MatrixNew(size, size);
 	return matrix;
 }
 
-Matrix *MatrixSquareLike(Matrix *m)
+Matrix* MatrixSquareLike(const Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -129,13 +129,13 @@ Matrix *MatrixSquareLike(Matrix *m)
 	return matrix;
 }
 
-Matrix *MatrixSquareRandom(unsigned int size, double min, double max)
+Matrix* MatrixSquareRandom(unsigned int size, double min, double max)
 {
 	Matrix *matrix = MatrixRandom(size, size, min, max);
 	return matrix;
 }
 
-Matrix *MatrixSquareRandomLike(Matrix *m, double min, double max)
+Matrix* MatrixSquareRandomLike(const Matrix *m, double min, double max)
 {
 	if (m == NULL)
 	{
@@ -152,13 +152,13 @@ Matrix *MatrixSquareRandomLike(Matrix *m, double min, double max)
 	return matrix;
 }
 
-Matrix *MatrixZero(unsigned int num_rows, unsigned int num_cols)
+Matrix* MatrixZero(unsigned int num_rows, unsigned int num_cols)
 {
 	Matrix *matrix = MatrixNew(num_rows, num_cols);
 	return matrix;
 }
 
-Matrix *MatrixZeroLike(Matrix *m)
+Matrix* MatrixZeroLike(const Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -169,7 +169,7 @@ Matrix *MatrixZeroLike(Matrix *m)
 	return matrix;
 }
 
-Matrix *MatrixOne(unsigned int num_rows, unsigned int num_cols)
+Matrix* MatrixOne(unsigned int num_rows, unsigned int num_cols)
 {
 	Matrix *matrix = MatrixEmpty(num_rows, num_cols);
 	for (unsigned int r = 0; r < num_rows; r++)
@@ -183,7 +183,7 @@ Matrix *MatrixOne(unsigned int num_rows, unsigned int num_cols)
 	return matrix;
 }
 
-Matrix *MatrixOneLike(Matrix *m)
+Matrix* MatrixOneLike(const Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -194,7 +194,7 @@ Matrix *MatrixOneLike(Matrix *m)
 	return matrix;
 }
 
-Matrix *MatrixN(unsigned int num_rows, unsigned int num_cols, double value)
+Matrix* MatrixN(unsigned int num_rows, unsigned int num_cols, double value)
 {
 	Matrix *matrix = MatrixNew(num_rows, num_cols);
 	for (unsigned int r = 0; r < num_rows; r++)
@@ -208,7 +208,7 @@ Matrix *MatrixN(unsigned int num_rows, unsigned int num_cols, double value)
 	return matrix;
 }
 
-Matrix *MatrixNLike(Matrix *m, double value)
+Matrix* MatrixNLike(const Matrix *m, double value)
 {
 	if (m == NULL)
 	{
@@ -219,7 +219,7 @@ Matrix *MatrixNLike(Matrix *m, double value)
 	return matrix;
 }
 
-Matrix *MatrixIdentity(unsigned int size)
+Matrix* MatrixIdentity(unsigned int size)
 {
 	Matrix *matrix = MatrixNew(size, size);
 	for (unsigned int i = 0; i < size; i++)
@@ -227,7 +227,7 @@ Matrix *MatrixIdentity(unsigned int size)
 	return matrix;
 }
 
-Matrix *MatrixIdentityLike(Matrix *m)
+Matrix* MatrixIdentityLike(const Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -244,9 +244,9 @@ Matrix *MatrixIdentityLike(Matrix *m)
 	return matrix;
 }
 
-Matrix *MatrixEye(unsigned int size, int k)
+Matrix* MatrixEye(unsigned int size, int k)
 {
-	if (k >= size)
+	if (k >= (int)size)
 	{
 		fprintf(stderr, "Invalid 'k=%u' passed >= %u\n", k, size);
 		return NULL;
@@ -272,7 +272,7 @@ Matrix *MatrixEye(unsigned int size, int k)
 	return m;
 }
 
-Matrix *MatrixEyeLike(Matrix *m, int k)
+Matrix* MatrixEyeLike(const Matrix *m, int k)
 {
 	if (m == NULL)
 	{
@@ -289,7 +289,7 @@ Matrix *MatrixEyeLike(Matrix *m, int k)
 	return matrix;
 }
 
-Matrix *MatrixARange(double start, double stop, double step)
+Matrix* MatrixARange(double start, double stop, double step)
 {
 	if (start >= stop)
 	{
@@ -310,7 +310,7 @@ Matrix *MatrixARange(double start, double stop, double step)
 	}
 
 	int num_elements = (int)((stop - start) / step);
-	if ((num_elements <= 0) || ((num_elements * step) + start > stop))
+	if ((num_elements <= 0) || ((num_elements *step) + start > stop))
 	{
 		fprintf(stderr, "Invalid values for 'start=%f', 'stop=%f', 'step=%f'\n", start, stop, step);
 		return NULL;
@@ -328,7 +328,7 @@ Matrix *MatrixARange(double start, double stop, double step)
 	return matrix;
 }
 
-Matrix *MatrixLinearSpace(double start, double stop, unsigned int n)
+Matrix* MatrixLinearSpace(double start, double stop, unsigned int n)
 {
 	if (start >= stop)
 	{
@@ -346,13 +346,13 @@ Matrix *MatrixLinearSpace(double start, double stop, unsigned int n)
 	double step = (stop - start) / (n - 1);
 	for (unsigned int i = 0; i < n; i++)
 	{
-		m->data[0][i] = start + ((double)i * step);
+		m->data[0][i] = start + ((double)i *step);
 	}
 
 	return m;
 }
 
-Matrix *MatrixLogSpace(double start, double stop, unsigned int n)
+Matrix* MatrixLogSpace(double start, double stop, unsigned int n)
 {
 	if (start >= stop)
 	{
@@ -378,7 +378,7 @@ Matrix *MatrixLogSpace(double start, double stop, unsigned int n)
 	return matrix;
 }
 
-Matrix *MatrixGeometrySpace(double start, double stop, unsigned int n)
+Matrix* MatrixGeometrySpace(double start, double stop, unsigned int n)
 {
 	if (start >= stop)
 	{
@@ -404,7 +404,7 @@ Matrix *MatrixGeometrySpace(double start, double stop, unsigned int n)
 	return matrix;
 }
 
-Matrix *MatrixFrom(unsigned int num_rows, unsigned int num_cols, unsigned int n_values, double *values)
+Matrix* MatrixFrom(unsigned int num_rows, unsigned int num_cols, unsigned int n_values, const double *values)
 {
 	Matrix *matrix = MatrixNew(num_rows, num_cols);
 	unsigned int values_index;
@@ -412,7 +412,7 @@ Matrix *MatrixFrom(unsigned int num_rows, unsigned int num_cols, unsigned int n_
 	{
 		for (unsigned int c = 0; c < num_cols; c++)
 		{
-			values_index = r * num_cols + c;
+			values_index = r *num_cols + c;
 			matrix->data[r][c] = (values_index < n_values) ? values[values_index] : 0.;
 		}
 	}
@@ -420,7 +420,7 @@ Matrix *MatrixFrom(unsigned int num_rows, unsigned int num_cols, unsigned int n_
 	return matrix;
 }
 
-Matrix *MatrixFromFile(const char *file)
+Matrix* MatrixFromFile(const char *file)
 {
 	FILE *f = fopen(file, "r");
 	if (f == NULL)
@@ -445,7 +445,7 @@ Matrix *MatrixFromFile(const char *file)
 	return matrix;
 }
 
-Matrix *MatrixCopy(Matrix *m)
+Matrix* MatrixCopy(const Matrix *m)
 {
 	Matrix *matrix = MatrixNew(m->num_rows, m->num_cols);
 	for (unsigned int r = 0; r < matrix->num_rows; r++)
@@ -460,13 +460,13 @@ Matrix *MatrixCopy(Matrix *m)
 }
 
 /*Matrix Basic */
-bool IsMatrixEqualDim(Matrix *m1, Matrix *m2)
+bool IsMatrixEqualDim(const Matrix *m1, const Matrix *m2)
 {
 	return (m1->num_rows == m2->num_rows) &&
-		   (m1->num_cols == m2->num_cols);
+		(m1->num_cols == m2->num_cols);
 }
 
-void PrintMatrix(Matrix *m, const char *data_format)
+void PrintMatrix(const Matrix *m, const char *data_format)
 {
 	if (m == NULL)
 	{
@@ -489,7 +489,7 @@ void PrintMatrix(Matrix *m, const char *data_format)
 	fprintf(stdout, "\n");
 }
 
-bool IsMatrixInvertible(Matrix *m)
+bool IsMatrixInvertible(const Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -502,7 +502,7 @@ bool IsMatrixInvertible(Matrix *m)
 }
 
 /*Matrix Accessing and Modifying */
-double MatrixGet(Matrix *m, unsigned row, unsigned col)
+double MatrixGet(const Matrix *m, unsigned row, unsigned col)
 {
 	if (m == NULL)
 	{
@@ -525,7 +525,7 @@ double MatrixGet(Matrix *m, unsigned row, unsigned col)
 	return m->data[row][col];
 }
 
-Matrix *MatrixColumnGet(Matrix *m, unsigned int col)
+Matrix* MatrixColumnGet(const Matrix *m, unsigned int col)
 {
 	if (m == NULL)
 	{
@@ -548,7 +548,7 @@ Matrix *MatrixColumnGet(Matrix *m, unsigned int col)
 	return matrix;
 }
 
-Matrix *MatrixRowGet(Matrix *m, unsigned int row)
+Matrix* MatrixRowGet(const Matrix *m, unsigned int row)
 {
 	if (m == NULL)
 	{
@@ -733,7 +733,7 @@ void MatrixRowMultiplyRow(Matrix *m, unsigned int where, unsigned int row, doubl
 
 	for (unsigned int c = 0; c < m->num_cols; c++)
 	{
-		m->data[where][c] *= value * m->data[row][c];
+		m->data[where][c] *= value *m->data[row][c];
 	}
 }
 
@@ -759,7 +759,7 @@ void MatrixRowAddRow(Matrix *m, unsigned int where, unsigned int row, double val
 
 	for (unsigned int c = 0; c < m->num_cols; c++)
 	{
-		m->data[where][c] += value * m->data[row][c];
+		m->data[where][c] += value *m->data[row][c];
 	}
 }
 
@@ -785,7 +785,7 @@ void MatrixColumnMultiplyColumn(Matrix *m, unsigned int where, unsigned int col,
 
 	for (unsigned int r = 0; r < m->num_rows; r++)
 	{
-		m->data[r][where] *= value * m->data[r][col];
+		m->data[r][where] *= value *m->data[r][col];
 	}
 }
 
@@ -811,7 +811,7 @@ void MatrixColumnAddValueColumn(Matrix *m, unsigned int where, unsigned int col,
 
 	for (unsigned int r = 0; r < m->num_rows; r++)
 	{
-		m->data[r][where] += value * m->data[r][col];
+		m->data[r][where] += value *m->data[r][col];
 	}
 }
 
@@ -849,7 +849,7 @@ void MatrixWholeAdd(Matrix *m, double value)
 	}
 }
 
-Matrix *MatrixRowRemove(Matrix *m, unsigned int row)
+Matrix* MatrixRowRemove(const Matrix *m, unsigned int row)
 {
 	if (m == NULL)
 	{
@@ -880,7 +880,7 @@ Matrix *MatrixRowRemove(Matrix *m, unsigned int row)
 	return matrix;
 }
 
-Matrix *MatrixColumnRemove(Matrix *m, unsigned int col)
+Matrix* MatrixColumnRemove(const Matrix *m, unsigned int col)
 {
 	if (m == NULL)
 	{
@@ -967,7 +967,7 @@ void MatrixColumnSwap(Matrix *m, unsigned int col1, unsigned int col2)
 	}
 }
 
-Matrix *MatrixBroadcastRows(Matrix *m, unsigned int row)
+Matrix* MatrixBroadcastRows(const Matrix *m, unsigned int row)
 {
 	if (m == NULL)
 	{
@@ -1002,7 +1002,7 @@ Matrix *MatrixBroadcastRows(Matrix *m, unsigned int row)
 	return matrix;
 }
 
-Matrix *MatrixBroadcastColumns(Matrix *m, unsigned int col)
+Matrix* MatrixBroadcastColumns(const Matrix *m, unsigned int col)
 {
 	if (m == NULL)
 	{
@@ -1037,7 +1037,7 @@ Matrix *MatrixBroadcastColumns(Matrix *m, unsigned int col)
 	return matrix;
 }
 
-Matrix *MatrixBroadcastRowsAndColumns(Matrix *m, unsigned int row, unsigned int col)
+Matrix* MatrixBroadcastRowsAndColumns(const Matrix *m, unsigned int row, unsigned int col)
 {
 	if (m == NULL)
 	{
@@ -1062,7 +1062,7 @@ Matrix *MatrixBroadcastRowsAndColumns(Matrix *m, unsigned int row, unsigned int 
 	return matrix;
 }
 
-Matrix *MatrixRowStack(Matrix *m1, Matrix *m2)
+Matrix* MatrixRowStack(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1083,17 +1083,17 @@ Matrix *MatrixRowStack(Matrix *m1, Matrix *m2)
 	}
 
 	Matrix *matrix = MatrixEmpty(m1->num_rows + m2->num_rows, m1->num_cols);
-	for (int i = 0; i < m1->num_rows; i++)
+	for (unsigned int i = 0; i < m1->num_rows; i++)
 	{
-		for (int j = 0; j < m1->num_cols; j++)
+		for (unsigned int j = 0; j < m1->num_cols; j++)
 		{
 			matrix->data[i][j] = m1->data[i][j];
 		}
 	}
 
-	for (int i = 0; i < m2->num_rows; i++)
+	for (unsigned int i = 0; i < m2->num_rows; i++)
 	{
-		for (int j = 0; j < m2->num_cols; j++)
+		for (unsigned int j = 0; j < m2->num_cols; j++)
 		{
 			matrix->data[m1->num_rows + i][j] = m2->data[i][j];
 		}
@@ -1102,7 +1102,7 @@ Matrix *MatrixRowStack(Matrix *m1, Matrix *m2)
 	return matrix;
 }
 
-Matrix *MatrixColumnStack(Matrix *m1, Matrix *m2)
+Matrix* MatrixColumnStack(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1123,17 +1123,17 @@ Matrix *MatrixColumnStack(Matrix *m1, Matrix *m2)
 	}
 
 	Matrix *matrix = MatrixEmpty(m1->num_rows, m1->num_cols + m2->num_cols);
-	for (int i = 0; i < m1->num_rows; i++)
+	for (unsigned int i = 0; i < m1->num_rows; i++)
 	{
-		for (int j = 0; j < m1->num_cols; j++)
+		for (unsigned int j = 0; j < m1->num_cols; j++)
 		{
 			matrix->data[i][j] = m1->data[i][j];
 		}
 	}
 
-	for (int i = 0; i < m2->num_rows; i++)
+	for (unsigned int i = 0; i < m2->num_rows; i++)
 	{
-		for (int j = 0; j < m2->num_cols; j++)
+		for (unsigned int j = 0; j < m2->num_cols; j++)
 		{
 			matrix->data[i][m1->num_cols + j] = m2->data[i][j];
 		}
@@ -1143,7 +1143,7 @@ Matrix *MatrixColumnStack(Matrix *m1, Matrix *m2)
 }
 
 /*Matrix Operatons */
-Matrix *MatrixAdd(Matrix *m1, Matrix *m2)
+Matrix* MatrixAdd(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1160,7 +1160,7 @@ Matrix *MatrixAdd(Matrix *m1, Matrix *m2)
 	if (!IsMatrixEqualDim(m1, m2))
 	{
 		fprintf(stderr, "Matrix 'm1(%u, %u)' &'m2(%u, %u)' are not equivalent\n",
-				m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
+			m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
 		return NULL;
 	}
 
@@ -1176,7 +1176,7 @@ Matrix *MatrixAdd(Matrix *m1, Matrix *m2)
 	return matrix;
 }
 
-Matrix *MatrixSubtract(Matrix *m1, Matrix *m2)
+Matrix* MatrixSubtract(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1193,7 +1193,7 @@ Matrix *MatrixSubtract(Matrix *m1, Matrix *m2)
 	if (!IsMatrixEqualDim(m1, m2))
 	{
 		fprintf(stderr, "Matrix 'm1(%u, %u)' &'m2(%u, %u)' are not equivalent\n",
-				m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
+			m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
 		return NULL;
 	}
 
@@ -1209,7 +1209,7 @@ Matrix *MatrixSubtract(Matrix *m1, Matrix *m2)
 	return matrix;
 }
 
-Matrix *MatrixMultiply(Matrix *m1, Matrix *m2)
+Matrix* MatrixMultiply(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1226,7 +1226,7 @@ Matrix *MatrixMultiply(Matrix *m1, Matrix *m2)
 	if (m1->num_cols != m2->num_rows)
 	{
 		fprintf(stderr, "Matrix 'm1->cols=%u' &'m2->rows=%u' are not equal; can't mulitply\n",
-				m1->num_cols, m2->num_rows);
+			m1->num_cols, m2->num_rows);
 		return NULL;
 	}
 
@@ -1245,7 +1245,7 @@ Matrix *MatrixMultiply(Matrix *m1, Matrix *m2)
 	return matrix;
 }
 
-Matrix *MatrixElementWiseMultiply(Matrix *m1, Matrix *m2)
+Matrix* MatrixElementWiseMultiply(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1262,7 +1262,7 @@ Matrix *MatrixElementWiseMultiply(Matrix *m1, Matrix *m2)
 	if (!IsMatrixEqualDim(m1, m2))
 	{
 		fprintf(stderr, "Matrix 'm1(%u, %u)' &'m2(%u, %u)' are not equivalent\n",
-				m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
+			m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
 		return NULL;
 	}
 
@@ -1278,7 +1278,7 @@ Matrix *MatrixElementWiseMultiply(Matrix *m1, Matrix *m2)
 	return matrix;
 }
 
-Matrix *MatrixAddWithBroadcast(Matrix *m1, Matrix *m2)
+Matrix* MatrixAddWithBroadcast(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1310,7 +1310,7 @@ Matrix *MatrixAddWithBroadcast(Matrix *m1, Matrix *m2)
 	return result;
 }
 
-Matrix *MatrixSubtractWithBroadcast(Matrix *m1, Matrix *m2)
+Matrix* MatrixSubtractWithBroadcast(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1342,7 +1342,7 @@ Matrix *MatrixSubtractWithBroadcast(Matrix *m1, Matrix *m2)
 	return result;
 }
 
-Matrix *MatrixMultiplyWithBroadcast(Matrix *m1, Matrix *m2)
+Matrix* MatrixMultiplyWithBroadcast(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1371,7 +1371,7 @@ Matrix *MatrixMultiplyWithBroadcast(Matrix *m1, Matrix *m2)
 	return result;
 }
 
-Matrix *MatrixElementWiseMultiplyWithBroadcast(Matrix *m1, Matrix *m2)
+Matrix* MatrixElementWiseMultiplyWithBroadcast(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1422,7 +1422,7 @@ void MatrixTranspose(Matrix *m)
 	}
 }
 
-double MatrixTrace(Matrix *m)
+double MatrixTrace(const Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -1445,7 +1445,7 @@ double MatrixTrace(Matrix *m)
 	return trace;
 }
 
-double MatrixDeterminant(Matrix *m)
+double MatrixDeterminant(const Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -1489,7 +1489,7 @@ double MatrixDeterminant(Matrix *m)
 			subRow++;
 		}
 
-		det += pow(-1, i) * m->data[0][i] * MatrixDeterminant(subMatrix);
+		det += pow(-1, i) *m->data[0][i] * MatrixDeterminant(subMatrix);
 		MatrixFree(subMatrix);
 	}
 
@@ -1538,7 +1538,7 @@ void MatrixRowEchelon(Matrix *m)
 				double c = MatrixGet(m, i, lead);
 				for (unsigned int j = 0; j < m->num_cols; j++)
 				{
-					m->data[i][j] -= c * m->data[r][j];
+					m->data[i][j] -= c *m->data[r][j];
 				}
 			}
 		}
@@ -1583,7 +1583,7 @@ void MatrixReducedRowEchelon(Matrix *m)
 				value = MatrixGet(m, j, lead);
 				for (unsigned int c = 0; c < m->num_cols; c++)
 				{
-					m->data[j][c] -= value * m->data[r][c];
+					m->data[j][c] -= value *m->data[r][c];
 				}
 			}
 		}
@@ -1592,7 +1592,7 @@ void MatrixReducedRowEchelon(Matrix *m)
 	}
 }
 
-Matrix *MatrixRowEchelonGet(Matrix *m)
+Matrix* MatrixRowEchelonGet(const Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -1635,7 +1635,7 @@ Matrix *MatrixRowEchelonGet(Matrix *m)
 				double c = MatrixGet(matrix, i, lead);
 				for (unsigned int j = 0; j < matrix->num_cols; j++)
 				{
-					matrix->data[i][j] -= c * matrix->data[r][j];
+					matrix->data[i][j] -= c *matrix->data[r][j];
 				}
 			}
 		}
@@ -1646,7 +1646,7 @@ Matrix *MatrixRowEchelonGet(Matrix *m)
 	return matrix;
 }
 
-Matrix *MatrixReducedRowEchelonGet(Matrix *m)
+Matrix* MatrixReducedRowEchelonGet(const Matrix *m)
 {
 	if (m == NULL && IsMatrixInvertible(m) == false)
 	{
@@ -1683,7 +1683,7 @@ Matrix *MatrixReducedRowEchelonGet(Matrix *m)
 				value = MatrixGet(matrix, j, lead);
 				for (unsigned int c = 0; c < matrix->num_cols; c++)
 				{
-					matrix->data[j][c] -= value * matrix->data[r][c];
+					matrix->data[j][c] -= value *matrix->data[r][c];
 				}
 			}
 		}
@@ -1694,7 +1694,7 @@ Matrix *MatrixReducedRowEchelonGet(Matrix *m)
 	return matrix;
 }
 
-double MatrixColumnL2Norm(Matrix *m, unsigned int col)
+double MatrixColumnL2Norm(const Matrix *m, unsigned int col)
 {
 	if (m == NULL)
 	{
@@ -1717,7 +1717,7 @@ double MatrixColumnL2Norm(Matrix *m, unsigned int col)
 	return sqrt(doublesum);
 }
 
-Matrix *MatrixL2Norm(Matrix *m)
+Matrix* MatrixL2Norm(const Matrix *m)
 {
 	if (m == NULL)
 	{
@@ -1741,7 +1741,7 @@ Matrix *MatrixL2Norm(Matrix *m)
 	return matrix;
 }
 
-double MatrixCosineSimilarity(Matrix* m1, Matrix* m2)
+double MatrixCosineSimilarity(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1759,22 +1759,24 @@ double MatrixCosineSimilarity(Matrix* m1, Matrix* m2)
 	double m1_norm = 0.0;
 	double m2_norm = 0.0;
 
-	for (unsigned int i = 0; i < m1->num_rows; i++) {
+	for (unsigned int i = 0; i < m1->num_rows; i++)
+	{
 		dot_product += m1->data[i][0] * m2->data[i][0];
 		m1_norm += m1->data[i][0] * m1->data[i][0];
 		m2_norm += m2->data[i][0] * m2->data[i][0];
 	}
 
-	double denominator = sqrt(m1_norm * m2_norm);
+	double denominator = sqrt(m1_norm *m2_norm);
 
-	if (denominator == 0) {
+	if (denominator == 0)
+	{
 		return 0.0;
 	}
 
 	return dot_product / denominator;
 }
 
-double MatrixTSSSSimilarity(Matrix* m1, Matrix* m2) 
+double MatrixTSSSSimilarity(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1806,8 +1808,8 @@ double MatrixTSSSSimilarity(Matrix* m1, Matrix* m2)
 		fprintf(stderr, "Not a row matrix 'm2->num_rows != 1'%u\n", m2->num_rows);
 		return NULL;
 	}
-	
-	if (m1->num_cols != m2->num_cols) 
+
+	if (m1->num_cols != m2->num_cols)
 	{
 		fprintf(stderr, "Not a row matrix 'm1->num_cols != m2->num_cols'%u!=%u\n", m1->num_cols, m2->num_cols);
 		return -1;
@@ -1821,13 +1823,12 @@ double MatrixTSSSSimilarity(Matrix* m1, Matrix* m2)
 	double var_m2 = MatrixColumnL2Norm(m2, 0) / m2->num_cols;
 
 	// Compute the TS-SS similarity
-	double ts_ss_similarity = 1 - tsss_distance / sqrt(m1->num_cols * var_m1 * var_m2);
+	double ts_ss_similarity = 1 - tsss_distance / sqrt(m1->num_cols *var_m1 *var_m2);
 
 	return ts_ss_similarity;
 }
 
-
-double MatrixEuclideanDistance(Matrix* m1, Matrix* m2)
+double MatrixEuclideanDistance(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1842,16 +1843,19 @@ double MatrixEuclideanDistance(Matrix* m1, Matrix* m2)
 	}
 
 	double sum_squares = 0.0;
-	for (unsigned int i = 0; i < m1->num_rows; i++) {
-		for (unsigned int j = 0; j < m1->num_cols; j++) {
+	for (unsigned int i = 0; i < m1->num_rows; i++)
+	{
+		for (unsigned int j = 0; j < m1->num_cols; j++)
+		{
 			double diff = m1->data[i][j] - m2->data[i][j];
 			sum_squares += diff * diff;
 		}
 	}
+
 	return sqrt(sum_squares);
 }
 
-double MatrixManhattanDistance(Matrix* m1, Matrix* m2) 
+double MatrixManhattanDistance(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1866,15 +1870,18 @@ double MatrixManhattanDistance(Matrix* m1, Matrix* m2)
 	}
 
 	double dist = 0.0;
-	for (unsigned int i = 0; i < m1->num_rows; i++) {
-		for (unsigned int j = 0; j < m1->num_cols; j++) {
+	for (unsigned int i = 0; i < m1->num_rows; i++)
+	{
+		for (unsigned int j = 0; j < m1->num_cols; j++)
+		{
 			dist += fabs(m1->data[i][j] - m2->data[i][j]);
 		}
 	}
+
 	return dist;
 }
 
-double MatrixMinkowskiDistance(Matrix* m1, Matrix* m2, int p) 
+double MatrixMinkowskiDistance(const Matrix *m1, const Matrix *m2, int p)
 {
 	if (m1 == NULL)
 	{
@@ -1889,11 +1896,14 @@ double MatrixMinkowskiDistance(Matrix* m1, Matrix* m2, int p)
 	}
 
 	double dist = 0.0;
-	for (unsigned int i = 0; i < m1->num_rows; i++) {
-		for (unsigned int j = 0; j < m1->num_cols; j++) {
+	for (unsigned int i = 0; i < m1->num_rows; i++)
+	{
+		for (unsigned int j = 0; j < m1->num_cols; j++)
+		{
 			dist += pow(fabs(m1->data[i][j] - m2->data[i][j]), p);
 		}
 	}
+
 	return pow(dist, 1.0 / p);
 }
 
