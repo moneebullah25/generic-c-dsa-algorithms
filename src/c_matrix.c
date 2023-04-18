@@ -448,6 +448,11 @@ Matrix* MatrixFromFile(const char *file)
 
 Matrix* MatrixCopy(const Matrix *m)
 {
+	if (m == NULL)
+	{
+		fprintf(stderr, "Invalid matrix passed\n");
+		return NULL;
+	}
 	Matrix *matrix = MatrixNew(m->num_rows, m->num_cols);
 	for (unsigned int r = 0; r < matrix->num_rows; r++)
 	{
@@ -508,19 +513,19 @@ double MatrixGet(const Matrix *m, unsigned row, unsigned col)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return NAN;
 	}
 
 	if (row >= m->num_rows)
 	{
 		fprintf(stderr, "Invalid 'row=%u' passed >= %u\n", row, m->num_rows);
-		return 0.;
+		return NAN;
 	}
 
 	if (col >= m->num_cols)
 	{
 		fprintf(stderr, "Invalid 'col=%u' passed >= %u\n", col, m->num_cols);
-		return 0.;
+		return NAN;
 	}
 
 	return m->data[row][col];
@@ -531,7 +536,7 @@ Matrix* MatrixColumnGet(const Matrix *m, unsigned int col)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (col >= m->num_cols)
@@ -554,7 +559,7 @@ Matrix* MatrixRowGet(const Matrix *m, unsigned int row)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return false;
+		return NULL;
 	}
 
 	if (row >= m->num_rows)
