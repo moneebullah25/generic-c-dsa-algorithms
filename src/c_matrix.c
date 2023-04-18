@@ -37,6 +37,7 @@ Matrix* MatrixEmptyLike(const Matrix *m)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
+		return NULL;
 	}
 
 	Matrix *matrix = MatrixEmpty(m->num_rows, m->num_cols);
