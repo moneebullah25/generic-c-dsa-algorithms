@@ -983,7 +983,7 @@ double MatrixCosineSimilarity(const Matrix* m1, const Matrix* m2);
  * The smaller the TS-SS similarity value, the less similar the two row vectors are.
  * Refer to the following paper for more information: https://github.com/taki0112/Vector_Similarity
 **/
-double MatrixTSSSSimilarity(const Matrix* m1, const Matrix* m2);
+double MatrixTSSSimilarity(const Matrix* m1, const Matrix* m2);
 
 /**
 * Compute the Euclidean distance between two column matrices.

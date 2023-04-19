@@ -1760,6 +1760,13 @@ double MatrixCosineSimilarity(const Matrix *m1, const Matrix *m2)
 		fprintf(stderr, "Invalid matrix m2 passed\n");
 		return NAN;
 	}
+	
+	if (!IsMatrixEqualDim(m1, m2))
+	{
+		fprintf(stderr, "Matrix 'm1(%u, %u)' &'m2(%u, %u)' are not equivalent\n",
+			m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
+		return NAN;
+	}
 
 	double dot_product = 0.0;
 	double m1_norm = 0.0;
@@ -1782,7 +1789,7 @@ double MatrixCosineSimilarity(const Matrix *m1, const Matrix *m2)
 	return dot_product / denominator;
 }
 
-double MatrixTSSSSimilarity(const Matrix *m1, const Matrix *m2)
+double MatrixTSSSimilarity(const Matrix *m1, const Matrix *m2)
 {
 	if (m1 == NULL)
 	{
@@ -1847,6 +1854,13 @@ double MatrixEuclideanDistance(const Matrix *m1, const Matrix *m2)
 		fprintf(stderr, "Invalid matrix m2 passed\n");
 		return NAN;
 	}
+	
+	if (!IsMatrixEqualDim(m1, m2))
+	{
+		fprintf(stderr, "Matrix 'm1(%u, %u)' &'m2(%u, %u)' are not equivalent\n",
+			m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
+		return NAN;
+	}
 
 	double sum_squares = 0.0;
 	for (unsigned int i = 0; i < m1->num_rows; i++)
@@ -1874,6 +1888,13 @@ double MatrixManhattanDistance(const Matrix *m1, const Matrix *m2)
 		fprintf(stderr, "Invalid matrix m2 passed\n");
 		return NAN;
 	}
+	
+	if (!IsMatrixEqualDim(m1, m2))
+	{
+		fprintf(stderr, "Matrix 'm1(%u, %u)' &'m2(%u, %u)' are not equivalent\n",
+			m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
+		return NAN;
+	}
 
 	double dist = 0.0;
 	for (unsigned int i = 0; i < m1->num_rows; i++)
@@ -1898,6 +1919,13 @@ double MatrixMinkowskiDistance(const Matrix *m1, const Matrix *m2, int p)
 	if (m2 == NULL)
 	{
 		fprintf(stderr, "Invalid matrix m2 passed\n");
+		return NAN;
+	}
+	
+	if (!IsMatrixEqualDim(m1, m2))
+	{
+		fprintf(stderr, "Matrix 'm1(%u, %u)' &'m2(%u, %u)' are not equivalent\n",
+			m1->num_rows, m1->num_cols, m2->num_rows, m2->num_cols);
 		return NAN;
 	}
 

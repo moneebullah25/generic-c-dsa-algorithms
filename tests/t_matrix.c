@@ -2,36 +2,36 @@
 #include "../includes/c_helper.h"
 #include "../includes/c_matrix.h"
 
-Test(MatrixEmpty, invalid_num_rows)
+Test(MatrixEmpty, InvalidNumRows)
 {
 	Matrix *matrix = MatrixEmpty(0, 5);
 	cr_assert_null(matrix, "MatrixEmpty should return NULL when num_rows is 0");
 	MatrixFree(matrix);
 }
 
-Test(MatrixEmpty, invalid_num_cols)
+Test(MatrixEmpty, InvalidNumCols)
 {
 	Matrix *matrix = MatrixEmpty(5, 0);
 	cr_assert_null(matrix, "MatrixEmpty should return NULL when num_cols is 0");
 	MatrixFree(matrix);
 }
 
-Test(MatrixEmptyLike, NULL_matrix)
+Test(MatrixEmptyLike, NullMatrix)
 {
 	Matrix *matrix = MatrixEmptyLike(NULL);
 	cr_assert_null(matrix, "MatrixEmptyLike should return NULL when a NULL matrix is passed");
 	MatrixFree(matrix);
 }
 
-Test(MatrixEmptyLike, valid_matrix)
+Test(MatrixEmptyLike, ValidMatrix)
 {
 	Matrix *m = MatrixAlloc(2, 3);
-	MatrixSetValue(m, 0, 0, 1.);
-	MatrixSetValue(m, 0, 1, 2.);
-	MatrixSetValue(m, 0, 2, 3.);
-	MatrixSetValue(m, 1, 0, 4.);
-	MatrixSetValue(m, 1, 1, 5.);
-	MatrixSetValue(m, 1, 2, 6.);
+	MatrixSet(m, 0, 0, 1.);
+	MatrixSet(m, 0, 1, 2.);
+	MatrixSet(m, 0, 2, 3.);
+	MatrixSet(m, 1, 0, 4.);
+	MatrixSet(m, 1, 1, 5.);
+	MatrixSet(m, 1, 2, 6.);
 	Matrix *matrix = MatrixEmptyLike(m);
 	cr_assert_not_null(matrix, "MatrixEmptyLike should return a non-NULL pointer");
 	cr_assert_eq(matrix->num_rows, m->num_rows, "MatrixEmptyLike should set the same number of rows as the passed matrix");
@@ -41,7 +41,7 @@ Test(MatrixEmptyLike, valid_matrix)
 	{
 		for (unsigned int c = 0; c < matrix->num_cols; c++)
 		{
-			cr_assert_eq(matrix->data[r][c], 0., "MatrixEmptyLike should initialize all elements to 0");
+			cr_assert_eq(MatrixGet(matrix, r, c), 0., "MatrixEmptyLike should initialize all elements to 0");
 		}
 	}
 
@@ -49,7 +49,7 @@ Test(MatrixEmptyLike, valid_matrix)
 	MatrixFree(matrix);
 }
 
-Test(MatrixEmpty, v alid_arguments)
+Test(MatrixEmpty, ValidArguments)
 {
 	Matrix *matrix = MatrixEmpty(3, 4);
 	cr_assert_not_null(matrix, "MatrixEmpty should return a non-NULL pointer");
@@ -60,28 +60,28 @@ Test(MatrixEmpty, v alid_arguments)
 	{
 		for (unsigned int c = 0; c < matrix->num_cols; c++)
 		{
-			cr_assert_eq(matrix->data[r][c], 0., "MatrixEmpty should initialize all elements to 0");
+			cr_assert_eq(MatrixGet(matrix, r, c), 0., "MatrixEmpty should initialize all elements to 0");
 		}
 	}
 
 	MatrixFree(matrix);
 }
 
-Test(MatrixNew, invalid_num_rows)
+Test(MatrixNew, InvalidNumRows)
 {
 	Matrix *matrix = MatrixNew(0, 5);
 	cr_assert_null(matrix, "MatrixNew should return NULL when num_rows is 0");
 	MatrixFree(matrix);
 }
 
-Test(MatrixNew, invalid_num_cols)
+Test(MatrixNew, InvalidNumCols)
 {
 	Matrix *matrix = MatrixNew(5, 0);
 	cr_assert_null(matrix, "MatrixNew should return NULL when num_cols is 0");
 	MatrixFree(matrix);
 }
 
-Test(MatrixNew, valid_arguments)
+Test(MatrixNew, ValidArguments)
 {
 	Matrix *matrix = MatrixNew(3, 4);
 	cr_assert_not_null(matrix, "MatrixNew should return a non-NULL pointer");
@@ -92,14 +92,14 @@ Test(MatrixNew, valid_arguments)
 	{
 		for (unsigned int c = 0; c < matrix->num_cols; c++)
 		{
-			cr_assert_eq(matrix->data[r][c], 0., "MatrixNew should initialize all elements to 0");
+			cr_assert_eq(MatrixGet(matrix, r, c), 0., "MatrixNew should initialize all elements to 0");
 		}
 	}
 
 	MatrixFree(matrix);
 }
 
-Test(MatrixNewLike, invalid_matrix)
+Test(MatrixNewLike, InValidMatrix)
 {
 	Matrix *m = NULL;
 	Matrix *matrix = MatrixNewLike(m);
@@ -108,7 +108,7 @@ Test(MatrixNewLike, invalid_matrix)
 	MatrixFree(matrix);
 }
 
-Test(MatrixNewLike, valid_matrix)
+Test(MatrixNewLike, ValidMatrix)
 {
 	Matrix *m = MatrixNew(3, 4);
 	Matrix *matrix = MatrixNewLike(m);
@@ -120,7 +120,7 @@ Test(MatrixNewLike, valid_matrix)
 	{
 		for (unsigned int c = 0; c < matrix->num_cols; c++)
 		{
-			cr_assert_eq(matrix->data[r][c], 0., "MatrixNewLike should initialize all elements to 0");
+			cr_assert_eq(MatrixGet(matrix, r, c) 0., "MatrixNewLike should initialize all elements to 0");
 		}
 	}
 
@@ -128,21 +128,21 @@ Test(MatrixNewLike, valid_matrix)
 	MatrixFree(matrix);
 }
 
-Test(MatrixRandom, invalid_num_rows)
+Test(MatrixRandom, InvalidNumRows)
 {
 	Matrix *matrix = MatrixRandom(0, 5, -1.0, 1.0);
 	cr_assert_null(matrix, "MatrixRandom should return NULL when num_rows is 0");
 	MatrixFree(matrix);
 }
 
-Test(MatrixRandom, invalid_num_cols)
+Test(MatrixRandom, InvalidNumCols)
 {
 	Matrix *matrix = MatrixRandom(5, 0, -1.0, 1.0);
 	cr_assert_null(matrix, "MatrixRandom should return NULL when num_cols is 0");
 	MatrixFree(matrix);
 }
 
-Test(MatrixRandom, valid_arguments)
+Test(MatrixRandom, ValidArguments)
 {
 	unsigned int num_rows = 3;
 	unsigned int num_cols = 4;
@@ -157,15 +157,15 @@ Test(MatrixRandom, valid_arguments)
 	{
 		for (unsigned int c = 0; c < matrix->num_cols; c++)
 		{
-			cr_assert_geq(matrix->data[r][c], min, "MatrixRandom should generate values greater than or equal to the minimum");
-			cr_assert_leq(matrix->data[r][c], max, "MatrixRandom should generate values less than or equal to the maximum");
+			cr_assert_geq(MatrixGet(matrix, r, c), min, "MatrixRandom should generate values greater than or equal to the minimum");
+			cr_assert_leq(MatrixGet(matrix, r, c), max, "MatrixRandom should generate values less than or equal to the maximum");
 		}
 	}
 
 	MatrixFree(matrix);
 }
 
-Test(MatrixRandomLike, invalid_matrix)
+Test(MatrixRandomLike, InValidMatrix)
 {
 	Matrix *m = NULL;
 	Matrix *matrix = MatrixRandomLike(m, -1.0, 1.0);
@@ -174,7 +174,7 @@ Test(MatrixRandomLike, invalid_matrix)
 	MatrixFree(matrix);
 }
 
-Test(MatrixRandomLike, valid_matrix)
+Test(MatrixRandomLike, ValidMatrix)
 {
 	unsigned int num_rows = 3;
 	unsigned int num_cols = 4;
@@ -190,8 +190,8 @@ Test(MatrixRandomLike, valid_matrix)
 	{
 		for (unsigned int c = 0; c < matrix->num_cols; c++)
 		{
-			cr_assert_geq(matrix->data[r][c], min, "MatrixRandomLike should generate values greater than or equal to the minimum");
-			cr_assert_leq(matrix->data[r][c], max, "MatrixRandomLike should generate values less than or equal to the maximum");
+			cr_assert_geq(MatrixGet(matrix, r, c), min, "MatrixRandomLike should generate values greater than or equal to the minimum");
+			cr_assert_leq(MatrixGet(matrix, r, c), max, "MatrixRandomLike should generate values less than or equal to the maximum");
 		}
 	}
 
@@ -199,7 +199,7 @@ Test(MatrixRandomLike, valid_matrix)
 	MatrixFree(matrix);
 }
 
-Test(MatrixSquare, valid_size)
+Test(MatrixSquare, ValidSize)
 {
 	Matrix *matrix = MatrixSquare(3);
 	cr_assert_not_null(matrix, "MatrixSquare should return a non-NULL pointer");
@@ -209,14 +209,14 @@ Test(MatrixSquare, valid_size)
 	MatrixFree(matrix);
 }
 
-Test(MatrixSquareLike, invalid_matrix)
+Test(MatrixSquareLike, InValidMatrix)
 {
 	Matrix *matrix = MatrixSquareLike(NULL);
 	cr_assert_null(matrix, "MatrixSquareLike should return NULL when passed an invalid matrix");
 	MatrixFree(matrix);
 }
 
-Test(MatrixSquareLike, non_square_matrix)
+Test(MatrixSquareLike, NonSquareMatrix)
 {
 	Matrix *m = MatrixNew(2, 3);
 	Matrix *matrix = MatrixSquareLike(m);
@@ -225,7 +225,7 @@ Test(MatrixSquareLike, non_square_matrix)
 	MatrixFree(matrix);
 }
 
-Test(MatrixSquareLike, valid_matrix)
+Test(MatrixSquareLike, ValidMatrix)
 {
 	Matrix *m = MatrixSquare(4);
 	Matrix *matrix = MatrixSquareLike(m);
@@ -237,7 +237,7 @@ Test(MatrixSquareLike, valid_matrix)
 	MatrixFree(matrix);
 }
 
-Test(MatrixSquareRandom, valid_size_and_range)
+Test(MatrixSquareRandom, ValidSizeAndRange)
 {
 	double min = -1.0;
 	double max = 1.0;
@@ -251,7 +251,7 @@ Test(MatrixSquareRandom, valid_size_and_range)
 	{
 		for (unsigned int c = 0; c < matrix->num_cols; c++)
 		{
-			if (matrix->data[r][c] < min || matrix->data[r][c] > max)
+			if (MatrixGet(matrix, r, c) < min || MatrixGet(matrix, r, c) > max)
 			{
 				in_range = false;
 				break;
@@ -264,7 +264,7 @@ Test(MatrixSquareRandom, valid_size_and_range)
 	MatrixFree(matrix);
 }
 
-Test(MatrixSquareRandom, invalid_size)
+Test(MatrixSquareRandom, InValidSize)
 {
 	double min = -1.0;
 	double max = 1.0;
@@ -273,7 +273,7 @@ Test(MatrixSquareRandom, invalid_size)
 	MatrixFree(matrix);
 }
 
-Test(MatrixSquareRandomLike, invalid_matrix)
+Test(MatrixSquareRandomLike, InValidMatrix)
 {
 	double min = -1.0;
 	double max = 1.0;
@@ -282,7 +282,7 @@ Test(MatrixSquareRandomLike, invalid_matrix)
 	MatrixFree(matrix);
 }
 
-Test(MatrixSquareRandomLike, not_square_matrix)
+Test(MatrixSquareRandomLike, NotSquareMatrix)
 {
 	double min = -1.0;
 	double max = 1.0;
@@ -291,7 +291,7 @@ Test(MatrixSquareRandomLike, not_square_matrix)
 	MatrixFree(matrix);
 }
 
-Test(MatrixZero, valid_size)
+Test(MatrixZero, ValidSize)
 {
 	Matrix *matrix = MatrixZero(3, 2);
 	cr_assert_not_null(matrix, "MatrixZero should return a non-NULL pointer");
@@ -302,21 +302,21 @@ Test(MatrixZero, valid_size)
 	{
 		for (unsigned int c = 0; c < matrix->num_cols; c++)
 		{
-			cr_assert_eq(matrix->data[r][c], 0.0, "MatrixZero should initialize all elements to zero");
+			cr_assert_eq(MatrixGet(matrix, r, c), 0.0, "MatrixZero should initialize all elements to zero");
 		}
 	}
 
 	MatrixFree(matrix);
 }
 
-Test(MatrixZeroLike, invalid_matrix)
+Test(MatrixZeroLike, InValidMatrix)
 {
 	Matrix *matrix = MatrixZeroLike(NULL);
 	cr_assert_null(matrix, "MatrixZeroLike should return NULL when passed an invalid matrix");
 	MatrixFree(matrix);
 }
 
-Test(MatrixOne, valid_size)
+Test(MatrixOne, ValidSize)
 {
 	Matrix *matrix = MatrixOne(2, 3);
 	cr_assert_not_null(matrix, "MatrixOne should return a non-NULL pointer");
@@ -327,21 +327,21 @@ Test(MatrixOne, valid_size)
 	{
 		for (unsigned int c = 0; c < matrix->num_cols; c++)
 		{
-			cr_assert_eq(matrix->data[r][c], 1., "MatrixOne should set all elements to 1");
+			cr_assert_eq(MatrixGet(matrix, r, c), 1., "MatrixOne should set all elements to 1");
 		}
 	}
 
 	MatrixFree(matrix);
 }
 
-Test(MatrixOneLike, invalid_matrix)
+Test(MatrixOneLike, InValidMatrix)
 {
 	Matrix *matrix = MatrixOneLike(NULL);
 	cr_assert_null(matrix, "MatrixOneLike should return NULL when passed an invalid matrix");
 	MatrixFree(matrix);
 }
 
-Test(MatrixN, valid_size_and_value)
+Test(MatrixN, ValidSizeAndValue)
 {
 	Matrix *matrix = MatrixN(2, 3, 5.);
 	cr_assert_not_null(matrix, "MatrixN should return a non-NULL pointer");
@@ -351,41 +351,41 @@ Test(MatrixN, valid_size_and_value)
 	{
 		for (unsigned int c = 0; c < matrix->num_cols; c++)
 		{
-			cr_assert_eq(matrix->data[r][c], 5., "MatrixN should set all elements to the given value");
+			cr_assert_eq(MatrixGet(matrix, r, c), 5., "MatrixN should set all elements to the given value");
 		}
 	}
 
 	MatrixFree(matrix);
 }
 
-Test(MatrixNLike, invalid_matrix)
+Test(MatrixNLike, InValidMatrix)
 {
 	Matrix *matrix = MatrixNLike(NULL, 10.);
 	cr_assert_null(matrix, "MatrixNLike should return NULL when passed an invalid matrix");
 	MatrixFree(matrix);
 }
 
-Test(MatrixIdentity, valid_size)
+Test(MatrixIdentity, ValidSize)
 {
 	Matrix *matrix = MatrixIdentity(3);
 	cr_assert_not_null(matrix, "MatrixIdentity should return a non-NULL pointer");
 	cr_assert_eq(matrix->num_rows, 3, "MatrixIdentity should set the correct number of rows");
 	cr_assert_eq(matrix->num_cols, 3, "MatrixIdentity should set the correct number of columns");
 	cr_assert_eq(matrix->is_square, true, "MatrixIdentity should set is_square to true for a square matrix");
-	cr_assert_eq(matrix->data[0][0], 1.0, "MatrixIdentity should set the diagonal elements to 1");
-	cr_assert_eq(matrix->data[1][1], 1.0, "MatrixIdentity should set the diagonal elements to 1");
-	cr_assert_eq(matrix->data[2][2], 1.0, "MatrixIdentity should set the diagonal elements to 1");
+	cr_assert_eq(MatrixGet(matrix, 0, 0), 1.0, "MatrixIdentity should set the diagonal elements to 1");
+	cr_assert_eq(MatrixGet(matrix, 1, 1), 1.0, "MatrixIdentity should set the diagonal elements to 1");
+	cr_assert_eq(MatrixGet(matrix, 2, 2), 1.0, "MatrixIdentity should set the diagonal elements to 1");
 	MatrixFree(matrix);
 }
 
-Test(MatrixIdentityLike, invalid_matrix)
+Test(MatrixIdentityLike, InValidMatrix)
 {
 	Matrix *matrix = MatrixIdentityLike(NULL);
 	cr_assert_null(matrix, "MatrixIdentityLike should return NULL when passed an invalid matrix");
 	MatrixFree(matrix);
 }
 
-Test(MatrixIdentityLike, non_square_matrix)
+Test(MatrixIdentityLike, NonSquareMatrix)
 {
 	Matrix *matrix = MatrixNew(2, 3);
 	Matrix *identity = MatrixIdentityLike(matrix);
@@ -394,28 +394,28 @@ Test(MatrixIdentityLike, non_square_matrix)
 	MatrixFree(identity);
 }
 
-Test(MatrixEye, valid_k)
+Test(MatrixEye, ValidK)
 {
 	Matrix *matrix = MatrixEye(4, 1);
 	cr_assert_not_null(matrix, "MatrixEye should return a non-NULL pointer");
 	cr_assert_eq(matrix->num_rows, 4, "MatrixEye should set the correct number of rows");
 	cr_assert_eq(matrix->num_cols, 4, "MatrixEye should set the correct number of columns");
 	cr_assert_eq(matrix->is_square, true, "MatrixEye should set is_square to true for a square matrix");
-	cr_assert_eq(matrix->data[0][1], 1.0, "MatrixEye should set the correct value for k = 1");
-	cr_assert_eq(matrix->data[1][2], 1.0, "MatrixEye should set the correct value for k = 1");
-	cr_assert_eq(matrix->data[2][3], 1.0, "MatrixEye should set the correct value for k = 1");
-	cr_assert_eq(matrix->data[3][3], 1.0, "MatrixEye should set the correct value for k = 1");
+	cr_assert_eq(MatrixGet(matrix, 0, 1), 1.0, "MatrixEye should set the correct value for k = 1");
+	cr_assert_eq(MatrixGet(matrix, 1, 2), 1.0, "MatrixEye should set the correct value for k = 1");
+	cr_assert_eq(MatrixGet(matrix, 2, 3), 1.0, "MatrixEye should set the correct value for k = 1");
+	cr_assert_eq(MatrixGet(matrix, 3, 3), 1.0, "MatrixEye should set the correct value for k = 1");
 	MatrixFree(matrix);
 }
 
-Test(MatrixEye, invalid_k)
+Test(MatrixEye, InValidK)
 {
 	Matrix *matrix = MatrixEye(4, 4);
 	cr_assert_null(matrix, "MatrixEye should return NULL for an invalid k");
 	MatrixFree(matrix);
 }
 
-Test(MatrixEyeLike, valid_k)
+Test(MatrixEyeLike, ValidK)
 {
 	Matrix *m = MatrixSquare(4);
 	Matrix *matrix = MatrixEyeLike(m, -1);
@@ -423,22 +423,22 @@ Test(MatrixEyeLike, valid_k)
 	cr_assert_eq(matrix->num_rows, 4, "MatrixEyeLike should set the correct number of rows");
 	cr_assert_eq(matrix->num_cols, 4, "MatrixEyeLike should set the correct number of columns");
 	cr_assert_eq(matrix->is_square, true, "MatrixEyeLike should set is_square to true for a square matrix");
-	cr_assert_eq(matrix->data[1][0], 1.0, "MatrixEyeLike should set the correct value for k = -1");
-	cr_assert_eq(matrix->data[2][1], 1.0, "MatrixEyeLike should set the correct value for k = -1");
-	cr_assert_eq(matrix->data[3][2], 1.0, "MatrixEyeLike should set the correct value for k = -1");
-	cr_assert_eq(matrix->data[0][0], 1.0, "MatrixEyeLike should set the correct value for k = -1");
+	cr_assert_eq(MatrixGet(matrix, 1, 0), 1.0, "MatrixEyeLike should set the correct value for k = -1");
+	cr_assert_eq(MatrixGet(matrix, 2, 1), 1.0, "MatrixEyeLike should set the correct value for k = -1");
+	cr_assert_eq(MatrixGet(matrix, 3, 2), 1.0, "MatrixEyeLike should set the correct value for k = -1");
+	cr_assert_eq(MatrixGet(matrix, 0, 0), 1.0, "MatrixEyeLike should set the correct value for k = -1");
 	MatrixFree(m);
 	MatrixFree(matrix);
 }
 
-Test(MatrixEyeLike, invalid_matrix)
+Test(MatrixEyeLike, InValidMatrix)
 {
 	Matrix *matrix = MatrixEyeLike(NULL, 1);
 	cr_assert_null(matrix, "MatrixEyeLike should return NULL when passed an invalid matrix");
 	MatrixFree(matrix);
 }
 
-Test(MatrixEyeLike, non_square_matrix)
+Test(MatrixEyeLike, NonSquareMatrix)
 {
 	Matrix *m = MatrixNew(3, 4);
 	Matrix *matrix = MatrixEyeLike(m, 1);
@@ -447,7 +447,7 @@ Test(MatrixEyeLike, non_square_matrix)
 	MatrixFree(matrix);
 }
 
-Test(MatrixARange, invalid_start_stop_values)
+Test(MatrixARange, InValidStartStopValues)
 {
 	Matrix *matrix = MatrixARange(5, 1, 1);
 	cr_assert_null(matrix, "MatrixARange should return NULL when passed invalid start and stop values");
@@ -473,7 +473,7 @@ Test(MatrixARange, invalid_start_stop_values)
 	MatrixFree(matrix);
 }
 
-Test(MatrixLinearSpace, invalid_n)
+Test(MatrixLinearSpace, InValidN)
 {
 	double start = 0.0;
 	double stop = 1.0;
@@ -484,7 +484,7 @@ Test(MatrixLinearSpace, invalid_n)
 	MatrixFree(matrix);
 }
 
-Test(MatrixLinearSpace, invalid_start_stop)
+Test(MatrixLinearSpace, InValidStartStop)
 {
 	double start = 1.0;
 	double stop = 0.0;
@@ -494,7 +494,7 @@ Test(MatrixLinearSpace, invalid_start_stop)
 	MatrixFree(matrix);
 }
 
-Test(MatrixLinearSpace, basic_test)
+Test(MatrixLinearSpace, BasicTest)
 {
 	double start = 0.0;
 	double stop = 1.0;
@@ -504,20 +504,20 @@ Test(MatrixLinearSpace, basic_test)
 
 	for (unsigned int i = 0; i < n; i++)
 	{
-		cr_assert_double_eq(matrix->data[0][i], expected[i], 1e-6, "MatrixLinearSpace output for element %d is %f but expected %f", i, matrix->data[0][i], expected[i]);
+		cr_assert_double_eq(MatrixGet(matrix, 0, i), expected[i], 1e-6, "MatrixLinearSpace output for element %d is %f but expected %f", i, MatrixGet(matrix, 0, i), expected[i]);
 	}
 
 	MatrixFree(matrix);
 }
 
-Test(MatrixLogSpace, invalid_n)
+Test(MatrixLogSpace, InValidN)
 {
 	Matrix *matrix = MatrixLogSpace(1.0, 10.0, 1);
 	cr_assert_null(matrix, "MatrixLogSpace should return NULL when passed n<2");
 	MatrixFree(matrix);
 }
 
-Test(MatrixLogSpace, invalid_start_stop)
+Test(MatrixLogSpace, InValidStartStop)
 {
 	Matrix *matrix1 = MatrixLogSpace(10.0, 1.0, 5);
 	cr_assert_null(matrix1, "MatrixLogSpace should return NULL when passed start >= stop");
@@ -529,7 +529,7 @@ Test(MatrixLogSpace, invalid_start_stop)
 	MatrixFree(matrix2);
 }
 
-Test(MatrixLogSpace, valid_inputs)
+Test(MatrixLogSpace, ValidInputs)
 {
 	Matrix *matrix = MatrixLogSpace(1.0, 10.0, 5);
 
@@ -538,16 +538,16 @@ Test(MatrixLogSpace, valid_inputs)
 	cr_assert_eq(matrix->num_rows, 1, "Matrix should have 1 row");
 	cr_assert_eq(matrix->num_cols, 5, "Matrix should have 5 columns");
 
-	cr_assert_eq(matrix->data[0][0], 10.0, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[0][1], 31.622776601683793, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[0][2], 100.0, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[0][3], 316.22776601683796, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[0][4], 1000.0, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 0), 10.0, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 1), 31.622776601683793, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 2), 100.0, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 3), 316.22776601683796, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 4), 1000.0, "Incorrect value in matrix");
 
 	MatrixFree(matrix);
 }
 
-Test(MatrixGeometrySpace, invalid_n)
+Test(MatrixGeometrySpace, InValidN)
 {
 	Matrix *matrix = MatrixGeometrySpace(1.0, 10.0, 0);
 	cr_assert_null(matrix, "MatrixGeometrySpace should return NULL when passed n == 0");
@@ -555,7 +555,7 @@ Test(MatrixGeometrySpace, invalid_n)
 	MatrixFree(matrix);
 }
 
-Test(MatrixGeometrySpace, invalid_start_stop)
+Test(MatrixGeometrySpace, InValidStartStop)
 {
 	Matrix *matrix1 = MatrixGeometrySpace(10.0, 1.0, 5);
 	cr_assert_null(matrix1, "MatrixGeometrySpace should return NULL when passed start >= stop");
@@ -567,7 +567,7 @@ Test(MatrixGeometrySpace, invalid_start_stop)
 	MatrixFree(matrix2);
 }
 
-Test(MatrixGeometrySpace, valid_inputs)
+Test(MatrixGeometrySpace, ValidInputs)
 {
 	Matrix *matrix = MatrixGeometrySpace(1.0, 10.0, 5);
 	cr_assert_not_null(matrix, "MatrixGeometrySpace should return a non-null matrix");
@@ -575,16 +575,16 @@ Test(MatrixGeometrySpace, valid_inputs)
 	cr_assert_eq(matrix->num_rows, 1, "Matrix should have 1 row");
 	cr_assert_eq(matrix->num_cols, 5, "Matrix should have 5 columns");
 
-	cr_assert_eq(matrix->data[0][0], 1.0, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[0][1], 2.5118864315095824, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[0][2], 6.309573444801933, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[0][3], 15.848931924611133, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[0][4], 39.810717055349734, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 0), 1.0, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 1), 2.5118864315095824, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 2), 6.309573444801933, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 3), 15.848931924611133, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 4), 39.810717055349734, "Incorrect value in matrix");
 
 	MatrixFree(matrix);
 }
 
-Test(MatrixFrom, invalid_values)
+Test(MatrixFrom, InValidValues)
 {
 	const double values[] = { 1.0, 2.0, 3.0 };
 
@@ -594,7 +594,7 @@ Test(MatrixFrom, invalid_values)
 	MatrixFree(matrix);
 }
 
-Test(MatrixFrom, valid_values)
+Test(MatrixFrom, ValidValues)
 {
 	const double values[] = { 1.0, 2.0, 3.0, 4.0 };
 
@@ -605,15 +605,15 @@ Test(MatrixFrom, valid_values)
 	cr_assert_eq(matrix->num_rows, 2, "Matrix should have 2 rows");
 	cr_assert_eq(matrix->num_cols, 2, "Matrix should have 2 columns");
 
-	cr_assert_eq(matrix->data[0][0], 1.0, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[0][1], 2.0, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[1][0], 3.0, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[1][1], 4.0, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 0), 1.0, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 1), 2.0, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 1, 0), 3.0, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 1, 1), 4.0, "Incorrect value in matrix");
 
 	MatrixFree(matrix);
 }
 
-Test(MatrixFrom, empty_values)
+Test(MatrixFrom, EmptyValues)
 {
 	const double values[] = {};
 
@@ -624,17 +624,16 @@ Test(MatrixFrom, empty_values)
 	cr_assert_eq(matrix->num_rows, 2, "Matrix should have 2 rows");
 	cr_assert_eq(matrix->num_cols, 2, "Matrix should have 2 columns");
 
-	cr_assert_eq(matrix->data[0][0], 0.0, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[0][1], 0.0, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[1][0], 0.0, "Incorrect value in matrix");
-	cr_assert_eq(matrix->data[1][1], 0.0, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 0), 0.0, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 0, 1), 0.0, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 1, 0), 0.0, "Incorrect value in matrix");
+	cr_assert_eq(MatrixGet(matrix, 1, 1), 0.0, "Incorrect value in matrix");
 
 	MatrixFree(matrix);
 }
 
-Test(MatrixCopy, non_null_input)
+Test(MatrixCopy, NonNullInput)
 {
-
 	double data[4] = { 1.0, 2.0, 3.0, 4.0 };
 
 	Matrix *m1 = MatrixFrom(2, 2, 4, data);
@@ -644,16 +643,16 @@ Test(MatrixCopy, non_null_input)
 	cr_assert_eq(m2->num_rows, m1->num_rows, "Copied matrix has incorrect number of rows");
 	cr_assert_eq(m2->num_cols, m1->num_cols, "Copied matrix has incorrect number of columns");
 
-	cr_assert_eq(m2->data[0][0], m1->data[0][0], "Incorrect value in copied matrix");
-	cr_assert_eq(m2->data[0][1], m1->data[0][1], "Incorrect value in copied matrix");
-	cr_assert_eq(m2->data[1][0], m1->data[1][0], "Incorrect value in copied matrix");
-	cr_assert_eq(m2->data[1][1], m1->data[1][1], "Incorrect value in copied matrix");
+	cr_assert_eq(MatrixGet(m2, 0, 0), MatrixGet(m1, 0, 0), "Incorrect value in copied matrix");
+	cr_assert_eq(MatrixGet(m2, 0, 1), MatrixGet(m1, 0, 1), "Incorrect value in copied matrix");
+	cr_assert_eq(MatrixGet(m2, 1, 0), MatrixGet(m1, 1, 0), "Incorrect value in copied matrix");
+	cr_assert_eq(MatrixGet(m2, 1, 1), MatrixGet(m1, 1, 1), "Incorrect value in copied matrix");
 
 	MatrixFree(m1);
 	MatrixFree(m2);
 }
 
-Test(MatrixCopy, null_input)
+Test(MatrixCopy, NullInput)
 {
 	Matrix *m = NULL;
 	Matrix *copy = MatrixCopy(m);
@@ -662,7 +661,7 @@ Test(MatrixCopy, null_input)
 	MatrixFree(copy);
 }
 
-Test(IsMatrixEqualDim, same_dimensions)
+Test(IsMatrixEqualDim, SameDimensions)
 {
 	Matrix *matrix1 = MatrixNew(2, 3);
 	Matrix *matrix2 = MatrixNew(2, 3);
@@ -673,7 +672,7 @@ Test(IsMatrixEqualDim, same_dimensions)
 	MatrixFree(matrix2);
 }
 
-Test(IsMatrixEqualDim, different_rows)
+Test(IsMatrixEqualDim, DifferentRows)
 {
 	Matrix *matrix1 = MatrixNew(2, 3);
 	Matrix *matrix2 = MatrixNew(3, 3);
@@ -684,7 +683,7 @@ Test(IsMatrixEqualDim, different_rows)
 	MatrixFree(matrix2);
 }
 
-Test(IsMatrixEqualDim, different_columns)
+Test(IsMatrixEqualDim, DifferentColumns)
 {
 	Matrix *matrix1 = MatrixNew(2, 3);
 	Matrix *matrix2 = MatrixNew(2, 2);
@@ -695,58 +694,57 @@ Test(IsMatrixEqualDim, different_columns)
 	MatrixFree(matrix2);
 }
 
-Test(PrintMatrix, valid_input)
+Test(PrintMatrix, ValidInput)
 {
 	Matrix *matrix = MatrixNew(2, 2);
-	matrix->data[0][0] = 1.0;
-	matrix->data[0][1] = 2.0;
-	matrix->data[1][0] = 3.0;
-	matrix->data[1][1] = 4.0;
+	MatrixGet(matrix, 0, 0) = 1.0;
+	MatrixGet(matrix, 0, 1) = 2.0;
+	MatrixGet(matrix, 1, 0) = 3.0;
+	MatrixGet(matrix, 1, 1) = 4.0;
 
 	PrintMatrix(matrix, "%.2f");
 
 	MatrixFree(matrix);
 }
 
-Test(PrintMatrix, invalid_input)
+Test(PrintMatrix, InValidInput)
 {
 	PrintMatrix(NULL, "%.2f");
 }
 
-Test(IsMatrixInvertible, invertible_matrix)
+Test(IsMatrixInvertible, InvertibleMatrix)
 {
 	Matrix *matrix = MatrixNew(2, 2);
-	matrix->data[0][0] = 1.0;
-	matrix->data[0][1] = 2.0;
-	matrix->data[1][0] = 3.0;
-	matrix->data[1][1] = 4.0;
+	MatrixGet(matrix, 0, 0) = 1.0;
+	MatrixGet(matrix, 0, 1) = 2.0;
+	MatrixGet(matrix, 1, 0) = 3.0;
+	MatrixGet(matrix, 1, 1) = 4.0;
 
 	cr_assert(IsMatrixInvertible(matrix), "Matrix should be invertible");
 
 	MatrixFree(matrix);
 }
 
-Test(IsMatrixInvertible, non_invertible_matrix)
+Test(IsMatrixInvertible, NonInvertibleMatrix)
 {
 	Matrix *matrix = MatrixNew(2, 2);
-	matrix->data[0][0] = 1.0;
-	matrix->data[0][1] = 2.0;
-	matrix->data[1][0] = 2.0;
-	matrix->data[1][1] = 4.0;
+	MatrixGet(matrix, 0, 0) = 1.0;
+	MatrixGet(matrix, 0, 1) = 2.0;
+	MatrixGet(matrix, 1, 0) = 2.0;
+	MatrixGet(matrix, 1, 1) = 4.0;
 
 	cr_assert_not(IsMatrixInvertible(matrix), "Matrix should not be invertible");
 
 	MatrixFree(matrix);
 }
 
-Test(IsMatrixInvertible, invalid_input)
+Test(IsMatrixInvertible, InValidInput)
 {
 	cr_assert_not(IsMatrixInvertible(NULL), "NULL matrix should not be invertible");
 }
 
-Test(MatrixGet, tests)
+Test(MatrixGet, Tests)
 {
-
 	double values1[] = { 1., 2., 3., 4. };
 
 	Matrix *m1 = MatrixFrom(2, 2, 4, values1);
@@ -782,7 +780,7 @@ Test(MatrixGet, tests)
 	MatrixFree(m5);
 }
 
-Test(MatrixColumnGet, valid_input)
+Test(MatrixColumnGet, ValidInput)
 {
 	double values[] = { 1, 2, 3, 4, 5, 6 };
 
@@ -794,14 +792,14 @@ Test(MatrixColumnGet, valid_input)
 	cr_assert_eq(column->num_rows, 2, "Matrix column has incorrect number of rows");
 	cr_assert_eq(column->num_cols, 1, "Matrix column has incorrect number of columns");
 
-	cr_assert_eq(column->data[0][0], 2, "Matrix column has incorrect value at row 0, col 0");
-	cr_assert_eq(column->data[1][0], 5, "Matrix column has incorrect value at row 1, col 0");
+	cr_assert_eq(MatrixGet(column, 0, 0), 2, "Matrix column has incorrect value at row 0, col 0");
+	cr_assert_eq(MatrixGet(column, 1, 0), 5, "Matrix column has incorrect value at row 1, col 0");
 
 	MatrixFree(m);
 	MatrixFree(column);
 }
 
-Test(MatrixColumnGet, invalid_input)
+Test(MatrixColumnGet, InValidInput)
 {
 	double values[] = { 1, 2, 3, 4, 5, 6 };
 
@@ -813,7 +811,7 @@ Test(MatrixColumnGet, invalid_input)
 	MatrixFree(m);
 }
 
-Test(MatrixRowGet, valid_input)
+Test(MatrixRowGet, ValidInput)
 {
 	double values[] = { 1, 2, 3, 4, 5, 6 };
 
@@ -825,15 +823,15 @@ Test(MatrixRowGet, valid_input)
 	cr_assert_eq(row->num_rows, 1, "Matrix row has incorrect number of rows");
 	cr_assert_eq(row->num_cols, 3, "Matrix row has incorrect number of columns");
 
-	cr_assert_eq(row->data[0][0], 1, "Matrix row has incorrect value at row 0, col 0");
-	cr_assert_eq(row->data[0][1], 2, "Matrix row has incorrect value at row 0, col 1");
-	cr_assert_eq(row->data[0][2], 3, "Matrix row has incorrect value at row 0, col 2");
+	cr_assert_eq(MatrixGet(row, 0, 0), 1, "Matrix row has incorrect value at row 0, col 0");
+	cr_assert_eq(MatrixGet(row, 0, 1), 2, "Matrix row has incorrect value at row 0, col 1");
+	cr_assert_eq(MatrixGet(row, 0, 2), 3, "Matrix row has incorrect value at row 0, col 2");
 
 	MatrixFree(m);
 	MatrixFree(row);
 }
 
-Test(MatrixRowGet, invalid_input)
+Test(MatrixRowGet, InValidInput)
 {
 	double values[] = { 1, 2, 3, 4, 5, 6 };
 
@@ -845,18 +843,16 @@ Test(MatrixRowGet, invalid_input)
 	MatrixFree(m);
 }
 
-Test(MatrixSet, test_null_matrix)
+Test(MatrixSet, NullMatrix)
 {
-
 	Matrix *m = NULL;
 	MatrixSet(m, 0, 0, 1.0);
 
 	cr_assert(1);
 }
 
-Test(MatrixSet, test_invalid_row)
+Test(MatrixSet, InvalidRow)
 {
-
 	Matrix *m = MatrixNew(2, 2);
 	MatrixSet(m, 2, 0, 1.0);
 
@@ -864,9 +860,8 @@ Test(MatrixSet, test_invalid_row)
 	cr_assert(1);
 }
 
-Test(MatrixSet, test_invalid_col)
+Test(MatrixSet, InvalidCol)
 {
-
 	Matrix *m = MatrixNew(2, 2);
 	MatrixSet(m, 0, 2, 1.0);
 
@@ -874,9 +869,8 @@ Test(MatrixSet, test_invalid_col)
 	cr_assert(1);
 }
 
-Test(MatrixSet, test_valid_set)
+Test(MatrixSet, ValidSet)
 {
-
 	Matrix *m = MatrixNew(2, 2);
 	MatrixSet(m, 0, 0, 1.0);
 	cr_assert_eq(MatrixGet(m, 0, 0), 1.0);
@@ -887,7 +881,7 @@ Test(MatrixAllSet, NullMatrix)
 {
 	Matrix *m = NULL;
 	MatrixAllSet(m, 1.);
-	cr_assert(1);	
+	cr_assert(1);
 }
 
 Test(MatrixAllSet, SetAllElements)
@@ -898,7 +892,7 @@ Test(MatrixAllSet, SetAllElements)
 	{
 		for (unsigned int j = 0; j < m->num_cols; j++)
 		{
-			cr_assert_eq(m->data[i][j], 1.);
+			cr_assert_eq(MatrixGet(m, i, j), 1.);
 		}
 	}
 
@@ -913,7 +907,7 @@ Test(MatrixAllSet, SetZeroElements)
 	{
 		for (unsigned int j = 0; j < m->num_cols; j++)
 		{
-			cr_assert_eq(m->data[i][j], 0.);
+			cr_assert_eq(MatrixGet(m, i, j), 0.);
 		}
 	}
 
@@ -924,7 +918,7 @@ Test(MatrixDiagonalSet, NullMatrix)
 {
 	Matrix *m = NULL;
 	MatrixDiagonalSet(m, 1.);
-	cr_assert(1);	
+	cr_assert(1);
 }
 
 Test(MatrixDiagonalSet, NonSquareMatrix)
@@ -937,11 +931,11 @@ Test(MatrixDiagonalSet, NonSquareMatrix)
 		{
 			if (i == j)
 			{
-				cr_assert_eq(m->data[i][j], 1.);
+				cr_assert_eq(MatrixGet(m, i, j), 1.);
 			}
 			else
 			{
-				cr_assert_eq(m->data[i][j], 0.);
+				cr_assert_eq(MatrixGet(m, i, j), 0.);
 			}
 		}
 	}
@@ -959,11 +953,11 @@ Test(MatrixDiagonalSet, SetDiagonalElements)
 		{
 			if (i == j)
 			{
-				cr_assert_eq(m->data[i][j], 1.);
+				cr_assert_eq(MatrixGet(m, i, j), 1.);
 			}
 			else
 			{
-				cr_assert_eq(m->data[i][j], 0.);
+				cr_assert_eq(MatrixGet(m, i, j), 0.);
 			}
 		}
 	}
@@ -971,7 +965,7 @@ Test(MatrixDiagonalSet, SetDiagonalElements)
 	MatrixFree(m);
 }
 
-Test(MatrixRowMultiplyValue, InvalidMatrixPassed)
+Test(MatrixRowMultiplyValue, InValidMatrixPassed)
 {
 	Matrix *m = NULL;
 	MatrixRowMultiplyValue(m, 0, 2.0);
@@ -1071,7 +1065,7 @@ Test(MatrixColumnMultiplyValue, ValidData)
 	MatrixFree(m);
 }
 
-Test(MatrixColumnAddValue, null_matrix)
+Test(MatrixColumnAddValue, NullMatrix)
 {
 	Matrix *m = NULL;
 	MatrixColumnAddValue(m, 0, 2.0);
@@ -1079,7 +1073,7 @@ Test(MatrixColumnAddValue, null_matrix)
 	MatrixFree(m);
 }
 
-Test(MatrixColumnAddValue, invalid_column)
+Test(MatrixColumnAddValue, InvalidCol)
 {
 	double data[] =[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0];
 	Matrix *m = MatrixFrom(3, 4, 12, data);
@@ -1088,7 +1082,7 @@ Test(MatrixColumnAddValue, invalid_column)
 	MatrixFree(m);
 }
 
-Test(MatrixColumnAddValue, valid_input)
+Test(MatrixColumnAddValue, ValidInput)
 {
 	double data[] =[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0];
 	Matrix *m = MatrixFrom(3, 4, 12, data);
@@ -1099,7 +1093,7 @@ Test(MatrixColumnAddValue, valid_input)
 	MatrixFree(m);
 }
 
-Test(MatrixRowMultiplyRow, null_matrix)
+Test(MatrixRowMultiplyRow, NullMatrix)
 {
 	Matrix *m = NULL;
 	MatrixRowMultiplyRow(m, 0, 1, 2.0);
@@ -1107,7 +1101,7 @@ Test(MatrixRowMultiplyRow, null_matrix)
 	MatrixFree(m);
 }
 
-Test(MatrixRowMultiplyRow, invalid_where_row)
+Test(MatrixRowMultiplyRow, InvalidWhereRow)
 {
 	double data[] =[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0];
 	Matrix *m = MatrixFrom(3, 3, 9, data);
@@ -1116,7 +1110,7 @@ Test(MatrixRowMultiplyRow, invalid_where_row)
 	MatrixFree(m);
 }
 
-Test(MatrixRowMultiplyRow, invalid_row)
+Test(MatrixRowMultiplyRow, InvalidRow)
 {
 	double data[] =[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0];
 	Matrix *m = MatrixFrom(3, 3, 9, data);
@@ -1125,7 +1119,7 @@ Test(MatrixRowMultiplyRow, invalid_row)
 	MatrixFree(m);
 }
 
-Test(MatrixRowMultiplyRow, valid_input)
+Test(MatrixRowMultiplyRow, ValidInput)
 {
 	double data[] =[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0];
 	Matrix *m = MatrixFrom(3, 3, 9, data);
@@ -1136,7 +1130,7 @@ Test(MatrixRowMultiplyRow, valid_input)
 	MatrixFree(m);
 }
 
-Test(MatrixRowAddRow, null_matrix)
+Test(MatrixRowAddRow, NullMatrix)
 {
 	Matrix *m = NULL;
 	MatrixRowAddRow(m, 0, 1, 2.0);
@@ -1144,7 +1138,7 @@ Test(MatrixRowAddRow, null_matrix)
 	MatrixFree(m);
 }
 
-Test(MatrixRowAddRow, invalid_where_row)
+Test(MatrixRowAddRow, InvalidWhereRow)
 {
 	double data[] =[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0];
 	Matrix *m = MatrixFrom(3, 3, 9, data);
@@ -1153,7 +1147,7 @@ Test(MatrixRowAddRow, invalid_where_row)
 	MatrixFree(m);
 }
 
-Test(MatrixRowAddRow, invalid_row)
+Test(MatrixRowAddRow, InvalidRow)
 {
 	double data[] =[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0];
 	Matrix *m = MatrixFrom(3, 3, 9, data);
@@ -1162,36 +1156,39 @@ Test(MatrixRowAddRow, invalid_row)
 	MatrixFree(m);
 }
 
-Test(MatrixColumnMultiplyColumn, null_matrix)
+Test(MatrixColumnMultiplyColumn, NullMatrix)
 {
-	Matrix* m = NULL;
+	Matrix *m = NULL;
 	MatrixColumnMultiplyColumn(m, 0, 1, 2.0);
 	cr_assert_stderr_eq_str("Invalid matrix passed\n");
 	MatrixFree(m);
 }
 
-Test(MatrixColumnMultiplyColumn, invalid_where)
+Test(MatrixColumnMultiplyColumn, InvalidWhere)
 {
-	double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
-	Matrix* m = MatrixFrom(3, 4, 12, data);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
+
+	Matrix *m = MatrixFrom(3, 4, 12, data);
 	MatrixColumnMultiplyColumn(m, 4, 1, 2.0);
 	cr_assert_stderr_eq_str("Invalid 'where=4' passed >= 4\n");
 	MatrixFree(m);
 }
 
-Test(MatrixColumnMultiplyColumn, invalid_col)
+Test(MatrixColumnMultiplyColumn, InvalidCol)
 {
-	double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
-	Matrix* m = MatrixFrom(3, 4, 12, data);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
+
+	Matrix *m = MatrixFrom(3, 4, 12, data);
 	MatrixColumnMultiplyColumn(m, 2, 5, 2.0);
 	cr_assert_stderr_eq_str("Invalid 'col=5' passed >= 4\n");
 	MatrixFree(m);
 }
 
-Test(MatrixColumnMultiplyColumn, valid_input)
+Test(MatrixColumnMultiplyColumn, ValidInput)
 {
-	double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
-	Matrix* m = MatrixFrom(3, 4, 12, data);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
+
+	Matrix *m = MatrixFrom(3, 4, 12, data);
 	MatrixColumnMultiplyColumn(m, 2, 1, 2.0);
 	cr_assert_float_eq(MatrixGet(m, 0, 2), 18.0, 0.001);
 	cr_assert_float_eq(MatrixGet(m, 1, 2), 36.0, 0.001);
@@ -1199,45 +1196,49 @@ Test(MatrixColumnMultiplyColumn, valid_input)
 	MatrixFree(m);
 }
 
-Test(MatrixColumnAddValueColumn, null_matrix)
+Test(MatrixColumnAddValueColumn, NullMatrix)
 {
-	Matrix* m = NULL;
+	Matrix *m = NULL;
 	MatrixColumnAddValueColumn(m, 0, 1, 2.0);
 	cr_assert_stderr_eq_str("Invalid matrix passed\n");
 	MatrixFree(m);
 }
 
-Test(MatrixColumnAddValueColumn, invalid_where)
+Test(MatrixColumnAddValueColumn, InvalidWhere)
 {
-	double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
-	Matrix* m = MatrixFrom(3, 4, 12, data);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
+
+	Matrix *m = MatrixFrom(3, 4, 12, data);
 	MatrixColumnAddValueColumn(m, 4, 1, 2.0);
 	cr_assert_stderr_eq_str("Invalid 'where=4' passed >= 4\n");
 	MatrixFree(m);
 }
 
-Test(MatrixColumnAddValueColumn, invalid_col)
+Test(MatrixColumnAddValueColumn, InvalidCol)
 {
-	double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
-	Matrix* m = MatrixFrom(3, 4, 12, data);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
+
+	Matrix *m = MatrixFrom(3, 4, 12, data);
 	MatrixColumnAddValueColumn(m, 4, 2, 2.0);
 	cr_assert_stderr_eq_str("Invalid 'where=4' passed >= 4\n");
 	MatrixFree(m);
 }
 
-Test(MatrixColumnAddValueColumn, invalid_value)
+Test(MatrixColumnAddValueColumn, InvalidValue)
 {
-	double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
-	Matrix* m = MatrixFrom(3, 4, 12, data);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
+
+	Matrix *m = MatrixFrom(3, 4, 12, data);
 	MatrixColumnAddValueColumn(m, 2, 1, NAN);
 	cr_assert_stderr_eq_str("Invalid 'value=nan' passed\n");
 	MatrixFree(m);
 }
 
-Test(MatrixColumnAddValueColumn, valid_input)
+Test(MatrixColumnAddValueColumn, ValidInput)
 {
-	double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
-	Matrix* m = MatrixFrom(3, 4, 12, data);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
+
+	Matrix *m = MatrixFrom(3, 4, 12, data);
 	MatrixColumnAddValueColumn(m, 2, 1, 2.0);
 	cr_assert_float_eq(MatrixGet(m, 0, 2), 7.0, 0.001);
 	cr_assert_float_eq(MatrixGet(m, 1, 2), 11.0, 0.001);
@@ -1245,330 +1246,333 @@ Test(MatrixColumnAddValueColumn, valid_input)
 	MatrixFree(m);
 }
 
-Test(MatrixColumnMultiplyColumn, invalid_where)
+Test(MatrixColumnMultiplyColumn, InvalidWhere)
 {
-	double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
-	Matrix* m = MatrixFrom(3, 4, 12, data);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
+
+	Matrix *m = MatrixFrom(3, 4, 12, data);
 	MatrixColumnMultiplyColumn(m, 4, 2, 2.0);
 	cr_assert_stderr_eq_str("Invalid 'where=4' passed >= 4\n");
 	MatrixFree(m);
 }
 
-Test(MatrixColumnMultiplyColumn, invalid_value)
+Test(MatrixColumnMultiplyColumn, InvalidValue)
 {
-	double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
-	Matrix* m = MatrixFrom(3, 4, 12, data);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
+
+	Matrix *m = MatrixFrom(3, 4, 12, data);
 	MatrixColumnMultiplyColumn(m, 2, 1, INFINITY);
 	cr_assert_stderr_eq_str("Invalid 'value=inf' passed\n");
 	MatrixFree(m);
 }
 
-Test(MatrixWholeMultiply, null_matrix)
+Test(MatrixWholeMultiply, NullMatrix)
 {
-    Matrix* m = NULL;
-    MatrixWholeMultiply(m, 2.0);
-    cr_assert_stderr_eq_str("Invalid matrix passed\n");
-    MatrixFree(m);
+	Matrix *m = NULL;
+	MatrixWholeMultiply(m, 2.0);
+	cr_assert_stderr_eq_str("Invalid matrix passed\n");
+	MatrixFree(m);
 }
 
-Test(MatrixWholeMultiply, valid_input)
+Test(MatrixWholeMultiply, ValidInput)
 {
-    double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
-    Matrix* m = MatrixFrom(3, 4, 12, data);
-    MatrixWholeMultiply(m, 2.0);
-    cr_assert_float_eq(MatrixGet(m, 0, 0), 2.0, 0.001);
-    cr_assert_float_eq(MatrixGet(m, 1, 2), 12.0, 0.001);
-    cr_assert_float_eq(MatrixGet(m, 2, 3), 24.0, 0.001);
-    MatrixFree(m);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
+
+	Matrix *m = MatrixFrom(3, 4, 12, data);
+	MatrixWholeMultiply(m, 2.0);
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 2.0, 0.001);
+	cr_assert_float_eq(MatrixGet(m, 1, 2), 12.0, 0.001);
+	cr_assert_float_eq(MatrixGet(m, 2, 3), 24.0, 0.001);
+	MatrixFree(m);
 }
 
-Test(MatrixWholeAdd, null_matrix)
+Test(MatrixWholeAdd, NullMatrix)
 {
-    Matrix* m = NULL;
-    MatrixWholeAdd(m, 2.0);
-    cr_assert_stderr_eq_str("Invalid matrix passed\n");
-    MatrixFree(m);
+	Matrix *m = NULL;
+	MatrixWholeAdd(m, 2.0);
+	cr_assert_stderr_eq_str("Invalid matrix passed\n");
+	MatrixFree(m);
 }
 
-Test(MatrixWholeAdd, valid_input)
+Test(MatrixWholeAdd, ValidInput)
 {
-    double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
-    Matrix* m = MatrixFrom(3, 4, 12, data);
-    MatrixWholeAdd(m, 2.0);
-    cr_assert_float_eq(MatrixGet(m, 0, 0), 3.0, 0.001);
-    cr_assert_float_eq(MatrixGet(m, 1, 2), 9.0, 0.001);
-    cr_assert_float_eq(MatrixGet(m, 2, 3), 14.0, 0.001);
-    MatrixFree(m);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
+
+	Matrix *m = MatrixFrom(3, 4, 12, data);
+	MatrixWholeAdd(m, 2.0);
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 3.0, 0.001);
+	cr_assert_float_eq(MatrixGet(m, 1, 2), 9.0, 0.001);
+	cr_assert_float_eq(MatrixGet(m, 2, 3), 14.0, 0.001);
+	MatrixFree(m);
 }
 
-Test(MatrixRowRemove, invalid_matrix)
+Test(MatrixRowRemove, InValidMatrix)
 {
-    Matrix *m = NULL;
-    Matrix *result = MatrixRowRemove(m, 0);
-    cr_assert_null(result, "Expected NULL when passing invalid matrix, but got non-NULL");
+	Matrix *m = NULL;
+	Matrix *result = MatrixRowRemove(m, 0);
+	cr_assert_null(result, "Expected NULL when passing invalid matrix, but got non-NULL");
 }
 
-Test(MatrixRowRemove, invalid_row)
+Test(MatrixRowRemove, InvalidRow)
 {
-    double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};
-    Matrix *m = MatrixFrom(2, 3, 6, data);
-    Matrix *result = MatrixRowRemove(m, 2);
-    cr_assert_null(result, "Expected NULL when passing invalid row, but got non-NULL");
-    MatrixFree(m);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
+
+	Matrix *m = MatrixFrom(2, 3, 6, data);
+	Matrix *result = MatrixRowRemove(m, 2);
+	cr_assert_null(result, "Expected NULL when passing invalid row, but got non-NULL");
+	MatrixFree(m);
 	MatrixFree(result);
 }
 
-Test(MatrixRowRemove, remove_first_row)
+Test(MatrixRowRemove, RemoveFirstRow)
 {
-    double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};
-    Matrix *m = MatrixFrom(2, 3, 6, data);
-    Matrix *result = MatrixRowRemove(m, 0);
-    double expected_data[] = {4.0, 5.0, 6.0};
-    Matrix *expected = MatrixFrom(1, 3, 3, expected_data);
-    assert_matrix_equal(result, expected);
-    MatrixFree(m);
-    MatrixFree(result);
-    MatrixFree(expected);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
+
+	Matrix *m = MatrixFrom(2, 3, 6, data);
+	Matrix *result = MatrixRowRemove(m, 0);
+	double expected_data[] = { 4.0, 5.0, 6.0 };
+
+	Matrix *expected = MatrixFrom(1, 3, 3, expected_data);
+	assert_matrix_equal(result, expected);
+	MatrixFree(m);
+	MatrixFree(result);
+	MatrixFree(expected);
 }
 
-Test(MatrixColumnRemove, invalid_matrix)
+Test(MatrixColumnRemove, InValidMatrix)
 {
-    Matrix *m = NULL;
-    Matrix *result = MatrixColumnRemove(m, 0);
-    cr_assert_null(result, "Expected NULL when passing invalid matrix, but got non-NULL");
+	Matrix *m = NULL;
+	Matrix *result = MatrixColumnRemove(m, 0);
+	cr_assert_null(result, "Expected NULL when passing invalid matrix, but got non-NULL");
 }
 
-Test(MatrixColumnRemove, invalid_column)
+Test(MatrixColumnRemove, InvalidCol)
 {
-    double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};
-    Matrix *m = MatrixFrom(2, 3, 6, data);
-    Matrix *result = MatrixColumnRemove(m, 3);
-    cr_assert_null(result, "Expected NULL when passing invalid column, but got non-NULL");
-    MatrixFree(m);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
+
+	Matrix *m = MatrixFrom(2, 3, 6, data);
+	Matrix *result = MatrixColumnRemove(m, 3);
+	cr_assert_null(result, "Expected NULL when passing invalid column, but got non-NULL");
+	MatrixFree(m);
 	MatrixFree(result);
 }
 
-Test(MatrixColumnRemove, remove_first_column)
+Test(MatrixColumnRemove, RemoveFirstCol)
 {
-    double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};
-    Matrix *m = MatrixFrom(2, 3, 6, data);
-    Matrix *result = MatrixColumnRemove(m, 0);
-    double expected_data[] = {2.0, 3.0, 5.0, 6.0};
-    Matrix *expected = MatrixFrom(2, 2, 4, expected_data);
-    assert_matrix_equal(result, expected);
-    MatrixFree(m);
-    MatrixFree(result);
-    MatrixFree(expected);
+	double data[] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
+
+	Matrix *m = MatrixFrom(2, 3, 6, data);
+	Matrix *result = MatrixColumnRemove(m, 0);
+	double expected_data[] = { 2.0, 3.0, 5.0, 6.0 };
+
+	Matrix *expected = MatrixFrom(2, 2, 4, expected_data);
+	assert_matrix_equal(result, expected);
+	MatrixFree(m);
+	MatrixFree(result);
+	MatrixFree(expected);
 }
 
 void assert_matrix_equal(Matrix *m1, Matrix *m2)
 {
-    cr_assert_eq(m1->num_rows, m2->num_rows, "Expected matrix rows to match, but got %u and %u", m1->num_rows, m2->num_rows);
-    cr_assert_eq(m1->num_cols, m2->num_cols, "Expected matrix columns to match, but got %u and %u", m1->num_cols, m2->num_cols);
-    for (unsigned int i = 0; i < m1->num_rows; i++)
-    {
-        for (unsigned int j = 0; j < m1->num_cols; j++)
+	cr_assert_eq(m1->num_rows, m2->num_rows, "Expected matrix rows to match, but got %u and %u", m1->num_rows, m2->num_rows);
+	cr_assert_eq(m1->num_cols, m2->num_cols, "Expected matrix columns to match, but got %u and %u", m1->num_cols, m2->num_cols);
+	for (unsigned int i = 0; i < m1->num_rows; i++)
+	{
+		for (unsigned int j = 0; j < m1->num_cols; j++)
 		{
-			if (m1->data[i][j] != m2->data[i][j])
+			if (m1->data[i][j] != MatrixGet(m2, i, j))
 			{
-				criterion_assert_fail(
-				format_string("Matrices not equal at row=%u, col=%u: expected %lf, but got %lf",
-				i, j, m1->data[i][j], m2->data[i][j]));
+				criterion_assert_fail(					format_string("Matrices not equal at row=%u, col=%u: expected %lf, but got %lf",
+						i, j, MatrixGet(m1, i, j), MatrixGet(m2, i, j)));
 				return;
 			}
 		}
 	}
+
 	criterion_assert(1);
 }
 
-Test(MatrixRowSwap, valid_input)
+Test(MatrixRowSwap, ValidInput)
 {
+	Matrix *m = MatrixNew(2, 2);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 1, 0, 3.0);
+	MatrixSet(m, 1, 1, 4.0);
+	MatrixRowSwap(m, 0, 1);
 
-    Matrix *m = MatrixNew(2, 2);
-    MatrixSetValue(m, 0, 0, 1.0);
-    MatrixSetValue(m, 0, 1, 2.0);
-    MatrixSetValue(m, 1, 0, 3.0);
-    MatrixSetValue(m, 1, 1, 4.0);
-    MatrixRowSwap(m, 0, 1);
-
-    cr_assert_eq(MatrixGetValue(m, 0, 0), 3.0, "Expected row 0, column 0 to be 3.0");
-    cr_assert_eq(MatrixGetValue(m, 0, 1), 4.0, "Expected row 0, column 1 to be 4.0");
-    cr_assert_eq(MatrixGetValue(m, 1, 0), 1.0, "Expected row 1, column 0 to be 1.0");
-    cr_assert_eq(MatrixGetValue(m, 1, 1), 2.0, "Expected row 1, column 1 to be 2.0");
-
-    MatrixFree(m);
-}
-
-Test(MatrixRowSwap, invalid_input)
-{
-
-    Matrix *m = MatrixNew(2, 2);
-    MatrixSetValue(m, 0, 0, 1.0);
-    MatrixSetValue(m, 0, 1, 2.0);
-    MatrixSetValue(m, 1, 0, 3.0);
-    MatrixSetValue(m, 1, 1, 4.0);
-    MatrixRowSwap(m, 0, 2);
-
-    cr_assert_eq(MatrixGetValue(m, 0, 0), 1.0, "Expected row 0, column 0 to be 1.0");
-    cr_assert_eq(MatrixGetValue(m, 0, 1), 2.0, "Expected row 0, column 1 to be 2.0");
-    cr_assert_eq(MatrixGetValue(m, 1, 0), 3.0, "Expected row 1, column 0 to be 3.0");
-    cr_assert_eq(MatrixGetValue(m, 1, 1), 4.0, "Expected row 1, column 1 to be 4.0");
-
-    MatrixFree(m);
-}
-
-Test(MatrixColumnSwap, valid_input)
-{
-
-    Matrix *m = MatrixNew(2, 2);
-    MatrixSetValue(m, 0, 0, 1.0);
-    MatrixSetValue(m, 0, 1, 2.0);
-    MatrixSetValue(m, 1, 0, 3.0);
-    MatrixSetValue(m, 1, 1, 4.0);
-    MatrixColumnSwap(m, 0, 1);
-
-    cr_assert_eq(MatrixGetValue(m, 0, 0), 2.0, "Expected row 0, column 0 to be 2.0");
-    cr_assert_eq(MatrixGetValue(m, 0, 1), 1.0, "Expected row 0, column 1 to be 1.0");
-    cr_assert_eq(MatrixGetValue(m, 1, 0), 4.0, "Expected row 1, column 0 to be 4.0");
-	cr_assert_eq(MatrixGetValue(m, 1, 1), 3.0, "Expected row 1, column 1 to be 3.0");
+	cr_assert_eq(MatrixGet(m, 0, 0), 3.0, "Expected row 0, column 0 to be 3.0");
+	cr_assert_eq(MatrixGet(m, 0, 1), 4.0, "Expected row 0, column 1 to be 4.0");
+	cr_assert_eq(MatrixGet(m, 1, 0), 1.0, "Expected row 1, column 0 to be 1.0");
+	cr_assert_eq(MatrixGet(m, 1, 1), 2.0, "Expected row 1, column 1 to be 2.0");
 
 	MatrixFree(m);
 }
 
-Test(MatrixColumnSwap, invalid_matrix)
+Test(MatrixRowSwap, InValidInput)
+{
+	Matrix *m = MatrixNew(2, 2);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 1, 0, 3.0);
+	MatrixSet(m, 1, 1, 4.0);
+	MatrixRowSwap(m, 0, 2);
+
+	cr_assert_eq(MatrixGet(m, 0, 0), 1.0, "Expected row 0, column 0 to be 1.0");
+	cr_assert_eq(MatrixGet(m, 0, 1), 2.0, "Expected row 0, column 1 to be 2.0");
+	cr_assert_eq(MatrixGet(m, 1, 0), 3.0, "Expected row 1, column 0 to be 3.0");
+	cr_assert_eq(MatrixGet(m, 1, 1), 4.0, "Expected row 1, column 1 to be 4.0");
+
+	MatrixFree(m);
+}
+
+Test(MatrixColumnSwap, ValidInput)
+{
+	Matrix *m = MatrixNew(2, 2);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 1, 0, 3.0);
+	MatrixSet(m, 1, 1, 4.0);
+	MatrixColumnSwap(m, 0, 1);
+
+	cr_assert_eq(MatrixGet(m, 0, 0), 2.0, "Expected row 0, column 0 to be 2.0");
+	cr_assert_eq(MatrixGet(m, 0, 1), 1.0, "Expected row 0, column 1 to be 1.0");
+	cr_assert_eq(MatrixGet(m, 1, 0), 4.0, "Expected row 1, column 0 to be 4.0");
+	cr_assert_eq(MatrixGet(m, 1, 1), 3.0, "Expected row 1, column 1 to be 3.0");
+
+	MatrixFree(m);
+}
+
+Test(MatrixColumnSwap, InValidMatrix)
 {
 	Matrix *m = NULL;
 	MatrixColumnSwap(m, 0, 1);
 	MatrixFree(m);
 }
 
-Test(MatrixColumnSwap, invalid_column)
+Test(MatrixColumnSwap, InvalidCol)
 {
-
 	Matrix *m = MatrixNew(2, 2);
-	MatrixSetValue(m, 0, 0, 1.0);
-	MatrixSetValue(m, 0, 1, 2.0);
-	MatrixSetValue(m, 1, 0, 3.0);
-	MatrixSetValue(m, 1, 1, 4.0);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 1, 0, 3.0);
+	MatrixSet(m, 1, 1, 4.0);
 	MatrixColumnSwap(m, 0, 2);
 
-	cr_assert_eq(MatrixGetValue(m, 0, 0), 1.0, "Expected row 0, column 0 to be 1.0");
-	cr_assert_eq(MatrixGetValue(m, 0, 1), 2.0, "Expected row 0, column 1 to be 2.0");
-	cr_assert_eq(MatrixGetValue(m, 1, 0), 3.0, "Expected row 1, column 0 to be 3.0");
-	cr_assert_eq(MatrixGetValue(m, 1, 1), 4.0, "Expected row 1, column 1 to be 4.0");
+	cr_assert_eq(MatrixGet(m, 0, 0), 1.0, "Expected row 0, column 0 to be 1.0");
+	cr_assert_eq(MatrixGet(m, 0, 1), 2.0, "Expected row 0, column 1 to be 2.0");
+	cr_assert_eq(MatrixGet(m, 1, 0), 3.0, "Expected row 1, column 0 to be 3.0");
+	cr_assert_eq(MatrixGet(m, 1, 1), 4.0, "Expected row 1, column 1 to be 4.0");
 
 	MatrixFree(m);
 }
 
-Test(MatrixColumnSwap, same_column)
+Test(MatrixColumnSwap, SameCol)
 {
-
 	Matrix *m = MatrixNew(2, 2);
-	MatrixSetValue(m, 0, 0, 1.0);
-	MatrixSetValue(m, 0, 1, 2.0);
-	MatrixSetValue(m, 1, 0, 3.0);
-	MatrixSetValue(m, 1, 1, 4.0);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 1, 0, 3.0);
+	MatrixSet(m, 1, 1, 4.0);
 	MatrixColumnSwap(m, 1, 1);
 
-	cr_assert_eq(MatrixGetValue(m, 0, 0), 1.0, "Expected row 0, column 0 to be 1.0");
-	cr_assert_eq(MatrixGetValue(m, 0, 1), 2.0, "Expected row 0, column 1 to be 2.0");
-	cr_assert_eq(MatrixGetValue(m, 1, 0), 3.0, "Expected row 1, column 0 to be 3.0");
-	cr_assert_eq(MatrixGetValue(m, 1, 1), 4.0, "Expected row 1, column 1 to be 4.0");
+	cr_assert_eq(MatrixGet(m, 0, 0), 1.0, "Expected row 0, column 0 to be 1.0");
+	cr_assert_eq(MatrixGet(m, 0, 1), 2.0, "Expected row 0, column 1 to be 2.0");
+	cr_assert_eq(MatrixGet(m, 1, 0), 3.0, "Expected row 1, column 0 to be 3.0");
+	cr_assert_eq(MatrixGet(m, 1, 1), 4.0, "Expected row 1, column 1 to be 4.0");
 
 	MatrixFree(m);
 }
 
-Test(MatrixBroadcastRows, invalid_input_null_matrix)
+Test(MatrixBroadcastRows, InValidInputNullMatrix)
 {
-    Matrix *result = MatrixBroadcastRows(NULL, 3);
-    cr_assert_null(result, "Expected NULL result for invalid input: NULL matrix");
+	Matrix *result = MatrixBroadcastRows(NULL, 3);
+	cr_assert_null(result, "Expected NULL result for invalid input: NULL matrix");
 	MatrixFree(result);
 }
 
-Test(MatrixBroadcastRows, invalid_input_num_rows_not_1)
+Test(MatrixBroadcastRows, InValidInput_num_rows_not_1)
 {
-    Matrix *m = MatrixNew(2, 2);
-    
-	MatrixSetValue(m, 0, 0, 1.0);
-    MatrixSetValue(m, 0, 1, 2.0);
-    MatrixSetValue(m, 1, 0, 3.0);
-    MatrixSetValue(m, 1, 1, 4.0);
+	Matrix *m = MatrixNew(2, 2);
 
-    Matrix *result = MatrixBroadcastRows(m, 3);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 1, 0, 3.0);
+	MatrixSet(m, 1, 1, 4.0);
 
-    cr_assert_null(result, "Expected NULL result for invalid input: num_rows not 1");
-    MatrixFree(m);
+	Matrix *result = MatrixBroadcastRows(m, 3);
+
+	cr_assert_null(result, "Expected NULL result for invalid input: num_rows not 1");
+	MatrixFree(m);
 	MatrixFree(result);
 }
 
-Test(MatrixBroadcastRows, invalid_input_row_less_than_num_rows)
+Test(MatrixBroadcastRows, InValidInputRowLessThanNumRows)
 {
-    Matrix *m = MatrixNew(1, 2);
-    
-	MatrixSetValue(m, 0, 0, 1.0);
-    MatrixSetValue(m, 0, 1, 2.0);
+	Matrix *m = MatrixNew(1, 2);
 
-    Matrix *result = MatrixBroadcastRows(m, 1);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
 
-    cr_assert_null(result, "Expected NULL result for invalid input: row less than num_rows");
-    MatrixFree(m);
+	Matrix *result = MatrixBroadcastRows(m, 1);
+
+	cr_assert_null(result, "Expected NULL result for invalid input: row less than num_rows");
+	MatrixFree(m);
 	MatrixFree(result);
 }
 
-Test(MatrixBroadcastRows, valid_input)
+Test(MatrixBroadcastRows, ValidInput)
 {
-    Matrix *m = MatrixNew(1, 2);
-    
-	MatrixSetValue(m, 0, 0, 1.0);
-    MatrixSetValue(m, 0, 1, 2.0);
+	Matrix *m = MatrixNew(1, 2);
 
-    Matrix *result = MatrixBroadcastRows(m, 3);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
 
-    cr_assert_not_null(result, "Expected non-NULL result for valid input");
+	Matrix *result = MatrixBroadcastRows(m, 3);
 
-    cr_assert_eq(result->num_rows, 3, "Expected num_rows to be 3");
-    cr_assert_eq(result->num_cols, 2, "Expected num_cols to be 2");
+	cr_assert_not_null(result, "Expected non-NULL result for valid input");
 
-    cr_assert_eq(MatrixGetValue(result, 0, 0), 1.0, "Expected row 0, column 0 to be 1.0");
-    cr_assert_eq(MatrixGetValue(result, 0, 1), 2.0, "Expected row 0, column 1 to be 2.0");
+	cr_assert_eq(result->num_rows, 3, "Expected num_rows to be 3");
+	cr_assert_eq(result->num_cols, 2, "Expected num_cols to be 2");
 
-    cr_assert_eq(MatrixGetValue(result, 1, 0), 1.0, "Expected row 1, column 0 to be 1.0");
-    cr_assert_eq(MatrixGetValue(result, 1, 1), 2.0, "Expected row 1, column 1 to be 2.0");
+	cr_assert_eq(MatrixGet(result, 0, 0), 1.0, "Expected row 0, column 0 to be 1.0");
+	cr_assert_eq(MatrixGet(result, 0, 1), 2.0, "Expected row 0, column 1 to be 2.0");
 
-    cr_assert_eq(MatrixGetValue(result, 2, 0), 1.0, "Expected row 2, column 0 to be 1.0");
-    cr_assert_eq(MatrixGetValue(result, 2, 1), 2.0, "Expected row 2, column 1 to be 2.0");
+	cr_assert_eq(MatrixGet(result, 1, 0), 1.0, "Expected row 1, column 0 to be 1.0");
+	cr_assert_eq(MatrixGet(result, 1, 1), 2.0, "Expected row 1, column 1 to be 2.0");
 
-    MatrixFree(m);
-    MatrixFree(result);
+	cr_assert_eq(MatrixGet(result, 2, 0), 1.0, "Expected row 2, column 0 to be 1.0");
+	cr_assert_eq(MatrixGet(result, 2, 1), 2.0, "Expected row 2, column 1 to be 2.0");
+
+	MatrixFree(m);
+	MatrixFree(result);
 }
 
-Test(MatrixBroadcastColumns, valid_input)
+Test(MatrixBroadcastColumns, ValidInput)
 {
-
 	Matrix *m = MatrixNew(2, 1);
-	
-	MatrixSetValue(m, 0, 0, 1.0);
-	MatrixSetValue(m, 1, 0, 2.0);
-	
+
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 1, 0, 2.0);
+
 	Matrix *broadcasted = MatrixBroadcastColumns(m, 3);
 
 	cr_assert_eq(broadcasted->num_rows, 2, "Expected num_rows to be 2");
 	cr_assert_eq(broadcasted->num_cols, 3, "Expected num_cols to be 3");
 
-	cr_assert_eq(MatrixGetValue(broadcasted, 0, 0), 1.0, "Expected row 0, column 0 to be 1.0");
-	cr_assert_eq(MatrixGetValue(broadcasted, 0, 1), 1.0, "Expected row 0, column 1 to be 1.0");
-	cr_assert_eq(MatrixGetValue(broadcasted, 0, 2), 1.0, "Expected row 0, column 2 to be 1.0");
-	cr_assert_eq(MatrixGetValue(broadcasted, 1, 0), 2.0, "Expected row 1, column 0 to be 2.0");
-	cr_assert_eq(MatrixGetValue(broadcasted, 1, 1), 2.0, "Expected row 1, column 1 to be 2.0");
-	cr_assert_eq(MatrixGetValue(broadcasted, 1, 2), 2.0, "Expected row 1, column 2 to be 2.0");
+	cr_assert_eq(MatrixGet(broadcasted, 0, 0), 1.0, "Expected row 0, column 0 to be 1.0");
+	cr_assert_eq(MatrixGet(broadcasted, 0, 1), 1.0, "Expected row 0, column 1 to be 1.0");
+	cr_assert_eq(MatrixGet(broadcasted, 0, 2), 1.0, "Expected row 0, column 2 to be 1.0");
+	cr_assert_eq(MatrixGet(broadcasted, 1, 0), 2.0, "Expected row 1, column 0 to be 2.0");
+	cr_assert_eq(MatrixGet(broadcasted, 1, 1), 2.0, "Expected row 1, column 1 to be 2.0");
+	cr_assert_eq(MatrixGet(broadcasted, 1, 2), 2.0, "Expected row 1, column 2 to be 2.0");
 
 	MatrixFree(m);
 	MatrixFree(broadcasted);
 }
 
-Test(MatrixBroadcastColumns, invalid_input)
+Test(MatrixBroadcastColumns, InValidInput)
 {
-
 	Matrix *m = NULL;
 	Matrix *broadcasted = MatrixBroadcastColumns(m, 2);
 
@@ -1587,352 +1591,354 @@ Test(MatrixBroadcastColumns, invalid_input)
 	MatrixFree(broadcasted);
 }
 
-Test(MatrixBroadcastRowsAndColumns, invalid_matrix)
+Test(MatrixBroadcastRowsAndColumns, InValidMatrix)
 {
-    Matrix *m = NULL;
-    
+	Matrix *m = NULL;
+
 	Matrix *result = MatrixBroadcastRowsAndColumns(m, 2, 2);
-    cr_assert_null(result, "Expected NULL matrix to be returned for invalid input");
-	
+	cr_assert_null(result, "Expected NULL matrix to be returned for invalid input");
+
 	MatrixFree(result);
 }
 
-Test(MatrixBroadcastRowsAndColumns, invalid_row)
+Test(MatrixBroadcastRowsAndColumns, InvalidRow)
 {
-    Matrix *m = MatrixNew(1, 2);
-    
-	MatrixSetValue(m, 0, 0, 1.0);
-    MatrixSetValue(m, 0, 1, 2.0);
-    
+	Matrix *m = MatrixNew(1, 2);
+
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+
 	Matrix *result = MatrixBroadcastRowsAndColumns(m, 0, 2);
-    cr_assert_null(result, "Expected NULL matrix to be returned for invalid row");
-    
+	cr_assert_null(result, "Expected NULL matrix to be returned for invalid row");
+
 	MatrixFree(m);
 	MatrixFree(result);
 }
 
-Test(MatrixBroadcastRowsAndColumns, invalid_col)
+Test(MatrixBroadcastRowsAndColumns, InvalidCol)
 {
-    Matrix *m = MatrixNew(1, 2);
-    
-	MatrixSetValue(m, 0, 0, 1.0);
-    MatrixSetValue(m, 0, 1, 2.0);
-    
+	Matrix *m = MatrixNew(1, 2);
+
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+
 	Matrix *result = MatrixBroadcastRowsAndColumns(m, 2, 0);
-    cr_assert_null(result, "Expected NULL matrix to be returned for invalid column");
-    
+	cr_assert_null(result, "Expected NULL matrix to be returned for invalid column");
+
 	MatrixFree(m);
 	MatrixFree(result);
 }
 
-Test(MatrixBroadcastRowsAndColumns, valid_input)
+Test(MatrixBroadcastRowsAndColumns, ValidInput)
 {
-    Matrix *m = MatrixNew(1, 1);
-    MatrixSetValue(m, 0, 0, 1.0);
-    
+	Matrix *m = MatrixNew(1, 1);
+	MatrixSet(m, 0, 0, 1.0);
+
 	Matrix *result = MatrixBroadcastRowsAndColumns(m, 3, 2);
-    
+
 	cr_assert_not_null(result, "Expected non-NULL matrix to be returned for valid input");
-    cr_assert_eq(result->num_rows, 3, "Expected number of rows to be 3");
-    cr_assert_eq(result->num_cols, 2, "Expected number of columns to be 2");
-    cr_assert_eq(MatrixGetValue(result, 0, 0), 1.0, "Expected row 0, column 0 to be 1.0");
-    cr_assert_eq(MatrixGetValue(result, 0, 1), 1.0, "Expected row 0, column 1 to be 1.0");
-    cr_assert_eq(MatrixGetValue(result, 1, 0), 1.0, "Expected row 1, column 0 to be 1.0");
-    cr_assert_eq(MatrixGetValue(result, 1, 1), 1.0, "Expected row 1, column 1 to be 1.0");
-    cr_assert_eq(MatrixGetValue(result, 2, 0), 1.0, "Expected row 2, column 0 to be 1.0");
-    cr_assert_eq(MatrixGetValue(result, 2, 1), 1.0, "Expected row 2, column 1 to be 1.0");
-    
+	cr_assert_eq(result->num_rows, 3, "Expected number of rows to be 3");
+	cr_assert_eq(result->num_cols, 2, "Expected number of columns to be 2");
+	cr_assert_eq(MatrixGet(result, 0, 0), 1.0, "Expected row 0, column 0 to be 1.0");
+	cr_assert_eq(MatrixGet(result, 0, 1), 1.0, "Expected row 0, column 1 to be 1.0");
+	cr_assert_eq(MatrixGet(result, 1, 0), 1.0, "Expected row 1, column 0 to be 1.0");
+	cr_assert_eq(MatrixGet(result, 1, 1), 1.0, "Expected row 1, column 1 to be 1.0");
+	cr_assert_eq(MatrixGet(result, 2, 0), 1.0, "Expected row 2, column 0 to be 1.0");
+	cr_assert_eq(MatrixGet(result, 2, 1), 1.0, "Expected row 2, column 1 to be 1.0");
+
 	MatrixFree(m);
-    MatrixFree(result);
-}
-
-Test(matrix_row_stack, valid_matrices)
-{
-
-    Matrix *m1 = MatrixNew(2, 3);
-    Matrix *m2 = MatrixNew(2, 3);
-
-    for (unsigned int i = 0; i < m1->num_rows; i++)
-    {
-        for (unsigned int j = 0; j < m1->num_cols; j++)
-        {
-            m1->data[i][j] = i * m1->num_cols + j + 1;
-            m2->data[i][j] = (i + m1->num_rows) * m2->num_cols + j + 1;
-        }
-    }
-
-    Matrix *result = MatrixRowStack(m1, m2);
-
-    cr_assert_eq(result->num_rows, 4);
-    cr_assert_eq(result->num_cols, 3);
-
-    cr_assert_eq(result->data[0][0], 1);
-    cr_assert_eq(result->data[0][1], 2);
-    cr_assert_eq(result->data[0][2], 3);
-    cr_assert_eq(result->data[1][0], 4);
-    cr_assert_eq(result->data[1][1], 5);
-    cr_assert_eq(result->data[1][2], 6);
-    cr_assert_eq(result->data[2][0], 7);
-    cr_assert_eq(result->data[2][1], 8);
-    cr_assert_eq(result->data[2][2], 9);
-    cr_assert_eq(result->data[3][0], 10);
-    cr_assert_eq(result->data[3][1], 11);
-    cr_assert_eq(result->data[3][2], 12);
-
-    MatrixFree(m1);
-    MatrixFree(m2);
-    MatrixFree(result);
-}
-
-Test(matrix_row_stack, invalid_matrices)
-{
-
-    Matrix *m1 = MatrixNew(2, 3);
-    Matrix *m2 = MatrixNew(2, 2);
-
-    Matrix *result = MatrixRowStack(m1, m2);
-    cr_assert_null(result);
-
-    MatrixFree(m1);
-    MatrixFree(m2);
 	MatrixFree(result);
 }
 
-Test(MatrixColumnStack, NullMatrix1) {
-    Matrix *m1 = NULL;
-    Matrix *m2 = MatrixNew(2, 2);
-	
-    Matrix *result = MatrixColumnStack(m1, m2);
-	cr_assert_null(result, "MatrixColumnStack returned non-NULL result for NULL m1");
-    
-	MatrixFree(m2);
-	MatrixFree(result);
-}
+Test(matrix_row_stack, ValidMatrices)
+{
+	Matrix *m1 = MatrixNew(2, 3);
+	Matrix *m2 = MatrixNew(2, 3);
 
-Test(MatrixColumnStack, NullMatrix2) {
-    Matrix *m1 = MatrixNew(2, 2);
-    Matrix *m2 = NULL;
-	
-    Matrix *result = MatrixColumnStack(m1, m2);
-	cr_assert_null(result, "MatrixColumnStack returned non-NULL result for NULL m2");
-    
+	for (unsigned int i = 0; i < m1->num_rows; i++)
+	{
+		for (unsigned int j = 0; j < m1->num_cols; j++)
+		{
+			MatrixGet(m1, i, j) = i *m1->num_cols + j + 1;
+			MatrixGet(m2, i, j) = (i + m1->num_rows) *m2->num_cols + j + 1;
+		}
+	}
+
+	Matrix *result = MatrixRowStack(m1, m2);
+
+	cr_assert_eq(result->num_rows, 4);
+	cr_assert_eq(result->num_cols, 3);
+
+	cr_assert_eq(MatrixGet(result, 0, 0), 1);
+	cr_assert_eq(MatrixGet(result, 0, 1), 2);
+	cr_assert_eq(MatrixGet(result, 0, 2), 3);
+	cr_assert_eq(MatrixGet(result, 1, 0), 4);
+	cr_assert_eq(MatrixGet(result, 1, 1), 5);
+	cr_assert_eq(MatrixGet(result, 1, 2), 6);
+	cr_assert_eq(MatrixGet(result, 2, 0), 7);
+	cr_assert_eq(MatrixGet(result, 2, 1), 8);
+	cr_assert_eq(MatrixGet(result, 2, 2), 9);
+	cr_assert_eq(MatrixGet(result, 3, 0), 10);
+	cr_assert_eq(MatrixGet(result, 3, 1), 11);
+	cr_assert_eq(MatrixGet(result, 3, 2), 12);
+
 	MatrixFree(m1);
 	MatrixFree(m2);
 	MatrixFree(result);
 }
 
-Test(MatrixColumnStack, DifferentNumRows) {
-    Matrix *m1 = MatrixNew(2, 2);
-    Matrix *m2 = MatrixNew(3, 2);
-    
+Test(matrix_row_stack, InValidMatrices)
+{
+	Matrix *m1 = MatrixNew(2, 3);
+	Matrix *m2 = MatrixNew(2, 2);
+
+	Matrix *result = MatrixRowStack(m1, m2);
+	cr_assert_null(result);
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(result);
+}
+
+Test(MatrixColumnStack, NullMatrix1)
+{
+	Matrix *m1 = NULL;
+	Matrix *m2 = MatrixNew(2, 2);
+
+	Matrix *result = MatrixColumnStack(m1, m2);
+	cr_assert_null(result, "MatrixColumnStack returned non-NULL result for NULL m1");
+
+	MatrixFree(m2);
+	MatrixFree(result);
+}
+
+Test(MatrixColumnStack, NullMatrix2)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = NULL;
+
+	Matrix *result = MatrixColumnStack(m1, m2);
+	cr_assert_null(result, "MatrixColumnStack returned non-NULL result for NULL m2");
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(result);
+}
+
+Test(MatrixColumnStack, DifferentNumRows)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = MatrixNew(3, 2);
+
 	Matrix *result = MatrixColumnStack(m1, m2);
 	cr_assert_null(result, "MatrixColumnStack returned non-NULL result for matrices with different numbers of rows");
-    
+
 	MatrixFree(m1);
-    MatrixFree(m2);
+	MatrixFree(m2);
 	MatrixFree(result);
 }
 
-Test(MatrixColumnStack, SameNumRowsAndCols) {
-    Matrix *m1 = MatrixNew(2, 2);
-    Matrix *m2 = MatrixNew(2, 2);
-    
-	MatrixSet(m1, 0, 0, 1);
-    MatrixSet(m1, 0, 1, 2);
-    MatrixSet(m1, 1, 0, 3);
-    MatrixSet(m1, 1, 1, 4);
-    MatrixSet(m2, 0, 0, 5);
-    MatrixSet(m2, 0, 1, 6);
-    MatrixSet(m2, 1, 0, 7);
-    MatrixSet(m2, 1, 1, 8);
-    
+Test(MatrixColumnStack, SameNumRowsAndCols)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = MatrixNew(2, 2);
+
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 0, 1, 2.0);
+	MatrixSet(m1, 1, 0, 3.0);
+	MatrixSet(m1, 1, 1, 4.0);
+	MatrixSet(m2, 0, 0, 5.0);
+	MatrixSet(m2, 0, 1, 6.0);
+	MatrixSet(m2, 1, 0, 7.0);
+	MatrixSet(m2, 1, 1, 8.0);
+
 	Matrix *result = MatrixColumnStack(m1, m2);
-    
+
 	cr_assert_not_null(result, "MatrixColumnStack returned NULL for valid matrices");
-    cr_assert_eq(result->num_rows, 2, "Result has incorrect number of rows");
-    cr_assert_eq(result->num_cols, 4, "Result has incorrect number of columns");
-    cr_assert_eq(MatrixGet(result, 0, 0), 1, "Result has incorrect value at (0, 0)");
-    cr_assert_eq(MatrixGet(result, 0, 1), 2, "Result has incorrect value at (0, 1)");
-    cr_assert_eq(MatrixGet(result, 0, 2), 5, "Result has incorrect value at (0, 2)");
-    cr_assert_eq(MatrixGet(result, 0, 3), 6, "Result has incorrect value at (0, 3)");
-    cr_assert_eq(MatrixGet(result, 1, 0), 3, "Result has incorrect value at (1, 0)");
-    cr_assert_eq(MatrixGet(result, 1, 1), 4, "Result has incorrect value at (1, 1)");
-    cr_assert_eq(MatrixGet(result, 1, 2), 7, "Result has incorrect value at (1, 2)");
-    cr_assert_eq(MatrixGet(result, 1, 3), 15, "Result has incorrect value at (1, 3)");
-    
+	cr_assert_eq(result->num_rows, 2, "Result has incorrect number of rows");
+	cr_assert_eq(result->num_cols, 4, "Result has incorrect number of columns");
+	cr_assert_eq(MatrixGet(result, 0, 0), 1.0, "Result has incorrect value at (0, 0)");
+	cr_assert_eq(MatrixGet(result, 0, 1), 2.0, "Result has incorrect value at (0, 1)");
+	cr_assert_eq(MatrixGet(result, 0, 2), 5.0, "Result has incorrect value at (0, 2)");
+	cr_assert_eq(MatrixGet(result, 0, 3), 6.0, "Result has incorrect value at (0, 3)");
+	cr_assert_eq(MatrixGet(result, 1, 0), 3.0, "Result has incorrect value at (1, 0)");
+	cr_assert_eq(MatrixGet(result, 1, 1), 4.0, "Result has incorrect value at (1, 1)");
+	cr_assert_eq(MatrixGet(result, 1, 2), 7.0, "Result has incorrect value at (1, 2)");
+	cr_assert_eq(MatrixGet(result, 1, 3), 15.0, "Result has incorrect value at (1, 3)");
+
 	MatrixFree(m1);
-    MatrixFree(m2);
+	MatrixFree(m2);
 	MatrixFree(result);
 }
 
 Test(MatrixAdd, SameDimensions)
 {
-    Matrix *m1 = MatrixNew(3, 3);
-    Matrix *m2 = MatrixNew(3, 3);
+	Matrix *m1 = MatrixNew(3, 3);
+	Matrix *m2 = MatrixNew(3, 3);
 
-    // Set the values of the matrices
-    MatrixSet(m1, 0, 0, 1);
-    MatrixSet(m1, 0, 1, 2);
-    MatrixSet(m1, 0, 2, 3);
-    MatrixSet(m1, 1, 0, 4);
-    MatrixSet(m1, 1, 1, 5);
-    MatrixSet(m1, 1, 2, 6);
-    MatrixSet(m1, 2, 0, 7);
-    MatrixSet(m1, 2, 1, 8);
-    MatrixSet(m1, 2, 2, 9);
-    MatrixSet(m2, 0, 0, 9);
-    MatrixSet(m2, 0, 1, 8);
-    MatrixSet(m2, 0, 2, 7);
-    MatrixSet(m2, 1, 0, 6);
-    MatrixSet(m2, 1, 1, 5);
-    MatrixSet(m2, 1, 2, 4);
-    MatrixSet(m2, 2, 0, 3);
-    MatrixSet(m2, 2, 1, 2);
-    MatrixSet(m2, 2, 2, 1);
+	// Set the values of the matrices
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 0, 1, 2.0);
+	MatrixSet(m1, 0, 2, 3.0);
+	MatrixSet(m1, 1, 0, 4.0);
+	MatrixSet(m1, 1, 1, 5.0);
+	MatrixSet(m1, 1, 2, 6.0);
+	MatrixSet(m1, 2, 0, 7.0);
+	MatrixSet(m1, 2, 1, 8.0);
+	MatrixSet(m1, 2, 2, 9.0);
+	MatrixSet(m2, 0, 0, 9.0);
+	MatrixSet(m2, 0, 1, 8.0);
+	MatrixSet(m2, 0, 2, 7.0);
+	MatrixSet(m2, 1, 0, 6.0);
+	MatrixSet(m2, 1, 1, 5.0);
+	MatrixSet(m2, 1, 2, 4.0);
+	MatrixSet(m2, 2, 0, 3.0);
+	MatrixSet(m2, 2, 1, 2.0);
+	MatrixSet(m2, 2, 2, 1.0);
 
-    // Add the matrices
-    Matrix *result = MatrixAdd(m1, m2);
+	// Add the matrices
+	Matrix *result = MatrixAdd(m1, m2);
 
-    // Check the result
-    cr_assert_not_null(result);
-    cr_assert_eq(MatrixGet(result, 0, 0), 10);
-    cr_assert_eq(MatrixGet(result, 0, 1), 10);
-    cr_assert_eq(MatrixGet(result, 0, 2), 10);
-    cr_assert_eq(MatrixGet(result, 1, 0), 10);
-    cr_assert_eq(MatrixGet(result, 1, 1), 10);
-    cr_assert_eq(MatrixGet(result, 1, 2), 10);
-    cr_assert_eq(MatrixGet(result, 2, 0), 10);
-    cr_assert_eq(MatrixGet(result, 2, 1), 10);
-    cr_assert_eq(MatrixGet(result, 2, 2), 10);
+	// Check the result
+	cr_assert_not_null(result);
+	cr_assert_eq(MatrixGet(result, 0, 0), 10.0);
+	cr_assert_eq(MatrixGet(result, 0, 1), 10.0);
+	cr_assert_eq(MatrixGet(result, 0, 2), 10.0);
+	cr_assert_eq(MatrixGet(result, 1, 0), 10.0);
+	cr_assert_eq(MatrixGet(result, 1, 1), 10.0);
+	cr_assert_eq(MatrixGet(result, 1, 2), 10.0);
+	cr_assert_eq(MatrixGet(result, 2, 0), 10.0);
+	cr_assert_eq(MatrixGet(result, 2, 1), 10.0);
+	cr_assert_eq(MatrixGet(result, 2, 2), 10.0);
 
-    // Clean up
-    MatrixFree(m1);
-    MatrixFree(m2);
-    MatrixFree(result);
+	// Clean up
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(result);
 }
 
 // Test adding two matrices with different dimensions
 Test(MatrixAdd, DifferentDimensions)
 {
-    // Create two matrices
-    Matrix *m1 = MatrixNew(3, 3);
-    Matrix *m2 = MatrixNew(2, 2);
+	// Create two matrices
+	Matrix *m1 = MatrixNew(3, 3);
+	Matrix *m2 = MatrixNew(2, 2);
 
-    // Add the matrices
-    Matrix *result = MatrixAdd(m1, m2);
+	// Add the matrices
+	Matrix *result = MatrixAdd(m1, m2);
 
-    // Check that the result is NULL
-    cr_assert_null(result);
+	// Check that the result is NULL
+	cr_assert_null(result);
 
-    // Clean up
-    MatrixFree(m1);
-    MatrixFree(m2);
+	// Clean up
+	MatrixFree(m1);
+	MatrixFree(m2);
 }
 
 Test(MatrixSubtract, NullMatrix1)
 {
-    Matrix *m1 = NULL;
-    Matrix *m2 = MatrixNew(2, 2);
-    Matrix *result = MatrixSubtract(m1, m2);
-    cr_assert_null(result);
-    MatrixDelete(m2);
+	Matrix *m1 = NULL;
+	Matrix *m2 = MatrixNew(2, 2);
+	Matrix *result = MatrixSubtract(m1, m2);
+	cr_assert_null(result);
+	MatrixDelete(m2);
 }
 
 Test(MatrixSubtract, NullMatrix2)
 {
-    Matrix *m1 = MatrixNew(2, 2);
-    Matrix *m2 = NULL;
-    Matrix *result = MatrixSubtract(m1, m2);
-    cr_assert_null(result);
-    MatrixDelete(m1);
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = NULL;
+	Matrix *result = MatrixSubtract(m1, m2);
+	cr_assert_null(result);
+	MatrixDelete(m1);
 }
 
 Test(MatrixSubtract, UnequalDimensions)
 {
-    Matrix *m1 = MatrixNew(2, 3);
-    Matrix *m2 = MatrixNew(2, 2);
-    Matrix *result = MatrixSubtract(m1, m2);
-    cr_assert_null(result);
-    MatrixDelete(m1);
-    MatrixDelete(m2);
+	Matrix *m1 = MatrixNew(2, 3);
+	Matrix *m2 = MatrixNew(2, 2);
+	Matrix *result = MatrixSubtract(m1, m2);
+	cr_assert_null(result);
+	MatrixDelete(m1);
+	MatrixDelete(m2);
 }
 
 Test(MatrixSubtract, Subtract)
 {
-    Matrix *m1 = MatrixNew(2, 2);
-    Matrix *m2 = MatrixNew(2, 2);
-    MatrixSet(m1, 0, 0, 1);
-    MatrixSet(m1, 0, 1, 2);
-    MatrixSet(m1, 1, 0, 3);
-    MatrixSet(m1, 1, 1, 4);
-    MatrixSet(m2, 0, 0, 1);
-    MatrixSet(m2, 0, 1, 2);
-    MatrixSet(m2, 1, 0, 3);
-    MatrixSet(m2, 1, 1, 4);
-    Matrix *result = MatrixSubtract(m1, m2);
-    cr_assert_not_null(result);
-    cr_assert_eq(MatrixGet(result, 0, 0), 0);
-    cr_assert_eq(MatrixGet(result, 0, 1), 0);
-    cr_assert_eq(MatrixGet(result, 1, 0), 0);
-    cr_assert_eq(MatrixGet(result, 1, 1), 0);
-    MatrixDelete(m1);
-    MatrixDelete(m2);
-    MatrixDelete(result);
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = MatrixNew(2, 2);
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 0, 1, 2.0);
+	MatrixSet(m1, 1, 0, 3.0);
+	MatrixSet(m1, 1, 1, 4.0);
+	MatrixSet(m2, 0, 0, 1.0);
+	MatrixSet(m2, 0, 1, 2.0);
+	MatrixSet(m2, 1, 0, 3.0);
+	MatrixSet(m2, 1, 1, 4.0);
+	Matrix *result = MatrixSubtract(m1, m2);
+	cr_assert_not_null(result);
+	cr_assert_eq(MatrixGet(result, 0, 0), 0.0);
+	cr_assert_eq(MatrixGet(result, 0, 1), 0.0);
+	cr_assert_eq(MatrixGet(result, 1, 0), 0.0);
+	cr_assert_eq(MatrixGet(result, 1, 1), 0.0);
+	MatrixDelete(m1);
+	MatrixDelete(m2);
+	MatrixDelete(result);
 }
 
 Test(MatrixMultiply, NullMatrix1)
 {
-    Matrix *m1 = NULL;
-    Matrix *m2 = MatrixNew(2, 3);
-    Matrix *result = MatrixMultiply(m1, m2);
-    cr_assert_null(result);
-    MatrixDelete(m2);
+	Matrix *m1 = NULL;
+	Matrix *m2 = MatrixNew(2, 3);
+	Matrix *result = MatrixMultiply(m1, m2);
+	cr_assert_null(result);
+	MatrixDelete(m2);
 }
 
 Test(MatrixMultiply, NullMatrix2)
 {
-    Matrix *m1 = MatrixNew(2, 3);
-    Matrix *m2 = NULL;
-    Matrix *result = MatrixMultiply(m1, m2);
-    cr_assert_null(result);
-    MatrixDelete(m1);
+	Matrix *m1 = MatrixNew(2, 3);
+	Matrix *m2 = NULL;
+	Matrix *result = MatrixMultiply(m1, m2);
+	cr_assert_null(result);
+	MatrixDelete(m1);
 }
 
 Test(MatrixMultiply, UnequalDimensions)
 {
-    Matrix *m1 = MatrixNew(2, 3);
-    Matrix *m2 = MatrixNew(4, 5);
-    Matrix *result = MatrixMultiply(m1, m2);
-    cr_assert_null(result);
-    MatrixDelete(m1);
-    MatrixDelete(m2);
+	Matrix *m1 = MatrixNew(2, 3);
+	Matrix *m2 = MatrixNew(4, 5);
+	Matrix *result = MatrixMultiply(m1, m2);
+	cr_assert_null(result);
+	MatrixDelete(m1);
+	MatrixDelete(m2);
 }
 
 Test(MatrixMultiply, Multiply)
 {
-    Matrix *m1 = MatrixNew(2, 3);
-    Matrix *m2 = MatrixNew(3, 2);
-    MatrixSet(m1, 0, 0, 1);
-    MatrixSet(m1, 0, 1, 2);
-    MatrixSet(m1, 0, 2, 3);
-    MatrixSet(m1, 1, 0, 4);
-	MatrixSet(m1, 1, 1, 5);
-	MatrixSet(m1, 1, 2, 6);
-	MatrixSet(m2, 0, 0, 7);
-	MatrixSet(m2, 0, 1, 8);
-	MatrixSet(m2, 1, 0, 9);
-	MatrixSet(m2, 1, 1, 10);
-	MatrixSet(m2, 2, 0, 11);
-	MatrixSet(m2, 2, 1, 12);
+	Matrix *m1 = MatrixNew(2, 3);
+	Matrix *m2 = MatrixNew(3, 2);
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 0, 1, 2.0);
+	MatrixSet(m1, 0, 2, 3.0);
+	MatrixSet(m1, 1, 0, 4.0);
+	MatrixSet(m1, 1, 1, 5.0);
+	MatrixSet(m1, 1, 2, 6.0);
+	MatrixSet(m2, 0, 0, 7.0);
+	MatrixSet(m2, 0, 1, 8.0);
+	MatrixSet(m2, 1, 0, 9.0);
+	MatrixSet(m2, 1, 1, 10.0);
+	MatrixSet(m2, 2, 0, 11.0);
+	MatrixSet(m2, 2, 1, 12.0);
 
 	Matrix *result = MatrixMultiply(m1, m2);
 
 	cr_assert_not_null(result, "Result should not be null");
 
-	cr_assert_eq(MatrixGet(result, 0, 0), 58, "Expected 58 but got %d", MatrixGet(result, 0, 0));
-	cr_assert_eq(MatrixGet(result, 0, 1), 64, "Expected 64 but got %d", MatrixGet(result, 0, 1));
-	cr_assert_eq(MatrixGet(result, 1, 0), 139, "Expected 139 but got %d", MatrixGet(result, 1, 0));
-	cr_assert_eq(MatrixGet(result, 1, 1), 154, "Expected 154 but got %d", MatrixGet(result, 1, 1));
+	cr_assert_eq(MatrixGet(result, 0, 0), 58.0, "Expected 58 but got %d", MatrixGet(result, 0, 0));
+	cr_assert_eq(MatrixGet(result, 0, 1), 64.0, "Expected 64 but got %d", MatrixGet(result, 0, 1));
+	cr_assert_eq(MatrixGet(result, 1, 0), 139.0, "Expected 139 but got %d", MatrixGet(result, 1, 0));
+	cr_assert_eq(MatrixGet(result, 1, 1), 154.0, "Expected 154 but got %d", MatrixGet(result, 1, 1));
 
 	MatrixFree(m1);
 	MatrixFree(m2);
@@ -1941,293 +1947,1540 @@ Test(MatrixMultiply, Multiply)
 
 Test(MatrixElementWiseMultiply, Multiply)
 {
-    Matrix *m1 = MatrixNew(2, 2);
-    Matrix *m2 = MatrixNew(2, 2);
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = MatrixNew(2, 2);
 
-    MatrixSet(m1, 0, 0, 2);
-    MatrixSet(m1, 0, 1, 4);
-    MatrixSet(m1, 1, 0, 6);
-    MatrixSet(m1, 1, 1, 8);
+	MatrixSet(m1, 0, 0, 2.0);
+	MatrixSet(m1, 0, 1, 4.0);
+	MatrixSet(m1, 1, 0, 6.0);
+	MatrixSet(m1, 1, 1, 8.0);
 
-    MatrixSet(m2, 0, 0, 1);
-    MatrixSet(m2, 0, 1, 3);
-    MatrixSet(m2, 1, 0, 5);
-    MatrixSet(m2, 1, 1, 7);
+	MatrixSet(m2, 0, 0, 1.0);
+	MatrixSet(m2, 0, 1, 3.0);
+	MatrixSet(m2, 1, 0, 5.0);
+	MatrixSet(m2, 1, 1, 7.0);
 
-    Matrix *result = MatrixElementWiseMultiply(m1, m2);
+	Matrix *result = MatrixElementWiseMultiply(m1, m2);
 
-    cr_assert_not_null(result, "Result matrix should not be NULL");
+	cr_assert_not_null(result, "Result matrix should not be NULL");
 
-    cr_assert_eq(MatrixGet(result, 0, 0), 2);
-    cr_assert_eq(MatrixGet(result, 0, 1), 12);
-    cr_assert_eq(MatrixGet(result, 1, 0), 30);
-    cr_assert_eq(MatrixGet(result, 1, 1), 56);
+	cr_assert_eq(MatrixGet(result, 0, 0), 2.0);
+	cr_assert_eq(MatrixGet(result, 0, 1), 12.0);
+	cr_assert_eq(MatrixGet(result, 1, 0), 30.0);
+	cr_assert_eq(MatrixGet(result, 1, 1), 56.0);
 
-    MatrixFree(m1);
-    MatrixFree(m2);
-    MatrixFree(result);
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(result);
 }
 
 Test(MatrixElementWiseMultiply, NullInput)
 {
-    Matrix *m1 = MatrixNew(2, 2);
-    Matrix *m2 = NULL;
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = NULL;
 
-    Matrix *result = MatrixElementWiseMultiply(m1, m2);
+	Matrix *result = MatrixElementWiseMultiply(m1, m2);
 
-    cr_assert_null(result, "Result matrix should be NULL when one of the inputs is NULL");
+	cr_assert_null(result, "Result matrix should be NULL when one of the inputs is NULL");
 
-    MatrixFree(m1);
-    MatrixFree(m2);
-    MatrixFree(result);
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(result);
 }
 
 Test(MatrixElementWiseMultiply, DifferentDimensions)
 {
-    Matrix *m1 = MatrixNew(2, 2);
-    Matrix *m2 = MatrixNew(2, 3);
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = MatrixNew(2, 3);
 
-    Matrix *result = MatrixElementWiseMultiply(m1, m2);
+	Matrix *result = MatrixElementWiseMultiply(m1, m2);
 
-    cr_assert_null(result, "Result matrix should be NULL when the dimensions are not equal");
+	cr_assert_null(result, "Result matrix should be NULL when the dimensions are not equal");
 
-    MatrixFree(m1);
-    MatrixFree(m2);
-    MatrixFree(result);
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(result);
 }
 
-Test(MatrixAddWithBroadcast, InvalidInput)
+Test(MatrixAddWithBroadcast, InValidInput)
 {
-    // Test with NULL input
-    Matrix *result = MatrixAddWithBroadcast(NULL, NULL);
-    cr_assert_null(result, "Failed to catch NULL input");
+	// Test with NULL input
+	Matrix *result = MatrixAddWithBroadcast(NULL, NULL);
+	cr_assert_null(result, "Failed to catch NULL input");
 
-    // Test with mismatched dimensions
-    Matrix *m1 = MatrixNew(2, 3);
-    Matrix *m2 = MatrixNew(3, 2);
-    Matrix *result2 = MatrixAddWithBroadcast(m1, m2);
-    cr_assert_null(result2, "Failed to catch mismatched dimensions");
-    MatrixFree(m1);
-    MatrixFree(m2);
+	// Test with mismatched dimensions
+	Matrix *m1 = MatrixNew(2, 3);
+	Matrix *m2 = MatrixNew(3, 2);
+	Matrix *result2 = MatrixAddWithBroadcast(m1, m2);
+	cr_assert_null(result2, "Failed to catch mismatched dimensions");
+	MatrixFree(m1);
+	MatrixFree(m2);
 }
 
 Test(MatrixAddWithBroadcast, AddMatricesWithDifferentSizes)
 {
-    // Test with matrices of different sizes
-    Matrix *m1 = MatrixNew(2, 1);
-    Matrix *m2 = MatrixNew(1, 2);
-    MatrixSet(m1, 0, 0, 1);
-    MatrixSet(m1, 1, 0, 2);
-    MatrixSet(m2, 0, 0, 1);
-    MatrixSet(m2, 0, 1, 2);
-    Matrix *expected = MatrixNew(2, 2);
-    MatrixSet(expected, 0, 0, 2);
-    MatrixSet(expected, 0, 1, 3);
-    MatrixSet(expected, 1, 0, 3);
-    MatrixSet(expected, 1, 1, 4);
-    Matrix *result = MatrixAddWithBroadcast(m1, m2);
-    MatrixEquals(expected, result, 1e-6);
-    MatrixFree(m1);
-    MatrixFree(m2);
-    MatrixFree(expected);
-    MatrixFree(result);
+	// Test with matrices of different sizes
+	Matrix *m1 = MatrixNew(2, 1);
+	Matrix *m2 = MatrixNew(1, 2);
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 1, 0, 2.0);
+	MatrixSet(m2, 0, 0, 1.0);
+	MatrixSet(m2, 0, 1, 2.0);
+	Matrix *expected = MatrixNew(2, 2);
+	MatrixSet(expected, 0, 0, 2.0);
+	MatrixSet(expected, 0, 1, 3.0);
+	MatrixSet(expected, 1, 0, 3.0);
+	MatrixSet(expected, 1, 1, 4.0);
+	Matrix *result = MatrixAddWithBroadcast(m1, m2);
+	MatrixEquals(expected, result, 1e-6);
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(expected);
+	MatrixFree(result);
 
 }
 
 Test(MatrixAddWithBroadcast, AddMatricesWithSameSizes)
-{ 
-    // Test with matrices of the same size
-    Matrix *m3 = MatrixNew(2, 2);
-    Matrix *m4 = MatrixNew(2, 2);
-    MatrixSet(m3, 0, 0, 1);
-    MatrixSet(m3, 0, 1, 2);
-    MatrixSet(m3, 1, 0, 3);
-    MatrixSet(m3, 1, 1, 4);
-    MatrixSet(m4, 0, 0, 5);
-    MatrixSet(m4, 0, 1, 6);
-    MatrixSet(m4, 1, 0, 7);
-    MatrixSet(m4, 1, 1, 8);
-    Matrix *expected2 = MatrixNew(2, 2);
-    MatrixSet(expected2, 0, 0, 6);
-    MatrixSet(expected2, 0, 1, 8);
-    MatrixSet(expected2, 1, 0, 10);
-    MatrixSet(expected2, 1, 1, 12);
-    Matrix *result2 = MatrixAddWithBroadcast(m3, m4);
-    MatrixEquals(expected2, result2, 1e-6);
-    MatrixFree(m3);
-    MatrixFree(m4);
-    MatrixFree(expected2);
-    MatrixFree(result2);
+{
+	// Test with matrices of the same size
+	Matrix *m3 = MatrixNew(2, 2);
+	Matrix *m4 = MatrixNew(2, 2);
+	MatrixSet(m3, 0, 0, 1.0);
+	MatrixSet(m3, 0, 1, 2.0);
+	MatrixSet(m3, 1, 0, 3.0);
+	MatrixSet(m3, 1, 1, 4.0);
+
+	MatrixSet(m4, 0, 0, 5.0);
+	MatrixSet(m4, 0, 1, 6.0);
+	MatrixSet(m4, 1, 0, 7.0);
+	MatrixSet(m4, 1, 1, 8.0);
+	Matrix *expected2 = MatrixNew(2, 2);
+	MatrixSet(expected2, 0, 0, 6.0);
+	MatrixSet(expected2, 0, 1, 8.0);
+	MatrixSet(expected2, 1, 0, 10.0);
+	MatrixSet(expected2, 1, 1, 12.0);
+	Matrix *result2 = MatrixAddWithBroadcast(m3, m4);
+	MatrixEquals(expected2, result2, 1e-6);
+	MatrixFree(m3);
+	MatrixFree(m4);
+	MatrixFree(expected2);
+	MatrixFree(result2);
 }
 
 Test(MatrixSubtractWithBroadcast, SubtractMatricesWithDifferentSizes)
 {
-    // Test with matrices of different sizes
-    Matrix *m1 = MatrixNew(2, 1);
-    Matrix *m2 = MatrixNew(1, 2);
-    MatrixSet(m1, 0, 0, 1);
-    MatrixSet(m1, 1, 0, 2);
-    MatrixSet(m2, 0, 0, 1);
-    MatrixSet(m2, 0, 1, 2);
-    Matrix *expected = MatrixNew(2, 2);
-    MatrixSet(expected, 0, 0, 2);
-    MatrixSet(expected, 0, 1, 3);
-    MatrixSet(expected, 1, 0, 3);
-    MatrixSet(expected, 1, 1, 4);
-    Matrix *result = MatrixAddWithBroadcast(m1, m2);
-    MatrixEquals(expected, result, 1e-6);
-    MatrixFree(m1);
-    MatrixFree(m2);
-    MatrixFree(expected);
-    MatrixFree(result);
+	// Test with matrices of different sizes
+	Matrix *m1 = MatrixNew(2, 1);
+	Matrix *m2 = MatrixNew(1, 2);
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 1, 0, 2.0);
+	MatrixSet(m2, 0, 0, 1.0);
+	MatrixSet(m2, 0, 1, 2.0);
+	Matrix *expected = MatrixNew(2, 2);
+	MatrixSet(expected, 0, 0, 2.0);
+	MatrixSet(expected, 0, 1, 3.0);
+	MatrixSet(expected, 1, 0, 3.0);
+	MatrixSet(expected, 1, 1, 4.0);
+	Matrix *result = MatrixAddWithBroadcast(m1, m2);
+	MatrixEquals(expected, result, 1e-6);
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(expected);
+	MatrixFree(result);
 
 }
 
 Test(MatrixSubtractWithBroadcast, SubtractMatricesWithSameSizes)
-{ 
-    // Test with matrices of the same size
-    Matrix *m3 = MatrixNew(2, 2);
-    Matrix *m4 = MatrixNew(2, 2);
-    MatrixSet(m3, 0, 0, 1);
-    MatrixSet(m3, 0, 1, 2);
-    MatrixSet(m3, 1, 0, 3);
-    MatrixSet(m3, 1, 1, 4);
-    MatrixSet(m4, 0, 0, 5);
-    MatrixSet(m4, 0, 1, 6);
-    MatrixSet(m4, 1, 0, 7);
-    MatrixSet(m4, 1, 1, 8);
-    Matrix *expected2 = MatrixNew(2, 2);
-    MatrixSet(expected2, 0, 0, 6);
-    MatrixSet(expected2, 0, 1, 8);
-    MatrixSet(expected2, 1, 0, 10);
-    MatrixSet(expected2, 1, 1, 12);
-    Matrix *result2 = MatrixAddWithBroadcast(m3, m4);
-    MatrixEquals(expected2, result2, 1e-6);
-    MatrixFree(m3);
-    MatrixFree(m4);
-    MatrixFree(expected2);
-    MatrixFree(result2);
+{
+	// Test with matrices of the same size
+	Matrix *m3 = MatrixNew(2, 2);
+	Matrix *m4 = MatrixNew(2, 2);
+	MatrixSet(m3, 0, 0, 1.0);
+	MatrixSet(m3, 0, 1, 2.0);
+	MatrixSet(m3, 1, 0, 3.0);
+	MatrixSet(m3, 1, 1, 4.0);
+	MatrixSet(m4, 0, 0, 5.0);
+	MatrixSet(m4, 0, 1, 6.0);
+	MatrixSet(m4, 1, 0, 7.0);
+	MatrixSet(m4, 1, 1, 8.0);
+	Matrix *expected2 = MatrixNew(2, 2);
+	MatrixSet(expected2, 0, 0, 6.0);
+	MatrixSet(expected2, 0, 1, 8.0);
+	MatrixSet(expected2, 1, 0, 10.0);
+	MatrixSet(expected2, 1, 1, 12.0);
+	Matrix *result2 = MatrixAddWithBroadcast(m3, m4);
+	MatrixEquals(expected2, result2, 1e-6);
+	MatrixFree(m3);
+	MatrixFree(m4);
+	MatrixFree(expected2);
+	MatrixFree(result2);
 }
 
 Test(MatrixSubtractWithBroadcast, Subtract)
 {
-    Matrix *m1 = MatrixNew(2, 3);
-    Matrix *m2 = MatrixNew(1, 3);
-    MatrixSet(m1, 0, 0, 5);
-    MatrixSet(m1, 0, 1, 7);
-    MatrixSet(m1, 0, 2, 3);
-    MatrixSet(m1, 1, 0, 8);
-    MatrixSet(m1, 1, 1, 1);
-    MatrixSet(m1, 1, 2, 2);
-    MatrixSet(m2, 0, 0, 2);
-    MatrixSet(m2, 0, 1, 3);
-    MatrixSet(m2, 0, 2, 1);
+	Matrix *m1 = MatrixNew(2, 3);
+	Matrix *m2 = MatrixNew(1, 3);
+	MatrixSet(m1, 0, 0, 5.0);
+	MatrixSet(m1, 0, 1, 7.0);
+	MatrixSet(m1, 0, 2, 3.0);
+	MatrixSet(m1, 1, 0, 8.0);
+	MatrixSet(m1, 1, 1, 1.0);
+	MatrixSet(m1, 1, 2, 2.0);
+	MatrixSet(m2, 0, 0, 2.0);
+	MatrixSet(m2, 0, 1, 3.0);
+	MatrixSet(m2, 0, 2, 1.0);
 
-    Matrix *expected_result = MatrixNew(2, 3);
-    MatrixSet(expected_result, 0, 0, 3);
-    MatrixSet(expected_result, 0, 1, 4);
-    MatrixSet(expected_result, 0, 2, 2);
-    MatrixSet(expected_result, 1, 0, 6);
-    MatrixSet(expected_result, 1, 1, -2);
-    MatrixSet(expected_result, 1, 2, 1);
+	Matrix *expected_result = MatrixNew(2, 3);
+	MatrixSet(expected_result, 0, 0, 3.0);
+	MatrixSet(expected_result, 0, 1, 4.0);
+	MatrixSet(expected_result, 0, 2, 2.0);
+	MatrixSet(expected_result, 1, 0, 6.0);
+	MatrixSet(expected_result, 1, 1, -2.0);
+	MatrixSet(expected_result, 1, 2, 1.0);
 
-    Matrix *result = MatrixSubtractWithBroadcast(m1, m2);
-    cr_assert(MatrixAreEqual(expected_result, result), "Expected matrix and result matrix are not equal");
+	Matrix *result = MatrixSubtractWithBroadcast(m1, m2);
+	cr_assert(MatrixAreEqual(expected_result, result), "Expected matrix and result matrix are not equal");
 
-    MatrixFree(m1);
-    MatrixFree(m2);
-    MatrixFree(expected_result);
-    MatrixFree(result);
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(expected_result);
+	MatrixFree(result);
 }
 
 Test(MatrixSubtractWithBroadcast, ErrorNullM1)
 {
-    Matrix *m1 = NULL;
-    Matrix *m2 = MatrixNew(1, 1);
+	Matrix *m1 = NULL;
+	Matrix *m2 = MatrixNew(1, 1);
 
-    cr_assert_null(MatrixSubtractWithBroadcast(m1, m2), "Expected NULL matrix when passing NULL matrix m1");
+	cr_assert_null(MatrixSubtractWithBroadcast(m1, m2), "Expected NULL matrix when passing NULL matrix m1");
 
-    MatrixFree(m2);
+	MatrixFree(m2);
 }
 
 Test(MatrixSubtractWithBroadcast, ErrorNullM2)
 {
-    Matrix *m1 = MatrixNew(1, 1);
-    Matrix *m2 = NULL;
+	Matrix *m1 = MatrixNew(1, 1);
+	Matrix *m2 = NULL;
 
-    cr_assert_null(MatrixSubtractWithBroadcast(m1, m2), "Expected NULL matrix when passing NULL matrix m2");
+	cr_assert_null(MatrixSubtractWithBroadcast(m1, m2), "Expected NULL matrix when passing NULL matrix m2");
 
-    MatrixFree(m1);
+	MatrixFree(m1);
 }
 
 Test(MatrixSubtractWithBroadcast, ErrorNotEqualDim)
 {
-    Matrix *m1 = MatrixNew(2, 2);
-    Matrix *m2 = MatrixNew(1, 1);
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = MatrixNew(1, 1);
 
-    cr_assert_null(MatrixSubtractWithBroadcast(m1, m2), "Expected NULL matrix when matrices have not equal dimensions");
+	cr_assert_null(MatrixSubtractWithBroadcast(m1, m2), "Expected NULL matrix when matrices have not equal dimensions");
 
-    MatrixFree(m1);
-    MatrixFree(m2);
+	MatrixFree(m1);
+	MatrixFree(m2);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-Test(matrix_test, matrix_operations)
+Test(matrix_multiply_with_broadcast, NullMatrix)
 {
-	{
-		double values1[] = { 1., 2., 3., 4., 5., 1. };
+	Matrix *m1 = NULL;
+	Matrix *m2 = NULL;
+	Matrix *result = MatrixMultiplyWithBroadcast(m1, m2);
 
-		double values2[] = { 2., 4. };
+	cr_assert_null(result, "Expected null result when passing null matrices");
+}
 
-		Matrix *a = MatrixFrom(3, 2, 6, values1);
-		Matrix *b = MatrixFrom(2, 1, 2, values2);
-		Matrix *res = MatrixMultiply(a, b);
-		cr_assert_float_eq(MatrixGet(res, 1, 0), 22., 0.001);
-	}
+Test(MatrixMultiplyWithBroadcast, IncompatibleMatrices)
+{
+	Matrix *m1 = MatrixNew(3, 2);
+	Matrix *m2 = MatrixNew(2, 3);
+	Matrix *result = MatrixMultiplyWithBroadcast(m1, m2);
 
-	{
-		double values[] = { 1., 3., 5., 9., 1., 3., 1., 7., 4., 3., 9., 7., 5., 2., 0., 9. };
+	cr_assert_null(result, "Expected null result when passing incompatible matrices");
 
-		Matrix *ref = MatrixFrom(4, 4, 16, values);
-		Matrix *re = MatrixRowEchelonGet(ref);
-		cr_assert_float_eq(MatrixTrace(re), 4., 0.001);
-	}
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
 
-	{
-		double values[] = { 1., 1., 1., 1., 1., 0., -3., -6., 4., 9., -1., -2., -1., 3., 1., -2., -3., 0., 3., -1., 1., 4., 5., -9., -7., };
+Test(MatrixMultiplyWithBroadcast, BroadcastCol)
+{
+	Matrix *m1 = MatrixNew(2, 1);
+	Matrix *m2 = MatrixNew(1, 3);
+	MatrixSet(m1, 0, 0, 2.0);
+	MatrixSet(m1, 1, 0, 3.0);
+	MatrixSet(m2, 0, 0, 4.0);
+	MatrixSet(m2, 0, 1, 5.0);
+	MatrixSet(m2, 0, 2, 6.0);
+	Matrix *expected = MatrixNew(2, 3);
+	MatrixSet(expected, 0, 0, 8.0);
+	MatrixSet(expected, 0, 1, 10.0);
+	MatrixSet(expected, 0, 2, 12.0);
+	MatrixSet(expected, 1, 0, 12.0);
+	MatrixSet(expected, 1, 1, 15.0);
+	MatrixSet(expected, 1, 2, 18.0);
+	Matrix *result = MatrixMultiplyWithBroadcast(m1, m2);
 
-		Matrix *ref = MatrixFrom(5, 5, 25, values);
-		Matrix *re = MatrixReducedRowEchelonGet(ref);
-		cr_assert_float_eq(MatrixTrace(re), 4., 0.001);
-	}
+	cr_assert(MatrixIsEqual(expected, result), "Expected matrices to be equal");
 
-	{
-		double values[] = { 1. };
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(expected);
+	MatrixFree(result);
+}
 
-		Matrix *m = MatrixFrom(1, 1, 1, values);
-		Matrix *bm = MatrixBroadcastRowsAndColumns(m, 10, 10);
-		cr_assert_float_eq(MatrixTrace(bm), 10., 0.001);
-	}
+Test(MatrixMultiplyWithBroadcast, BroadcastRows)
+{
+	Matrix *m1 = MatrixNew(1, 3);
+	Matrix *m2 = MatrixNew(3, 2);
+	MatrixSet(m1, 0, 0, 2.0);
+	MatrixSet(m1, 0, 1, 3.0);
+	MatrixSet(m1, 0, 2, 4.0);
+	MatrixSet(m2, 0, 0, 1.0);
+	MatrixSet(m2, 1, 0, 2.0);
+	MatrixSet(m2, 2, 0, 3.0);
+	MatrixSet(m2, 0, 1, 4.0);
+	MatrixSet(m2, 1, 1, 5.0);
+	MatrixSet(m2, 2, 1, 6.0);
+	Matrix *expected = MatrixNew(1, 2);
+	MatrixSet(expected, 0, 0, 20.0);
+	MatrixSet(expected, 0, 1, 32.0);
+	Matrix *result = MatrixMultiplyWithBroadcast(m1, m2);
 
-	{
-		double values[] = { 0., 10., 20., 30. };
+	cr_assert(MatrixIsEqual(expected, result), "Expected matrices to be equal");
 
-		double values1[] = { 1., 2., 3., 4. };
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(expected);
+	MatrixFree(result);
+}
 
-		Matrix *m = MatrixFrom(4, 1, 4, values);
-		Matrix *m1 = MatrixFrom(1, 4, 4, values1);
-		Matrix *res = MatrixAddWithBroadcast(m, m1);
-		cr_assert_float_eq(MatrixTrace(res), 70., 0.001);
-	}
+Test(MatrixMultiplyWithBroadcast, SameDimensions)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = MatrixNew(2, 2);
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 0, 1, 2.0);
+	MatrixSet(m1, 1, 0, 3.0);
+	MatrixSet(m1, 1, 1, 4.0);
+	MatrixSet(m2, 0, 0, 4.0);
+	MatrixSet(m2, 0, 1, 3.0);
+	MatrixSet(m2, 1, 0, 2.0);
+	MatrixSet(m2, 1, 1, 1.0);
+
+	Matrix *expected = MatrixNew(2, 2);
+	MatrixSet(expected, 0, 0, 8.0);
+	MatrixSet(expected, 0, 1, 5.0);
+	MatrixSet(expected, 1, 0, 20.0);
+	MatrixSet(expected, 1, 1, 13.0);
+
+	Matrix *result = MatrixMultiplyWithBroadcast(m1, m2);
+	cr_assert(MatrixAreEqual(expected, result), "Multiplication with broadcast failed");
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(expected);
+	MatrixFree(result);
+}
+
+Test(MatrixMultiplyWithBroadcast, M1ColsLessThanM2Rows)
+{
+	Matrix *m1 = MatrixNew(2, 1);
+	Matrix *m2 = MatrixNew(1, 2);
+	MatrixSet(m1, 0, 0, 2.0);
+	MatrixSet(m1, 1, 0, 3.0);
+	MatrixSet(m2, 0, 0, 4.0);
+	MatrixSet(m2, 0, 1, 3.0);
+
+	Matrix *expected = MatrixNew(2, 2);
+	MatrixSet(expected, 0, 0, 8.0);
+	MatrixSet(expected, 0, 1, 6.0);
+	MatrixSet(expected, 1, 0, 12.0);
+	MatrixSet(expected, 1, 1, 9.0);
+
+	Matrix *result = MatrixMultiplyWithBroadcast(m1, m2);
+	cr_assert(MatrixAreEqual(expected, result), "Multiplication with broadcast failed");
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(expected);
+	MatrixFree(result);
+}
+
+Test(MatrixMultiplyWithBroadcast, M1ColsGreaterThanM2Rows)
+{
+	Matrix *m1 = MatrixNew(1, 2);
+	Matrix *m2 = MatrixNew(2, 1);
+	MatrixSet(m1, 0, 0, 2.0);
+	MatrixSet(m1, 0, 1, 3.0);
+	MatrixSet(m2, 0, 0, 4.0);
+	MatrixSet(m2, 1, 0, 5.0);
+
+	Matrix *expected = MatrixNew(2, 1);
+	MatrixSet(expected, 0, 0, 23.0);
+	MatrixSet(expected, 1, 0, 32.0);
+
+	Matrix *result = MatrixMultiplyWithBroadcast(m1, m2);
+	cr_assert(MatrixAreEqual(expected, result), "Multiplication with broadcast failed");
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(expected);
+	MatrixFree(result);
+}
+
+Test(MatrixMultiplyWithBroadcast, M1M2Broadcasting)
+{
+	Matrix *m1 = MatrixNew(2, 1);
+	Matrix *m2 = MatrixNew(1, 3);
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 1, 0, 2.0);
+	MatrixSet(m2, 0, 0, 3.0);
+	MatrixSet(m2, 0, 1, 4.0);
+	MatrixSet(m2, 0, 2, 5.0);
+
+	Matrix *result = MatrixMultiplyWithBroadcast(m1, m2);
+	cr_assert(result != NULL);
+	cr_assert_eq(result->num_rows, 2);
+	cr_assert_eq(result->num_cols, 3);
+	cr_assert_float_eq(MatrixGet(result, 0, 0), 3.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(result, 0, 1), 4.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(result, 0, 2), 5.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(result, 1, 0), 6.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(result, 1, 1), 8.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(result, 1, 2), 10.0, 1e-6);
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(result);
+}
+
+Test(MatrixElementWiseMultiplyWithBroadcast, InValidMatrixM1)
+{
+	Matrix *m1 = NULL;
+	Matrix *m2 = MatrixNew(3, 3);
+	cr_assert_null(MatrixElementWiseMultiplyWithBroadcast(m1, m2));
+	MatrixFree(m2);
+}
+
+Test(MatrixElementWiseMultiplyWithBroadcast, InValidMatrixM2)
+{
+	Matrix *m1 = MatrixNew(3, 3);
+	Matrix *m2 = NULL;
+	cr_assert_null(MatrixElementWiseMultiplyWithBroadcast(m1, m2));
+	MatrixFree(m1);
+}
+
+Test(MatrixElementWiseMultiplyWithBroadcast, SameDimensions)
+{
+	Matrix *m1 = MatrixNew(3, 3);
+	Matrix *m2 = MatrixNew(3, 3);
+
+	MatrixSet(m1, 0, 0, 2.0);
+	MatrixSet(m1, 1, 1, 3.0);
+	MatrixSet(m1, 2, 2, 4.0);
+	MatrixSet(m2, 0, 0, 1.0);
+	MatrixSet(m2, 1, 1, 2.0);
+	MatrixSet(m2, 2, 2, 3.0);
+
+	Matrix *expected = MatrixNew(3, 3);
+	MatrixSet(expected, 0, 0, 2.0);
+	MatrixSet(expected, 1, 1, 6.0);
+	MatrixSet(expected, 2, 2, 12.0);
+
+	Matrix *result = MatrixElementWiseMultiplyWithBroadcast(m1, m2);
+	cr_assert(MatrixIsEqual(expected, result));
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(expected);
+	MatrixFree(result);
+}
+
+Test(MatrixElementWiseMultiplyWithBroadcast, M1M2Broadcasting)
+{
+	Matrix *m1 = MatrixNew(2, 1);
+	Matrix *m2 = MatrixNew(1, 3);
+
+	MatrixSet(m1, 0, 0, 2.0);
+	MatrixSet(m1, 1, 0, 3.0);
+	MatrixSet(m2, 0, 0, 4.0);
+	MatrixSet(m2, 0, 1, 5.0);
+	MatrixSet(m2, 0, 2, 6.0);
+
+	Matrix *expected = MatrixNew(2, 3);
+	MatrixSet(expected, 0, 0, 8.0);
+	MatrixSet(expected, 0, 1, 10.0);
+	MatrixSet(expected, 0, 2, 12.0);
+	MatrixSet(expected, 1, 0, 12.0);
+	MatrixSet(expected, 1, 1, 15.0);
+	MatrixSet(expected, 1, 2, 18.0);
+
+	Matrix *result = MatrixElementWiseMultiplyWithBroadcast(m1, m2);
+	cr_assert(MatrixIsEqual(expected, result));
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+	MatrixFree(expected);
+	MatrixFree(result);
+}
+
+Test(MatrixTranspose, SquareMatrix)
+{
+	Matrix *m = MatrixNew(3, 3);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 0, 2, 3.0);
+	MatrixSet(m, 1, 0, 4.0);
+	MatrixSet(m, 1, 1, 5.0);
+	MatrixSet(m, 1, 2, 6.0);
+	MatrixSet(m, 2, 0, 7.0);
+	MatrixSet(m, 2, 1, 8.0);
+	MatrixSet(m, 2, 2, 9.0);
+
+	MatrixTranspose(m);
+
+	cr_assert_eq(m->num_rows, 3);
+	cr_assert_eq(m->num_cols, 3);
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 0, 1), 4.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 0, 2), 7.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 0), 2.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 1), 5.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 2), 8.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 2, 0), 3.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 2, 1), 6.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 2, 2), 9.0, 1e-6);
+
+	MatrixFree(m);
+}
+
+Test(MatrixTranspose, RectangularMatrix)
+{
+	Matrix *m = MatrixNew(2, 3);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 0, 2, 3.0);
+	MatrixSet(m, 1, 0, 4.0);
+	MatrixSet(m, 1, 1, 5.0);
+	MatrixSet(m, 1, 2, 6.0);
+
+	MatrixTranspose(m);
+
+	cr_assert_eq(m->num_rows, 3);
+	cr_assert_eq(m->num_cols, 2);
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 0, 1), 4.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 0), 2.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 1), 5.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 2, 0), 3.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 2, 1), 6.0, 1e-6);
+
+	MatrixFree(m);
+}
+
+Test(MatrixTranspose, NullMatrix)
+{
+	Matrix *m = NULL;
+	MatrixTranspose(m);
+	cr_assert_null(m, "Expected NULL matrix after calling MatrixTranspose on NULL matrix");
+}
+
+Test(MatrixTranspose, SquareMatrix)
+{
+	Matrix *m = MatrixNew(3, 3);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 0, 2, 3.0);
+	MatrixSet(m, 1, 0, 4.0);
+	MatrixSet(m, 1, 1, 5.0);
+	MatrixSet(m, 1, 2, 6.0);
+	MatrixSet(m, 2, 0, 7.0);
+	MatrixSet(m, 2, 1, 8.0);
+	MatrixSet(m, 2, 2, 9.0);
+
+	MatrixTranspose(m);
+
+	cr_assert_eq(MatrixGet(m, 0, 0), 1.0, "Expected element at (0,0) to be 1 after transposition");
+	cr_assert_eq(MatrixGet(m, 0, 1), 4.0, "Expected element at (0,1) to be 4 after transposition");
+	cr_assert_eq(MatrixGet(m, 0, 2), 7.0, "Expected element at (0,2) to be 7 after transposition");
+	cr_assert_eq(MatrixGet(m, 1, 0), 2.0, "Expected element at (1,0) to be 2 after transposition");
+	cr_assert_eq(MatrixGet(m, 1, 1), 5.0, "Expected element at (1,1) to be 5 after transposition");
+	cr_assert_eq(MatrixGet(m, 1, 2), 8.0, "Expected element at (1,2) to be 8 after transposition");
+	cr_assert_eq(MatrixGet(m, 2, 0), 3.0, "Expected element at (2,0) to be 3 after transposition");
+	cr_assert_eq(MatrixGet(m, 2, 1), 6.0, "Expected element at (2,1) to be 6 after transposition");
+	cr_assert_eq(MatrixGet(m, 2, 2), 9.0, "Expected element at (2,2) to be 9 after transposition");
+
+	MatrixFree(m);
+}
+
+Test(MatrixTrace, NullMatrix)
+{
+	Matrix *m = NULL;
+	double trace = MatrixTrace(m);
+	cr_assert(isnan(trace), "Expected NaN trace value after calling MatrixTrace on NULL matrix");
+}
+
+Test(MatrixTrace, NonSquareMatrix)
+{
+	Matrix *m = MatrixNew(2, 3);
+	double trace = MatrixTrace(m);
+	cr_assert(isnan(trace), "Expected NaN trace value after calling MatrixTrace on non-square matrix");
+
+	MatrixFree(m);
+}
+
+Test(MatrixTrace, SquareMatrix)
+{
+	Matrix *m = MatrixNew(3, 3);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 0, 2, 3.0);
+	MatrixSet(m, 1, 0, 4.0);
+	MatrixSet(m, 1, 1, 5.0);
+	MatrixSet(m, 1, 2, 6.0);
+	MatrixSet(m, 2, 0, 7.0);
+	MatrixSet(m, 2, 1, 8.0);
+	MatrixSet(m, 2, 2, 9.0);
+
+	double trace = MatrixTrace(m);
+	cr_assert_eq(trace, 15);
+
+	MatrixFree(m);
+}
+
+Test(MatrixDeterminant, NullMatrix)
+{
+	double det = MatrixDeterminant(NULL);
+	cr_assert(isnan(det), "Determinant should be NaN for NULL matrix");
+}
+
+Test(MatrixDeterminant, NonSquareMatrix)
+{
+	Matrix *m = MatrixNew(2, 3);
+	double det = MatrixDeterminant(m);
+	MatrixFree(m);
+	cr_assert(isnan(det), "Determinant should be NaN for non-square matrix");
+}
+
+Test(MatrixDeterminant, OnexOneMatrix)
+{
+	Matrix *m = MatrixNew(1, 1);
+	MatrixSet(m, 0, 0, 5);
+	double det = MatrixDeterminant(m);
+	MatrixFree(m);
+	cr_assert_eq(det, 5.0, "Determinant of 1x1 matrix should be the only element");
+}
+
+Test(MatrixDeterminant, TwoxTwoMatrix)
+{
+	Matrix *m = MatrixNew(2, 2);
+	MatrixSet(m, 0, 0, 2.0);
+	MatrixSet(m, 0, 1, 3.0);
+	MatrixSet(m, 1, 0, 1.0);
+	MatrixSet(m, 1, 1, 4.0);
+	double det = MatrixDeterminant(m);
+	MatrixFree(m);
+	cr_assert_eq(det, 5.0, "Determinant of 2x2 matrix should be 2 * 4 - 3 *1 = 5");
+}
+
+Test(MatrixDeterminant, ThreexThreeMatrix)
+{
+	Matrix *m = MatrixNew(3, 3);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 0, 2, 3.0);
+	MatrixSet(m, 1, 0, 4.0);
+	MatrixSet(m, 1, 1, 5.0);
+	MatrixSet(m, 1, 2, 6.0);
+	MatrixSet(m, 2, 0, 7.0);
+	MatrixSet(m, 2, 1, 8.0);
+	MatrixSet(m, 2, 2, 9.0);
+	double det = MatrixDeterminant(m);
+	MatrixFree(m);
+	cr_assert_eq(det, 0.0, "Determinant of 3x3 matrix should be 0");
+}
+
+Test(MatrixDeterminant, NonSquareMatrix)
+{
+	Matrix *m = MatrixNew(3, 2);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 1, 0, 3.0);
+	MatrixSet(m, 1, 1, 4.0);
+	MatrixSet(m, 2, 0, 5.0);
+	MatrixSet(m, 2, 1, 6.0);
+
+	double det = MatrixDeterminant(m);
+	cr_assert(isnan(det), "Expected determinant of NaN for non-square matrix");
+	MatrixFree(m);
+}
+
+Test(MatrixDeterminant, OnexOneMatrix)
+{
+	Matrix *m = MatrixNew(1, 1);
+	MatrixSet(m, 0, 0, 5);
+
+	double det = MatrixDeterminant(m);
+	cr_assert_eq(det, 5, "Expected determinant of 5 for 1x1 matrix");
+	MatrixFree(m);
+}
+
+Test(MatrixDeterminant, TwoxTwoMatrix)
+{
+	Matrix *m = MatrixNew(2, 2);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 1, 0, 3.0);
+	MatrixSet(m, 1, 1, 4.0);
+
+	double det = MatrixDeterminant(m);
+	cr_assert_eq(det, -2, "Expected determinant of -2 for 2x2 matrix");
+	MatrixFree(m);
+}
+
+Test(MatrixDeterminant, FivexFiveMatrix)
+{
+	Matrix *m = MatrixNew(5, 5);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 0, 2, 3.0);
+	MatrixSet(m, 0, 3, 4.0);
+	MatrixSet(m, 0, 4, 5.0);
+	MatrixSet(m, 1, 0, 6.0);
+	MatrixSet(m, 1, 1, 7.0);
+	MatrixSet(m, 1, 2, 8.0);
+	MatrixSet(m, 1, 3, 9.0);
+	MatrixSet(m, 1, 4, 10.0);
+	MatrixSet(m, 2, 0, 11.0);
+	MatrixSet(m, 2, 1, 12.0);
+	MatrixSet(m, 2, 2, 13.0);
+	MatrixSet(m, 2, 3, 14.0);
+	MatrixSet(m, 2, 4, 15.0);
+	MatrixSet(m, 3, 0, 16.0);
+	MatrixSet(m, 3, 1, 17.0);
+	MatrixSet(m, 3, 2, 18.0);
+	MatrixSet(m, 3, 3, 19.0);
+	MatrixSet(m, 3, 4, 20.0);
+	MatrixSet(m, 4, 0, 21.0);
+	MatrixSet(m, 4, 1, 22.0);
+	MatrixSet(m, 4, 2, 23.0);
+	MatrixSet(m, 4, 3, 24.0);
+	MatrixSet(m, 4, 4, 25.0);
+
+	double det = MatrixDeterminant(m);
+	cr_assert_eq(det, -12.0);
+	MatrixFree(m);
+}
+
+Test(MatrixRowEchelon, NullMatrix)
+{
+	Matrix *m = NULL;
+	MatrixRowEchelon(m);
+	cr_assert(true);
+}
+
+Test(MatrixRowEchelon, TwoxTwoMatrix)
+{
+	Matrix *m = MatrixNew(2, 2);
+	MatrixSet(m, 0, 0, 2.0);
+	MatrixSet(m, 0, 1, 4.0);
+	MatrixSet(m, 1, 0, 1.0);
+	MatrixSet(m, 1, 1, 2.0);
+
+	MatrixRowEchelon(m);
+
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 0, 1), 2.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 1), 0.0, 1e-6);
+
+	MatrixFree(m);
+}
+
+Test(MatrixRowEchelon, ThreexThreeMatrix)
+{
+	Matrix *m = MatrixNew(3, 3);
+	MatrixSet(m, 0, 0, 2.0);
+	MatrixSet(m, 0, 1, 4.0);
+	MatrixSet(m, 0, 2, 6.0);
+	MatrixSet(m, 1, 0, 1.0);
+	MatrixSet(m, 1, 1, 2.0);
+	MatrixSet(m, 1, 2, 3.0);
+	MatrixSet(m, 2, 0, 4.0);
+	MatrixSet(m, 2, 1, 5.0);
+	MatrixSet(m, 2, 2, 6.0);
+
+	MatrixRowEchelon(m);
+
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 0, 1), 2.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 0, 2), 3.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 1), 1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 2), 2.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 2, 0), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 2, 1), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 2, 2), 0.0, 1e-6);
+
+	MatrixFree(m);
+}
+
+Test(MatrixReducedRowEchelon, InValidMatrix)
+{
+	Matrix *m = NULL;
+	MatrixReducedRowEchelon(m);
+	cr_assert_stderr_eq_str("Invalid matrix passed\n");
+}
+
+Test(MatrixReducedRowEchelon, OnexOneMatrix)
+{
+	Matrix *m = MatrixNew(1, 1);
+	MatrixSet(m, 0, 0, 3.0);
+	MatrixReducedRowEchelon(m);
+	cr_assert_eq(MatrixGet(m, 0, 0), 1.0, "Expected the matrix to be reduced to[1]");
+	MatrixFree(m);
+}
+
+Test(MatrixReducedRowEchelon, TwoxTwoMatrix)
+{
+	Matrix *m = MatrixNew(2, 2);
+	MatrixSet(m, 0, 0, 2.0);
+	MatrixSet(m, 0, 1, -1.0);
+	MatrixSet(m, 1, 0, -4.0);
+	MatrixSet(m, 1, 1, 2.0);
+	MatrixReducedRowEchelon(m);
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-6, "Expected the matrix to be reduced to[[1, -0.5], [0, 0]]");
+	cr_assert_float_eq(MatrixGet(m, 0, 1), -0.5, 1e-6, "Expected the matrix to be reduced to[[1, -0.5], [0, 0]]");
+	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, -0.5], [0, 0]]");
+	cr_assert_float_eq(MatrixGet(m, 1, 1), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, -0.5], [0, 0]]");
+	MatrixFree(m);
+}
+
+Test(MatrixReducedRowEchelon, ThreexThreeMatrix)
+{
+	Matrix *m = MatrixNew(3, 3);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 0, 2, -1.0);
+	MatrixSet(m, 1, 0, 2.0);
+	MatrixSet(m, 1, 1, 5.0);
+	MatrixSet(m, 1, 2, -4.0);
+	MatrixSet(m, 2, 0, -1.0);
+	MatrixSet(m, 2, 1, -4.0);
+	MatrixSet(m, 2, 2, 7.0);
+	MatrixReducedRowEchelon(m);
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m, 0, 1), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m, 0, 2), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m, 1, 1), 1.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m, 1, 2), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m, 2, 0), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m, 2, 1), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m, 2, 2), 1.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	MatrixFree(m);
+}
+
+Test(MatrixReducedRowEchelon, FourxFourMatrix)
+{
+	Matrix *m = MatrixNew(4, 4);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 3.0);
+	MatrixSet(m, 0, 2, 1.0);
+	MatrixSet(m, 0, 3, 9.0);
+	MatrixSet(m, 1, 0, 2.0);
+	MatrixSet(m, 1, 1, 6.0);
+	MatrixSet(m, 1, 2, 1.0);
+	MatrixSet(m, 1, 3, 2.0);
+	MatrixSet(m, 2, 0, 1.0);
+	MatrixSet(m, 2, 1, 1.0);
+	MatrixSet(m, 2, 2, 2.0);
+	MatrixSet(m, 2, 3, 7.0);
+	MatrixSet(m, 3, 0, 3.0);
+	MatrixSet(m, 3, 1, 1.0);
+	MatrixSet(m, 3, 2, 1.0);
+	MatrixSet(m, 3, 3, 8.0);
+
+	MatrixReducedRowEchelon(m);
+
+	cr_assert_eq(MatrixGet(m, 0, 0), 1.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 0, 1), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 0, 2), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 0, 3), -2.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 1, 0), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 1, 1), 1.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 1, 2), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 1, 3), 1.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 2, 0), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 2, 1), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 2, 2), 1.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 2, 3), 1.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 3, 0), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 3, 1), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 3, 2), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m, 3, 3), 0.0, 1e-6);
+
+	MatrixFree(m);
+}
+
+Test(MatrixReducedRowEchelon, NonSquareMatrix)
+{
+	Matrix *m = MatrixNew(3, 4);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 0, 2, 3.0);
+	MatrixSet(m, 0, 3, 4.0);
+	MatrixSet(m, 1, 0, 5.0);
+	MatrixSet(m, 1, 1, 6.0);
+	MatrixSet(m, 1, 2, 7.0);
+	MatrixSet(m, 1, 3, 8.0);
+	MatrixSet(m, 2, 0, 9.0);
+	MatrixSet(m, 2, 1, 10.0);
+	MatrixSet(m, 2, 2, 11.0);
+	MatrixSet(m, 2, 3, 12.0);
+
+	MatrixReducedRowEchelon(m);
+
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 0, 1), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 0, 2), -1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 0, 3), 2.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 1), 1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 2), 2.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 1, 3), -3.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 2, 0), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 2, 1), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 2, 2), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m, 2, 3), 0.0, 1e-6);
+
+	MatrixFree(m);
+}
+
+Test(MatrixRowEchelonGet, NullMatrix)
+{
+	Matrix *m = NULL;
+	Matrix *m1 = MatrixRowEchelonGet(m);
+	cr_assert_null(m1, "Expected NULL matrix after calling MatrixRowEchelonGet on NULL matrix");
+	cr_assert(true);
+}
+
+Test(MatrixRowEchelonGet, TwoxTwoMatrix)
+{
+	Matrix *m = MatrixNew(2, 2);
+	MatrixSet(m, 0, 0, 2.0);
+	MatrixSet(m, 0, 1, 4.0);
+	MatrixSet(m, 1, 0, 1.0);
+	MatrixSet(m, 1, 1, 2.0);
+
+	Matrix *m1 = MatrixRowEchelonGet(m);
+
+	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 0, 1), 2.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 1, 1), 0.0, 1e-6);
+
+	MatrixFree(m);
+	MatrixFree(m1);
+}
+
+Test(MatrixRowEchelonGet, ThreexThreeMatrix)
+{
+	Matrix *m = MatrixNew(3, 3);
+	MatrixSet(m, 0, 0, 2.0);
+	MatrixSet(m, 0, 1, 4.0);
+	MatrixSet(m, 0, 2, 6.0);
+	MatrixSet(m, 1, 0, 1.0);
+	MatrixSet(m, 1, 1, 2.0);
+	MatrixSet(m, 1, 2, 3.0);
+	MatrixSet(m, 2, 0, 4.0);
+	MatrixSet(m, 2, 1, 5.0);
+	MatrixSet(m, 2, 2, 6.0);
+
+	Matrix *m1 = MatrixRowEchelonGet(m);
+
+	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 0, 1), 2.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 0, 2), 3.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 1, 1), 1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 1, 2), 2.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 2, 0), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 2, 1), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 2, 2), 0.0, 1e-6);
+
+	MatrixFree(m);
+	MatrixFree(m1);
+}
+
+Test(MatrixReducedRowEchelonGet, InValidMatrix)
+{
+	Matrix *m = NULL;
+	Matrix *m1 = MatrixReducedRowEchelonGet(m);
+	cr_assert_null(m1, "Expected NULL matrix after calling MatrixReducedRowEchelonGet on NULL matrix");
+	cr_assert_stderr_eq_str("Invalid matrix passed\n");
+}
+
+Test(MatrixReducedRowEchelonGet, OnexOneMatrix)
+{
+	Matrix *m = MatrixNew(1, 1);
+	MatrixSet(m, 0, 0, 3.0);
+
+	Matrix *m1 = MatrixReducedRowEchelonGet(m);
+	cr_assert_eq(MatrixGet(m1, 0, 0), 1.0, "Expected the matrix to be reduced to[1]");
+
+	MatrixFree(m);
+	MatrixFree(m1);
+}
+
+Test(MatrixReducedRowEchelonGet, TwoxTwoMatrix)
+{
+	Matrix *m = MatrixNew(2, 2);
+	MatrixSet(m, 0, 0, 2.0);
+	MatrixSet(m, 0, 1, -1.0);
+	MatrixSet(m, 1, 0, -4.0);
+	MatrixSet(m, 1, 1, 2.0);
+
+	Matrix *m1 = MatrixReducedRowEchelonGet(m);
+	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-6, "Expected the matrix to be reduced to[[1, -0.5], [0, 0]]");
+	cr_assert_float_eq(MatrixGet(m1, 0, 1), -0.5, 1e-6, "Expected the matrix to be reduced to[[1, -0.5], [0, 0]]");
+	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, -0.5], [0, 0]]");
+	cr_assert_float_eq(MatrixGet(m1, 1, 1), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, -0.5], [0, 0]]");
+
+	MatrixFree(m);
+	MatrixFree(m1);
+}
+
+Test(MatrixReducedRowEchelonGetGet, ThreexThreeMatrix)
+{
+	Matrix *m = MatrixNew(3, 3);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 0, 2, -1.0);
+	MatrixSet(m, 1, 0, 2.0);
+	MatrixSet(m, 1, 1, 5.0);
+	MatrixSet(m, 1, 2, -4.0);
+	MatrixSet(m, 2, 0, -1.0);
+	MatrixSet(m, 2, 1, -4.0);
+	MatrixSet(m, 2, 2, 7.0);
+
+	Matrix *m1 = MatrixReducedRowEchelonGetGet(m);
+	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m1, 0, 1), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m1, 0, 2), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m1, 1, 1), 1.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m1, 1, 2), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m1, 2, 0), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m1, 2, 1), 0.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+	cr_assert_float_eq(MatrixGet(m1, 2, 2), 1.0, 1e-6, "Expected the matrix to be reduced to[[1, 0, 0], [0, 1, 0], [0, 0, 1]]");
+
+	MatrixFree(m);
+	MatrixFree(m1);
+}
+
+Test(MatrixReducedRowEchelonGetGet, FourxFourMatrix)
+{
+	Matrix *m = MatrixNew(4, 4);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 3.0);
+	MatrixSet(m, 0, 2, 1.0);
+	MatrixSet(m, 0, 3, 9.0);
+	MatrixSet(m, 1, 0, 2.0);
+	MatrixSet(m, 1, 1, 6.0);
+	MatrixSet(m, 1, 2, 1.0);
+	MatrixSet(m, 1, 3, 2.0);
+	MatrixSet(m, 2, 0, 1.0);
+	MatrixSet(m, 2, 1, 1.0);
+	MatrixSet(m, 2, 2, 2.0);
+	MatrixSet(m, 2, 3, 7.0);
+	MatrixSet(m, 3, 0, 3.0);
+	MatrixSet(m, 3, 1, 1.0);
+	MatrixSet(m, 3, 2, 1.0);
+	MatrixSet(m, 3, 3, 8.0);
+
+	Matrix *m1 = MatrixReducedRowEchelonGetGet(m);
+
+	cr_assert_eq(MatrixGet(m1, 0, 0), 1.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 0, 1), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 0, 2), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 0, 3), -2.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 1, 0), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 1, 1), 1.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 1, 2), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 1, 3), 1.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 2, 0), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 2, 1), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 2, 2), 1.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 2, 3), 1.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 3, 0), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 3, 1), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 3, 2), 0.0, 1e-6);
+	cr_assert_eq(MatrixGet(m1, 3, 3), 0.0, 1e-6);
+
+	MatrixFree(m);
+	MatrixFree(m1);
+}
+
+Test(MatrixReducedRowEchelonGetGet, NonSquareMatrix)
+{
+	Matrix *m = MatrixNew(3, 4);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 0, 2, 3.0);
+	MatrixSet(m, 0, 3, 4.0);
+	MatrixSet(m, 1, 0, 5.0);
+	MatrixSet(m, 1, 1, 6.0);
+	MatrixSet(m, 1, 2, 7.0);
+	MatrixSet(m, 1, 3, 8.0);
+	MatrixSet(m, 2, 0, 9.0);
+	MatrixSet(m, 2, 1, 10.0);
+	MatrixSet(m, 2, 2, 11.0);
+	MatrixSet(m, 2, 3, 12.0);
+
+	Matrix *m1 = MatrixReducedRowEchelonGetGet(m);
+
+	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 0, 1), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 0, 2), -1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 0, 3), 2.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 1, 1), 1.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 1, 2), 2.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 1, 3), -3.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 2, 0), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 2, 1), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 2, 2), 0.0, 1e-6);
+	cr_assert_float_eq(MatrixGet(m1, 2, 3), 0.0, 1e-6);
+
+	MatrixFree(m);
+	MatrixFree(m1);
+}
+
+Test(MatrixColumnL2Norm, NullMatrix)
+{
+	double result = MatrixColumnL2Norm(NULL, 0);
+	cr_assert_true(isnan(result), "Expected NaN for NULL matrix");
+}
+
+Test(MatrixColumnL2Norm, InValidColumn)
+{
+	Matrix *m = MatrixNew(3, 3);
+	double result = MatrixColumnL2Norm(m, 3);
+	MatrixFree(m);
+	cr_assert_true(isnan(result), "Expected NaN for invalid column");
+}
+
+Test(MatrixColumnL2Norm, SingleCol)
+{
+	Matrix *m = MatrixNew(3, 1);
+	MatrixSetValue(m, 0, 0, 1.0);
+	MatrixSetValue(m, 1, 0, 2.0);
+	MatrixSetValue(m, 2, 0, 3.0);
+
+	double result = MatrixColumnL2Norm(m, 0);
+
+	MatrixFree(m);
+
+	cr_assert_float_eq(result, sqrt(14.0), 1e-6, "Expected column L2 norm to be sqrt(14)");
+}
+
+Test(MatrixColumnL2Norm, MultipleCol)
+{
+	Matrix *m = MatrixNew(3, 3);
+	MatrixSetValue(m, 0, 0, 1.0);
+	MatrixSetValue(m, 0, 1, 2.0);
+	MatrixSetValue(m, 0, 2, -1.0);
+	MatrixSetValue(m, 1, 0, 2.0);
+	MatrixSetValue(m, 1, 1, 5.0);
+	MatrixSetValue(m, 1, 2, -4.0);
+	MatrixSetValue(m, 2, 0, -1.0);
+	MatrixSetValue(m, 2, 1, -4.0);
+	MatrixSetValue(m, 2, 2, 7.0);
+
+	double norm0 = MatrixColumnL2Norm(m, 0);
+	double norm1 = MatrixColumnL2Norm(m, 1);
+	double norm2 = MatrixColumnL2Norm(m, 2);
+
+	MatrixFree(m);
+
+	cr_assert_float_eq(norm0, sqrt(6.0), 1e-6, "Expected column L2 norm to be sqrt(6)");
+	cr_assert_float_eq(norm1, sqrt(45.0), 1e-6, "Expected column L2 norm to be sqrt(45)");
+	cr_assert_float_eq(norm2, sqrt(66.0), 1e-6, "Expected column L2 norm to be sqrt(66)");
+}
+
+Test(MatrixL2Norm, NullMatrix)
+{
+	Matrix *m = NULL;
+	Matrix *result = MatrixL2Norm(m);
+	cr_assert_null(result);
+}
+
+Test(MatrixL2Norm, SingleElementMatrix)
+{
+	Matrix *m = MatrixNew(1, 1);
+	MatrixSet(m, 0, 0, 3.0);
+	Matrix *result = MatrixL2Norm(m);
+	cr_assert_not_null(result);
+	cr_assert_eq(result->num_rows, 1);
+	cr_assert_eq(result->num_cols, 1);
+	cr_assert_float_eq(MatrixGet(result, 0, 0), 3.0, 1e-6);
+	MatrixFree(m);
+	MatrixFree(result);
+}
+
+Test(MatrixL2Norm, MultipleElementsMatrix)
+{
+	Matrix m = MatrixNew(3, 4);
+	MatrixSet(m, 0, 0, 1.0);
+	MatrixSet(m, 0, 1, 2.0);
+	MatrixSet(m, 0, 2, 3.0);
+	MatrixSet(m, 0, 3, 4.0);
+	MatrixSet(m, 1, 0, 5.0);
+	MatrixSet(m, 1, 1, 6.0);
+	MatrixSet(m, 1, 2, 7.0);
+	MatrixSet(m, 1, 3, 8.0);
+	MatrixSet(m, 2, 0, 9.0);
+	MatrixSet(m, 2, 1, 10.0);
+	MatrixSet(m, 2, 2, 11.0);
+	MatrixSet(m, 2, 3, 12.0);
+	Matrix result = MatrixL2Norm(m);
+	cr_assert_not_null(result);
+	cr_assert_eq(result->num_rows, 1);
+	cr_assert_eq(result->num_cols, 4);
+	cr_assert_float_eq(MatrixGet(result, 0, 0), sqrt(11 + 55 + 99), 1e-6);
+	cr_assert_float_eq(MatrixGet(result, 0, 1), sqrt(22 + 66 + 1010), 1e-6);
+	cr_assert_float_eq(MatrixGet(result, 0, 2), sqrt(33 + 77 + 1111), 1e-6);
+	cr_assert_float_eq(MatrixGet(result, 0, 3), sqrt(44 + 88 + 1212), 1e-6);
+	MatrixFree(m);
+	MatrixFree(result);
+}
+
+Test(MatrixCosineSimilarity, NullMatrixM1)
+{
+	Matrix *m = MatrixNew(3, 4);
+	double result = MatrixCosineSimilarity(NULL, m);
+	cr_assert_true(isnan(result));
+	MatrixFree(m);
+}
+
+Test(MatrixCosineSimilarity, NullMatrixM2)
+{
+	Matrix *m = MatrixNew(3, 4);
+	double result = MatrixCosineSimilarity(m, NULL);
+	cr_assert_true(isnan(result));
+	MatrixFree(m);
+}
+
+Test(MatrixCosineSimilarity, EmptyMatrix)
+{
+	Matrix *m1 = MatrixNew(0, 0);
+	Matrix *m2 = MatrixNew(0, 0);
+
+	double result = MatrixCosineSimilarity(m1, m2);
+	cr_assert_float_eq(result, 0.0, 1e-6);
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixCosineSimilarity, SingleColumnMatrix)
+{
+	Matrix *m1 = MatrixNew(3, 1);
+	Matrix *m2 = MatrixNew(3, 1);
+
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 1, 0, 2.0);
+	MatrixSet(m1, 2, 0, 3.0);
+
+	MatrixSet(m2, 0, 0, 4.0);
+	MatrixSet(m2, 1, 0, 5.0);
+	MatrixSet(m2, 2, 0, 6.0);
+
+	double result = MatrixCosineSimilarity(m1, m2);
+	cr_assert_float_eq(result, 0.9746318462, 1e-6);
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixCosineSimilarity, MultipleColumnsMatrix)
+{
+	Matrix *m1 = MatrixNew(3, 2);
+	Matrix *m2 = MatrixNew(3, 2);
+
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 0, 1, 2.0);
+	MatrixSet(m1, 1, 0, 2.0);
+	MatrixSet(m1, 1, 1, 3.0);
+	MatrixSet(m1, 2, 0, 3.0);
+	MatrixSet(m1, 2, 1, 4.0);
+
+	MatrixSet(m2, 0, 0, 4.0);
+	MatrixSet(m2, 0, 1, 3.0);
+	MatrixSet(m2, 1, 0, 2.0);
+	MatrixSet(m2, 1, 1, 1.0);
+	MatrixSet(m2, 2, 0, 1.0);
+	MatrixSet(m2, 2, 1, 3.0);
+
+	double result = MatrixCosineSimilarity(m1, m2);
+	cr_assert_float_eq(result, 0.8116496589, 1e-6);
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixTSSSimilarity, SameMatrix)
+{
+	double data[] =[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0];
+	Matrix *m1 = MatrixFrom(1, 9, 9, data);
+	Matrix *m2 = MatrixFrom(1, 9, 9, data);
+
+	double result = MatrixTSSSimilarity(&*m1, &*m2);
+
+	cr_assert_eq(result, 1.0, "Expected TS-SS similarity of 1.0, but got %f", result);
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixTSSSimilarity, DifferentMatrices)
+{
+	double data1 =[1.0, 2.0, 3.0, 4.0];
+	double data2 =[1.0, 2.0, 3.0];
+	Matrix *m1 = MatrixFrom(1, 4, 4, data1);
+	Matrix *m2 = MatrixFrom(1, 3, 3, data2);
+
+	double result = MatrixTSSSimilarity(&*m1, &*m2);
+
+	cr_assert(isnan(result), "Expected NAN, but got %f", result);
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixTSSSimilarity, DifferentDimensions)
+{
+	double data1 =[1.0, 2.0, 3.0];
+	double data2 =[1.0, 2.0, 3.0, 4.0, 5.0, 6.0];
+	Matrix *m1 = MatrixFrom(1, 3, 3, data1);
+	Matrix *m2 = MatrixFrom(2, 3, 6, data2);
+
+	double result = MatrixTSSSimilarity(&*m1, &*m2);
+
+	cr_assert(isnan(result), "Expected NAN, but got %f", result);
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixTSSSimilarity, OneElementDifferent)
+{
+	double data1 =[1.0, 2.0, 3.0];
+	double data2 =[1.0, 2.5, 3.0];
+	Matrix *m1 = MatrixFrom(1, 3, 3, data1);
+	Matrix *m2 = MatrixFrom(1, 3, 3, data2);
+
+	double result = MatrixTSSSimilarity(&*m1, &*m2);
+
+	cr_assert(result > 0.5, "Expected TS-SS similarity > 0.5, but got %f", result);
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixEuclideanDistance, InvalidMatrix)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = NULL;
+
+	double result1 = MatrixEuclideanDistance(m1, m2);
+	cr_assert_true(isnan(result1), "Expected result to be NaN");
+
+	double result2 = MatrixEuclideanDistance(m2, m1);
+	cr_assert_true(isnan(result2), "Expected result to be NaN");
+
+	MatrixFree(m1);
+}
+
+Test(MatrixEuclideanDistance, SameMatrix)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 0, 1, 2.0);
+	MatrixSet(m1, 1, 0, 3.0);
+	MatrixSet(m1, 1, 1, 4.0);
+
+	double result = MatrixEuclideanDistance(m1, m1);
+	cr_assert_float_eq(result, 0.0, 1e-6, "Expected result to be 0");
+
+	MatrixFree(m1);
+}
+
+Test(MatrixEuclideanDistance, DifferentMatrix)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 0, 1, 2.0);
+	MatrixSet(m1, 1, 0, 3.0);
+	MatrixSet(m1, 1, 1, 4.0);
+
+	Matrix *m2 = MatrixNew(2, 2);
+	MatrixSet(m2, 0, 0, 2.0);
+	MatrixSet(m2, 0, 1, 3.0);
+	MatrixSet(m2, 1, 0, 4.0);
+	MatrixSet(m2, 1, 1, 5.0);
+
+	double result = MatrixEuclideanDistance(m1, m2);
+	cr_assert_float_eq(result, sqrt(10), 1e-6, "Expected result to be sqrt(10)");
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixManhattanDistance, NullMatrices)
+{
+	Matrix *m1 = NULL;
+	Matrix *m2 = NULL;
+	cr_assert(isnan(MatrixManhattanDistance(m1, m2)));
+}
+
+Test(MatrixManhattanDistance, DifferentDimensions)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = MatrixNew(3, 3);
+	cr_assert(isnan(MatrixManhattanDistance(m1, m2)));
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixManhattanDistance, ZeroDistance)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 0, 1, 2.0);
+	MatrixSet(m1, 1, 0, 3.0);
+	MatrixSet(m1, 1, 1, 4.0);
+
+	Matrix *m2 = MatrixNew(2, 2);
+	MatrixSet(m2, 0, 0, 1.0);
+	MatrixSet(m2, 0, 1, 2.0);
+	MatrixSet(m2, 1, 0, 3.0);
+	MatrixSet(m2, 1, 1, 4.0);
+
+	cr_assert_eq(MatrixManhattanDistance(m1, m2), 0.0);
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixManhattanDistance, PositiveDistance)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	MatrixSet(m1, 0, 0, 1.0);
+	MatrixSet(m1, 0, 1, 2.0);
+	MatrixSet(m1, 1, 0, 3.0);
+	MatrixSet(m1, 1, 1, 4.0);
+
+	Matrix *m2 = MatrixNew(2, 2);
+	MatrixSet(m2, 0, 0, 0.0);
+	MatrixSet(m2, 0, 1, 2.0);
+	MatrixSet(m2, 1, 0, 3.0);
+	MatrixSet(m2, 1, 1, 5.0);
+
+	cr_assert_eq(MatrixManhattanDistance(m1, m2), 2.0);
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixMinkowskiDistance, NullMatrix1)
+{
+	Matrix *m1 = NULL;
+	Matrix *m2 = MatrixNew(2, 2);
+	cr_assert_nan(MatrixMinkowskiDistance(m1, m2, 2));
+	MatrixFree(m2);
+}
+
+Test(MatrixMinkowskiDistance, NullMatrix2)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = NULL;
+	cr_assert_nan(MatrixMinkowskiDistance(m1, m2, 2));
+	MatrixFree(m1);
+}
+
+Test(MatrixMinkowskiDistance, DifferentDimensions)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = MatrixNew(2, 3);
+	MatrixSet(m1, 0, 0, 2.0);
+	MatrixSet(m1, 0, 1, 3.0);
+	MatrixSet(m1, 1, 0, 4.0);
+	MatrixSet(m1, 1, 1, 5.0);
+	MatrixSet(m2, 0, 0, 1.0);
+	MatrixSet(m2, 0, 1, 2.0);
+	MatrixSet(m2, 0, 2, 3.0);
+	MatrixSet(m2, 1, 0, 4.0);
+	MatrixSet(m2, 1, 1, 5.0);
+	MatrixSet(m2, 1, 2, 6.0);
+	cr_assert_nan(MatrixMinkowskiDistance(m1, m2, 2));
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixMinkowskiDistance, P1)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = MatrixNew(2, 2);
+	MatrixSet(m1, 0, 0, 2.0);
+	MatrixSet(m1, 0, 1, 3.0);
+	MatrixSet(m1, 1, 0, 4.0);
+	MatrixSet(m1, 1, 1, 5.0);
+	MatrixSet(m2, 0, 0, 1.0);
+	MatrixSet(m2, 0, 1, 2.0);
+	MatrixSet(m2, 1, 0, 3.0);
+	MatrixSet(m2, 1, 1, 4.0);
+	cr_assert_eq(MatrixMinkowskiDistance(m1, m2, 1), 5.0);
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixMinkowskiDistance, P2)
+{
+	Matrix *m1 = MatrixNew(2, 2);
+	Matrix *m2 = MatrixNew(2, 2);
+	MatrixSet(m1, 0, 0, 2.0);
+	MatrixSet(m1, 0, 1, 3.0);
+	MatrixSet(m1, 1, 0, 4.0);
+	MatrixSet(m1, 1, 1, 5.0);
+	MatrixSet(m2, 0, 0, 1.0);
+	MatrixSet(m2, 0, 1, 2.0);
+	MatrixSet(m2, 1, 0, 3.0);
+	MatrixSet(m2, 1, 1, 4.0);
+
+	double result = MatrixMinkowskiDistance(m1, m2, 2);
+	double expected = 1.73205080757;
+
+	cr_assert_float_eq(result, expected, 0.00001);
+
+	MatrixFree(m1);
+	MatrixFree(m2);
+}
+
+Test(MatrixFree, ValidMatrix)
+{
+	Matrix *m = MatrixNew(2, 2);
+	MatrixFree(m);
+	cr_assert_null(m->data, "Matrix data should be freed");
+	cr_assert_null(m, "Matrix pointer should be freed");
+}
+
+Test(MatrixFree, NullMatrix)
+{
+	Matrix *m = NULL;
+	MatrixFree(m);
+	cr_assert_null(m, "Matrix pointer should be NULL");
+}
+
+Test(MatrixFree, InvalidMatrix)
+{
+	Matrix *m = MatrixNew(2, 2);
+	m->data = NULL;
+	MatrixFree(m);
+	cr_assert_null(m, "Matrix pointer should be NULL");
 }
