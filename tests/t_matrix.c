@@ -3226,7 +3226,7 @@ Test(MatrixCosineSimilarity, MultipleColumnsMatrix)
 
 Test(MatrixTSSSimilarity, SameMatrix)
 {
-	double data[] =[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0];
+	double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
 	Matrix *m1 = MatrixFrom(1, 9, 9, data);
 	Matrix *m2 = MatrixFrom(1, 9, 9, data);
 
@@ -3240,8 +3240,8 @@ Test(MatrixTSSSimilarity, SameMatrix)
 
 Test(MatrixTSSSimilarity, DifferentMatrices)
 {
-	double data1 =[1.0, 2.0, 3.0, 4.0];
-	double data2 =[1.0, 2.0, 3.0];
+	double data1 = {1.0, 2.0, 3.0, 4.0};
+	double data2 = {1.0, 2.0, 3.0};
 	Matrix *m1 = MatrixFrom(1, 4, 4, data1);
 	Matrix *m2 = MatrixFrom(1, 3, 3, data2);
 
@@ -3255,8 +3255,8 @@ Test(MatrixTSSSimilarity, DifferentMatrices)
 
 Test(MatrixTSSSimilarity, DifferentDimensions)
 {
-	double data1 =[1.0, 2.0, 3.0];
-	double data2 =[1.0, 2.0, 3.0, 4.0, 5.0, 6.0];
+	double data1 = {1.0, 2.0, 3.0};
+	double data2 = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};
 	Matrix *m1 = MatrixFrom(1, 3, 3, data1);
 	Matrix *m2 = MatrixFrom(2, 3, 6, data2);
 
@@ -3270,8 +3270,8 @@ Test(MatrixTSSSimilarity, DifferentDimensions)
 
 Test(MatrixTSSSimilarity, OneElementDifferent)
 {
-	double data1 =[1.0, 2.0, 3.0];
-	double data2 =[1.0, 2.5, 3.0];
+	double data1 = {1.0, 2.0, 3.0};
+	double data2 = {1.0, 2.5, 3.0};
 	Matrix *m1 = MatrixFrom(1, 3, 3, data1);
 	Matrix *m2 = MatrixFrom(1, 3, 3, data2);
 
