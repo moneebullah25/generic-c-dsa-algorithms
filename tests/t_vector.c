@@ -1,6 +1,7 @@
 #include <criterion/criterion.h>
 #include "../includes/c_vector.h"
 #include "../includes/c_helper.h"
+#include <stdlib.h>
 
 Test(vector_test, test_vector_int)
 {

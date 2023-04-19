@@ -1,12 +1,12 @@
 #include <criterion/criterion.h>
 #include "../includes/c_avltree.h"
 #include "../includes/c_helper.h"
-
+#include <stdlib.h>
 
 Test(avltree_test, test_avltree_int)
 {
     AvlTreeInt *avltree = malloc(sizeof(AvlTreeInt));
-    AvlTreeNew(avltree, DataCompare, FreeData);
+    AvlTreeNew(avltree, IntDataCompare, FreeData);
     cr_assert(AvlTreeEmpty(avltree), "Expected avltree to be empty");
 
     AvlTreeInsert(avltree, 5);
@@ -44,7 +44,7 @@ Test(avltree_test, test_avltree_int)
 Test(avltree_test, test_avltree_double)
 {
     AvlTreeDouble *avltree = malloc(sizeof(AvlTreeDouble));
-    AvlTreeNew(avltree, DataCompare, FreeData);
+    AvlTreeNew(avltree, DoubleDataCompare, FreeData);
     cr_assert(AvlTreeEmpty(avltree), "Expected avltree to be empty");
 
     AvlTreeInsert(avltree, 5.25);

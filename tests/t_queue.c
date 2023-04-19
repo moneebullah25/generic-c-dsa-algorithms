@@ -1,10 +1,11 @@
 #include <criterion/criterion.h>
 #include "../includes/c_queue.h"
 #include "../includes/c_helper.h"
+#include <stdlib.h>
 
 Test(queue_test, test_queue_int) {
     QueueInt *q = malloc(sizeof(QueueInt));
-    QueueNew(q, DataCompare, FreeData);
+    QueueNew(q, IntDataCompare, FreeData);
 
     QueuePush(q, 1);
     QueuePush(q, 2);
@@ -48,7 +49,7 @@ Test(queue_test, test_queue_int) {
 
 Test(queue_test, test_queue_double) {
     QueueDouble *q = malloc(sizeof(QueueDouble));
-    QueueNew(q, DataCompare, FreeData);
+    QueueNew(q, DoubleDataCompare, FreeData);
 
     QueuePush(q, 1.0);
     QueuePush(q, 2.0);

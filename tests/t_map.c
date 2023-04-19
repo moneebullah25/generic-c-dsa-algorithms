@@ -1,10 +1,11 @@
 #include <criterion/criterion.h>
 #include "../includes/c_map.h"
 #include "../includes/c_helper.h"
+#include <stdlib.h>
 
 Test(map_test, test_map_int) {
     MapInt *m = malloc(sizeof(MapInt));
-    MapNew(m, HashFunctionInt, LinearProbing, DataCompare, FreeData, FreeData);
+    MapNew(m, HashFunctionInt, LinearProbing, IntDataCompare, FreeData, FreeData);
 
     MapSet(m, 0, 21);
     MapSet(m, 2, 15);
@@ -28,7 +29,7 @@ Test(map_test, test_map_int) {
 
 Test(map_test, test_map_double) {
     MapDouble *m = malloc(sizeof(MapDouble));
-    MapNew(m, HashFunctionInt, LinearProbing, DataCompare, FreeData, FreeData);
+    MapNew(m, HashFunctionInt, LinearProbing, DoubleDataCompare, FreeData, FreeData);
 
     MapSet(m, 1.0, 21.25);
     MapSet(m, 2.0, 15.25);

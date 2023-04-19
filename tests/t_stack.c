@@ -1,10 +1,11 @@
 #include <criterion/criterion.h>
 #include "../includes/c_stack.h"
 #include "../includes/c_helper.h"
+#include <stdlib.h>
 
 Test(stack_test, test_stack_int) {
     StackInt *q = malloc(sizeof(StackInt));
-    StackNew(q, DataCompare, FreeData);
+    StackNew(q, IntDataCompare, FreeData);
 
     StackPush(q, 1);
     StackPush(q, 2);
@@ -48,7 +49,7 @@ Test(stack_test, test_stack_int) {
 
 Test(stack_test, test_stack_double) {
     StackDouble *q = malloc(sizeof(StackDouble));
-    StackNew(q, DataCompare, FreeData);
+    StackNew(q, DoubleDataCompare, FreeData);
 
     StackPush(q, 1.0);
     StackPush(q, 2.0);

@@ -1,10 +1,11 @@
 #include <criterion/criterion.h>
 #include "../includes/c_list.h"
 #include "../includes/c_helper.h"
+#include <stdlib.h>
 
 Test(linkedlist_test, test_linked_list_int) {
     LinkedListInt *ll = malloc(sizeof(LinkedListInt));
-    LinkedListNew(ll, DataCompare, FreeData);
+    LinkedListNew(ll, IntDataCompare, FreeData);
 
     LinkedListInsertAtHead(ll, 0);
     LinkedListInsertAtHead(ll, 1);
@@ -76,7 +77,7 @@ Test(linkedlist_test, test_linked_list_int) {
 
 Test(linkedlist_test, test_linked_list_double) {
     LinkedListDouble *ll = malloc(sizeof(LinkedListDouble));
-    LinkedListNew(ll, DataCompare, FreeData);
+    LinkedListNew(ll, DoubleDataCompare, FreeData);
 
     LinkedListInsertAtHead(ll, 0.25);
     LinkedListInsertAtHead(ll, 1.25);

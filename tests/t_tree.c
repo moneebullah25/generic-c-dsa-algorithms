@@ -1,12 +1,12 @@
 #include <criterion/criterion.h>
 #include "../includes/c_tree.h"
 #include "../includes/c_helper.h"
-
+#include <stdlib.h>
 
 Test(tree_test, test_tree_int)
 {
     TreeInt *tree = malloc(sizeof(TreeInt));
-    TreeNew(tree, DataCompare, FreeData);
+    TreeNew(tree, IntDataCompare, FreeData);
     cr_assert(TreeEmpty(tree), "Expected tree to be empty");
 
     TreeInsert(tree, 5);
@@ -44,7 +44,7 @@ Test(tree_test, test_tree_int)
 Test(tree_test, test_tree_double)
 {
     TreeDouble *tree = malloc(sizeof(TreeDouble));
-    TreeNew(tree, DataCompare, FreeData);
+    TreeNew(tree, DoubleDataCompare, FreeData);
     cr_assert(TreeEmpty(tree), "Expected tree to be empty");
 
     TreeInsert(tree, 5.25);
@@ -69,8 +69,8 @@ Test(tree_test, test_tree_double)
     cr_assert(TreeContains(tree, 6.25), "Expected tree to contain 6.25 after removing element");
     cr_assert_not(TreeContains(tree, 2.25), "Expected tree not to contain 2.25 after removing it");
 
-    cr_assert_eq(*(int *)TreeMin(tree), 1.25, "Expected minimum element to be 1.25");
-    cr_assert_eq(*(int *)TreeMax(tree), 7.25, "Expected maximum element to be 7.25");
+    cr_assert_float_eq(*(double *)TreeMin(tree), 1.25, 0.01, "Expected minimum element to be 1.25");
+    cr_assert_float_eq(*(double *)TreeMax(tree), 7.25, 0.01, "Expected maximum element to be 7.25");
 
     TreeClear(tree);
 
@@ -106,8 +106,8 @@ Test(tree_test, test_tree_string)
     cr_assert(TreeContains(tree, "hello"), "Expected tree to contain 'hello' after removing elements");
     cr_assert_not(TreeContains(tree, "test"), "Expected tree not to contain 'test' after removing it");
 
-    cr_assert_str_eq((char *)TreeMin(tree), "a", "Expected minimum element to be 'a'");
-    cr_assert_str_eq((char *)TreeMax(tree), "world", "Expected maximum element to be 'world'");
+    cr_assert_str_eq(*(char **)TreeMin(tree), "a", "Expected minimum element to be 'a'");
+    cr_assert_str_eq(*(char **)TreeMax(tree), "world", "Expected maximum element to be 'world'");
 
     TreeClear(tree);
 

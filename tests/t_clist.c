@@ -1,10 +1,11 @@
 #include <criterion/criterion.h>
 #include "../includes/c_clist.h"
 #include "../includes/c_helper.h"
+#include <stdlib.h>
 
 Test(clinkedlist_test, test_clinkedlist_int) {
     CircularLinkedListInt *cll = malloc(sizeof(CircularLinkedListInt));
-    CircularLinkedListNew(cll, DataCompare, FreeData);
+    CircularLinkedListNew(cll, IntDataCompare, FreeData);
 
     CircularLinkedListInsert(cll, 9);
     CircularLinkedListInsert(cll, 2);
@@ -74,7 +75,7 @@ Test(clinkedlist_test, test_clinkedlist_int) {
 
 Test(clinkedlist_test, test_clinkedlist_double) {
     CircularLinkedListDouble *cll = malloc(sizeof(CircularLinkedListDouble));
-    CircularLinkedListNew(cll, DataCompare, FreeData);
+    CircularLinkedListNew(cll, DoubleDataCompare, FreeData);
 
     CircularLinkedListInsert(cll, 9.25);
     CircularLinkedListInsert(cll, 2.25);
