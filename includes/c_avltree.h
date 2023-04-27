@@ -1,5 +1,5 @@
-#ifndef _C_AvlTree_HEADER_
-#define _C_AvlTree_HEADER_
+#ifndef _C_AVLTREE_HEADER_
+#define _C_AVLTREE_HEADER_
 
 #ifdef __cplusplus
 extern "C"
@@ -15,21 +15,39 @@ extern "C"
 #define true 1
 
 /**
- * A structure that represents the basic functionality of an AVL tree node.
- * @param data A pointer to the data of the AVL tree node
- * @param elemsize The size of an element
- * @param logiclen The number of elements stored in the node
- * @param height The height of the AVL tree node
+ * A structure that represents the basic functionality of a AVL tree node.
+ * @param data A pointer to the data of the tree node
  * @param left A pointer to the left child node
  * @param right A pointer to the right child node
+ * @param parent A pointer to the parent of the node
+ * @param elemsize The size of an element
+ * @param height The height of the tree at tree node
+**/
+typedef struct AvlTreeNode AvlTreeNode;
+struct AvlTreeNode {
+	void* data;
+	AvlTreeNode* left;
+	AvlTreeNode* right;
+	AvlTreeNode* parent;
+	unsigned int elemsize;
+	unsigned int height;
+};
+
+
+/**
+ * A structure that represents the basic functionality of an AVL tree.
+ * @param root A pointer to the base of the AVL tree
+ * @param logiclen The number of elements stored in the AVL tree
+ * @param elemsize The size of an element
  * @param DataCmp A pointer to a function that compares two keys of the AVL tree node
  * @param FreeFunc A pointer to a function that frees the memory allocated for the data of the AVL tree node
 **/
 typedef struct AvlTreeBase AvlTreeBase;
 struct AvlTreeBase {
-    void* data; unsigned int elemsize, logiclen, height;
-    AvlTreeBase* left, *right;
-    int(*DataCmp)(const void *key1, const void *key2, unsigned int keysize);
+	AvlTreeNode* root;
+	unsigned int logiclen;
+	unsigned int elemsize;
+	int(*DataCmp)(const void* key1, const void* key2, unsigned int keysize);
 	void(*FreeFunc)(void* elems);
 };
 
@@ -86,7 +104,8 @@ struct AvlTreeBase {
  * @param T The type of the data the AVL tree will hold.
 **/
 #define AvlTreeInsert(t, data) \
-    AvlTreeInsert_(&(t)->base, &(t)->data_)
+	((t)->data_ = data, \
+    AvlTreeInsert_(&(t)->base, &(t)->data_))
 
 /**
  * Macro that inserts an element into an AVL tree.
@@ -94,7 +113,8 @@ struct AvlTreeBase {
  * @param data The element to be inserted.
 **/
 #define AvlTreeContains(t, data) \
-    AvlTreeContains_(&(t)->base, &(t)->data_)
+	((t)->data_ = data, \
+    AvlTreeContains_(&(t)->base, &(t)->data_))
 
 /**
  * Macro that removes an element from an AVL tree.
@@ -102,7 +122,8 @@ struct AvlTreeBase {
  * @param data The element to be removed.
 **/
 #define AvlTreeRemove(t, data) \
-    AvlTreeRemove_(&(t)->base, &(t)->data_)
+	((t)->data_ = data, \
+    AvlTreeRemove_(&(t)->base, &(t)->data_))
 
 /**
  * Macro that removes all elements from an AVL tree.
@@ -198,64 +219,64 @@ void AvlTreeNew_(AvlTreeBase* t, unsigned int elemsize,
  * Function that returns the height of the AVL tree.
  * The height of the AVL tree is the number of edges in the longest path from the root to a leaf node.
  * If the AVL tree is empty, the function returns -1.
- * @param t pointer to the AVL tree
+ * @param t pointer to node
  * Requirements:
  * - t pointer should not be nullptr
  * Time complexity: O(log n)
  * Space complexity: O(1)
 **/
-int AvlTreeHeight_(AvlTreeBase* t);
+int AvlTreeHeight_(AvlTreeNode* t);
 
 /**
  * Function that returns the balance factor of the AVL tree.
  * The balance factor of the AVL tree is the difference between the heights of its left and right subtrees.
  * If the AVL tree is empty, the function returns 0.
- * @param t pointer to the AVL tree
+ * @param t pointer to node
  * Requirements:
  * - t pointer should not be nullptr
  * Time complexity: O(log n)
  * Space complexity: O(1)
 */
-int AvlTreeBalance_(AvlTreeBase* t);
+int AvlTreeBalance_(AvlTreeNode* t);
 
 /**
  * Function that performs a left rotation on the AVL tree.
  * The function assumes that the AVL tree is not empty and that its right subtree is not empty.
  * The function returns a pointer to the new root of the subtree after the rotation.
- * @param t pointer to the AVL tree
+ * @param t pointer to node
  * Requirements:
  * - t pointer should not be nullptr
  * - t->right pointer should not be nullptr
  * Time complexity: O(1)
  * Space complexity: O(1)
 **/
-AvlTreeBase* AvlTreeLeftRotate_(AvlTreeBase* t);
+AvlTreeNode* AvlTreeLeftRotate_(AvlTreeNode* t);
 
 /**
  * Function that performs a right rotation on the AVL tree.
  * The function assumes that the AVL tree is not empty and that its left subtree is not empty.
  * The function returns a pointer to the new root of the subtree after the rotation.
- * @param t pointer to the AVL tree
+ * @param t pointer to node
  * Requirements:
  * - t pointer should not be nullptr
  * - t->left pointer should not be nullptr
  * Time complexity: O(1)
  * Space complexity: O(1)
 **/
-AvlTreeBase* AvlTreeRightRotate_(AvlTreeBase* t);
+AvlTreeNode* AvlTreeRightRotate_(AvlTreeNode* t);
 
 /**
  * Function that inserts a new element into the AVL tree and balances the tree if necessary.
  * @param t pointer to the AVL tree
  * @param data pointer to the data to be inserted
- * @return pointer to the AVL tree with the new element inserted
+ * @return pointer to the new AVL tree node inserted
  * Requirements:
  * - t pointer should not be nullptr
  * - data pointer should not be nullptr
  * Time complexity: O(log n)
  * Space complexity: O(log n)
 **/
-AvlTreeBase* AvlTreeInsert_(AvlTreeBase* t, void* data);
+AvlTreeNode* AvlTreeInsert_(AvlTreeBase* t, void* data);
 
 /**
  * Function that checks if the AVL tree contains the specified data.
@@ -281,7 +302,7 @@ bool AvlTreeContains_(AvlTreeBase* t, void* data);
  * Time complexity: O(log n)
  * Space complexity: O(log n)
 **/
-AvlTreeBase* AvlTreeRemove_(AvlTreeBase* t, void* data);
+void AvlTreeRemove_(AvlTreeBase* t, void* data);
 
 /**
  * Function that removes all elements from the AVL tree and frees the memory allocated to the elements and nodes.
@@ -334,7 +355,7 @@ bool AvlTreeEmpty_(AvlTreeBase* t);
  * Space complexity: O(1)
  * @return pointer to the minimum element in the tree
 **/
-AvlTreeBase* AvlTreeMin_(AvlTreeBase* t);
+void* AvlTreeMin_(AvlTreeBase* t);
 
 /**
  * Function that returns the maximum element in the AVL tree.
@@ -346,7 +367,7 @@ AvlTreeBase* AvlTreeMin_(AvlTreeBase* t);
  * Space complexity: O(1)
  * @return pointer to the maximum element in the tree
 **/
-AvlTreeBase* AvlTreeMax_(AvlTreeBase* t);
+void* AvlTreeMax_(AvlTreeBase* t);
 
 /**
  * Function that traverses the AVL tree in-order and performs a specified action on each node.
@@ -436,4 +457,4 @@ typedef AvlTreeT(char*) AvlTreeString;
 }
 #endif /* __cplusplus */
 
-#endif /* _C_AvlTree_HEADER_ */
+#endif /* _C_AVLTREE_HEADER_ */
