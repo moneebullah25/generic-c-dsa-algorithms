@@ -10,6 +10,7 @@ static void AvlTreeNodeNew(AvlTreeNode *tn, unsigned int elemsize, void *data)
 	MemoryCopy(tn->data, data, tn->elemsize);
 	tn->left = NULL;
 	tn->right = NULL;
+	tn->parent = NULL;
 	tn->height = 0;
 }
 
@@ -19,9 +20,6 @@ static void AvlTreeNodeDelete(AvlTreeNode *tn, void(*FreeFunc)(void *elems))
 	{
 		return;
 	}
-
-	AvlTreeNodeDelete(tn->left, FreeFunc);
-	AvlTreeNodeDelete(tn->right, FreeFunc);
 	FreeFunc(tn->data);
 	FreeFunc(tn);
 }
@@ -75,35 +73,46 @@ int AvlTreeBalance_(AvlTreeNode *t)
 
 AvlTreeNode* AvlTreeLeftRotate_(AvlTreeNode *t)
 {
-	AvlTreeNode *y = t->right;
-	AvlTreeNode *x = y->left;
-	y->left = t;
-	t->right = x;
+	AvlTreeNode *new_root = t->right;
+	AvlTreeNode *old_right = new_root->left;
+
+	new_root->left = t;
+	t->right = old_right;
+
 	t->height = 1 + M_MAX(AvlTreeHeight_(t->left), AvlTreeHeight_(t->right));
-	y->height = 1 + M_MAX(AvlTreeHeight_(y->left), AvlTreeHeight_(y->right));
-	y->parent = t->parent;
-	t->parent = y;
-	if (x != NULL) {
-		x->parent = t;
+	new_root->height = 1 + M_MAX(AvlTreeHeight_(new_root->left), AvlTreeHeight_(new_root->right));
+
+	new_root->parent = t->parent;
+	t->parent = new_root;
+
+	if (old_right != NULL) {
+		old_right->parent = t;
 	}
-	return y;
+
+	return new_root;
 }
 
 AvlTreeNode* AvlTreeRightRotate_(AvlTreeNode *t)
 {
-	AvlTreeNode *y = t->left;
-	AvlTreeNode *x = y->right;
-	y->right = t;
-	t->left = x;
+	AvlTreeNode *new_root = t->left;
+	AvlTreeNode *old_left = new_root->right;
+
+	new_root->right = t;
+	t->left = old_left;
+
 	t->height = 1 + M_MAX(AvlTreeHeight_(t->left), AvlTreeHeight_(t->right));
-	y->height = 1 + M_MAX(AvlTreeHeight_(y->left), AvlTreeHeight_(y->right));
-	y->parent = t->parent;
-	t->parent = y;
-	if (x != NULL) {
-		x->parent = t;
+	new_root->height = 1 + M_MAX(AvlTreeHeight_(new_root->left), AvlTreeHeight_(new_root->right));
+
+	new_root->parent = t->parent;
+	t->parent = new_root;
+
+	if (old_left != NULL) {
+		old_left->parent = t;
 	}
-	return y;
+
+	return new_root;
 }
+
 
 AvlTreeNode* AvlTreeInsert_(AvlTreeBase *t, void *data)
 {
@@ -114,9 +123,6 @@ AvlTreeNode* AvlTreeInsert_(AvlTreeBase *t, void *data)
 	}
 
 	AvlTreeNodeNew(tn, t->elemsize, data);
-	tn->parent = NULL;
-	tn->left = NULL;
-	tn->right = NULL;
 
 	if (t->root == NULL)
 	{
@@ -125,6 +131,7 @@ AvlTreeNode* AvlTreeInsert_(AvlTreeBase *t, void *data)
 	else
 	{
 		AvlTreeNode *current = t->root;
+		AvlTreeNode *prev = current;
 		AvlTreeNode *parent = NULL;
 		while (1)
 		{
@@ -143,7 +150,7 @@ AvlTreeNode* AvlTreeInsert_(AvlTreeBase *t, void *data)
 					break;
 				}
 				current = current->left;
-			}
+			}        
 			else
 			{
 				if (current->right == NULL)
@@ -161,23 +168,39 @@ AvlTreeNode* AvlTreeInsert_(AvlTreeBase *t, void *data)
 		{
 			current->height = 1 + M_MAX(AvlTreeHeight_(current->left), AvlTreeHeight_(current->right));
 			int balance = AvlTreeBalance_(current);
-			if (balance > 1 && t->DataCmp(data, current->left->data, t->elemsize) < 0)
+			if (balance > 1 && t->DataCmp(data, current->left->data, t->elemsize) <= 0)
 			{
 				current = AvlTreeRightRotate_(current);
+				prev = current;
+				current = current->parent;
+				current->left = prev;
+				continue;
 			}
-			else if (balance < -1 && t->DataCmp(data, current->right->data, t->elemsize) > 0)
+			else if (balance < -1 && t->DataCmp(data, current->right->data, t->elemsize) >= 0)
 			{
 				current = AvlTreeLeftRotate_(current);
+				prev = current;
+				current = current->parent;
+				current->right = prev;
+				continue;
 			}
 			else if (balance > 1 && t->DataCmp(data, current->left->data, t->elemsize) > 0)
 			{
 				current->left = AvlTreeLeftRotate_(current->left);
 				current = AvlTreeRightRotate_(current);
+				prev = current;
+				current = current->parent;
+				current->left = prev;
+				continue;
 			}
 			else if (balance < -1 && t->DataCmp(data, current->right->data, t->elemsize) < 0)
 			{
 				current->right = AvlTreeRightRotate_(current->right);
 				current = AvlTreeLeftRotate_(current);
+				prev = current;
+				current = current->parent;
+				current->right = prev;
+				continue;
 			}
 			current = current->parent;
 		}
