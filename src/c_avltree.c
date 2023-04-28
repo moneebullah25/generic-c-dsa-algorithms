@@ -233,72 +233,70 @@ bool AvlTreeContains_(AvlTreeBase *t, void *data)
 	return false;
 }
 
-void AvlTreeRemove_(AvlTreeBase *t, void *data)
+static AvlTreeNode* AvlTreeRemoveNode(AvlTreeBase *t, AvlTreeNode *tn, void *data)
 {
-	AvlTreeNode *node = t->root;
-	AvlTreeNode *parent = NULL;
-	while (node != NULL)
-	{
-		int cmp_result = t->DataCmp(data, node->data, node->elemsize);
-		if (cmp_result < 0)
-		{
-			parent = node;
-			node = node->left;
+	if (tn == NULL) {
+		return NULL;
+	}
+	int cmp = t->DataCmp(data, tn->data, t->elemsize);
+	if (cmp < 0) {
+		tn->left = AvlTreeRemoveNode(t, tn->left, data);
+	}
+	else if (cmp > 0) {
+		tn->right = AvlTreeRemoveNode(t, tn->right, data);
+	}
+	else {
+		if (tn->left == NULL && tn->right == NULL) {  // leaf node
+			AvlTreeNodeDelete(tn, t->FreeFunc);
+			tn = NULL;
 		}
-		else if (cmp_result > 0)
-		{
-			parent = node;
-			node = node->right;
+		else if (tn->left == NULL) {  // one child (right)
+			AvlTreeNode *temp = tn;
+			tn = tn->right;
+			tn->parent = temp->parent;
+			AvlTreeNodeDelete(temp, t->FreeFunc);
 		}
-		else
-		{
-			AvlTreeNode * tmp_node;
-			if (node->left == NULL)
-			{
-				tmp_node = node->right;
-			}
-			else if (node->right == NULL)
-			{
-				tmp_node = node->left;
-			}
-			else
-			{
-				AvlTreeNode *successor = AvlTreeNodeMin(node->right);
-				if (successor->right != NULL)
-				{
-					AvlTreeNode *successor_parent = node;
-					while (successor->left != NULL)
-					{
-						successor_parent = successor;
-						successor = successor->left;
-					}
-
-					successor_parent->left = successor->right;
-					successor->right = node->right;
-				}
-
-				successor->left = node->left;
-				tmp_node = successor;
-			}
-
-			if (parent == NULL)
-			{
-				t->root = tmp_node;
-			}
-			else if (parent->left == node)
-			{
-				parent->left = tmp_node;
-			}
-			else
-			{
-				parent->right = tmp_node;
-			}
-
-			AvlTreeNodeDelete(node, t->FreeFunc);
-			t->logiclen--;
-			break;
+		else if (tn->right == NULL) {  // one child (left)
+			AvlTreeNode *temp = tn;
+			tn = tn->left;
+			tn->parent = temp->parent;
+			AvlTreeNodeDelete(temp, t->FreeFunc);
+		}
+		else {  // two children
+			AvlTreeNode *min = AvlTreeNodeMin(tn->right);
+			MemoryCopy(tn->data, min->data, t->elemsize);
+			tn->right = AvlTreeRemoveNode(t, tn->right, min->data);
 		}
 	}
+	if (tn == NULL) {
+		return NULL;
+	}
+	tn->height = 1 + M_MAX(AvlTreeHeight_(tn->left), AvlTreeHeight_(tn->right));
+	int balance = AvlTreeBalance_(tn);
+	if (balance > 1 && AvlTreeBalance_(tn->left) >= 0) {  // left left case
+		return AvlTreeRightRotate_(tn);
+	}
+	if (balance > 1 && AvlTreeBalance_(tn->left) < 0) {  // left right case
+		tn->left = AvlTreeLeftRotate_(tn->left);
+		return AvlTreeRightRotate_(tn);
+	}
+	if (balance < -1 && AvlTreeBalance_(tn->right) <= 0) {  // right right case
+		return AvlTreeLeftRotate_(tn);
+	}
+	if (balance < -1 && AvlTreeBalance_(tn->right) > 0) {  // right left case
+		tn->right = AvlTreeRightRotate_(tn->right);
+		return AvlTreeLeftRotate_(tn);
+	}
+	return tn;
+}
+
+void AvlTreeRemove_(AvlTreeBase *t, void *data)
+{
+	t->root = AvlTreeRemoveNode(t, t->root, data);
+	if (t->root != NULL) {
+		t->root->parent = NULL;
+	}
+	t->logiclen--;
 }
 
 void AvlTreeClear_(AvlTreeBase *t)
