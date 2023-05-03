@@ -1819,19 +1819,19 @@ double MatrixTSSSimilarity(const Matrix *m1, const Matrix *m2)
 	if (m1->num_rows != 1)
 	{
 		fprintf(stderr, "Not a row matrix 'm1->num_rows != 1'%u\n", m1->num_rows);
-		return NULL;
+		return NAN;
 	}
 
 	if (m2->num_rows != 1)
 	{
 		fprintf(stderr, "Not a row matrix 'm2->num_rows != 1'%u\n", m2->num_rows);
-		return NULL;
+		return NAN;
 	}
 
 	if (m1->num_cols != m2->num_cols)
 	{
 		fprintf(stderr, "Not a row matrix 'm1->num_cols != m2->num_cols'%u!=%u\n", m1->num_cols, m2->num_cols);
-		return -1;
+		return NAN;
 	}
 
 	// Compute the TSSS distance
