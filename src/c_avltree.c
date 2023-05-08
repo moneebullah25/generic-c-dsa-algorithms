@@ -113,7 +113,6 @@ AvlTreeNode* AvlTreeRightRotate_(AvlTreeNode *t)
 	return new_root;
 }
 
-
 AvlTreeNode* AvlTreeInsert_(AvlTreeBase *t, void *data)
 {
 	AvlTreeNode *tn = malloc(sizeof(AvlTreeNode));
@@ -171,35 +170,47 @@ AvlTreeNode* AvlTreeInsert_(AvlTreeBase *t, void *data)
 			if (balance > 1 && t->DataCmp(data, current->left->data, t->elemsize) <= 0)
 			{
 				current = AvlTreeRightRotate_(current);
-				prev = current;
-				current = current->parent;
-				current->left = prev;
+				if (current->parent)
+				{
+					prev = current;
+					current = current->parent;
+					current->left = prev;
+				}
 				continue;
 			}
 			else if (balance < -1 && t->DataCmp(data, current->right->data, t->elemsize) >= 0)
 			{
 				current = AvlTreeLeftRotate_(current);
-				prev = current;
-				current = current->parent;
-				current->right = prev;
+				if (current->parent)
+				{
+					prev = current;
+					current = current->parent;
+					current->right = prev;
+				}
 				continue;
 			}
 			else if (balance > 1 && t->DataCmp(data, current->left->data, t->elemsize) > 0)
 			{
 				current->left = AvlTreeLeftRotate_(current->left);
 				current = AvlTreeRightRotate_(current);
-				prev = current;
-				current = current->parent;
-				current->left = prev;
+				if (current->parent)
+				{
+					prev = current;
+					current = current->parent;
+					current->left = prev;
+				}
 				continue;
 			}
 			else if (balance < -1 && t->DataCmp(data, current->right->data, t->elemsize) < 0)
 			{
 				current->right = AvlTreeRightRotate_(current->right);
 				current = AvlTreeLeftRotate_(current);
-				prev = current;
-				current = current->parent;
-				current->right = prev;
+				if (current->parent)
+				{
+					prev = current;
+					current = current->parent;
+					current->right = prev;
+				}
 				continue;
 			}
 			current = current->parent;
