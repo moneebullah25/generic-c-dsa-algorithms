@@ -250,6 +250,7 @@ static AvlTreeNode* AvlTreeRemoveNode(AvlTreeBase *t, AvlTreeNode *tn, void *dat
 	if (tn == NULL) {
 		return NULL;
 	}
+
 	int cmp = t->DataCmp(data, tn->data, t->elemsize);
 	if (cmp < 0) {
 		tn->left = AvlTreeRemoveNode(t, tn->left, data);
@@ -258,20 +259,14 @@ static AvlTreeNode* AvlTreeRemoveNode(AvlTreeBase *t, AvlTreeNode *tn, void *dat
 		tn->right = AvlTreeRemoveNode(t, tn->right, data);
 	}
 	else {
-		if (tn->left == NULL && tn->right == NULL) {  // leaf node
-			AvlTreeNodeDelete(tn, t->FreeFunc);
-			tn = NULL;
-		}
-		else if (tn->left == NULL) {  // one child (right)
-			AvlTreeNode *temp = tn;
-			tn = tn->right;
-			tn->parent = temp->parent;
-			AvlTreeNodeDelete(temp, t->FreeFunc);
-		}
-		else if (tn->right == NULL) {  // one child (left)
-			AvlTreeNode *temp = tn;
-			tn = tn->left;
-			tn->parent = temp->parent;
+		AvlTreeNode *temp = NULL;
+		if (tn->left == NULL || tn->right == NULL) {  // one child or leaf node
+			temp = tn->left ? tn->left : tn->right;
+			if (temp == NULL) {  // leaf node
+				AvlTreeNodeDelete(tn, t->FreeFunc);
+				return NULL;
+			}
+			*tn = *temp;
 			AvlTreeNodeDelete(temp, t->FreeFunc);
 		}
 		else {  // two children
@@ -280,9 +275,7 @@ static AvlTreeNode* AvlTreeRemoveNode(AvlTreeBase *t, AvlTreeNode *tn, void *dat
 			tn->right = AvlTreeRemoveNode(t, tn->right, min->data);
 		}
 	}
-	if (tn == NULL) {
-		return NULL;
-	}
+
 	tn->height = 1 + M_MAX(AvlTreeHeight_(tn->left), AvlTreeHeight_(tn->right));
 	int balance = AvlTreeBalance_(tn);
 	if (balance > 1 && AvlTreeBalance_(tn->left) >= 0) {  // left left case
