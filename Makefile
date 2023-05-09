@@ -40,6 +40,7 @@ $(LIB_DIR)/%.lib: $(OBJ_DIR)/%.o
 
 # Create Tests
 $(TEST_DIR)/bin/%.out: $(TEST_DIR)/%.c $(OBJS)
+	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $< $(OBJS) -o $@ -lcriterion -lm
 
 run_tests: $(TEST_BINS)

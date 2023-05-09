@@ -22,6 +22,11 @@ extern "C" {
 **/
 typedef struct Matrix Matrix;
 
+/* Return the total number of rows */
+unsigned int MatrixTotalRows(const Matrix * m);
+
+/* Return the total number of columns */
+unsigned int MatrixTotalColumns(const Matrix * m);
 
 /* Matrix Allocation */
 
@@ -377,6 +382,31 @@ Matrix* MatrixCopy(const Matrix* m);
  * @return true if the number of rows and columns of the two matrices are equal, false otherwise
 **/
 bool IsMatrixEqualDim(const Matrix* m1, const Matrix* m2);
+
+/**
+ * Function that checks if a matrix is square.
+ * The function asserts that the matrix pointer m is not null.
+ * @param m pointer to the matrix
+ * Requirements:
+ * - m pointer should not be nullptr
+ * Time complexity: O(1)
+ * Space complexity: O(1)
+ * @return true if the number of rows and columns of the matrix are equal, false otherwise
+**/
+bool IsMatrixSquare(const Matrix* m);
+
+/**
+ * Function that checks if two matrices have equal values and dimensions.
+ * The function asserts that the matrix pointers m1 and m2 are not null.
+ * @param m1 pointer to the first matrix
+ * @param m2 pointer to the second matrix
+ * Requirements:
+ * - m1 and m2 pointers should not be nullptr
+ * Time complexity: O(n^2) where n is the number of rows/columns
+ * Space complexity: O(1)
+ * @return true if the number of rows and columns of the two matrices are equal and their values are equal, false otherwise
+**/
+bool IsMatrixEqual(const Matrix* m1, const Matrix* m2);
 
 /**
  * Function that prints a matrix to the console.
@@ -833,6 +863,20 @@ Matrix* MatrixMultiplyWithBroadcast(const Matrix* m1, const Matrix* m2);
  * @return Pointer to the result matrix.
 **/
 Matrix* MatrixElementWiseMultiplyWithBroadcast(const Matrix* m1, const Matrix* m2);
+
+/**
+ * Function that reshapes a matrix to a new number of rows and columns.
+ * The function asserts that the matrix pointer m is not null.
+ * @param m pointer to the matrix
+ * @param new_rows the new number of rows for the matrix
+ * @param new_cols the new number of columns for the matrix
+ * Requirements:
+ * - m pointer should not be nullptr
+ * - The new number of rows and columns should be compatible with the current number of elements in the matrix
+ * Time complexity: O(num_rows*num_cols)
+ * Space complexity: O(num_rows*num_cols)
+**/
+void MatrixReshape(Matrix* m, unsigned int new_rows, unsigned int new_cols);
 
 /**
  * Calculates the transpose of a matrix.

@@ -11,6 +11,16 @@ struct Matrix {
 	bool is_square;
 };
 
+unsigned int MatrixTotalRows(const Matrix * m)
+{
+	return m->num_rows;
+}
+
+unsigned int MatrixTotalColumns(const Matrix * m)
+{
+	return m->num_cols;
+}
+
 Matrix* MatrixEmpty(unsigned int num_rows, unsigned int num_cols)
 {
 	if (num_rows == 0)
@@ -95,7 +105,7 @@ Matrix* MatrixRandom(unsigned int num_rows, unsigned int num_cols, double min, d
 	{
 		for (unsigned int c = 0; c < num_cols; c++)
 		{
-			matrix->data[r][c] = min + ((float)rand() / (float)(0x7fff)) *(max - min);
+			MatrixSet(matrix, r, c, min + ((float)rand() / (float)(0x7fff)) *(max - min));
 		}
 	}
 
@@ -183,7 +193,7 @@ Matrix* MatrixOne(unsigned int num_rows, unsigned int num_cols)
 	{
 		for (unsigned int c = 0; c < num_cols; c++)
 		{
-			matrix->data[r][c] = 1.;
+			MatrixSet(matrix, r, c, 1.);
 		}
 	}
 
@@ -208,7 +218,7 @@ Matrix* MatrixN(unsigned int num_rows, unsigned int num_cols, double value)
 	{
 		for (unsigned int c = 0; c < num_cols; c++)
 		{
-			matrix->data[r][c] = value;
+			MatrixSet(matrix, r, c, value);
 		}
 	}
 
@@ -230,7 +240,7 @@ Matrix* MatrixIdentity(unsigned int size)
 {
 	Matrix *matrix = MatrixNew(size, size);
 	for (unsigned int i = 0; i < size; i++)
-		matrix->data[i][i] = 1.;
+		MatrixSet(matrix, i, i, 1.);
 	return matrix;
 }
 
@@ -264,15 +274,15 @@ Matrix* MatrixEye(unsigned int size, int k)
 	{
 		if (k >= 0 && i + k < size)
 		{
-			m->data[i][i + k] = 1.0;
+			MatrixSet(m, i, i+k, 1.);
 		}
 		else if (k < 0 && i - k < size)
 		{
-			m->data[i - k][i] = 1.0;
+			MatrixSet(m, i - k, i, 1.);
 		}
 		else if (k == 0)
 		{
-			m->data[i][i] = 1.0;
+			MatrixSet(m, i, i, 1.);
 		}
 	}
 
@@ -328,7 +338,7 @@ Matrix* MatrixARange(double start, double stop, double step)
 	double value = start;
 	for (unsigned int c = 0; c < matrix->num_cols; c++)
 	{
-		matrix->data[0][c] = value;
+		MatrixSet(matrix, 0, c, value);
 		value += step;
 	}
 
@@ -353,7 +363,7 @@ Matrix* MatrixLinearSpace(double start, double stop, unsigned int n)
 	double step = (stop - start) / (n - 1);
 	for (unsigned int i = 0; i < n; i++)
 	{
-		m->data[0][i] = start + ((double)i *step);
+		MatrixSet(m, 0, i, start + ((double)i *step));
 	}
 
 	return m;
@@ -379,7 +389,7 @@ Matrix* MatrixLogSpace(double start, double stop, unsigned int n)
 	for (unsigned int i = 0; i < n; i++)
 	{
 		double exponent = start + i * exponent_step;
-		matrix->data[0][i] = pow(base, exponent);
+		MatrixSet(matrix, 0, i, pow(base, exponent));
 	}
 
 	return matrix;
@@ -404,7 +414,7 @@ Matrix* MatrixGeometrySpace(double start, double stop, unsigned int n)
 	double current = start;
 	for (unsigned int i = 0; i < n; i++)
 	{
-		matrix->data[0][i] = current;
+		MatrixSet(matrix, 0, i, current);
 		current *= ratio;
 	}
 
@@ -420,7 +430,7 @@ Matrix* MatrixFrom(unsigned int num_rows, unsigned int num_cols, unsigned int n_
 		for (unsigned int c = 0; c < num_cols; c++)
 		{
 			values_index = r *num_cols + c;
-			matrix->data[r][c] = (values_index < n_values) ? values[values_index] : 0.;
+			MatrixSet(matrix, r, c, (values_index < n_values) ? values[values_index] : 0.);
 		}
 	}
 
@@ -464,7 +474,7 @@ Matrix* MatrixCopy(const Matrix *m)
 	{
 		for (unsigned int c = 0; c < matrix->num_cols; c++)
 		{
-			matrix->data[r][c] = m->data[r][c];
+			MatrixSet(matrix, r, c, MatrixGet(m, r, c));
 		}
 	}
 
@@ -476,6 +486,38 @@ bool IsMatrixEqualDim(const Matrix *m1, const Matrix *m2)
 {
 	return (m1->num_rows == m2->num_rows) &&
 		(m1->num_cols == m2->num_cols);
+}
+
+bool IsMatrixSquare(const Matrix *m)
+{
+	if (m == NULL)
+	{
+		fprintf(stderr, "Invalid matrix passed\n");
+		return false;
+	}
+
+	return (m->num_rows == m->num_cols);
+}
+
+bool IsMatrixEqual(const Matrix *m1, const Matrix *m2)
+{
+    if (!IsMatrixEqualDim(m1, m2)) 
+    {
+        return false;
+    }
+
+    for (unsigned int i = 0; i < m1->num_rows; i++) 
+    {
+        for (unsigned int j = 0; j < m1->num_cols; j++) 
+        {
+            if (MatrixGet(m1, i, j) != MatrixGet(m2, i, j)) 
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 void PrintMatrix(const Matrix *m, const char *data_format)
@@ -492,7 +534,7 @@ void PrintMatrix(const Matrix *m, const char *data_format)
 		fprintf(stdout, "\n");
 		for (unsigned int c = 0; c < m->num_cols; c++)
 		{
-			fprintf(stdout, data_format, m->data[r][c]);
+			fprintf(stdout, data_format, MatrixGet(m, r, c));
 		}
 
 		fprintf(stdout, "\n");
@@ -554,7 +596,7 @@ Matrix* MatrixColumnGet(const Matrix *m, unsigned int col)
 	Matrix *matrix = MatrixNew(m->num_rows, 1);
 	for (unsigned int r = 0; r < m->num_rows; r++)
 	{
-		matrix->data[r][0] = m->data[r][col];
+		MatrixSet(matrix, r, 0, MatrixGet(m, r, col));
 	}
 
 	return matrix;
@@ -577,7 +619,7 @@ Matrix* MatrixRowGet(const Matrix *m, unsigned int row)
 	Matrix *matrix = MatrixNew(1, m->num_cols);
 	for (unsigned int c = 0; c < m->num_cols; c++)
 	{
-		matrix->data[0][c] = m->data[row][c];
+		MatrixSet(matrix, 0, c, m->data[row][c]);
 	}
 
 	return matrix;
@@ -618,7 +660,7 @@ void MatrixAllSet(Matrix *m, double value)
 	{
 		for (unsigned int c = 0; c < m->num_cols; c++)
 		{
-			m->data[r][c] = value;
+			MatrixSet(m, r, c, value);
 		}
 	}
 }
@@ -639,7 +681,7 @@ void MatrixDiagonalSet(Matrix *m, double value)
 
 	for (unsigned int i = 0; i < m->num_rows; i++)
 	{
-		m->data[i][i] = value;
+		MatrixSet(m, i, i, value);
 	}
 }
 
@@ -659,7 +701,7 @@ void MatrixRowMultiplyValue(Matrix *m, unsigned int row, double value)
 
 	for (unsigned int c = 0; c < m->num_cols; c++)
 	{
-		m->data[row][c] *= value;
+		MatrixSet(m, row, c, MatrixGet(m, row, c) * value);
 	}
 }
 
@@ -839,7 +881,7 @@ void MatrixWholeMultiply(Matrix *m, double value)
 	{
 		for (unsigned int c = 0; c < m->num_cols; c++)
 		{
-			m->data[r][c] *= value;
+			MatrixSet(m, r, c, MatrixGet(m, r, c) * value);
 		}
 	}
 }
@@ -856,7 +898,7 @@ void MatrixWholeAdd(Matrix *m, double value)
 	{
 		for (unsigned int c = 0; c < m->num_cols; c++)
 		{
-			m->data[r][c] += value;
+			MatrixSet(m, r, c, MatrixGet(m, r, c) + value);
 		}
 	}
 }
@@ -1001,13 +1043,13 @@ Matrix* MatrixBroadcastRows(const Matrix *m, unsigned int row)
 
 	Matrix *matrix = MatrixNew(row, m->num_cols);
 	for (unsigned int c = 0; c < matrix->num_cols; c++)
-		matrix->data[0][c] = m->data[0][c];
+		MatrixSet(matrix, 0, c, MatrixGet(m, 0, c));
 
 	for (unsigned int r = 1; r < matrix->num_rows; r++)
 	{
 		for (unsigned int c = 0; c < matrix->num_cols; c++)
 		{
-			matrix->data[r][c] = m->data[0][c];
+			MatrixSet(matrix, r, c, MatrixGet(m, 0, c));
 		}
 	}
 
@@ -1036,13 +1078,13 @@ Matrix* MatrixBroadcastColumns(const Matrix *m, unsigned int col)
 
 	Matrix *matrix = MatrixNew(m->num_rows, col);
 	for (unsigned int r = 0; r < matrix->num_rows; r++)
-		matrix->data[r][0] = m->data[r][0];
+		MatrixSet(matrix, r, 0, MatrixGet(m, r, 0));
 
 	for (unsigned int c = 1; c < matrix->num_cols; c++)
 	{
 		for (unsigned int r = 0; r < matrix->num_rows; r++)
 		{
-			matrix->data[r][c] = m->data[r][0];
+			MatrixSet(matrix, r, c, MatrixGet(m, r, 0));
 		}
 	}
 
@@ -1099,7 +1141,7 @@ Matrix* MatrixRowStack(const Matrix *m1, const Matrix *m2)
 	{
 		for (unsigned int j = 0; j < m1->num_cols; j++)
 		{
-			matrix->data[i][j] = m1->data[i][j];
+			MatrixSet(matrix, i, j, MatrixGet(m1, i, j));
 		}
 	}
 
@@ -1107,7 +1149,7 @@ Matrix* MatrixRowStack(const Matrix *m1, const Matrix *m2)
 	{
 		for (unsigned int j = 0; j < m2->num_cols; j++)
 		{
-			matrix->data[m1->num_rows + i][j] = m2->data[i][j];
+			matrix->data[m1->num_rows + i][j] = MatrixGet(m2, i, j);
 		}
 	}
 
@@ -1139,7 +1181,7 @@ Matrix* MatrixColumnStack(const Matrix *m1, const Matrix *m2)
 	{
 		for (unsigned int j = 0; j < m1->num_cols; j++)
 		{
-			matrix->data[i][j] = m1->data[i][j];
+			MatrixSet(matrix, i, j, MatrixGet(m1, i, j));
 		}
 	}
 
@@ -1147,7 +1189,7 @@ Matrix* MatrixColumnStack(const Matrix *m1, const Matrix *m2)
 	{
 		for (unsigned int j = 0; j < m2->num_cols; j++)
 		{
-			matrix->data[i][m1->num_cols + j] = m2->data[i][j];
+			matrix->data[i][m1->num_cols + j] = MatrixGet(m2, i, j);
 		}
 	}
 
@@ -1181,7 +1223,7 @@ Matrix* MatrixAdd(const Matrix *m1, const Matrix *m2)
 	{
 		for (unsigned int c = 0; c < m1->num_cols; c++)
 		{
-			matrix->data[r][c] = m1->data[r][c] + m2->data[r][c];
+			MatrixSet(matrix, r, c, MatrixGet(m1, r, c) + MatrixGet(m2, r, c));
 		}
 	}
 
@@ -1214,7 +1256,7 @@ Matrix* MatrixSubtract(const Matrix *m1, const Matrix *m2)
 	{
 		for (unsigned int c = 0; c < m1->num_cols; c++)
 		{
-			matrix->data[r][c] = m1->data[r][c] - m2->data[r][c];
+			MatrixSet(matrix, r, c, MatrixGet(m1, r, c) - MatrixGet(m2, r, c));
 		}
 	}
 
@@ -1249,7 +1291,7 @@ Matrix* MatrixMultiply(const Matrix *m1, const Matrix *m2)
 		{
 			for (unsigned int i = 0; i < m1->num_cols; i++)
 			{
-				matrix->data[r][c] += m1->data[r][i] * m2->data[i][c];
+				MatrixSet(matrix, r, c, MatrixGet(matrix, r, c) + MatrixGet(m1, r, i) * MatrixGet(m2, i, c));
 			}
 		}
 	}
@@ -1283,7 +1325,7 @@ Matrix* MatrixElementWiseMultiply(const Matrix *m1, const Matrix *m2)
 	{
 		for (unsigned int c = 0; c < m1->num_cols; c++)
 		{
-			matrix->data[r][c] = m1->data[r][c] + m2->data[r][c];
+			MatrixSet(matrix, r, c, MatrixGet(m1, r, c) + MatrixGet(m2, r, c));
 		}
 	}
 
@@ -1415,23 +1457,82 @@ Matrix* MatrixElementWiseMultiplyWithBroadcast(const Matrix *m1, const Matrix *m
 	return result;
 }
 
-void MatrixTranspose(Matrix *m)
+void MatrixReshape(Matrix* m, unsigned int new_rows, unsigned int new_cols)
 {
-	if (m == NULL)
-	{
-		fprintf(stderr, "Invalid matrix passed\n");
-		return;
-	}
+    if (m == NULL)
+    {
+        fprintf(stderr, "Invalid matrix passed\n");
+        return;
+    }
 
-	for (unsigned int r = 0; r < m->num_rows; r++)
-	{
-		for (unsigned int c = 0; c < m->num_cols; c++)
-		{
-			double temp = m->data[r][c];
-			m->data[r][c] = m->data[c][r];
-			m->data[c][r] = temp;
-		}
-	}
+    if (m->num_rows * m->num_cols != new_rows * new_cols)
+    {
+        fprintf(stderr, "New shape must have the same number of elements as the original matrix\n");
+        return;
+    }
+
+    double** new_data = (double**)malloc(new_rows * sizeof(double*));
+    for (unsigned int i = 0; i < new_rows; i++)
+    {
+        new_data[i] = (double*)malloc(new_cols * sizeof(double));
+    }
+
+    unsigned int row = 0, col = 0;
+    for (unsigned int r = 0; r < m->num_rows; r++)
+    {
+        for (unsigned int c = 0; c < m->num_cols; c++)
+        {
+            new_data[row][col] = MatrixGet(m, r, c);
+            col++;
+            if (col == new_cols)
+            {
+                col = 0;
+                row++;
+            }
+        }
+    }
+
+    for (unsigned int i = 0; i < m->num_rows; i++)
+    {
+        free(m->data[i]);
+    }
+    free(m->data);
+
+    m->data = new_data;
+    m->num_rows = new_rows;
+    m->num_cols = new_cols;
+	if (m->num_cols == m->num_rows) m->is_square = true;
+}
+
+void MatrixTranspose(Matrix* m)
+{
+    if (m == NULL)
+    {
+        fprintf(stderr, "Invalid matrix passed\n");
+        return;
+    }
+
+    Matrix* temp = MatrixNew(m->num_cols, m->num_rows);
+
+    for (unsigned int r = 0; r < m->num_rows; r++)
+    {
+        for (unsigned int c = 0; c < m->num_cols; c++)
+        {
+            MatrixSet(temp, c, r, MatrixGet(m, r, c));
+        }
+    }
+
+    MatrixReshape(m, temp->num_rows, temp->num_cols);
+
+    for (unsigned int r = 0; r < temp->num_rows; r++)
+    {
+        for (unsigned int c = 0; c < temp->num_cols; c++)
+        {
+            MatrixSet(m, r, c, MatrixGet(temp, r, c));
+        }
+    }
+
+    MatrixFree(temp);
 }
 
 double MatrixTrace(const Matrix *m)
@@ -1451,7 +1552,7 @@ double MatrixTrace(const Matrix *m)
 	double trace = 0;
 	for (unsigned int i = 0; i < m->num_rows; i++)
 	{
-		trace += m->data[i][i];
+		trace += MatrixGet(m, i, i);
 	}
 
 	return trace;
@@ -1550,7 +1651,7 @@ void MatrixRowEchelon(Matrix *m)
 				double c = MatrixGet(m, i, lead);
 				for (unsigned int j = 0; j < m->num_cols; j++)
 				{
-					m->data[i][j] -= c *m->data[r][j];
+					MatrixSet(m, i, j, MatrixGet(m, i, j) - c * MatrixGet(m, r, j));
 				}
 			}
 		}
@@ -1595,7 +1696,7 @@ void MatrixReducedRowEchelon(Matrix *m)
 				value = MatrixGet(m, j, lead);
 				for (unsigned int c = 0; c < m->num_cols; c++)
 				{
-					m->data[j][c] -= value *m->data[r][c];
+					m->data[j][c] -= value *MatrixGet(m, r, c);
 				}
 			}
 		}
@@ -1647,7 +1748,7 @@ Matrix* MatrixRowEchelonGet(const Matrix *m)
 				double c = MatrixGet(matrix, i, lead);
 				for (unsigned int j = 0; j < matrix->num_cols; j++)
 				{
-					matrix->data[i][j] -= c *matrix->data[r][j];
+					MatrixSet(matrix, i, j, MatrixGet(matrix, i, j) - c * MatrixGet(matrix, r, j));
 				}
 			}
 		}
@@ -1695,7 +1796,7 @@ Matrix* MatrixReducedRowEchelonGet(const Matrix *m)
 				value = MatrixGet(matrix, j, lead);
 				for (unsigned int c = 0; c < matrix->num_cols; c++)
 				{
-					matrix->data[j][c] -= value *matrix->data[r][c];
+					matrix->data[j][c] -= value *MatrixGet(m, r, c);
 				}
 			}
 		}
@@ -1744,10 +1845,10 @@ Matrix* MatrixL2Norm(const Matrix *m)
 		square_sum = 0.0;
 		for (unsigned int r = 0; r < m->num_rows; r++)
 		{
-			square_sum += m->data[r][c] * m->data[r][c];
+			square_sum += MatrixGet(m, r, c) * MatrixGet(m, r, c);
 		}
 
-		matrix->data[0][c] = sqrt(square_sum);
+		MatrixSet(matrix, 0, c, sqrt(square_sum));
 	}
 
 	return matrix;
@@ -1842,7 +1943,7 @@ double MatrixTSSSimilarity(const Matrix *m1, const Matrix *m2)
 	double var_m2 = MatrixColumnL2Norm(m2, 0) / m2->num_cols;
 
 	// Compute the TS-SS similarity
-	double ts_ss_similarity = 1 - tsss_distance / sqrt(m1->num_cols *var_m1 *var_m2);
+	double ts_ss_similarity = (1 - tsss_distance) / sqrt(m1->num_cols *var_m1 *var_m2);
 
 	return ts_ss_similarity;
 }
@@ -1873,7 +1974,7 @@ double MatrixEuclideanDistance(const Matrix *m1, const Matrix *m2)
 	{
 		for (unsigned int j = 0; j < m1->num_cols; j++)
 		{
-			double diff = m1->data[i][j] - m2->data[i][j];
+			double diff = MatrixGet(m1, i, j) - MatrixGet(m2, i, j);
 			sum_squares += diff * diff;
 		}
 	}
@@ -1907,7 +2008,7 @@ double MatrixManhattanDistance(const Matrix *m1, const Matrix *m2)
 	{
 		for (unsigned int j = 0; j < m1->num_cols; j++)
 		{
-			dist += fabs(m1->data[i][j] - m2->data[i][j]);
+			dist += fabs(MatrixGet(m1, i, j) - MatrixGet(m2, i, j));
 		}
 	}
 
@@ -1940,7 +2041,7 @@ double MatrixMinkowskiDistance(const Matrix *m1, const Matrix *m2, int p)
 	{
 		for (unsigned int j = 0; j < m1->num_cols; j++)
 		{
-			dist += pow(fabs(m1->data[i][j] - m2->data[i][j]), p);
+			dist += pow(fabs(MatrixGet(m1, i, j) - MatrixGet(m2, i, j)), p);
 		}
 	}
 

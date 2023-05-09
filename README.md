@@ -494,6 +494,8 @@ The **Matrix** class is a data structure for representing and manipulating matri
 - **Matrix\* MatrixFromFile(const char\* file)** Allocates memory for a new Matrix structure and fills it with the data from the file specified by file.
 - **Matrix\* MatrixCopy(const Matrix\* m)** Allocates memory for a new Matrix structure and copies the data from the given Matrix structure m.
 - **bool IsMatrixEqualDim(const Matrix\* m1, const Matrix\* m2)** Returns true if the dimensions of Matrix structures m1 and m2 are equal, false otherwise.
+- **bool IsMatrixSquare(const Matrix\* m)** return true if the number of rows and columns of the matrix are equal, false otherwise.
+- **bool MatrixIsEqual(const Matrix \*m1, const Matrix \*m2)** Function that checks if two matrices have equal values and dimensions.
 - **void PrintMatrix(const Matrix\* m, const char\* data_format)** Prints the contents of the matrix in the specified data format.
 - **bool IsMatrixInvertible(const Matrix\* m)** Returns true if the matrix is invertible, false otherwise.
 - **Matrix\* MatrixGet(const Matrix\* m, unsigned row, unsigned col)** Returns the value stored in the matrix at the specified row and column.
@@ -529,6 +531,7 @@ The **Matrix** class is a data structure for representing and manipulating matri
 - **Matrix\* MatrixSubtractWithBroadcast(const Matrix\* m1, const Matrix\* m2)** Subtracts one matrix from another element-wise, with broadcasting of the smaller matrix to match the dimensions of the larger matrix.
 - **Matrix\* MatrixMultiplyWithBroadcast(const Matrix\* m1, const Matrix\* m2)** Multiply two matrices m1 and m2 with Broadcast if required and return the result.
 - **Matrix\* MatrixElementWiseMultiplyWithBroadcast(const Matrix\* m1, const Matrix\* m2)**  Mutiply two matrices element wise aka (Hadamard product) m1 and m2 with Broadcast if required and return and create the resultant matrix.
+- **void MatrixReshape(Matrix\* m, unsigned int new_rows, unsigned int new_cols)** Function that reshapes a matrix to a new number of rows and columns. The function asserts that the matrix pointer m is not null.
 - **void MatrixTranspose(Matrix\* m)** Transposes the input matrix by swapping rows and columns, and modifies the input matrix in-place.
 - **double MatrixTrace(const Matrix\* m)** Computes the trace of the input matrix, which is the sum of the elements on the main diagonal.
 - **double MatrixDeterminant(const Matrix\* m)** Computes the determinant of the input matrix.

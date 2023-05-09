@@ -132,7 +132,6 @@ AvlTreeNode* AvlTreeInsert_(AvlTreeBase *t, void *data)
 	{
 		AvlTreeNode *current = t->root;
 		AvlTreeNode *prev = current;
-		AvlTreeNode *parent = NULL;
 		while (1)
 		{
 			int cmp = t->DataCmp(data, current->data, t->elemsize);
