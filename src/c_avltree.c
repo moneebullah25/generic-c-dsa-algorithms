@@ -165,6 +165,7 @@ AvlTreeNode* AvlTreeInsert_(AvlTreeBase *t, void *data)
 		// Update height and balance factor of all nodes in the path to the root
 		while (current != NULL)
 		{
+			t->root = current;
 			current->height = 1 + M_MAX(AvlTreeHeight_(current->left), AvlTreeHeight_(current->right));
 			int balance = AvlTreeBalance_(current);
 			if (balance > 1 && t->DataCmp(data, current->left->data, t->elemsize) <= 0)
