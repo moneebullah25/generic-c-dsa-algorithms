@@ -19,5 +19,17 @@ jobs:
         sudo apt-get update
         sudo apt-get install libcriterion-dev
 
-    - name: make
+    - name: Criterion Test
       run: make
+      
+    - name: Install Valgrind
+    - run: sudo apt-get install valgrind
+    
+    - name: Valgrind Test
+    - run: make valgrind_tests
+    
+    - name: Create libs
+    - run: make lib
+    
+    - name: Clean
+    - run: make clean
