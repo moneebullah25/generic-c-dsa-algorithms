@@ -106,8 +106,8 @@ Test(avltree_test, test_avltree_string)
     cr_assert(AvlTreeContains(avltree, "hello"), "Expected avltree to contain 'hello' after removing elements");
     cr_assert_not(AvlTreeContains(avltree, "test"), "Expected avltree not to contain 'test' after removing it");
 
-    cr_assert_str_eq((char *)AvlTreeMin(avltree), "a", "Expected minimum element to be 'a'");
-    cr_assert_str_eq((char *)AvlTreeMax(avltree), "world", "Expected maximum element to be 'world'");
+    cr_assert_str_eq(*(char **)AvlTreeMin(avltree), "a", "Expected minimum element to be 'a'");
+    cr_assert_str_eq(*(char **)AvlTreeMax(avltree), "world", "Expected maximum element to be 'world'");
 
     AvlTreeClear(avltree);
 

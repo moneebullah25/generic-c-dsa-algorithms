@@ -258,38 +258,46 @@ static AvlTreeNode* AvlTreeRemoveNode(AvlTreeBase *t, AvlTreeNode *tn, void *dat
 		tn->right = AvlTreeRemoveNode(t, tn->right, data);
 	}
 	else {
-		AvlTreeNode *temp = NULL;
-		if (tn->left == NULL || tn->right == NULL) {  // one child or leaf node
-			temp = tn->left ? tn->left : tn->right;
-			if (temp == NULL) {  // leaf node
-				AvlTreeNodeDelete(tn, t->FreeFunc);
-				return NULL;
-			}
-			*tn = *temp;
+		if (tn->left == NULL && tn->right == NULL) {  // leaf node
+			AvlTreeNodeDelete(tn, t->FreeFunc);
+			tn = NULL;
+		}
+		else if (tn->left == NULL) {  // one child (right)
+			AvlTreeNode* temp = tn;
+			tn = tn->right;
+			tn->parent = temp->parent;
+			AvlTreeNodeDelete(temp, t->FreeFunc);
+		}
+		else if (tn->right == NULL) {  // one child (left)
+			AvlTreeNode* temp = tn;
+			tn = tn->left;
+			tn->parent = temp->parent;
 			AvlTreeNodeDelete(temp, t->FreeFunc);
 		}
 		else {  // two children
-			AvlTreeNode *min = AvlTreeNodeMin(tn->right);
+			AvlTreeNode* min = AvlTreeNodeMin(tn->right);
 			MemoryCopy(tn->data, min->data, t->elemsize);
 			tn->right = AvlTreeRemoveNode(t, tn->right, min->data);
 		}
 	}
 
-	tn->height = 1 + M_MAX(AvlTreeHeight_(tn->left), AvlTreeHeight_(tn->right));
-	int balance = AvlTreeBalance_(tn);
-	if (balance > 1 && AvlTreeBalance_(tn->left) >= 0) {  // left left case
-		return AvlTreeRightRotate_(tn);
-	}
-	if (balance > 1 && AvlTreeBalance_(tn->left) < 0) {  // left right case
-		tn->left = AvlTreeLeftRotate_(tn->left);
-		return AvlTreeRightRotate_(tn);
-	}
-	if (balance < -1 && AvlTreeBalance_(tn->right) <= 0) {  // right right case
-		return AvlTreeLeftRotate_(tn);
-	}
-	if (balance < -1 && AvlTreeBalance_(tn->right) > 0) {  // right left case
-		tn->right = AvlTreeRightRotate_(tn->right);
-		return AvlTreeLeftRotate_(tn);
+	if (tn != NULL) {
+		tn->height = 1 + M_MAX(AvlTreeHeight_(tn->left), AvlTreeHeight_(tn->right));
+		int balance = AvlTreeBalance_(tn);
+		if (balance > 1 && AvlTreeBalance_(tn->left) >= 0) {  // left left case
+			return AvlTreeRightRotate_(tn);
+		}
+		if (balance > 1 && AvlTreeBalance_(tn->left) < 0) {  // left right case
+			tn->left = AvlTreeLeftRotate_(tn->left);
+			return AvlTreeRightRotate_(tn);
+		}
+		if (balance < -1 && AvlTreeBalance_(tn->right) <= 0) {  // right right case
+			return AvlTreeLeftRotate_(tn);
+		}
+		if (balance < -1 && AvlTreeBalance_(tn->right) > 0) {  // right left case
+			tn->right = AvlTreeRightRotate_(tn->right);
+			return AvlTreeLeftRotate_(tn);
+		}
 	}
 	return tn;
 }
