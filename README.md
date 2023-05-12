@@ -64,28 +64,33 @@ This project has been thoroughly tested with the supported data types to ensure 
 # **Usuage**
 ## **Compiling the project**
 To compile the project and create the executables, run the following command:
-```
+```bash
 make all
 ```
 This will compile all the source files, create object files and libraries, and link them to create the executables. 
 
 ## **Creating Libraries**
 To just create the libraries, run the following command:
-```
+```bash
 make lib
 ```
 It will populate .a and .lib files in lib directory.
 
 ## **Running tests**
 To run the tests, run the following command:
-```
+```bash
 make run_tests
 ```
 This will compile and run all the tests in the tests directory. 
 
+```bash
+make valgrind_tests
+```
+The will compile and run all the tests in the tests directory and check for memory leaks. The valgrind --leak-check=full --show-leak-kinds=all command is used to execute the test binaries with Valgrind's memory leak detection capabilities.
+
 ## **Cleaning up the directory**
 To clean up the directory and remove all the compiled files, run the following command:
-```
+```bash
 make clean
 ```
 This will remove all the object files, libraries, and executables. 

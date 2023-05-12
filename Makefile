@@ -48,6 +48,12 @@ run_tests: $(TEST_BINS)
 		./$$test; \
 	done
 
+# Run tests with Valgrind
+valgrind_tests: $(TEST_BINS)
+	for test in $(TEST_BINS); do \
+		valgrind --leak-check=full --show-leak-kinds=all ./$$test; \
+	done
+
 # Clean up the directory
 .PHONY: clean
 clean:
