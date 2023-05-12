@@ -100,17 +100,19 @@ Matrix* MatrixNewLike(const Matrix *m)
 
 Matrix* MatrixRandom(unsigned int num_rows, unsigned int num_cols, double min, double max)
 {
-	Matrix *matrix = MatrixEmpty(num_rows, num_cols);
-	for (unsigned int r = 0; r < num_rows; r++)
-	{
-		for (unsigned int c = 0; c < num_cols; c++)
-		{
-			MatrixSet(matrix, r, c, min + ((float)rand() / (float)(0x7fff)) *(max - min));
-		}
-	}
+    Matrix *matrix = MatrixEmpty(num_rows, num_cols);
+    for (unsigned int r = 0; r < num_rows; r++)
+    {
+        for (unsigned int c = 0; c < num_cols; c++)
+        {
+            double random_value = ((double)rand() / RAND_MAX) * (max - min) + min;
+            MatrixSet(matrix, r, c, random_value);
+        }
+    }
 
-	return matrix;
+    return matrix;
 }
+
 
 Matrix* MatrixRandomLike(const Matrix *m, double min, double max)
 {
@@ -670,12 +672,6 @@ void MatrixDiagonalSet(Matrix *m, double value)
 	if (m == NULL)
 	{
 		fprintf(stderr, "Invalid matrix passed\n");
-		return;
-	}
-
-	if (!m->is_square)
-	{
-		fprintf(stderr, "'m' is not a square matrix\n");
 		return;
 	}
 
@@ -1325,7 +1321,7 @@ Matrix* MatrixElementWiseMultiply(const Matrix *m1, const Matrix *m2)
 	{
 		for (unsigned int c = 0; c < m1->num_cols; c++)
 		{
-			MatrixSet(matrix, r, c, MatrixGet(m1, r, c) + MatrixGet(m2, r, c));
+			MatrixSet(matrix, r, c, MatrixGet(m1, r, c) * MatrixGet(m2, r, c));
 		}
 	}
 
@@ -1773,6 +1769,7 @@ Matrix* MatrixReducedRowEchelonGet(const Matrix *m)
 	{
 		if (matrix->num_cols <= lead)
 			return matrix;
+
 		unsigned int i = r;
 		while (MatrixGet(matrix, i, lead) == 0)
 		{
@@ -1796,7 +1793,7 @@ Matrix* MatrixReducedRowEchelonGet(const Matrix *m)
 				value = MatrixGet(matrix, j, lead);
 				for (unsigned int c = 0; c < matrix->num_cols; c++)
 				{
-					matrix->data[j][c] -= value *MatrixGet(m, r, c);
+					matrix->data[j][c] -= value * MatrixGet(matrix, r, c);
 				}
 			}
 		}
@@ -1806,6 +1803,7 @@ Matrix* MatrixReducedRowEchelonGet(const Matrix *m)
 
 	return matrix;
 }
+
 
 double MatrixColumnL2Norm(const Matrix *m, unsigned int col)
 {

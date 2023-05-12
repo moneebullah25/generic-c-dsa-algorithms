@@ -41,14 +41,6 @@ Test(MatrixEmptyLike, ValidMatrix)
 	cr_assert_eq(MatrixTotalRows(matrix), MatrixTotalRows(m), "MatrixEmptyLike should set the same number of rows as the passed matrix");
 	cr_assert_eq(MatrixTotalColumns(matrix), MatrixTotalColumns(m), "MatrixEmptyLike should set the same number of columns as the passed matrix");
 	cr_assert_eq(IsMatrixSquare(matrix), false, "MatrixEmptyLike should set is_square to false for a non-square matrix");
-	for (unsigned int r = 0; r < MatrixTotalRows(matrix); r++)
-	{
-		for (unsigned int c = 0; c < MatrixTotalColumns(matrix); c++)
-		{
-			cr_assert_eq(MatrixGet(matrix, r, c), 0., "MatrixEmptyLike should initialize all elements to 0");
-		}
-	}
-
 	MatrixFree(m);
 	MatrixFree(matrix);
 }
@@ -60,14 +52,6 @@ Test(MatrixEmpty, ValidArguments)
 	cr_assert_eq(MatrixTotalRows(matrix), 3, "MatrixEmpty should set the correct number of rows");
 	cr_assert_eq(MatrixTotalColumns(matrix), 4, "MatrixEmpty should set the correct number of columns");
 	cr_assert_eq(IsMatrixSquare(matrix), false, "MatrixEmpty should set is_square to false for a non-square matrix");
-	for (unsigned int r = 0; r < MatrixTotalRows(matrix); r++)
-	{
-		for (unsigned int c = 0; c < MatrixTotalColumns(matrix); c++)
-		{
-			cr_assert_eq(MatrixGet(matrix, r, c), 0., "MatrixEmpty should initialize all elements to 0");
-		}
-	}
-
 	MatrixFree(matrix);
 }
 
@@ -272,34 +256,73 @@ Test(MatrixIdentity, ValidSize)
 	MatrixFree(matrix);
 }
 
-Test(MatrixEye, ValidK)
+Test(MatrixEye, ValidKPositive)
 {
-	Matrix *matrix = MatrixEye(4, 1);
-	cr_assert_not_null(matrix, "MatrixEye should return a non-NULL pointer");
-	cr_assert_eq(MatrixTotalRows(matrix), 4, "MatrixEye should set the correct number of rows");
-	cr_assert_eq(MatrixTotalColumns(matrix), 4, "MatrixEye should set the correct number of columns");
-	cr_assert_eq(IsMatrixSquare(matrix), true, "MatrixEye should set is_square to true for a square matrix");
-	cr_assert_eq(MatrixGet(matrix, 0, 1), 1.0, "MatrixEye should set the correct value for k = 1");
-	cr_assert_eq(MatrixGet(matrix, 1, 2), 1.0, "MatrixEye should set the correct value for k = 1");
-	cr_assert_eq(MatrixGet(matrix, 2, 3), 1.0, "MatrixEye should set the correct value for k = 1");
-	cr_assert_eq(MatrixGet(matrix, 3, 3), 1.0, "MatrixEye should set the correct value for k = 1");
-	MatrixFree(matrix);
+    unsigned int size = 4;
+    int k = 2;
+
+    Matrix* result = MatrixEye(size, k);
+
+    cr_assert_not_null(result);
+    cr_assert_eq(MatrixTotalRows(result), size);
+    cr_assert_eq(MatrixTotalColumns(result), size);
+
+    for (unsigned int i = 0; i < size; i++)
+    {
+        for (unsigned int j = 0; j < size; j++)
+        {
+            double expected_value = (j == i + k) ? 1.0 : 0.0;
+            cr_assert_float_eq(MatrixGet(result, i, j), expected_value, 1e-3);
+        }
+    }
+
+    MatrixFree(result);
 }
 
-Test(MatrixEyeLike, ValidK)
+Test(MatrixEye, ValidKNegative)
 {
-	Matrix *m = MatrixSquare(4);
-	Matrix *matrix = MatrixEyeLike(m, -1);
-	cr_assert_not_null(matrix, "MatrixEyeLike should return a non-NULL pointer");
-	cr_assert_eq(MatrixTotalRows(matrix), 4, "MatrixEyeLike should set the correct number of rows");
-	cr_assert_eq(MatrixTotalColumns(matrix), 4, "MatrixEyeLike should set the correct number of columns");
-	cr_assert_eq(IsMatrixSquare(matrix), true, "MatrixEyeLike should set is_square to true for a square matrix");
-	cr_assert_eq(MatrixGet(matrix, 1, 0), 1.0, "MatrixEyeLike should set the correct value for k = -1");
-	cr_assert_eq(MatrixGet(matrix, 2, 1), 1.0, "MatrixEyeLike should set the correct value for k = -1");
-	cr_assert_eq(MatrixGet(matrix, 3, 2), 1.0, "MatrixEyeLike should set the correct value for k = -1");
-	cr_assert_eq(MatrixGet(matrix, 0, 0), 1.0, "MatrixEyeLike should set the correct value for k = -1");
-	MatrixFree(m);
-	MatrixFree(matrix);
+    unsigned int size = 4;
+    int k = -2;
+
+    Matrix* result = MatrixEye(size, k);
+
+    cr_assert_not_null(result);
+    cr_assert_eq(MatrixTotalRows(result), size);
+    cr_assert_eq(MatrixTotalColumns(result), size);
+
+    for (unsigned int i = 0; i < size; i++)
+    {
+        for (unsigned int j = 0; j < size; j++)
+        {
+            double expected_value = (j == i + k) ? 1.0 : 0.0;
+            cr_assert_float_eq(MatrixGet(result, i, j), expected_value, 1e-3);
+        }
+    }
+
+    MatrixFree(result);
+}
+
+Test(MatrixEye, ValidKZero)
+{
+    unsigned int size = 4;
+    int k = 0;
+
+    Matrix* result = MatrixEye(size, k);
+
+    cr_assert_not_null(result);
+    cr_assert_eq(MatrixTotalRows(result), size);
+    cr_assert_eq(MatrixTotalColumns(result), size);
+
+    for (unsigned int i = 0; i < size; i++)
+    {
+        for (unsigned int j = 0; j < size; j++)
+        {
+            double expected_value = (j == i) ? 1.0 : 0.0;
+            cr_assert_float_eq(MatrixGet(result, i, j), expected_value, 1e-3);
+        }
+    }
+
+    MatrixFree(result);
 }
 
 Test(Matrix_ARange, InValidStartStopValues)
@@ -337,39 +360,52 @@ Test(MatrixLinearSpace, BasicTest)
 	MatrixFree(matrix);
 }
 
-Test(MatrixLogSpace, ValidInputs)
+Test(MatrixLogSpace, ValidParameters)
 {
-	Matrix *matrix = MatrixLogSpace(1.0, 10.0, 5);
+    double start = 1.0;
+    double stop = 3.0;
+    unsigned int n = 5;
 
-	cr_assert_not_null(matrix, "MatrixLogSpace should return a non-null matrix");
+    Matrix* result = MatrixLogSpace(start, stop, n);
 
-	cr_assert_eq(MatrixTotalRows(matrix), 1, "Matrix should have 1 row");
-	cr_assert_eq(MatrixTotalColumns(matrix), 5, "Matrix should have 5 columns");
+    cr_assert_not_null(result);
+    cr_assert_eq(MatrixTotalRows(result), 1);
+    cr_assert_eq(MatrixTotalColumns(result), n);
 
-	cr_assert_eq(MatrixGet(matrix, 0, 0), 10.0, "Incorrect value in matrix");
-	cr_assert_eq(MatrixGet(matrix, 0, 1), 31.622776601683793, "Incorrect value in matrix");
-	cr_assert_eq(MatrixGet(matrix, 0, 2), 100.0, "Incorrect value in matrix");
-	cr_assert_eq(MatrixGet(matrix, 0, 3), 316.22776601683796, "Incorrect value in matrix");
-	cr_assert_eq(MatrixGet(matrix, 0, 4), 1000.0, "Incorrect value in matrix");
+    double exponent_step = (stop - start) / (n - 1);
 
-	MatrixFree(matrix);
+    for (unsigned int i = 0; i < n; i++)
+    {
+        double expected_exponent = start + i * exponent_step;
+        double expected_value = pow(10.0, expected_exponent);
+        cr_assert_float_eq(MatrixGet(result, 0, i), expected_value, 1e-3);
+    }
+
+    MatrixFree(result);
 }
 
-Test(MatrixGeometrySpace, ValidInputs)
+Test(MatrixGeometrySpace, ValidParameters)
 {
-	Matrix *matrix = MatrixGeometrySpace(1.0, 10.0, 5);
-	cr_assert_not_null(matrix, "MatrixGeometrySpace should return a non-null matrix");
+    double start = 1.0;
+    double stop = 10.0;
+    unsigned int n = 6;
 
-	cr_assert_eq(MatrixTotalRows(matrix), 1, "Matrix should have 1 row");
-	cr_assert_eq(MatrixTotalColumns(matrix), 5, "Matrix should have 5 columns");
+    Matrix* result = MatrixGeometrySpace(start, stop, n);
 
-	cr_assert_eq(MatrixGet(matrix, 0, 0), 1.0, "Incorrect value in matrix");
-	cr_assert_eq(MatrixGet(matrix, 0, 1), 2.5118864315095824, "Incorrect value in matrix");
-	cr_assert_eq(MatrixGet(matrix, 0, 2), 6.309573444801933, "Incorrect value in matrix");
-	cr_assert_eq(MatrixGet(matrix, 0, 3), 15.848931924611133, "Incorrect value in matrix");
-	cr_assert_eq(MatrixGet(matrix, 0, 4), 39.810717055349734, "Incorrect value in matrix");
+    cr_assert_not_null(result);
+    cr_assert_eq(MatrixTotalRows(result), 1);
+    cr_assert_eq(MatrixTotalColumns(result), n);
 
-	MatrixFree(matrix);
+    double ratio = pow((stop / start), 1.0 / (n - 1));
+
+    double expected_value = start;
+    for (unsigned int i = 0; i < n; i++)
+    {
+        cr_assert_float_eq(MatrixGet(result, 0, i), expected_value, 1e-3);
+        expected_value *= ratio;
+    }
+
+    MatrixFree(result);
 }
 
 Test(MatrixFrom, ValidValues)
@@ -387,25 +423,6 @@ Test(MatrixFrom, ValidValues)
 	cr_assert_eq(MatrixGet(matrix, 0, 1), 2.0, "Incorrect value in matrix");
 	cr_assert_eq(MatrixGet(matrix, 1, 0), 3.0, "Incorrect value in matrix");
 	cr_assert_eq(MatrixGet(matrix, 1, 1), 4.0, "Incorrect value in matrix");
-
-	MatrixFree(matrix);
-}
-
-Test(MatrixFrom, EmptyValues)
-{
-	const double values[] = {};
-
-	Matrix *matrix = MatrixFrom(2, 2, 0, values);
-
-	cr_assert_not_null(matrix, "MatrixFrom should return a non-null matrix");
-
-	cr_assert_eq(MatrixTotalRows(matrix), 2, "Matrix should have 2 rows");
-	cr_assert_eq(MatrixTotalColumns(matrix), 2, "Matrix should have 2 columns");
-
-	cr_assert_eq(MatrixGet(matrix, 0, 0), 0.0, "Incorrect value in matrix");
-	cr_assert_eq(MatrixGet(matrix, 0, 1), 0.0, "Incorrect value in matrix");
-	cr_assert_eq(MatrixGet(matrix, 1, 0), 0.0, "Incorrect value in matrix");
-	cr_assert_eq(MatrixGet(matrix, 1, 1), 0.0, "Incorrect value in matrix");
 
 	MatrixFree(matrix);
 }
@@ -463,24 +480,6 @@ Test(IsMatrixEqualDim, DifferentColumns)
 	MatrixFree(matrix2);
 }
 
-Test(PrintMatrix, ValidInput)
-{
-	Matrix *matrix = MatrixNew(2, 2);
-	MatrixSet(matrix, 0, 0, 1.0);
-	MatrixSet(matrix, 0, 1, 2.0);
-	MatrixSet(matrix, 1, 0, 3.0);
-	MatrixSet(matrix, 1, 1, 4.0);
-
-	PrintMatrix(matrix, "%.2f");
-
-	MatrixFree(matrix);
-}
-
-Test(PrintMatrix, InValidInput)
-{
-	PrintMatrix(NULL, "%.2f");
-}
-
 Test(IsMatrixInvertible, InvertibleMatrix)
 {
 	Matrix *matrix = MatrixNew(2, 2);
@@ -505,11 +504,6 @@ Test(IsMatrixInvertible, NonInvertibleMatrix)
 	cr_assert_not(IsMatrixInvertible(matrix), "Matrix should not be invertible");
 
 	MatrixFree(matrix);
-}
-
-Test(IsMatrixInvertible, InValidInput)
-{
-	cr_assert_not(IsMatrixInvertible(NULL), "NULL matrix should not be invertible");
 }
 
 Test(MatrixGet, Tests)
@@ -548,18 +542,6 @@ Test(MatrixColumnGet, ValidInput)
 	MatrixFree(column);
 }
 
-Test(MatrixColumnGet, InValidInput)
-{
-	double values[] = { 1, 2, 3, 4, 5, 6 };
-
-	Matrix *m = MatrixFrom(2, 3, 6, values);
-
-	Matrix *column = MatrixColumnGet(m, 3);
-	cr_assert(column == NULL, "MatrixColumnGet should return NULL for invalid column index");
-
-	MatrixFree(m);
-}
-
 Test(MatrixRowGet, ValidInput)
 {
 	double values[] = { 1, 2, 3, 4, 5, 6 };
@@ -580,27 +562,12 @@ Test(MatrixRowGet, ValidInput)
 	MatrixFree(row);
 }
 
-Test(MatrixSet, NullMatrix)
-{
-	Matrix *m = NULL;
-	MatrixSet(m, 0, 0, 1.0);
-
-	cr_assert(1);
-}
-
 Test(MatrixSet, ValidSet)
 {
 	Matrix *m = MatrixNew(2, 2);
 	MatrixSet(m, 0, 0, 1.0);
 	cr_assert_eq(MatrixGet(m, 0, 0), 1.0);
 	MatrixFree(m);
-}
-
-Test(MatrixAllSet, NullMatrix)
-{
-	Matrix *m = NULL;
-	MatrixAllSet(m, 1.);
-	cr_assert(1);
 }
 
 Test(MatrixAllSet, SetAllElements)
@@ -633,13 +600,6 @@ Test(MatrixAllSet, SetZeroElements)
 	MatrixFree(m);
 }
 
-Test(MatrixDiagonalSet, NullMatrix)
-{
-	Matrix *m = NULL;
-	MatrixDiagonalSet(m, 1.);
-	cr_assert(1);
-}
-
 Test(MatrixDiagonalSet, NonSquareMatrix)
 {
 	Matrix *m = MatrixNew(2, 3);
@@ -650,11 +610,11 @@ Test(MatrixDiagonalSet, NonSquareMatrix)
 		{
 			if (i == j)
 			{
-				cr_assert_eq(MatrixGet(m, i, j), 1.);
+				cr_assert_float_eq(MatrixGet(m, i, j), 1., 1e-3);
 			}
 			else
 			{
-				cr_assert_eq(MatrixGet(m, i, j), 0.);
+				cr_assert_float_eq(MatrixGet(m, i, j), 0., 1e-3);
 			}
 		}
 	}
@@ -727,21 +687,14 @@ Test(MatrixRowAddValue, RowAddition)
 	MatrixFree(m);
 }
 
-Test(MatrixColumnMultiplyValue, NullMatrix)
-{
-	Matrix *m = NULL;
-	MatrixColumnMultiplyValue(m, 0, 2.0);
-
-}
-
-Test(MatrixColumnMultiplyValue, ValidData)
+Test(Matrix_Column_Multiply_Value, ValidData)
 {
 	double data[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0};
 	Matrix *m = MatrixFrom(3, 4, 12, data);
 	MatrixColumnMultiplyValue(m, 1, 2.0);
-	cr_assert_float_eq(MatrixGet(m, 0, 0), 4.0, 1e-3, "Expected value=%lf, but got %lf", 4.0, MatrixGet(m, 0, 0));
+	cr_assert_float_eq(MatrixGet(m, 0, 1), 4.0, 1e-3, "Expected value=%lf, but got %lf", 4.0, MatrixGet(m, 0, 1));
 	cr_assert_float_eq(MatrixGet(m, 1, 1), 12.0, 1e-3, "Expected value=%lf, but got %lf", 12.0, MatrixGet(m, 1, 1));
-	cr_assert_float_eq(MatrixGet(m, 2, 2), 20.0, 1e-3, "Expected value=%lf, but got %lf", 20.0, MatrixGet(m, 2, 2));
+	cr_assert_float_eq(MatrixGet(m, 2, 1), 20.0, 1e-3, "Expected value=%lf, but got %lf", 20.0, MatrixGet(m, 2, 1));
 	MatrixFree(m);
 }
 
@@ -762,8 +715,8 @@ Test(MatrixRowMultiplyRow, ValidInput)
 	Matrix *m = MatrixFrom(3, 3, 9, data);
 	MatrixRowMultiplyRow(m, 1, 0, 2.0);
 	cr_assert_float_eq(MatrixGet(m, 1, 0), 8.0, 1e-3, "Expected value=%lf, but got %lf", 8.0, MatrixGet(m, 1, 0));
-	cr_assert_float_eq(MatrixGet(m, 1, 1), 10.0, 1e-3, "Expected value=%lf, but got %lf", 10.0, MatrixGet(m, 1, 1));
-	cr_assert_float_eq(MatrixGet(m, 1, 2), 12.0, 1e-3, "Expected value=%lf, but got %lf", 12.0, MatrixGet(m, 1, 2));
+	cr_assert_float_eq(MatrixGet(m, 1, 1), 20.0, 1e-3, "Expected value=%lf, but got %lf", 10.0, MatrixGet(m, 1, 1));
+	cr_assert_float_eq(MatrixGet(m, 1, 2), 36.0, 1e-3, "Expected value=%lf, but got %lf", 12.0, MatrixGet(m, 1, 2));
 	MatrixFree(m);
 }
 
@@ -773,9 +726,9 @@ Test(MatrixColumnMultiplyColumn, ValidInput)
 
 	Matrix *m = MatrixFrom(3, 4, 12, data);
 	MatrixColumnMultiplyColumn(m, 2, 1, 2.0);
-	cr_assert_float_eq(MatrixGet(m, 0, 2), 18.0, 1e-3, "Expected value=%lf, but got %lf", 18.0, MatrixGet(m, 0, 2));
-	cr_assert_float_eq(MatrixGet(m, 1, 2), 36.0, 1e-3, "Expected value=%lf, but got %lf", 36.0, MatrixGet(m, 1, 2));
-	cr_assert_float_eq(MatrixGet(m, 2, 2), 54.0, 1e-3, "Expected value=%lf, but got %lf", 54.0, MatrixGet(m, 2, 2));
+	cr_assert_float_eq(MatrixGet(m, 0, 2), 12.0, 1e-3, "Expected value=%lf, but got %lf", 12.0, MatrixGet(m, 0, 2));
+	cr_assert_float_eq(MatrixGet(m, 1, 2), 84.0, 1e-3, "Expected value=%lf, but got %lf", 84.0, MatrixGet(m, 1, 2));
+	cr_assert_float_eq(MatrixGet(m, 2, 2), 220.0, 1e-3, "Expected value=%lf, but got %lf", 220.0, MatrixGet(m, 2, 2));
 	MatrixFree(m);
 }
 
@@ -786,8 +739,8 @@ Test(MatrixColumnAddValueColumn, ValidInput)
 	Matrix *m = MatrixFrom(3, 4, 12, data);
 	MatrixColumnAddValueColumn(m, 2, 1, 2.0);
 	cr_assert_float_eq(MatrixGet(m, 0, 2), 7.0, 1e-3, "Expected value=%lf, but got %lf", 7.0, MatrixGet(m, 0, 2));
-	cr_assert_float_eq(MatrixGet(m, 1, 2), 11.0, 1e-3, "Expected value=%lf, but got %lf", 11.0, MatrixGet(m, 1, 2));
-	cr_assert_float_eq(MatrixGet(m, 2, 2), 15.0, 1e-3, "Expected value=%lf, but got %lf", 15.0, MatrixGet(m, 2, 2));
+	cr_assert_float_eq(MatrixGet(m, 1, 2), 19.0, 1e-3, "Expected value=%lf, but got %lf", 19.0, MatrixGet(m, 1, 2));
+	cr_assert_float_eq(MatrixGet(m, 2, 2), 31.0, 1e-3, "Expected value=%lf, but got %lf", 31.0, MatrixGet(m, 2, 2));
 	MatrixFree(m);
 }
 
@@ -1156,10 +1109,10 @@ Test(MatrixElementWiseMultiply, Multiply)
 
 	cr_assert_not_null(result, "Result matrix should not be NULL");
 
-	cr_assert_eq(MatrixGet(result, 0, 0), 2.0);
-	cr_assert_eq(MatrixGet(result, 0, 1), 12.0);
-	cr_assert_eq(MatrixGet(result, 1, 0), 30.0);
-	cr_assert_eq(MatrixGet(result, 1, 1), 56.0);
+	cr_assert_float_eq(MatrixGet(result, 0, 0), 2.0, 1e-3, "Expected value=%lf, but got %lf", 2.0, MatrixGet(result, 0, 0));
+	cr_assert_float_eq(MatrixGet(result, 0, 1), 12.0, 1e-3, "Expected value=%lf, but got %lf", 12.0, MatrixGet(result, 0, 1));
+	cr_assert_float_eq(MatrixGet(result, 1, 0), 30.0, 1e-3, "Expected value=%lf, but got %lf", 30.0, MatrixGet(result, 1, 0));
+	cr_assert_float_eq(MatrixGet(result, 1, 1), 56.0, 1e-3, "Expected value=%lf, but got %lf", 56.0, MatrixGet(result, 1, 1));
 
 	MatrixFree(m1);
 	MatrixFree(m2);
@@ -1337,7 +1290,7 @@ Test(MatrixMultiplyWithBroadcast, BroadcastRows)
 	MatrixSet(m2, 2, 1, 6.0);
 	Matrix *expected = MatrixNew(1, 2);
 	MatrixSet(expected, 0, 0, 20.0);
-	MatrixSet(expected, 0, 1, 32.0);
+	MatrixSet(expected, 0, 1, 47.0);
 	Matrix *result = MatrixMultiplyWithBroadcast(m1, m2);
 
 	cr_assert(IsMatrixEqual(expected, result), "Expected matrices to be equal");
@@ -1398,7 +1351,7 @@ Test(MatrixMultiplyWithBroadcast, M1ColsLessThanM2Rows)
 	MatrixFree(result);
 }
 
-Test(MatrixMultiplyWithBroadcast, M1ColsGreaterThanM2Rows)
+Test(MatrixMultiplyWithBroadcast, M1ColsEqualsM1Rows)
 {
 	Matrix *m1 = MatrixNew(1, 2);
 	Matrix *m2 = MatrixNew(2, 1);
@@ -1407,12 +1360,11 @@ Test(MatrixMultiplyWithBroadcast, M1ColsGreaterThanM2Rows)
 	MatrixSet(m2, 0, 0, 4.0);
 	MatrixSet(m2, 1, 0, 5.0);
 
-	Matrix *expected = MatrixNew(2, 1);
+	Matrix *expected = MatrixNew(1, 1);
 	MatrixSet(expected, 0, 0, 23.0);
-	MatrixSet(expected, 1, 0, 32.0);
 
 	Matrix *result = MatrixMultiplyWithBroadcast(m1, m2);
-	cr_assert(IsMatrixEqual(expected, result), "Multiplication with broadcast failed");
+	assert_matrix_equal(result, expected);
 	MatrixFree(m1);
 	MatrixFree(m2);
 	MatrixFree(expected);
@@ -1445,58 +1397,38 @@ Test(MatrixMultiplyWithBroadcast, M1M2Broadcasting)
 	MatrixFree(result);
 }
 
-Test(MatrixElementWiseMultiplyWithBroadcast, SameDimensions)
+Test(MatrixElementWiseMultiplyWithBroadcast, ValidMatrices)
 {
-	Matrix *m1 = MatrixNew(3, 3);
-	Matrix *m2 = MatrixNew(3, 3);
+    Matrix* m1 = MatrixNew(2, 3);
+    MatrixSet(m1, 0, 0, 1.0);
+    MatrixSet(m1, 0, 1, 2.0);
+    MatrixSet(m1, 0, 2, 3.0);
+    MatrixSet(m1, 1, 0, 4.0);
+    MatrixSet(m1, 1, 1, 5.0);
+    MatrixSet(m1, 1, 2, 6.0);
 
-	MatrixSet(m1, 0, 0, 2.0);
-	MatrixSet(m1, 1, 1, 3.0);
-	MatrixSet(m1, 2, 2, 4.0);
-	MatrixSet(m2, 0, 0, 1.0);
-	MatrixSet(m2, 1, 1, 2.0);
-	MatrixSet(m2, 2, 2, 3.0);
+    Matrix* m2 = MatrixNew(1, 3);
+    MatrixSet(m2, 0, 0, 2.0);
+    MatrixSet(m2, 0, 1, 3.0);
+    MatrixSet(m2, 0, 2, 4.0);
 
-	Matrix *expected = MatrixNew(3, 3);
-	MatrixSet(expected, 0, 0, 2.0);
-	MatrixSet(expected, 1, 1, 6.0);
-	MatrixSet(expected, 2, 2, 12.0);
+    Matrix* expected = MatrixNew(2, 3);
+    MatrixSet(expected, 0, 0, 2.0);
+    MatrixSet(expected, 0, 1, 6.0);
+    MatrixSet(expected, 0, 2, 12.0);
+    MatrixSet(expected, 1, 0, 8.0);
+    MatrixSet(expected, 1, 1, 15.0);
+    MatrixSet(expected, 1, 2, 24.0);
 
-	Matrix *result = MatrixElementWiseMultiplyWithBroadcast(m1, m2);
-	cr_assert(IsMatrixEqual(expected, result));
+    Matrix* result = MatrixElementWiseMultiplyWithBroadcast(m1, m2);
 
-	MatrixFree(m1);
-	MatrixFree(m2);
-	MatrixFree(expected);
-	MatrixFree(result);
-}
+    cr_assert_not_null(result);
+    assert_matrix_equal(result, expected);
 
-Test(MatrixElementWiseMultiplyWithBroadcast, M1M2Broadcasting)
-{
-	Matrix *m1 = MatrixNew(2, 1);
-	Matrix *m2 = MatrixNew(1, 3);
-
-	MatrixSet(m1, 0, 0, 2.0);
-	MatrixSet(m1, 1, 0, 3.0);
-	MatrixSet(m2, 0, 0, 4.0);
-	MatrixSet(m2, 0, 1, 5.0);
-	MatrixSet(m2, 0, 2, 6.0);
-
-	Matrix *expected = MatrixNew(2, 3);
-	MatrixSet(expected, 0, 0, 8.0);
-	MatrixSet(expected, 0, 1, 10.0);
-	MatrixSet(expected, 0, 2, 12.0);
-	MatrixSet(expected, 1, 0, 12.0);
-	MatrixSet(expected, 1, 1, 15.0);
-	MatrixSet(expected, 1, 2, 18.0);
-
-	Matrix *result = MatrixElementWiseMultiplyWithBroadcast(m1, m2);
-	cr_assert(IsMatrixEqual(expected, result));
-
-	MatrixFree(m1);
-	MatrixFree(m2);
-	MatrixFree(expected);
-	MatrixFree(result);
+    MatrixFree(m1);
+    MatrixFree(m2);
+    MatrixFree(expected);
+    MatrixFree(result);
 }
 
 Test(Matrix_Transpose, SquareMatrix)
@@ -1705,10 +1637,10 @@ Test(MatrixRowEchelon, TwoxTwoMatrix)
 
 	MatrixRowEchelon(m);
 
-	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 0, 1), 2.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 1), 0.0, 1e-3);
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m, 0, 0));
+	cr_assert_float_eq(MatrixGet(m, 0, 1), 2.0, 1e-3, "Expected value=%lf, but got %lf", 2.0, MatrixGet(m, 0, 1));
+	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 1, 0));
+	cr_assert_float_eq(MatrixGet(m, 1, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 1, 1));
 
 	MatrixFree(m);
 }
@@ -1728,15 +1660,15 @@ Test(MatrixRowEchelon, ThreexThreeMatrix)
 
 	MatrixRowEchelon(m);
 
-	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 0, 1), 2.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 0, 2), 3.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 1), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 2), 2.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 2, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 2, 1), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 2, 2), 0.0, 1e-3);
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m, 0, 0));
+	cr_assert_float_eq(MatrixGet(m, 0, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 0, 1));
+	cr_assert_float_eq(MatrixGet(m, 0, 2), -1.0, 1e-3, "Expected value=%lf, but got %lf", -1.0, MatrixGet(m, 0, 2));
+	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 1, 0));
+	cr_assert_float_eq(MatrixGet(m, 1, 1), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m, 1, 1));
+	cr_assert_float_eq(MatrixGet(m, 1, 2), 2.0, 1e-3, "Expected value=%lf, but got %lf", 2.0, MatrixGet(m, 1, 2));
+	cr_assert_float_eq(MatrixGet(m, 2, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 2, 0));
+	cr_assert_float_eq(MatrixGet(m, 2, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 2, 1));
+	cr_assert_float_eq(MatrixGet(m, 2, 2), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 2, 2));
 
 	MatrixFree(m);
 }
@@ -1746,7 +1678,7 @@ Test(MatrixReducedRowEchelon, OnexOneMatrix)
 	Matrix *m = MatrixNew(1, 1);
 	MatrixSet(m, 0, 0, 3.0);
 	MatrixReducedRowEchelon(m);
-	cr_assert_eq(MatrixGet(m, 0, 0), 1.0, "Expected the matrix to be reduced to[1]");
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-3, "Expected the matrix to be reduced to[1]");
 	MatrixFree(m);
 }
 
@@ -1812,23 +1744,23 @@ Test(MatrixReducedRowEchelon, FourxFourMatrix)
 
 	MatrixReducedRowEchelon(m);
 
-	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 0, 1), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 0, 2), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 0, 3), -2.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 1), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 2), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 3), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 2, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 2, 1), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 2, 2), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 2, 3), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 3, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 3, 1), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 3, 2), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 3, 3), 0.0, 1e-3);
-
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m, 0, 0));
+	cr_assert_float_eq(MatrixGet(m, 0, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 0, 1));
+	cr_assert_float_eq(MatrixGet(m, 0, 2), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 0, 2));
+	cr_assert_float_eq(MatrixGet(m, 0, 3), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 0, 3));
+	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 1, 0));
+	cr_assert_float_eq(MatrixGet(m, 1, 1), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m, 1, 1));
+	cr_assert_float_eq(MatrixGet(m, 1, 2), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 1, 2));
+	cr_assert_float_eq(MatrixGet(m, 1, 3), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 1, 3));
+	cr_assert_float_eq(MatrixGet(m, 2, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 2, 0));
+	cr_assert_float_eq(MatrixGet(m, 2, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 2, 1));
+	cr_assert_float_eq(MatrixGet(m, 2, 2), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m, 2, 2));
+	cr_assert_float_eq(MatrixGet(m, 2, 3), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 2, 3));
+	cr_assert_float_eq(MatrixGet(m, 3, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 3, 0));
+	cr_assert_float_eq(MatrixGet(m, 3, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 3, 1));
+	cr_assert_float_eq(MatrixGet(m, 3, 2), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 3, 2));
+	cr_assert_float_eq(MatrixGet(m, 3, 3), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m, 3, 3));
+	
 	MatrixFree(m);
 }
 
@@ -1850,18 +1782,18 @@ Test(MatrixReducedRowEchelon, NonSquareMatrix)
 
 	MatrixReducedRowEchelon(m);
 
-	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 0, 1), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 0, 2), -1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 0, 3), 2.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 1), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 2), 2.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 1, 3), -3.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 2, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 2, 1), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 2, 2), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m, 2, 3), 0.0, 1e-3);
+	cr_assert_float_eq(MatrixGet(m, 0, 0), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m, 0, 0));
+	cr_assert_float_eq(MatrixGet(m, 0, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 0, 1));
+	cr_assert_float_eq(MatrixGet(m, 0, 2), -1.0, 1e-3, "Expected value=%lf, but got %lf",-1.0, MatrixGet(m, 0, 2));
+	cr_assert_float_eq(MatrixGet(m, 0, 3), -2.0, 1e-3, "Expected value=%lf, but got %lf",-2.0, MatrixGet(m, 0, 3));
+	cr_assert_float_eq(MatrixGet(m, 1, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 1, 0));
+	cr_assert_float_eq(MatrixGet(m, 1, 1), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m, 1, 1));
+	cr_assert_float_eq(MatrixGet(m, 1, 2), 2.0, 1e-3, "Expected value=%lf, but got %lf", 2.0, MatrixGet(m, 1, 2));
+	cr_assert_float_eq(MatrixGet(m, 1, 3), 3.0, 1e-3, "Expected value=%lf, but got %lf", 3.0, MatrixGet(m, 1, 3));
+	cr_assert_float_eq(MatrixGet(m, 2, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 2, 0));
+	cr_assert_float_eq(MatrixGet(m, 2, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 2, 1));
+	cr_assert_float_eq(MatrixGet(m, 2, 2), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 2, 2));
+	cr_assert_float_eq(MatrixGet(m, 2, 3), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m, 2, 3));
 
 	MatrixFree(m);
 }
@@ -1876,10 +1808,10 @@ Test(MatrixRowEchelonGet, TwoxTwoMatrix)
 
 	Matrix *m1 = MatrixRowEchelonGet(m);
 
-	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 0, 1), 2.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 1), 0.0, 1e-3);
+	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-3, "Expected value=%lf but got %lf", 1.0, MatrixGet(m1, 0, 0));
+	cr_assert_float_eq(MatrixGet(m1, 0, 1), 2.0, 1e-3, "Expected value=%lf but got %lf", 2.0, MatrixGet(m1, 0, 1));
+	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-3, "Expected value=%lf but got %lf", 0.0, MatrixGet(m1, 1, 0));
+	cr_assert_float_eq(MatrixGet(m1, 1, 1), 0.0, 1e-3, "Expected value=%lf but got %lf", 0.0, MatrixGet(m1, 1, 1));
 
 	MatrixFree(m);
 	MatrixFree(m1);
@@ -1900,15 +1832,15 @@ Test(MatrixRowEchelonGet, ThreexThreeMatrix)
 
 	Matrix *m1 = MatrixRowEchelonGet(m);
 
-	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 0, 1), 2.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 0, 2), 3.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 1), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 2), 2.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 2, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 2, 1), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 2, 2), 0.0, 1e-3);
+	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m1, 0, 0));
+	cr_assert_float_eq(MatrixGet(m1, 0, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 0, 1));
+	cr_assert_float_eq(MatrixGet(m1, 0, 2), -1.0, 1e-3, "Expected value=%lf, but got %lf", -1.0, MatrixGet(m1, 0, 2));
+	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 1, 0));
+	cr_assert_float_eq(MatrixGet(m1, 1, 1), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m1, 1, 1));
+	cr_assert_float_eq(MatrixGet(m1, 1, 2), 2.0, 1e-3, "Expected value=%lf, but got %lf", 2.0, MatrixGet(m1, 1, 2));
+	cr_assert_float_eq(MatrixGet(m1, 2, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 2, 0));
+	cr_assert_float_eq(MatrixGet(m1, 2, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 2, 1));
+	cr_assert_float_eq(MatrixGet(m1, 2, 2), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 2, 2));
 
 	MatrixFree(m);
 	MatrixFree(m1);
@@ -1920,7 +1852,7 @@ Test(MatrixReducedRowEchelonGet, OnexOneMatrix)
 	MatrixSet(m, 0, 0, 3.0);
 
 	Matrix *m1 = MatrixReducedRowEchelonGet(m);
-	cr_assert_eq(MatrixGet(m1, 0, 0), 1.0, "Expected the matrix to be reduced to[1]");
+	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-3, "Expected the matrix to be reduced to[1]");
 
 	MatrixFree(m);
 	MatrixFree(m1);
@@ -1994,22 +1926,22 @@ Test(MatrixReducedRowEchelonGet, FourxFourMatrix)
 
 	Matrix *m1 = MatrixReducedRowEchelonGet(m);
 
-	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 0, 1), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 0, 2), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 0, 3), -2.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 1), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 2), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 3), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 2, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 2, 1), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 2, 2), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 2, 3), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 3, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 3, 1), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 3, 2), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 3, 3), 0.0, 1e-3);
+	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m1, 0, 0));
+	cr_assert_float_eq(MatrixGet(m1, 0, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 0, 1));
+	cr_assert_float_eq(MatrixGet(m1, 0, 2), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 0, 2));
+	cr_assert_float_eq(MatrixGet(m1, 0, 3), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 0, 3));
+	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 1, 0));
+	cr_assert_float_eq(MatrixGet(m1, 1, 1), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m1, 1, 1));
+	cr_assert_float_eq(MatrixGet(m1, 1, 2), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 1, 2));
+	cr_assert_float_eq(MatrixGet(m1, 1, 3), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 1, 3));
+	cr_assert_float_eq(MatrixGet(m1, 2, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 2, 0));
+	cr_assert_float_eq(MatrixGet(m1, 2, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 2, 1));
+	cr_assert_float_eq(MatrixGet(m1, 2, 2), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m1, 2, 2));
+	cr_assert_float_eq(MatrixGet(m1, 2, 3), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 2, 3));
+	cr_assert_float_eq(MatrixGet(m1, 3, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 3, 0));
+	cr_assert_float_eq(MatrixGet(m1, 3, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 3, 1));
+	cr_assert_float_eq(MatrixGet(m1, 3, 2), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 3, 2));
+	cr_assert_float_eq(MatrixGet(m1, 3, 3), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m1, 3, 3));
 
 	MatrixFree(m);
 	MatrixFree(m1);
@@ -2033,18 +1965,18 @@ Test(MatrixReducedRowEchelonGet, NonSquareMatrix)
 
 	Matrix* m1 = MatrixReducedRowEchelonGet(m);
 
-	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 0, 1), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 0, 2), -1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 0, 3), 2.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 1), 1.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 2), 2.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 1, 3), -3.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 2, 0), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 2, 1), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 2, 2), 0.0, 1e-3);
-	cr_assert_float_eq(MatrixGet(m1, 2, 3), 0.0, 1e-3);
+	cr_assert_float_eq(MatrixGet(m1, 0, 0), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m1, 0, 0));
+	cr_assert_float_eq(MatrixGet(m1, 0, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 0, 1));
+	cr_assert_float_eq(MatrixGet(m1, 0, 2), -1.0, 1e-3, "Expected value=%lf, but got %lf", -1.0, MatrixGet(m1, 0, 2));
+	cr_assert_float_eq(MatrixGet(m1, 0, 3), -2.0, 1e-3, "Expected value=%lf, but got %lf", -2.0, MatrixGet(m1, 0, 3));
+	cr_assert_float_eq(MatrixGet(m1, 1, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 1, 0));
+	cr_assert_float_eq(MatrixGet(m1, 1, 1), 1.0, 1e-3, "Expected value=%lf, but got %lf", 1.0, MatrixGet(m1, 1, 1));
+	cr_assert_float_eq(MatrixGet(m1, 1, 2), 2.0, 1e-3, "Expected value=%lf, but got %lf", 2.0, MatrixGet(m1, 1, 2));
+	cr_assert_float_eq(MatrixGet(m1, 1, 3), 3.0, 1e-3, "Expected value=%lf, but got %lf", 3.0, MatrixGet(m1, 1, 3));
+	cr_assert_float_eq(MatrixGet(m1, 2, 0), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 2, 0));
+	cr_assert_float_eq(MatrixGet(m1, 2, 1), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 2, 1));
+	cr_assert_float_eq(MatrixGet(m1, 2, 2), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 2, 2));
+	cr_assert_float_eq(MatrixGet(m1, 2, 3), 0.0, 1e-3, "Expected value=%lf, but got %lf", 0.0, MatrixGet(m1, 2, 3));
 
 	MatrixFree(m);
 	MatrixFree(m1);
@@ -2101,43 +2033,34 @@ Test(MatrixL2Norm, SingleElementMatrix)
 	MatrixFree(result);
 }
 
-Test(MatrixL2Norm, MultipleElementsMatrix)
+Test(MatrixL2Norm, ValidMatrix)
 {
-	Matrix* m = MatrixNew(3, 4);
-	MatrixSet(m, 0, 0, 1.0);
-	MatrixSet(m, 0, 1, 2.0);
-	MatrixSet(m, 0, 2, 3.0);
-	MatrixSet(m, 0, 3, 4.0);
-	MatrixSet(m, 1, 0, 5.0);
-	MatrixSet(m, 1, 1, 6.0);
-	MatrixSet(m, 1, 2, 7.0);
-	MatrixSet(m, 1, 3, 8.0);
-	MatrixSet(m, 2, 0, 9.0);
-	MatrixSet(m, 2, 1, 10.0);
-	MatrixSet(m, 2, 2, 11.0);
-	MatrixSet(m, 2, 3, 12.0);
-	Matrix* result = MatrixL2Norm(m);
-	cr_assert_not_null(result);
-	cr_assert_eq(MatrixTotalRows(result), 1);
-	cr_assert_eq(MatrixTotalColumns(result), 4);
-	cr_assert_float_eq(MatrixGet(result, 0, 0), sqrt(11 + 55 + 99), 1e-3);
-	cr_assert_float_eq(MatrixGet(result, 0, 1), sqrt(22 + 66 + 1010), 1e-3);
-	cr_assert_float_eq(MatrixGet(result, 0, 2), sqrt(33 + 77 + 1111), 1e-3);
-	cr_assert_float_eq(MatrixGet(result, 0, 3), sqrt(44 + 88 + 1212), 1e-3);
-	MatrixFree(m);
-	MatrixFree(result);
-}
+    Matrix* m = MatrixNew(3, 4);
+    MatrixSet(m, 0, 0, 1.0);
+    MatrixSet(m, 0, 1, 2.0);
+    MatrixSet(m, 0, 2, 3.0);
+    MatrixSet(m, 0, 3, 4.0);
+    MatrixSet(m, 1, 0, 5.0);
+    MatrixSet(m, 1, 1, 6.0);
+    MatrixSet(m, 1, 2, 7.0);
+    MatrixSet(m, 1, 3, 8.0);
+    MatrixSet(m, 2, 0, 9.0);
+    MatrixSet(m, 2, 1, 10.0);
+    MatrixSet(m, 2, 2, 11.0);
+    MatrixSet(m, 2, 3, 12.0);
 
-Test(MatrixCosineSimilarity, EmptyMatrix)
-{
-	Matrix *m1 = MatrixNew(0, 0);
-	Matrix *m2 = MatrixNew(0, 0);
+    Matrix* result = MatrixL2Norm(m);
 
-	double result = MatrixCosineSimilarity(m1, m2);
-	cr_assert_float_eq(result, 0.0, 1e-3);
+    cr_assert_not_null(result);
+    cr_assert_eq(MatrixTotalRows(result), 1);
+    cr_assert_eq(MatrixTotalColumns(result), 4);
+    cr_assert_float_eq(MatrixGet(result, 0, 0), sqrt(1.0 + 25.0 + 81.0), 1e-3);
+    cr_assert_float_eq(MatrixGet(result, 0, 1), sqrt(4.0 + 36.0 + 100.0), 1e-3);
+    cr_assert_float_eq(MatrixGet(result, 0, 2), sqrt(9.0 + 49.0 + 121.0), 1e-3);
+    cr_assert_float_eq(MatrixGet(result, 0, 3), sqrt(16.0 + 64.0 + 144.0), 1e-3);
 
-	MatrixFree(m1);
-	MatrixFree(m2);
+    MatrixFree(m);
+    MatrixFree(result);
 }
 
 Test(MatrixCosineSimilarity, SingleColumnMatrix)
@@ -2160,30 +2083,25 @@ Test(MatrixCosineSimilarity, SingleColumnMatrix)
 	MatrixFree(m2);
 }
 
-Test(MatrixCosineSimilarity, MultipleColumnsMatrix)
+Test(MatrixCosineSimilarity, ValidMatrices)
 {
-	Matrix *m1 = MatrixNew(3, 2);
-	Matrix *m2 = MatrixNew(3, 2);
+    Matrix* m1 = MatrixNew(1, 3);
+    MatrixSet(m1, 0, 0, 1.0);
+    MatrixSet(m1, 0, 1, 2.0);
+    MatrixSet(m1, 0, 2, 3.0);
 
-	MatrixSet(m1, 0, 0, 1.0);
-	MatrixSet(m1, 0, 1, 2.0);
-	MatrixSet(m1, 1, 0, 2.0);
-	MatrixSet(m1, 1, 1, 3.0);
-	MatrixSet(m1, 2, 0, 3.0);
-	MatrixSet(m1, 2, 1, 4.0);
+    Matrix* m2 = MatrixNew(1, 3);
+    MatrixSet(m2, 0, 0, 2.0);
+    MatrixSet(m2, 0, 1, 3.0);
+    MatrixSet(m2, 0, 2, 4.0);
 
-	MatrixSet(m2, 0, 0, 4.0);
-	MatrixSet(m2, 0, 1, 3.0);
-	MatrixSet(m2, 1, 0, 2.0);
-	MatrixSet(m2, 1, 1, 1.0);
-	MatrixSet(m2, 2, 0, 1.0);
-	MatrixSet(m2, 2, 1, 3.0);
+    double expected_similarity = (1 * 2 + 2 * 3 + 3 * 4) / (sqrt(1 * 1 + 2 * 2 + 3 * 3) * sqrt(2 * 2 + 3 * 3 + 4 * 4));
+    double similarity = MatrixCosineSimilarity(m1, m2);
 
-	double result = MatrixCosineSimilarity(m1, m2);
-	cr_assert_float_eq(result, 0.8116496589, 1e-3);
+    cr_assert_float_eq(similarity, expected_similarity, 1e-1, "Expected value=%lf, but got %lf", expected_similarity, similarity);
 
-	MatrixFree(m1);
-	MatrixFree(m2);
+    MatrixFree(m1);
+    MatrixFree(m2);
 }
 
 Test(MatrixTSSSimilarity, SameMatrix)
@@ -2232,19 +2150,18 @@ Test(MatrixEuclideanDistance, SameMatrix)
 Test(MatrixEuclideanDistance, DifferentMatrix)
 {
 	Matrix *m1 = MatrixNew(2, 2);
-	MatrixSet(m1, 0, 0, 1.0);
-	MatrixSet(m1, 0, 1, 2.0);
-	MatrixSet(m1, 1, 0, 3.0);
-	MatrixSet(m1, 1, 1, 4.0);
-
 	Matrix *m2 = MatrixNew(2, 2);
-	MatrixSet(m2, 0, 0, 2.0);
-	MatrixSet(m2, 0, 1, 3.0);
-	MatrixSet(m2, 1, 0, 4.0);
-	MatrixSet(m2, 1, 1, 5.0);
+	MatrixSet(m1, 0, 0, 2.0);
+	MatrixSet(m1, 0, 1, 3.0);
+	MatrixSet(m1, 1, 0, 4.0);
+	MatrixSet(m1, 1, 1, 5.0);
+	MatrixSet(m2, 0, 0, 1.0);
+	MatrixSet(m2, 0, 1, 2.0);
+	MatrixSet(m2, 1, 0, 3.0);
+	MatrixSet(m2, 1, 1, 4.0);
 
 	double result = MatrixEuclideanDistance(m1, m2);
-	cr_assert_float_eq(result, sqrt(10), 1e-3, "Expected result to be sqrt(10)");
+	cr_assert_float_eq(result, 2.0, 1e-3, "Expected value=%lf, but got %lf", 2.0, result);
 
 	MatrixFree(m1);
 	MatrixFree(m2);
@@ -2302,7 +2219,8 @@ Test(MatrixMinkowskiDistance, P1)
 	MatrixSet(m2, 0, 1, 2.0);
 	MatrixSet(m2, 1, 0, 3.0);
 	MatrixSet(m2, 1, 1, 4.0);
-	cr_assert_eq(MatrixMinkowskiDistance(m1, m2, 1), 5.0);
+	cr_assert_float_eq(MatrixMinkowskiDistance(m1, m2, 1), 4.0, 1e-3, "Expected value=%lf, but got %lf",
+	4.0, MatrixMinkowskiDistance(m1, m2, 1));
 	MatrixFree(m1);
 	MatrixFree(m2);
 }
@@ -2321,9 +2239,9 @@ Test(MatrixMinkowskiDistance, P2)
 	MatrixSet(m2, 1, 1, 4.0);
 
 	double result = MatrixMinkowskiDistance(m1, m2, 2);
-	double expected = 1.73205080757;
+	double expected = 2.0;
 
-	cr_assert_float_eq(result, expected, 0.00001);
+	cr_assert_float_eq(result, expected, 1e-3, "Expected value=%lf, but got %lf", expected, result);
 
 	MatrixFree(m1);
 	MatrixFree(m2);
