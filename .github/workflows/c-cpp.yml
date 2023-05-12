@@ -17,7 +17,7 @@ jobs:
     - name: Install Criterion
       run: |
         sudo apt-get update
-        sudo apt-get install -y criterion-dev
+        sudo apt-get install libcriterion-dev
 
     - name: make
       run: make
