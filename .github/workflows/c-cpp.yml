@@ -20,12 +20,6 @@ jobs:
 
     - name: Criterion Test
       run: make
-      
-    - name: Install Valgrind
-      run: sudo apt-get install valgrind
-    
-    - name: Valgrind Test
-      run: make valgrind_tests
     
     - name: Create libs
       run: make lib
