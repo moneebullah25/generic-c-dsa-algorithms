@@ -658,3 +658,7 @@ The given macros are for creating and manipulating a avl binary tree template fo
 - **AvlTreeDouble** is a typedef of AvlTreeT(double), which creates an AvlTree struct with a double data\_ member.
 - **AvlTreeChar** is a typedef of AvlTreeT(char), which creates an AvlTree struct with a char data\_ member.
 - **AvlTreeString** is a typedef of AvlTreeT(char), which creates an AvlTree struct with a char data\_ member.
+
+## License
+
+Released under the [MIT License](LICENSE).
