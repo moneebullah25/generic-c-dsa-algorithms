@@ -6,29 +6,27 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-    - name: Install Criterion
+    - name: Install Criterion and Valgrind
       run: |
         sudo apt-get update
-        sudo apt-get install libcriterion-dev
+        sudo apt-get install -y libcriterion-dev valgrind
 
-    - name: Criterion Test
-      run: make
+    - name: Build libraries and tests
+      run: make all
 
-    - name: Install Valgrind
-      run: sudo apt-get install valgrind
+    - name: Run tests
+      run: make run_tests
 
-    - name: Valgrind Test
+    - name: Valgrind tests
       run: make valgrind_tests
-    
-    - name: Create libs
-      run: make lib
-    
-    - name: Clean
-      run: make clean

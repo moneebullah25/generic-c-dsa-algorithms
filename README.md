@@ -1,3 +1,7 @@
+![Output of the demo program: stack iteration and QuickSort](docs/images/demo.png)
+
+*Real output of `gcc -I includes docs/demo.c src/c_stack.c src/c_helper.c src/c_sort.c -o demo && ./demo` (source: [docs/demo.c](docs/demo.c)).*
+
 # **Table of Contents**
 - [Introduction](#introduction)
 - [Usage](#usage)
@@ -61,7 +65,7 @@ The project also provides a set of efficient algorithms for sorting and searchin
 
 This project has been thoroughly tested with the supported data types to ensure that it is reliable and efficient.
 
-# **Usuage**
+# **Usage**
 ## **Compiling the project**
 To compile the project and create the executables, run the following command:
 ```bash
@@ -654,3 +658,7 @@ The given macros are for creating and manipulating a avl binary tree template fo
 - **AvlTreeDouble** is a typedef of AvlTreeT(double), which creates an AvlTree struct with a double data\_ member.
 - **AvlTreeChar** is a typedef of AvlTreeT(char), which creates an AvlTree struct with a char data\_ member.
 - **AvlTreeString** is a typedef of AvlTreeT(char), which creates an AvlTree struct with a char data\_ member.
+
+## License
+
+Released under the [MIT License](LICENSE).

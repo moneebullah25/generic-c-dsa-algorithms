@@ -32,3 +32,5 @@ tests/bin
 *.exe
 *.out
 *.app
+obj/
+lib/
