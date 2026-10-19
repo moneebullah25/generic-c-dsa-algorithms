@@ -31,4 +31,5 @@ tests/bin
 # Executables
 *.exe
 *.out
-*.app
+*.appobj/
+lib/
